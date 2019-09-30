@@ -3468,6 +3468,393 @@ enum e_Blitzer {
 
 new g_iBlitzer, g_Blitzer[MAX_BLITZER][e_Blitzer];
 
+// - - - - - - -  - - - - - - -  <-- HELP SYSTEM
+
+new const StandartHelp[36][] = {
+	{"sup"},
+    {"admin"},
+    {"admin"},
+    {"anrufen"},
+    {"navi"},
+    {"suche"},
+    {"spielerinfo"},
+    {"rauchzig"},
+    {"zigweg"},
+    {"geben"},
+    {"liste"},
+    {"inventar"},
+    {"koffer"},
+    {"kofferauf"},
+    {"firmen"},
+    {"mutetime"},
+    {"animlist"},
+    {"staatskasse"},
+    {"leader"},
+    {"gutscheincode"},
+    {"musik"},
+    {"mp3player"},
+    {"ghettoblaster"},
+    {"removeghettoblaster"},
+    {"jailtime"},
+    {"spawnchange"},
+    {"clubhelp"},
+    {"werbetafelkaufen"},
+    {"werbetafelfinden"},
+    {"werbetafel"},
+    {"eventpreise"},
+    {"mineninfo"},
+    {"showjob"},
+    {"jobkleidung"},
+    {"skill"},
+    {"upgradeinfo"}
+};
+
+new const MoneyHelp[6][]= {
+    {"findatm"},
+    {"automat"},
+    {"ueberweisen"},
+    {"gebecheck"},
+    {"guthaben"},
+    {"zahlen"}
+};
+
+new DeathmatchHelp[17][]= {
+    {"nimmdrogen"},
+    {"nimmspice"},
+    {"isskeks"},
+    {"kampfstyle"},
+    {"pickwaffe"},
+    {"jailtime"},
+    {"tottime"},
+    {"killauftrag"},
+    {"driveby"},
+    {"gangfightwette"},
+    {"gangfightinfo"},
+    {"gfinfo"},
+    {"swinfo"},
+    {"tankstelleausrauben"},
+    {"bankausrauben"},
+    {"transporterausrauben"},
+    {"robninedemons"}
+};
+
+new SellHelp[4][]= {
+    {"sellkekse"},
+    {"sellwantedcodes"},
+    {"solldrogen"},
+    {"sellwaffenteile"}
+};
+
+new CasinoHelp[4][]= {
+    {"spielautomat"},
+    {"wettspiel"},
+    {"kartenspiel"},
+    {"gluecksrad"}
+};
+
+new VehicleHelp[26][]= {
+    {"radio"},
+    {"carlock"},
+    {"carkey"},
+    {"movecarkey"},
+    {"findcar"},
+    {"flock"},
+    {"tanken"},
+    {"carsell"},
+    {"parken"},
+    {"licht"},
+    {"motor"},
+    {"fenster"},
+    {"rauswerfen"},
+    {"kanister"},
+    {"kofferraum"},
+    {"kofferraumansehen"},
+    {"fahrzeugschein"},
+    {"scheine"},
+    {"scheinsperre"},
+    {"fahrzeuginfo"},
+    {"lock"},
+    {"mieten"},
+    {"entmieten"},
+    {"mietlock"},
+    {"findmietcar"},
+    {"fahrpruefung"}
+};
+
+new HouseHelp[15][]= {
+    {"hauskaufen"},
+    {"zuhause"},
+    {"hausupgrade"},
+    {"hausmieten"},
+    {"haustuer"},
+    {"hausmenu"},
+    {"hausverkaufen"},
+    {"hausverstaatlichen"},
+    {"hausmietung"},
+    {"hausraus"},
+    {"hausrausalle"},
+    {"hausabgeben"},
+    {"hoteltuer"},
+    {"miethotelraum"},
+    {"entmietenhotelraum"}
+};
+
+new BizHelp[10][]= {
+    {"bizkaufen"},
+    {"bizverkaufen"},
+    {"bizverstaatlichen"},
+    {"bizkassestand"},
+    {"bizkasse"},
+    {"biztuer"},
+    {"eintritt"},
+    {"warenverkaufsstelle1"},
+    {"warenverkaufsstelle2"},
+    {"warenverkaufsstelle3"}
+};
+
+new TankstelleHelp[9][]= {
+    {"tankekaufen"},
+    {"tankstelleverkaufen"},
+    {"tankeverstaatlichen"},
+    {"maxbenzin"},
+    {"tankkassestand"},
+    {"tankkasse"},
+    {"spritverkaufsstelle1"},
+    {"spritverkaufsstelle2"},
+    {"spritverkaufsstelle3"}
+};
+
+new FirmenHelp[5][]= {
+    {"firmenkasse"},
+    {"firmengehalt"},
+    {"firmennachricht"},
+    {"entlassen"},
+    {"firmen"}
+};
+
+new ChatHelp[19][]= {
+    {"f"},
+    {"s"},
+    {"nc"},
+    {"ic"},
+    {"jc"},
+    {"chatanim"},
+    {"firmen"},
+    {"gc"},
+    {"chatoff"},
+    {"anrufen"},
+    {"sms"},
+    {"auflegen"},
+    {"abnehmen"},
+    {"guthaben"},
+    {"handystatus"},
+    {"sendfs"},
+    {"delfs"},
+    {"fsliste"},
+    {"fschat"}
+};
+
+new HaustierHelp[4][]= {
+    {"haustier"},
+    {"sellhaustier"},
+    {"fuettern"},
+    {"haustiershop"}
+};
+
+new LeaderHelp[1][]= {
+    {"leaderhelp"}
+};
+
+new Job1Help[2][]= {
+    {"startbauer"},
+    {"stopbauer"}
+};
+
+new Job2Help[2][]= {
+    {"startlinie"},
+    {"stoplinie"}
+};
+
+new Job3Help[6][]= {
+    {"loadbenzin"},
+    {"startbenzin"},
+    {"loadwaren"},
+    {"startwaren"},
+    {"ladung"},
+    {"entladen"}
+};
+
+new Job4Help[2][]= {
+    {"startflug"},
+    {"stopflug"}
+};
+
+new Job5Help[2][]= {
+    {"nachtanken"},
+    {"reparieren"}
+};
+
+new Job6Help[2][]= {
+    {"befreien"},
+    {"sliste"}
+};
+
+new Job7Help[2][]= {
+    {"startreinigung"},
+    {"stopreinigung"}
+};
+
+new Job8Help[3][]= {
+    {"startmuell"},
+    {"stopmuell"},
+    {"entleeren"}
+};
+
+new Job9Help[2][]= {
+    {"startgarten"},
+    {"stopgarten"}
+};
+
+new Job10Help[2][]= {
+    {"startbauerbeiter"},
+    {"stopbauerbeiter"}
+};
+
+new Job11Help[2][]= {
+    {"startschiff"},
+    {"stopschiff"}
+};
+
+new Job12Help[2][]= {
+    {"starttransport"},
+    {"stoptransport"}
+};
+
+new Job13Help[1][]= {
+    {"eisverkaufen"}
+};
+
+new Job14Help[2][]= {
+    {"dfinden"},
+    {"dzeigen"}
+};
+
+new Job15Help[2][]= {
+    {"pizzaverkaufen"},
+    {"sliste"}
+};
+
+new Job16Help[1][]= {
+    {"starttaxi"}
+};
+
+new Job17Help[2][]= {
+    {"paketeinladen"},
+    {"paketentladen"}
+};
+
+new Job18Help[2][]= {
+    {"paketeinladen"},
+    {"paketentladen"}
+};
+
+new Job19Help[1][]= {
+    {"tascheklauen"}
+};
+
+new Job20Help[1][]= {
+    {"sex"}
+};
+
+new Job21Help[3][]= {
+    {"wantedhacken"},
+    {"wcodes"},
+    {"sellwantedcodes"}
+};
+
+new Job22Help[1][]= {
+    {"autoknacken"}
+};
+
+new Job23Help[2][]= {
+    {"startzug"},
+    {"stopzug"}
+};
+
+new Job24Help[1][]= {
+    {"hotdogverkaufen"}
+};
+
+new Frak1Help[66][]= {
+    {"clear"},
+    {"pdclear"},
+    {"dienst"},
+    {"sliste"},
+    {"acceptcop"},
+    {"mitglieder"},
+    {"dienstmarke"},
+    {"sp"},
+    {"staatskasse"},
+    {"haussuchen"},
+    {"beamteon"},
+    {"reinziehen"},
+    {"freilassen"},
+    {"verhaften"},
+    {"entnehmen"},
+    {"koffereinziehen"},
+    {"offlinearrest"},
+    {"rufdetektiv"},
+    {"scheinentziehen"},
+    {"arrest"},
+    {"w"},
+    {"caufbrechen"},
+    {"zollamt"},
+    {"ticket"},
+    {"schutzgeldpolizei"},
+    {"aufbrechen"},
+    {"knastzeit"},
+    {"finden"},
+    {"pflanzeverbrennen"},
+    {"zollsperre"},
+    {"parkstrafe"},
+    {"strafzettel"},
+    {"entschaerfen"},
+    {"fc"},
+    {"bc"},
+    {"vk"},
+    {"pvk"},
+    {"cpartner"},
+    {"acceptpartner"},
+    {"ve"},
+    {"kofferdurchsuchen"},
+    {"durchsuchen"},
+    {"promille"},
+    {"pakte"},
+    {"gefangene"},
+    {"meldestelle"},
+    {"parkscheinkontrolle"},
+    {"vamt"},
+    {"kfzsuchen"},
+    {"kzsuchen"},
+    {"uclight"},
+    {"copman"},
+    {"copfrau"},
+    {"rank"},
+    {"rankfrau"},
+    {"copcap"},
+    {"copcapf"},
+    {"copmuetze"},
+    {"tcop"},
+    {"pschild"},
+    {"copbrille"},
+    {"waffenspind"},
+    {"vrk"},
+    {"hsirene"},
+    {"pein"},
+    {"ermitteln"}
+};
+
+
 // - - - - - - - - - - - - - - -
 
 #define MAX_HAUS_MOEBEL 30
@@ -19541,7 +19928,7 @@ CMD:fpslimit(playerid)
 CMD:help(playerid)
 {
     if( gPlayerLogged[playerid] == 0 ) return SendClientMessage(playerid,COLOR_RED,"Du bist nicht eingeloggt");
-    ShowPlayerDialog(playerid,DIALOG_CMDHELP,DIALOG_STYLE_LIST,"Befehls Übersicht","{FF0000}ANTWORT AUF VIELE FRAGEN =>{FFFFFF}\nNormale Serverbefehle\nFahrzeug - Befehle\nHaus/Hotel - Befehle\nGeschäft/Firmen Befehle\nHandy/Chat Befehle\nFreundschafts Konsole Befehle\nHaustier Befehle\nWeitere Befehle\nJob Befehle\nFraktionsbefehle\nAdmin-Befehle","Ansehen","Abbruch");
+    ShowPlayerDialog(playerid,DIALOG_CMDHELP,DIALOG_STYLE_LIST,"Hilfebox","{FF0000}Hilfedatenbank (Suche){FFFFFF}\nAllgemeine Befehle\nFinanz Befehle\nDeathmatch Befehle\nVerkauf Befehle\nCasino Befehle\nFahrzeug Befehle\nHaus Befehle\nBusiness Befehle\nTankstellen Befehle\nFirmen Befehle\nChat Befehle\nHaustier Befehle\nLeader Befehle\nJob Befehle","Ansehen","Abbruch");
     return 1;
 }
 
@@ -34342,628 +34729,601 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                 if(listitem == 0 ) {
                     ShowPlayerDialog(playerid,DIALOG_ANTWORT,DIALOG_STYLE_LIST, COLOR_HEX_LIGHTBLUE "ANTWORT ZU WICHTIGEN FRAGEN","Respektpunkte und LevelUP\nSpielgeld\ndas Forum\ndas User Control Panel\ndie Server Regeln\nAdministrative Sanktionierungen\nNoDM Zonen\nWaffenverbotszonen\nHäuser und Geschäfte\nPrivatfahrzeuge\nFirmen und Berufe\nBank, Finanzen und OnlineBanking\nHandy und Guthaben\nKleidung und Charakter\nAngeln und Fische","Weiter","Abbruch");
                 }
-                if(listitem == 1 ) {
-                    SendClientMessage(playerid, COLOR_BLUE, "* STATISTIKEN *: {FFFFFF}/Stats, /Skill, /Upgradeinfo, /Scheine, /Pass, /Vertrag, /Serverinfo, /Delmarker, /Angelstats, /Finanzen, /sInfo(FPS und Ping anzeigen)");
-                    SendClientMessage(playerid, COLOR_BLUE, "* HILFE-BEFEHLE *:{FFFFFF}/Sup(Support-Ticket), /Admin(Notruf-Admin), /Anrufen 110 (POLIZEI-NOTRUF), /Anrufen 112 (RETTUNGSDIENST), /Service");
-                    SendClientMessage(playerid, COLOR_BLUE, "* ORIENTIERUNG *:{FFFFFF}/Navi (wichtige Orte finden), /Findatm, /Suche (Spielersuche), /Spielerinfo (Letzter Login von einem Spieler erfahren)");
-                    SendClientMessage(playerid, COLOR_BLUE, "* KONSUMIEREN *: {FFFFFF}/Nimmdrogen, /Isskeks, /Rauchzig, /Zigweg");
-                    SendClientMessage(playerid, COLOR_BLUE, "* ALLGEMEIN *: {FFFFFF}/Geben, /Liste, /Inventar, /Koffer, /Kofferauf, /Firmen, /Kampfstyle, /Pickwaffe, /Sellkekse");
-                    SendClientMessage(playerid, COLOR_BLUE, "* ALLGEMEIN *: {FFFFFF}/Jailtime, /Tottime, /Mutetime, /Animlist, /Staatskasse, /Killauftrag, /Leader, /Gutscheincode, /Driveby");
-                    SendClientMessage(playerid, COLOR_BLUE, "* MUSIK-BEFEHLE *: {FFFFFF}/Musik, /Mp3player, /Ghettoblaster, /Removeghettoblaster (/Rghettoblaster)");
-                    SendClientMessage(playerid, COLOR_BLUE, "* GELD-BEFEHLE *: {FFFFFF}/Automat, /Ueberweisen, /Gebecheck, /Guthaben, /Zahlen");
-                    SendClientMessage(playerid, COLOR_BLUE, "* GANGFIGHT-BEFEHLE *: {FFFFFF}/Gangfightwette, /Gangfightinfo, /Swinfo");
-                    SendClientMessage(playerid, COLOR_BLUE, "* RAUBBEFEHLE *: {FFFFFF}/Transporterausrauben, /Bankausrauben, /Tankstelleausrauben, /Robninedemons");
-                    SendClientMessage(playerid, COLOR_BLUE, "* CASINO-BEFEHLE *: {FFFFFF}/Spielautomat, /Wettspiel, /Kartenspiel, /Gluecksrad");
+                if(listitem == 1 ) {//AllgemeinHelp
+                    new maxcmdcount = 0, String[2048];
+                    format(String, sizeof(String), "%s\t\t\t\t{DEA81A}- | LyD ~ Übersicht der allgemeinen Befehle | -{FFFFFF}\n\n", String);
+                    for(new i = 0; i < sizeof(StandartHelp); i++){
+                        if(maxcmdcount == 8){
+                            format(String, sizeof(String), "%s\n", String);
+                            maxcmdcount = 0;
+                        }
+                        if(maxcmdcount == 0){
+                            format(String, sizeof(String), "%s/%s", String, StandartHelp[i]);
+                        }else{
+                            format(String, sizeof(String), "%s, /%s", String, StandartHelp[i]);
+                        }
+                        maxcmdcount++;
+                    }
+                    format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der allgemeinen Befehle | -", String, "OK", "");
                 }
-                else if(listitem == 2 ) {
-                        SendClientMessage(playerid, COLOR_BLUE, "* FAHRZEUG *: {FFFFFF}/Radio, /Carlock, /Carkey, /Movecarkey, /Findcar, /Flock, /Tanken, /Carsell");
-                        SendClientMessage(playerid, COLOR_BLUE, "* FAHRZEUG *: {FFFFFF}/Parken, /Licht, /Motor, /Fenster, /Rauswerfen, /Kanister, /Kofferraum, /Kofferraumansehen");
-                        SendClientMessage(playerid, COLOR_BLUE, "* AUSWEISUNG *: {FFFFFF}/Fahrzeugschein, /Scheine, /Scheinsperre, /Fahrzeuginfo");
-                        SendClientMessage(playerid, COLOR_BLUE, "* FAHRZEUG MIETEN *: {FFFFFF}/Lock, /Mieten, /Entmieten, /Mietlock, /Findmietcar");
+                else if(listitem == 2 ) {//MoneyHelp
+                    new maxcmdcount = 0, String[2048];
+                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Übersicht der Finanz-Befehle | -{FFFFFF}\n\n", String);
+                    for(new i = 0; i < sizeof(MoneyHelp); i++){
+                        if(maxcmdcount == 8){
+                            format(String, sizeof(String), "%s\n", String);
+                            maxcmdcount = 0;
+                        }
+                        if(maxcmdcount == 0){
+                            format(String, sizeof(String), "%s/%s", String, MoneyHelp[i]);
+                        }else{
+                            format(String, sizeof(String), "%s, /%s", String, MoneyHelp[i]);
+                        }
+                        maxcmdcount++;
+                    }
+                    format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Finanz-Befehle | -", String, "OK", "");
                 }
-                else if(listitem == 3 ) {
-                        SendClientMessage(playerid, COLOR_BLUE, "* HAUS - ALLGEMEIN *: {FFFFFF}/Hauskaufen, /Zuhause, /Spawnchange, /Hausupgrade");
-                        SendClientMessage(playerid, COLOR_BLUE, "* HAUS - MIETER *: {FFFFFF}/Hausmieten, /Hausentmieten, /Haustuer");
-                        SendClientMessage(playerid, COLOR_BLUE, "* HAUS - BESITZER*: {FFFFFF}/Hausmenu, /Hausverkaufen, /Hausverstaatlichen, /Hausmietung, Hausraus");
-                        SendClientMessage(playerid, COLOR_BLUE, "* HAUS - BESITZER*: {FFFFFF}/Hausrausalle, /Mietpreis, /Hausmieter, /Offhausraus, /Hauskasse, /Hauskassestand");
-                        /*SendClientMessage(playerid, COLOR_BLUE, "* HAUS - BESITZER*: {FFFFFF}/Hausabgeben - damit verkaufst du dein Haus an den Staat und erhältst");
-                        SendClientMessage(playerid, COLOR_BLUE, "{FFFFFF}nur ein DRITTEL des Kaufpreises zurück!!!");*/
-                        SendClientMessage(playerid, COLOR_BLUE, "* HOTEL *: {FFFFFF}/Hoteltuer, /Miethotelraum, /Entmietenhotelraum");
+                else if(listitem == 3 ) {//DeathmatchHelp
+                    new maxcmdcount = 0, String[2048];
+                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Übersicht der Deathmatch-Befehle | -{FFFFFF}\n\n", String);
+                    for(new i = 0; i < sizeof(DeathmatchHelp); i++){
+                        if(maxcmdcount == 8){
+                            format(String, sizeof(String), "%s\n", String);
+                            maxcmdcount = 0;
+                        }
+                        if(maxcmdcount == 0){
+                            format(String, sizeof(String), "%s/%s", String, DeathmatchHelp[i]);
+                        }else{
+                            format(String, sizeof(String), "%s, /%s", String, DeathmatchHelp[i]);
+                        }
+                        maxcmdcount++;
+                    }
+                    format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Deathmatch-Befehle | -", String, "OK", "");
                 }
-                else if(listitem == 4 ) {
-                        SendClientMessage(playerid, COLOR_BLUE, "* GESCHÄFT *: {FFFFFF}/Bizkaufen, /Bizverkaufen, /Bizverstaatlichen, /Bizkassestand, /Bizkasse, /Biztuer, /Eintritt, /Warenkaufen");
-                        SendClientMessage(playerid, COLOR_BLUE, "* TANKSTELLE *: {FFFFFF}/Tankekaufen, /Tankstelleverkaufen, /Tankeverstaatlichen, /Maxbenzin, /Tankkassestand, /Tankkasse");
-                        SendClientMessage(playerid, COLOR_BLUE, "* TANKSTELLE *: {FFFFFF}/Tankpreis, /Tankstellensecurity, /Tankkaufen");
-                        SendClientMessage(playerid, COLOR_BLUE, "* SPRITVERKAUFSSTELLEN *: {FFFFFF}/Spritverkaufsstelle1, /Spritverkaufsstelle2, /Spritverkaufsstelle3");
-                        SendClientMessage(playerid, COLOR_BLUE, "* WARENVERKAUFSSTELLEN *: {FFFFFF}/Warenverkaufsstelle1, /Warenverkaufsstelle2, /Warenverkaufsstelle3");
-                        SendClientMessage(playerid, COLOR_BLUE, "* FIRMA *: {FFFFFF}/Firmenkasse, /Firmengehalt, /Firmennachricht, /Entlassen, /Firmen");
+                else if(listitem == 4 ) {//SellHelp
+                    new maxcmdcount = 0, String[2048];
+                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Übersicht der Verkaufen-Befehle | -{FFFFFF}\n\n", String);
+                    for(new i = 0; i < sizeof(SellHelp); i++){
+                        if(maxcmdcount == 8){
+                            format(String, sizeof(String), "%s\n", String);
+                            maxcmdcount = 0;
+                        }
+                        if(maxcmdcount == 0){
+                            format(String, sizeof(String), "%s/%s", String, SellHelp[i]);
+                        }else{
+                            format(String, sizeof(String), "%s, /%s", String, SellHelp[i]);
+                        }
+                        maxcmdcount++;
+                    }
+                    format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Verkaufen-Befehle | -", String, "OK", "");
                 }
-                else if(listitem == 5 ) {
-                        SendClientMessage(playerid, COLOR_BLUE, "* CHAT *: {FFFFFF}/F (Flüstern), /S (Schreien), /Nc (Neulingschat), /Ic (Ingame-Charakter), /chatanim (automatische Animation)");
-                        SendClientMessage(playerid, COLOR_BLUE, "* CHAT *: {FFFFFF}/Gc (Globaler Chat), /Chatoff (um für sich bestimmte Chats auszublenden)");
-                        SendClientMessage(playerid, COLOR_BLUE, "* HANDY *: {FFFFFF}/Anrufen, /Sms, /Auflegen, /Abnehmen, /Guthaben, /Handystatus");
+                else if(listitem == 5 ) {//CasinoHelp
+                    new maxcmdcount = 0, String[2048];
+                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Übersicht der Casino-Befehle | -{FFFFFF}\n\n", String);
+                    for(new i = 0; i < sizeof(CasinoHelp); i++){
+                        if(maxcmdcount == 8){
+                            format(String, sizeof(String), "%s\n", String);
+                            maxcmdcount = 0;
+                        }
+                        if(maxcmdcount == 0){
+                            format(String, sizeof(String), "%s/%s", String, CasinoHelp[i]);
+                        }else{
+                            format(String, sizeof(String), "%s, /%s", String, CasinoHelp[i]);
+                        }
+                        maxcmdcount++;
+                    }
+                    format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Casino-Befehle | -", String, "OK", "");
                 }
-                else if(listitem == 6 ) {
-                        SendClientMessage(playerid, COLOR_BLUE, "* FS-KONSOLE *: {FFFFFF}/Sendfs, /Delfs, /Fsliste, /Fschat");
+                else if(listitem == 6 ) {//VehicleHelp
+                    new maxcmdcount = 0, String[2048];
+                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Übersicht der Fahrzeug-Befehle | -{FFFFFF}\n\n", String);
+                    for(new i = 0; i < sizeof(VehicleHelp); i++){
+                        if(maxcmdcount == 8){
+                            format(String, sizeof(String), "%s\n", String);
+                            maxcmdcount = 0;
+                        }
+                        if(maxcmdcount == 0){
+                            format(String, sizeof(String), "%s/%s", String, VehicleHelp[i]);
+                        }else{
+                            format(String, sizeof(String), "%s, /%s", String, VehicleHelp[i]);
+                        }
+                        maxcmdcount++;
+                    }
+                    format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Fahrzeug-Befehle | -", String, "OK", "");
                 }
-                else if(listitem == 7 ) {
-                        SendClientMessage(playerid, COLOR_BLUE, "* HAUSTIER BEFEHLE *: {FFFFFF}/Haustier, /Sellhaustier, /Fuettern, /Haustiershop");
+                else if(listitem == 7 ) {//HouseHelp
+                    new maxcmdcount = 0, String[2048];
+                    format(String, sizeof(String), "%s\t\t\t\t{DEA81A}- | LyD ~ Übersicht der Haus-Befehle | -{FFFFFF}\n\n", String);
+                    for(new i = 0; i < sizeof(HouseHelp); i++){
+                        if(maxcmdcount == 8){
+                            format(String, sizeof(String), "%s\n", String);
+                            maxcmdcount = 0;
+                        }
+                        if(maxcmdcount == 0){
+                            format(String, sizeof(String), "%s/%s", String, HouseHelp[i]);
+                        }else{
+                            format(String, sizeof(String), "%s, /%s", String, HouseHelp[i]);
+                        }
+                        maxcmdcount++;
+                    }
+                    format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Haus-Befehle | -", String, "OK", "");
                 }
-                else if(listitem == 8 ) {
-                        SendClientMessage(playerid, COLOR_BLUE, "* WEITERE BEFEHLE *: {FFFFFF}/Leaderhelp, /Clubhelp, /Werbetafelkaufen, /Werbetafelfinden, /Werbetafel, /Eventpreise, /Mineninfo");
+                else if(listitem == 8 ) {//BizHelp
+                    new maxcmdcount = 0, String[2048];
+                    format(String, sizeof(String), "%s\t\t\t\t{DEA81A}- | LyD ~ Übersicht der Business-Befehle | -{FFFFFF}\n\n", String);
+                    for(new i = 0; i < sizeof(BizHelp); i++){
+                        if(maxcmdcount == 8){
+                            format(String, sizeof(String), "%s\n", String);
+                            maxcmdcount = 0;
+                        }
+                        if(maxcmdcount == 0){
+                            format(String, sizeof(String), "%s/%s", String, BizHelp[i]);
+                        }else{
+                            format(String, sizeof(String), "%s, /%s", String, BizHelp[i]);
+                        }
+                        maxcmdcount++;
+                    }
+                    format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Business-Befehle | -", String, "OK", "");
                 }
-                else if(listitem == 9 ) {
-                    if(Spieler[playerid][pJob] == 1)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* FARMER *: {FFFFFF}/Jc, /Startbauer, /Stopbauer, /Showjob, /Jobkleidung");
-                        new string1[256];
-                        new string2[256];
-                        new string3[256];
-                        new string4[768];
-                        format(string1, sizeof(string1), "Deine Aufgabe als Bauer ist es an BlueBerry Farm zu ernten und abzuernten. \n");
-                        format(string2, sizeof(string2), "Die Farm findest du unter /Showjob, zudem hast du an der Farm auch die Möglichkeit deine Arbeitsuniform anzuziehen. \n");
-                        format(string3, sizeof(string3), "\nBefehle:\n{0077FF}/Startbauer => Damit begingst du die Arbeit.\n/Stopbauer => Damit beendest du die Arbeit\n/Showjob => Dein Arbeitsplatz/Ort wird dir als Marker angezeigt\n/Jc => Der Bauer Jobchat \n");
-                        format(string4, sizeof(string4), "\n{00AA00}Dein Gehalt erhältst du am kommenden PayDay!\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                        format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-                        ShowPlayerDialog(playerid, DIALOG_BAUERHELP, DIALOG_STYLE_MSGBOX, "BERUF BAUER", string4, "OK", "");
+                else if(listitem == 9 ) {//TankstelleHelp
+                    new maxcmdcount = 0, String[2048];
+                    format(String, sizeof(String), "%s\t\t\t\t\t{DEA81A}- | LyD ~ Übersicht der Tankstellen-Befehle | -{FFFFFF}\n\n", String);
+                    for(new i = 0; i < sizeof(TankstelleHelp); i++){
+                        if(maxcmdcount == 8){
+                            format(String, sizeof(String), "%s\n", String);
+                            maxcmdcount = 0;
+                        }
+                        if(maxcmdcount == 0){
+                            format(String, sizeof(String), "%s/%s", String, TankstelleHelp[i]);
+                        }else{
+                            format(String, sizeof(String), "%s, /%s", String, TankstelleHelp[i]);
+                        }
+                        maxcmdcount++;
                     }
-                    else if(Spieler[playerid][pJob] == 2)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* BUSFAHRER *: {FFFFFF}/Jc, /Startlinie, /Stoplinie, /Showjob, /Jobkleidung");
-                        new string1[256];
-                        new string2[256];
-                        new string3[256];
-                        new string4[768];
-                        format(string1, sizeof(string1), "Deine Aufgabe als Busfahrer ist es mit dem Bus die Haltestellen abzufahren. \n");
-                        format(string2, sizeof(string2), "Die Busstation findest du unter /Showjob, zudem hast du an der Station auch die Möglichkeit deine Arbeitsuniform anzuziehen. \n");
-                        format(string3, sizeof(string3), "\nBefehle:\n{0077FF}/Startlinie => Damit begingst du die Arbeit.\n/Stoplinie => Damit beendest du die Arbeit\n/Showjob => Dein Arbeitsplatz/Ort wird dir als Marker angezeigt\n/Jc => Der Busfahrer Jobchat \n");
-                        format(string4, sizeof(string4), "\n{00AA00}Dein Gehalt erhältst du am kommenden PayDay!\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                        format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-                        ShowPlayerDialog(playerid, DIALOG_BAUERHELP, DIALOG_STYLE_MSGBOX, "BERUF BUSFAHRER", string4, "OK", "");
-                    }
-                    else if(Spieler[playerid][pJob] == 3)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* TRUCKER *: {FFFFFF}/Jc, /Loadbenzin, /Startbenzin, /Loadwaren, /Startwaren, /Ladung, /Showjob, /Entladen");
-                        new string1[256];
-                        new string2[256];
-                        new string3[256];
-                        new string4[768];
-                        format(string1, sizeof(string1), "Als Trucker lieferst du Sprit und Waren an die verschiedenen Logistikzentren in Los Santos und Las Venturas. \n");
-                        format(string2, sizeof(string2), "Die Truckerstation findest du unter /Showjob, zudem hast du an der Station auch die Möglichkeit deine Arbeitsuniform anzuziehen. \n");
-                        format(string3, sizeof(string3), "\nBefehle:\n{0077FF}/Loadwaren => Damit lädst du Waren in deinen LKW ein.\n/Loadbenzin => Damit lädst du Benzin in deinen Tanklaster ein.\n/Entladen => Damit entlädst du die Waren/das Benzin am Ablieferungsort.\n/Ladung => Du siehst, wie viel Ladung du bereits geladen hast.\n/Showjob => Dein Arbeitsplatz/Ort wird dir als Marker angezeigt");
-                        format(string4, sizeof(string4), "\n/Jc => Der Trucker Jobchat \n\n{00AA00}Dein Gehalt erhältst du am kommenden PayDay!\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                        format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-                        ShowPlayerDialog(playerid, DIALOG_BAUERHELP, DIALOG_STYLE_MSGBOX, "BERUF TRUCKER", string4, "OK", "");
-                    }
-                    else if(Spieler[playerid][pJob] == 4)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* PILOT *: {FFFFFF}/Jc, /Startflug, /Stopflug, /Showjob, /Jobkleidung");
-                        new string1[256];
-                        new string2[256];
-                        new string3[256];
-                        new string4[768];
-                        format(string1, sizeof(string1), "Deine Aufgabe als Pilot ist es mit einem Flugzeug Stadt zur Stadt Sachen zu liefern. \n");
-                        format(string2, sizeof(string2), "Den Flughafen findest du unter /Showjob, zudem hast du am Flughafen auch die Möglichkeit deine Arbeitsuniform anzuziehen. \n");
-                        format(string3, sizeof(string3), "\nBefehle:\n{0077FF}/Startflug => Damit beginnst du die Arbeit.\n/Stopflug => Damit beendest du mittendrin die Arbeit\n/Showjob => Dein Arbeitsplatz/Ort wird dir als Marker angezeigt\n/Jc => Der Piloten Jobchat \n");
-                        format(string4, sizeof(string4), "\n{00AA00}Dein Gehalt erhältst du am kommenden PayDay!\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                        format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-                        ShowPlayerDialog(playerid, DIALOG_BAUERHELP, DIALOG_STYLE_MSGBOX, "BERUF PILOT", string4, "OK", "");
-                    }
-                    else if(Spieler[playerid][pJob] == 5)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* KFZ *: {FFFFFF}/Jc, /Nachtanken, /Reparieren, /Sliste, /Jobkleidung");
-                        new string1[256];
-                        new string2[256];
-                        new string3[256];
-                        new string4[768];
-                        format(string1, sizeof(string1), "Deine Aufgabe als Mechatroniker ist es Service Anrufe entgegen zu nehmen und Fahrzeuge zu tanken und zu reparieren. \n");
-                        format(string2, sizeof(string2), "Die Mechatroniker Station findest du unter /Showjob, zudem hast du an der Station auch die Möglichkeit deine Arbeitsuniform anzuziehen. \n");
-                        format(string2, sizeof(string2), "Du kannst aber natürlich auch Service-Anrufe und Reparaturen und desweiteren mit deinem Privatfahrzeug durchführen. \n");
-                        format(string3, sizeof(string3), "\nBefehle:\n{0077FF}/Nachtanken => Damit tankst du Fahrzeuge auf.\n/Reparieren => Damit reparierst du Fahrzeuge.\n/Sliste => Siehst du eingegangene Service-Anrufe\n/Showjob => Dein Arbeitsplatz/Ort wird dir als Marker angezeigt\n/Jc => Der Mechatroniker Jobchat \n");
-                        format(string4, sizeof(string4), "\n\n{00AA00}Dein Gehalt erhältst du am kommenden PayDay!\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                        format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-                        ShowPlayerDialog(playerid, DIALOG_BAUERHELP, DIALOG_STYLE_MSGBOX, "BERUF MECHATRONIKER", string4, "OK", "");
-                    }
-                    else if(Spieler[playerid][pJob] == 6)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* ANWALT *: {FFFFFF}/Jc, /Befreien, /Showjob, /Sliste, /Jobkleidung");
-                        new string1[256];
-                        new string2[256];
-                        new string3[256];
-                        new string4[768];
-                        format(string1, sizeof(string1), "Deine Aufgabe als Anwalt ist es Inhaftierte zu vertreten und aus dem Gefängnis zu holen. \nVor den Gefängniszellen im LSPD kannst du als Anwalt inhaftierte rausholen, zudem hast du im ");
-                        format(string2, sizeof(string2), "Anwaltsbüro(Im LSPD) auch die Möglichkeit deine Arbeitsuniform anzuziehen. \n\nBefehle:\n{0077FF}/Befreien => Inhaftierten vertreten und unter Kaution und Honorarkosten aus dem Gefängnis befreien.");
-                        format(string3, sizeof(string3), "\n/Sliste => Siehst du eingegangene Service-Anrufe\n/Showjob => Dein Arbeitsplatz/Ort wird dir als Marker angezeigt\n/Jc => Der Anwalt Jobchat \n");
-                        format(string4, sizeof(string4), "\n{00AA00}Dein Gehalt erhältst du am kommenden PayDay!\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                        format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-                        ShowPlayerDialog(playerid, DIALOG_BAUERHELP, DIALOG_STYLE_MSGBOX, "BERUF ANWALT", string4, "OK", "");
-                    }
-                    else if(Spieler[playerid][pJob] == 7)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* STRAßENREINIGER*: {FFFFFF}/Jc, /Startreinigung, /Stopreinigung, /Showjob, /Jobkleidung");
-                        new string1[256];
-                        new string2[256];
-                        new string3[256];
-                        new string4[768];
-                        format(string1, sizeof(string1), "Deine Aufgabe als Straßenreiniger ist es die Straßen von Los Santos zu reinigen. \n");
-                        format(string2, sizeof(string2), "Die Straßenreinigungsstation findest du unter /Showjob, zudem hast du an der Station auch die Möglichkeit deine Arbeitsuniform anzuziehen. \n");
-                        format(string3, sizeof(string3), "\nBefehle:\n{0077FF}/Startreinigung => Damit beginnst du die Arbeit.\n/Stopreinigung => Damit beendest du die Arbeit\n/Showjob => Dein Arbeitsplatz/Ort wird dir als Marker angezeigt\n/Jc => Der Straßenreiniger Jobchat \n");
-                        format(string4, sizeof(string4), "\n{00AA00}Dein Gehalt erhältst du am kommenden PayDay!\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                        format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-                        ShowPlayerDialog(playerid, DIALOG_BAUERHELP, DIALOG_STYLE_MSGBOX, "BERUF STRAßENREINIGER", string4, "OK", "");
-                    }
-                    else if(Spieler[playerid][pJob] == 8)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* MÜLLMANN *: {FFFFFF}/Jc, /Startmuell, /Stopmuell, /Showjob, /Entleeren, /Jobkleidung");
-                        new string1[256];
-                        new string2[256];
-                        new string3[256];
-                        new string4[768];
-                        format(string1, sizeof(string1), "Deine Aufgabe als Müllmann ist es die vollen Mülltonnen zu leeren und fachgerecht zu entsorgen. \n");
-                        format(string2, sizeof(string2), "Das Mülldepot findest du unter /Showjob, zudem hast du an der Station auch die Möglichkeit deine Arbeitsuniform anzuziehen. \n");
-                        format(string3, sizeof(string3), "\nBefehle:\n{0077FF}/Startmuell => Damit beginnst du die Arbeit.\n/Stopmuell => Damit beendest du die Arbeit.\n/Entleeren => Leerst du die vollen Mülltonnen.\n/Showjob => Dein Arbeitsplatz/Ort wird dir als Marker angezeigt\n/Jc => Der Müllmann Jobchat \n");
-                        format(string4, sizeof(string4), "\n{00AA00}Dein Gehalt erhältst du am kommenden PayDay!\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                        format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-                        ShowPlayerDialog(playerid, DIALOG_BAUERHELP, DIALOG_STYLE_MSGBOX, "BERUF MÜLLMANN", string4, "OK", "");
-                    }
-                    else if(Spieler[playerid][pJob] == 9)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* GÄRTNER *: {FFFFFF}/Jc, /Startgarten, /Stopgarten, /Showjob, /Jobkleidung");
-                        new string1[256];
-                        new string2[256];
-                        new string3[256];
-                        new string4[768];
-                        format(string1, sizeof(string1), "Deine Aufgabe als Gärtner ist es neue Pflanzen zu ernten, damit die Stadt schöner aussieht. \n");
-                        format(string2, sizeof(string2), "Die Gärtnerei findest du unter /Showjob, zudem hast du an der Gärtnerei auch die Möglichkeit deine Arbeitsuniform anzuziehen. \n");
-                        format(string3, sizeof(string3), "\nBefehle:\n{0077FF}/Startgarten => Damit beginnst du die Arbeit.\n/Stopgarten => Damit beendest du die Arbeit\n/Showjob => Dein Arbeitsplatz/Ort wird dir als Marker angezeigt\n/Jc => Der Gärtner Jobchat \n");
-                        format(string4, sizeof(string4), "\n{00AA00}Dein Gehalt erhältst du am kommenden PayDay!\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                        format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-                        ShowPlayerDialog(playerid, DIALOG_BAUERHELP, DIALOG_STYLE_MSGBOX, "BERUF GÄRTNER", string4, "OK", "");
-                    }
-                    else if(Spieler[playerid][pJob] == 10)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* BAUARBEITER *: {FFFFFF}/Jc, /Startbauarbeiter, /Stopbauarbeiter, /Steineladen, /Steineentladen, /Showjob, /Jobkleidung");
-                        new string1[256];
-                        new string2[256];
-                        new string3[256];
-                        new string4[768];
-                        format(string1, sizeof(string1), "Deine Aufgabe als Bauarbeiter ist es im Stadtwerk die Steine zu transportieren. \n");
-                        format(string2, sizeof(string2), "Das Stadtwerk findest du unter /Showjob, zudem hast du an dem Stadtwerk auch die Möglichkeit deine Arbeitsuniform anzuziehen. \n");
-                        format(string3, sizeof(string3), "\nBefehle:\n{0077FF}/Startbauarbeiter => Damit beginnst du die Arbeit.\n/Stopbaurbeiter => Damit beendest du die Arbeit\n/Showjob => Dein Arbeitsplatz/Ort wird dir als Marker angezeigt\n/Jc => Der Bauarbeiter Jobchat \n");
-                        format(string4, sizeof(string4), "\n{00AA00}Dein Gehalt erhältst du am kommenden PayDay!\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                        format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-                        ShowPlayerDialog(playerid, DIALOG_BAUERHELP, DIALOG_STYLE_MSGBOX, "BERUF BAUARBEITER", string4, "OK", "");
-                    }
-                    else if(Spieler[playerid][pJob] == 11)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* SCHIFFS-FAHRER *: {FFFFFF}/Jc, /Startschiff, /Stopschiff, /Frachtladen, /Frachtentladen, /Showjob, /Jobkleidung");
-                        new string1[256];
-                        new string2[256];
-                        new string3[256];
-                        new string4[768];
-                        format(string1, sizeof(string1), "Deine Aufgabe als Schiffsfahrer ist es mit dem Schiff eine Fracht zu liefern. \n");
-                        format(string2, sizeof(string2), "Den Hafen findest du unter /Showjob, zudem hast du am Hafen auch die Möglichkeit deine Arbeitsuniform anzuziehen. \n");
-                        format(string3, sizeof(string3), "\nBefehle:\n{0077FF}/Startschiff => Damit beginnst du die Arbeit.\n/Stopschiff => Damit beendest du die Arbeit\n/Showjob => Dein Arbeitsplatz/Ort wird dir als Marker angezeigt\n/Jc => Der Schiffsfahrer Jobchat \n");
-                        format(string4, sizeof(string4), "\n{00AA00}Dein Gehalt erhältst du am kommenden PayDay!\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                        format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-                        ShowPlayerDialog(playerid, DIALOG_BAUERHELP, DIALOG_STYLE_MSGBOX, "BERUF SCHIFFSFAHRER", string4, "OK", "");
-                    }
-                    else if(Spieler[playerid][pJob] == 12)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* GELD-TRANSPORTFAHRER *: {FFFFFF}/Jc, /Starttransport, /Stoptransport, /Showjob, /Jobkleidung");
-                        new string1[256];
-                        new string2[256];
-                        new string3[256];
-                        new string4[768];
-                        format(string1, sizeof(string1), "Deine Aufgabe als Geldtransportfahrer ist die Geldautomaten mit Geld aufzufüllen. \n");
-                        format(string2, sizeof(string2), "Die Sicherheitstransporter findest du unter /Showjob, zudem hast du an der Station auch die Möglichkeit deine Arbeitsuniform anzuziehen. \n");
-                        format(string3, sizeof(string3), "\nBefehle:\n{0077FF}/Starttransport => Damit beginnst du die Arbeit.\n/Stoptransport => Damit beendest du die Arbeit\n/Showjob => Dein Arbeitsplatz/Ort wird dir als Marker angezeigt\n/Jc => Der Geldtrans. Jobchat \n");
-                        format(string4, sizeof(string4), "\n{00AA00}Dein Gehalt erhältst du am kommenden PayDay!\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                        format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-                        ShowPlayerDialog(playerid, DIALOG_BAUERHELP, DIALOG_STYLE_MSGBOX, "BERUF GELDTRANSPORTER", string4, "OK", "");
-                    }
-                    else if(Spieler[playerid][pJob] == 13)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* EISMANN *: {FFFFFF}/Jc, /Eisverkaufen, /Showjob, /Jobkleidung");
-                        new string1[256];
-                        new string2[256];
-                        new string3[256];
-                        new string4[768];
-                        format(string1, sizeof(string1), "Deine Aufgabe als Eisverkäufer ist es anderen ein leckeres Eis zu verkaufen. \n");
-                        format(string2, sizeof(string2), "Die Eiswagen findest du unter /Showjob, zudem hast du an der Station auch die Möglichkeit deine Arbeitsuniform anzuziehen. \n");
-                        format(string3, sizeof(string3), "\nBefehle:\n{0077FF}/Eisverkaufen => Damit verkaufst du Eis.\n/Showjob => Dein Arbeitsplatz/Ort wird dir als Marker angezeigt\n/Jc => Der Eisverkäufer Jobchat \n");
-                        format(string4, sizeof(string4), "\n{00AA00}Dein Gehalt erhältst du am kommenden PayDay!\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                        format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-                        ShowPlayerDialog(playerid, DIALOG_BAUERHELP, DIALOG_STYLE_MSGBOX, "BERUF EISVERKÄUFER", string4, "OK", "");
-                    }
-                    else if(Spieler[playerid][pJob] == 14)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* DETEKTIV *: {FFFFFF}/Jc, /Dfinden, /Dzeigen, /Skill");
-                        new string1[256];
-                        new string2[256];
-                        new string3[256];
-                        new string4[768];
-                        format(string1, sizeof(string1), "Deine Aufgabe als Detektiv ist es andere Leute zu spionieren. \n");
-                        format(string2, sizeof(string2), "Meist werden Detektive von Polizisten gebraucht, um bei Ermittlungen zu helfen. \n");
-                        format(string3, sizeof(string3), "\nBefehle:\n{0077FF}/Dfinden => Ein Spieler orten.\n{0077FF}/Dzeigen => Zeigst du einem Spieler, wo der Gesuchte sich befindet..\n/Skill => Dein aktueller Detektiv-Skill\n/Jc => Der Detektiv Jobchat \n");
-                        format(string4, sizeof(string4), "\n{00AA00}Dein Gehalt erhältst du am kommenden PayDay!\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                        format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-                        ShowPlayerDialog(playerid, DIALOG_BAUERHELP, DIALOG_STYLE_MSGBOX, "BERUF DETEKTIV", string4, "OK", "");
-                    }
-                    else if(Spieler[playerid][pJob] == 15)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* PIZZALIEFERANT *: {FFFFFF}/Jc, /Pizzaverkaufen, /Sliste, /Showjob, /Jobkleidung");
-                        new string1[256];
-                        new string2[256];
-                        new string3[256];
-                        new string4[768];
-                        format(string1, sizeof(string1), "Deine Aufgabe als Pizzalieferant ist es anderen Pizza zu liefern/verkaufen. \n");
-                        format(string2, sizeof(string2), "Die Pizzaria findest du unter /Showjob, zudem hast du an der Pizzaria auch die Möglichkeit deine Arbeitsuniform anzuziehen. \n");
-                        format(string3, sizeof(string3), "\nBefehle:\n{0077FF}/Pizzaverkaufen => Damit verkaufst du Pizza.\n/Sliste => Siehst du eingegangene Bestellungen\n/Showjob => Dein Arbeitsplatz/Ort wird dir als Marker angezeigt\n/Jc => Der Pizza Jobchat \n");
-                        format(string4, sizeof(string4), "\n{00AA00}Dein Gehalt erhältst du am kommenden PayDay!\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                        format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-                        ShowPlayerDialog(playerid, DIALOG_BAUERHELP, DIALOG_STYLE_MSGBOX, "BERUF PIZZALIEFERANT", string4, "OK", "");
-                    }
-                    else if(Spieler[playerid][pJob] == 16)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* TAXIFAHRER *: {FFFFFF}/Jc, /Starttaxi, /Showjob, /Jobkleidung");
-                        new string1[256];
-                        new string2[256];
-                        new string3[256];
-                        new string4[768];
-                        format(string1, sizeof(string1), "Deine Aufgabe als Taxifahrer ist es andere an bestimmten Orten hinzufahren. \n");
-                        format(string2, sizeof(string2), "Die Taxifahrerstation findest du unter /Showjob, zudem hast du an der Station auch die Möglichkeit deine Arbeitsuniform anzuziehen. \n");
-                        format(string3, sizeof(string3), "\nBefehle:\n{0077FF}/Starttaxi => Damit beginnst du die Arbeit und legst ein Fahrpreis fest.\n/Showjob => Dein Arbeitsplatz/Ort wird dir als Marker angezeigt\n/Jc => Der Taxifahrer Jobchat \n");
-                        format(string4, sizeof(string4), "\n{00AA00}Dein Verdienst erhältst du cash vom Kunden!\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                        format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-                        ShowPlayerDialog(playerid, DIALOG_BAUERHELP, DIALOG_STYLE_MSGBOX, "BERUF TAXIFAHRER", string4, "OK", "");
-                    }
-                    else if(Spieler[playerid][pJob] == 17)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* DROGENDEALER *: {FFFFFF}/Jc, /Paketeinladen, /Paketentladen, /Selldrogen, /Safebox, /Skill, /Showjob");
-                        new string1[256];
-                        new string2[256];
-                        new string3[256];
-                        new string4[768];
-                        format(string1, sizeof(string1), "Deine Aufgabe als Drogendealer ist es Pakete aufzuladen und, sie an einem bestimmten Ort zu entladen und Drogen zu verkaufen. \n");
-                        format(string2, sizeof(string2), "Die Drogendealer-Cars findest du unter /Showjob. Achte drauf, dass dich kein Polizist beim Drogenverkauf erwischt!\n");
-                        format(string3, sizeof(string3), "\nBefehle:\n{0077FF}/Paketeinladen => Damit nimmst Drogenpakete in dein Van auf.\n/Paketentladen => Damit lässt du die aufgeladenen Drogenpakete am SF-Hafen ab.\n/Selldrogen => Damit verkaufst du Drogen.\n/Showjob => Dein Arbeitsplatz/Ort wird dir als Marker angezeigt.\n/Jc => Der Dealer Jobchat.\n");
-                        format(string4, sizeof(string4), "\n/Skill => Dein aktueller Drogendealer-Skill\n\n{00AA00}Dein Gehalt erhältst du vom Käufern!\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                        format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-                        ShowPlayerDialog(playerid, DIALOG_BAUERHELP, DIALOG_STYLE_MSGBOX, "BERUF DROGENDEALER", string4, "OK", "");
-                    }
-                    else if(Spieler[playerid][pJob] == 18)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* WAFFENDEALER *: {FFFFFF}/Jc, /Paketeinladen, /Paketentladen, /Sellgun, /Safebox, /Skill, /Showjob");
-                        new string1[256];
-                        new string2[256];
-                        new string3[256];
-                        new string4[768];
-                        format(string1, sizeof(string1), "Deine Aufgabe als Waffendealer ist es Pakete aufzuladen und, sie an einem bestimmten Ort zu entladen und Waffen zu verkaufen. \n");
-                        format(string2, sizeof(string2), "Die Waffendealer-Cars findest du unter /Showjob. Achte drauf, dass dich kein Polizist beim Waffenverkauf erwischt!\n");
-                        format(string3, sizeof(string3), "\nBefehle:\n{0077FF}/Paketeinladen => Damit nimmst du Pakete in dein Van auf.\n/Paketentladen => Damit lässt du die aufgeladenen Pakete am SF-Hafen ab.\n/Sellgun => Damit verkaufst du Waffen, die du aus deinen Waffenteilen baust.\n/Sellwaffenteile => Damit kannst du deine Waffenteile verkaufen.\n/Showjob => Dein Arbeitsplatz/Ort wird dir als Marker angezeigt\n/Jc => Der Dealer Jobchat\n");
-                        format(string4, sizeof(string4), "\n/Skill => Dein aktueller Waffendealer-Skill\n\n{00AA00}Dein Gehalt erhältst du vom Käufer!\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                        format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-                        ShowPlayerDialog(playerid, DIALOG_BAUERHELP, DIALOG_STYLE_MSGBOX, "BERUF WAFFENDEALER", string4, "OK", "");
-                    }
-                    else if(Spieler[playerid][pJob] == 19)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* TASCHENDIEB *: {FFFFFF}/Jc, /Tascheklauen");
-                        new string1[256];
-                        new string2[256];
-                        new string3[256];
-                        new string4[768];
-                        format(string1, sizeof(string1), "Deine Aufgabe als Taschendieb ist es andere zu beklauen. \n");
-                        format(string2, sizeof(string2), "Achte drauf, dass dich kein Polizist beim Klauen erwischt!\n");
-                        format(string3, sizeof(string3), "\nBefehle:\n{0077FF}/Tascheklauen => Damit beklaust du andere.\n/Jc => Der Taschendieb Jobchat \n");
-                        format(string4, sizeof(string4), "\n{00AA00}Deine geklaute Beute erhältst du cash!\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                        format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-                        ShowPlayerDialog(playerid, DIALOG_BAUERHELP, DIALOG_STYLE_MSGBOX, "BERUF TASCHENDIEB", string4, "OK", "");
-                    }
-                    else if(Spieler[playerid][pJob] == 20)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* PROSTITUIERTE *: {FFFFFF}/Jc, /Sex");
-                        new string1[256];
-                        new string2[256];
-                        new string3[256];
-                        new string4[768];
-                        format(string1, sizeof(string1), "Deine Aufgabe als Prostituierte ist es andere in einem Fahrzeug zu befriedigen. \n");
-                        format(string2, sizeof(string2), "Achte drauf, dass keine Geschlechtskrankheiten übertragen werden!\n");
-                        format(string3, sizeof(string3), "\nBefehle:\n{0077FF}/Sex => Damit befriedigst du dein Kunden.\n/Jc => Der Huren Jobchat \n");
-                        format(string4, sizeof(string4), "\n\n{00AA00}Dein Gehalt erhältst du vom Kunden!\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                        format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-                        ShowPlayerDialog(playerid, DIALOG_BAUERHELP, DIALOG_STYLE_MSGBOX, "BERUF PROSTITUIERTE", string4, "OK", "");
-                    }
-                    else if(Spieler[playerid][pJob] == 21)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* WANTED-HACKER *: {FFFFFF}/Jc, /Wantedhacken, /Wcodes, /Showjob /Sellwantedcodes");
-                        new string1[256];
-                        new string2[256];
-                        new string3[256];
-                        new string4[768];
-                        format(string1, sizeof(string1), "Als Wantedhacker musst du dich in den Polizeicomputer reinhacken. Damit das funktioniert, benötigst du Hackercodes. \n");
-                        format(string2, sizeof(string2), "Mit deinen Hackercodes musst du in einem Van sitzen und hinter dem Los Santos Police Department sein. \nAchte drauf, dass dich kein Polizist beim Hacken erwischt!\n");
-                        format(string3, sizeof(string3), "\nBefehle:\n{0077FF}/Wcodes => Damit generierst du die Wantedcodes\n/Wantedhacken => Damit hackst du dich in den Polizeicomputer hinein.\n/Jc => Der W-Hacker Jobchat \n");
-                        format(string4, sizeof(string4), "\n\n{00AA00}Dein Gehalt erhältst du vom Kunden!\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                        format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-                        ShowPlayerDialog(playerid, DIALOG_BAUERHELP, DIALOG_STYLE_MSGBOX, "BERUF WANTEDHACKER", string4, "OK", "");
-                    }
-                    else if(Spieler[playerid][pJob] == 22)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* AUTODIEB *: {FFFFFF}/Jc, /Autoknacken");
-                        new string1[256];
-                        new string2[256];
-                        new string3[256];
-                        new string4[768];
-                        format(string1, sizeof(string1), "Deine Aufgabe als Autodieb ist es das Privatfahrzeug von anderen zu klauen und zu verkaufen. \n");
-                        format(string2, sizeof(string2), "Achte drauf, dass dich kein Polizist beim klauen erwischt!\n");
-                        format(string3, sizeof(string3), "\nBefehle:\n{0077FF}/Autoknacken => Damit knackst du Fahrzeuge auf.\n/Jc => Der Autoknacker Jobchat \n");
-                        format(string4, sizeof(string4), "\n{00AA00}Das Geld für die geklauten Autos erhältst direkt am SF-Kran!\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                        format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-                        ShowPlayerDialog(playerid, DIALOG_BAUERHELP, DIALOG_STYLE_MSGBOX, "BERUF TASCHENDIEB", string4, "OK", "");
-                    }
-                    else if(Spieler[playerid][pJob] == 23)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* ZUGFAHRER *: {FFFFFF}/Jc, /Startzug, /Stopzug, /Showjob, /Jobkleidung");
-                        new string1[256];
-                        new string2[256];
-                        new string3[256];
-                        new string4[768];
-                        format(string1, sizeof(string1), "Deine Aufgabe als Zugfahrer ist es mit dem Bus die Haltestellen abzufahren. \n");
-                        format(string2, sizeof(string2), "Die Zugstation findest du unter /Showjob, zudem hast du an der Station auch die Möglichkeit deine Arbeitsuniform anzuziehen. \n");
-                        format(string3, sizeof(string3), "\nBefehle:\n{0077FF}/Startzug => Damit beginnst du die Arbeit.\n/Stopzug => Damit beendest du die Arbeit\n/Showjob => Dein Arbeitsplatz/Ort wird dir als Marker angezeigt\n/Jc => Der Zugfahrer Jobchat \n");
-                        format(string4, sizeof(string4), "\n{00AA00}Dein Gehalt erhältst du am kommenden PayDay!\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                        format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-                        ShowPlayerDialog(playerid, DIALOG_BAUERHELP, DIALOG_STYLE_MSGBOX, "BERUF ZUGFAHRER", string4, "OK", "");
-                    }
-                    else if(Spieler[playerid][pJob] == 24)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* HOTDOGMANN *: {FFFFFF}/Jc, /Hotdogverkaufen, /Jobkleidung");
-                        new string1[256];
-                        new string2[256];
-                        new string3[256];
-                        new string4[768];
-                        format(string1, sizeof(string1), "Deine Aufgabe als Hotdog Verkäufer ist es anderen ein leckeren, warmen Hotdog zu verkaufen \n");
-                        format(string2, sizeof(string2), "Deine Arbeitsstelle findest du unter /Showjob, zudem hast du an deinem Arbeitsplatz die Möglichkeit deine Arbeitsuniform anzuziehen. \n");
-                        format(string3, sizeof(string3), "\nBefehle:\n{0077FF}/Hotdogverkaufen => Damit kannst du anderen einen Hotdog anbieten.\n/Showjob => Dein Arbeitsplatz/Ort wird dir als Marker angezeigt\n/Jc => Der Jobchat \n");
-                        format(string4, sizeof(string4), "\n{00AA00}Dein Gehalt erhältst du am kommenden PayDay!\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                        format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-                        ShowPlayerDialog(playerid, DIALOG_BAUERHELP, DIALOG_STYLE_MSGBOX, "BERUF HOTDOG-VERKÄUFER", string4, "OK", "");
-                    }
+                    format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Tankstellen-Befehle | -", String, "OK", "");
                 }
-                else if(listitem == 10 ) {
-                    if(Spieler[playerid][pFraktion] == 1)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* LSPD ALLGEMEIN*: {FFFFFF}/Clear, /Pdgate, /Dienst, /sliste, /Acceptcop, /Mitglieder, /Dienstmarke, /sp, /Staatskasse, /Haussuchen, /Beamteon");
-                        SendClientMessage(playerid, COLOR_BLUE, "* LSPD VOLLSTRECKUNG*: {FFFFFF}/Reinziehen, /Freilassen, /Verhaften, /Entnehmen, /Koffereinziehen, /Offlinearrest, /RufDetektiv");
-                        SendClientMessage(playerid, COLOR_BLUE, "* LSPD VOLLSTRECKUNG*: {FFFFFF}/Scheinentziehen, /Arrest, /W (Wantedvergabe), /Caufbrechen, /Zollamt, /Ticket, /Schutzgeldpolizei");
-                        SendClientMessage(playerid, COLOR_BLUE, "* LSPD VOLLSTRECKUNG*: {FFFFFF}/Aufbrechen, /Knastzeit, /Finden, /Pflanzeverbrennen, /Zollsperre, /Parkstrafe, /Strafzettel, /Entschaerfen");
-                        SendClientMessage(playerid, COLOR_BLUE, "* LSPD CHAT*: {FFFFFF}/Fc, /Bc, /Vk, /Pvk, /Cpartner, /Acceptcpartner, /Ve, /Inthaft, /PNotrufinfo");
-                        SendClientMessage(playerid, COLOR_BLUE, "* LSPD KONTROLLEN*: {FFFFFF}/Kofferdurchsuchen, /Durchsuchen, /Promille, /Pakte, /Gefangene, /Meldestelle, /Parkscheinkontrolle");
-                        SendClientMessage(playerid, COLOR_BLUE, "* LSPD KONTROLLEN*: {FFFFFF}/VAmt, /Kzsuchen, /Kfzsuchen, /Uclight");
-                        SendClientMessage(playerid, COLOR_BLUE, "* LSPD AUSRÜSTUNG*: {FFFFFF}/Copman, /Copfrau, /Rank, /Copcap, /Copcapf, /Copmuetze, /TCop, /Pschild, /Copbrille, /Waffenspind");
-                        SendClientMessage(playerid, COLOR_BLUE, "* LSPD SIGNALE*: {FFFFFF}/Vrk, /Hsirene, /Ermitteln, /Pein");
+                else if(listitem == 10 ) {//FirmenHelp
+                    new maxcmdcount = 0, String[2048];
+                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Übersicht der Firmen-Befehle | -{FFFFFF}\n\n", String);
+                    for(new i = 0; i < sizeof(FirmenHelp); i++){
+                        if(maxcmdcount == 8){
+                            format(String, sizeof(String), "%s\n", String);
+                            maxcmdcount = 0;
+                        }
+                        if(maxcmdcount == 0){
+                            format(String, sizeof(String), "%s/%s", String, FirmenHelp[i]);
+                        }else{
+                            format(String, sizeof(String), "%s, /%s", String, FirmenHelp[i]);
+                        }
+                        maxcmdcount++;
+                    }
+                    format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Firmen-Befehle | -", String, "OK", "");
+                }
+                else if(listitem == 11){//ChatHelp
+                    new maxcmdcount = 0, String[2048];
+                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Übersicht der Chat-Befehle | -{FFFFFF}\n\n", String);
+                    for(new i = 0; i < sizeof(ChatHelp); i++){
+                        if(maxcmdcount == 8){
+                            format(String, sizeof(String), "%s\n", String);
+                            maxcmdcount = 0;
+                        }
+                        if(maxcmdcount == 0){
+                            format(String, sizeof(String), "%s/%s", String, ChatHelp[i]);
+                        }else{
+                            format(String, sizeof(String), "%s, /%s", String, ChatHelp[i]);
+                        }
+                        maxcmdcount++;
+                    }
+                    format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Chat-Befehle | -", String, "OK", "");
+                }
+                else if(listitem == 12){//HaustierHelp
+                    new maxcmdcount = 0, String[2048];
+                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Übersicht der Haustier-Befehle | -{FFFFFF}\n\n", String);
+                    for(new i = 0; i < sizeof(HaustierHelp); i++){
+                        if(maxcmdcount == 8){
+                            format(String, sizeof(String), "%s\n", String);
+                            maxcmdcount = 0;
+                        }
+                        if(maxcmdcount == 0){
+                            format(String, sizeof(String), "%s/%s", String, HaustierHelp[i]);
+                        }else{
+                            format(String, sizeof(String), "%s, /%s", String, HaustierHelp[i]);
+                        }
+                        maxcmdcount++;
+                    }
+                    format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Haustier-Befehle | -", String, "OK", "");
+                }
+                else if(listitem == 13){//LeaderHelp
+                    new maxcmdcount = 0, String[2048];
+                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Übersicht der Leader-Befehle | -{FFFFFF}\n\n", String);
+                    for(new i = 0; i < sizeof(LeaderHelp); i++){
+                        if(maxcmdcount == 8){
+                            format(String, sizeof(String), "%s\n", String);
+                            maxcmdcount = 0;
+                        }
+                        if(maxcmdcount == 0){
+                            format(String, sizeof(String), "%s/%s", String, LeaderHelp[i]);
+                        }else{
+                            format(String, sizeof(String), "%s, /%s", String, LeaderHelp[i]);
+                        }
+                        maxcmdcount++;
+                    }
+                    format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Leader-Befehle | -", String, "OK", "");
+                }else if(listitem == 14){//Job1Help
+                    new maxcmdcount = 0, String[4128];
+                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Übersicht der Job-Befehle | -{FFFFFF}\n\n", String);
+                    format(String, sizeof(String), "%s/showjob, /jobkleidung", String);
+                    if(Spieler[playerid][pJob] == 1){
+                        for(new i = 0; i < sizeof(Job1Help); i++){
+                            if(maxcmdcount == 8){
+                                format(String, sizeof(String), "%s\n", String);
+                                maxcmdcount = 0;
+                            }
+                            if(maxcmdcount == 0){
+                                format(String, sizeof(String), "%s/%s", String, Job1Help[i]);
+                            }else{
+                                format(String, sizeof(String), "%s, /%s", String, Job1Help[i]);
+                            }
+                            maxcmdcount++;
+                        }
+                    }
+                    else if(Spieler[playerid][pJob] == 2){
+                        for(new i = 0; i < sizeof(Job2Help); i++){
+                            if(maxcmdcount == 8){
+                                format(String, sizeof(String), "%s\n", String);
+                                maxcmdcount = 0;
+                            }
+                            if(maxcmdcount == 0){
+                                format(String, sizeof(String), "%s/%s", String, Job2Help[i]);
+                            }else{
+                                format(String, sizeof(String), "%s, /%s", String, Job2Help[i]);
+                            }
+                            maxcmdcount++;
+                        }
+                    }
+                    else if(Spieler[playerid][pJob] == 3){
+                        for(new i = 0; i < sizeof(Job3Help); i++){
+                            if(maxcmdcount == 8){
+                                format(String, sizeof(String), "%s\n", String);
+                                maxcmdcount = 0;
+                            }
+                            if(maxcmdcount == 0){
+                                format(String, sizeof(String), "%s/%s", String, Job3Help[i]);
+                            }else{
+                                format(String, sizeof(String), "%s, /%s", String, Job3Help[i]);
+                            }
+                            maxcmdcount++;
+                        }
+                    }
+                    else if(Spieler[playerid][pJob] == 4){
+                        for(new i = 0; i < sizeof(Job4Help); i++){
+                            if(maxcmdcount == 8){
+                                format(String, sizeof(String), "%s\n", String);
+                                maxcmdcount = 0;
+                            }
+                            if(maxcmdcount == 0){
+                                format(String, sizeof(String), "%s/%s", String, Job4Help[i]);
+                            }else{
+                                format(String, sizeof(String), "%s, /%s", String, Job4Help[i]);
+                            }
+                            maxcmdcount++;
+                        }
+                    }
+                    else if(Spieler[playerid][pJob] == 5){
+                        for(new i = 0; i < sizeof(Job5Help); i++){
+                            if(maxcmdcount == 8){
+                                format(String, sizeof(String), "%s\n", String);
+                                maxcmdcount = 0;
+                            }
+                            if(maxcmdcount == 0){
+                                format(String, sizeof(String), "%s/%s", String, Job5Help[i]);
+                            }else{
+                                format(String, sizeof(String), "%s, /%s", String, Job5Help[i]);
+                            }
+                            maxcmdcount++;
+                        }
+                    }
+                    else if(Spieler[playerid][pJob] == 6){
+                        for(new i = 0; i < sizeof(Job6Help); i++){
+                            if(maxcmdcount == 8){
+                                format(String, sizeof(String), "%s\n", String);
+                                maxcmdcount = 0;
+                            }
+                            if(maxcmdcount == 0){
+                                format(String, sizeof(String), "%s/%s", String, Job6Help[i]);
+                            }else{
+                                format(String, sizeof(String), "%s, /%s", String, Job6Help[i]);
+                            }
+                            maxcmdcount++;
+                        }
+                    }
+                    else if(Spieler[playerid][pJob] == 7){
+                        for(new i = 0; i < sizeof(Job7Help); i++){
+                            if(maxcmdcount == 8){
+                                format(String, sizeof(String), "%s\n", String);
+                                maxcmdcount = 0;
+                            }
+                            if(maxcmdcount == 0){
+                                format(String, sizeof(String), "%s/%s", String, Job7Help[i]);
+                            }else{
+                                format(String, sizeof(String), "%s, /%s", String, Job7Help[i]);
+                            }
+                            maxcmdcount++;
+                        }
+                    }
+                    else if(Spieler[playerid][pJob] == 8){
+                        for(new i = 0; i < sizeof(Job8Help); i++){
+                            if(maxcmdcount == 8){
+                                format(String, sizeof(String), "%s\n", String);
+                                maxcmdcount = 0;
+                            }
+                            if(maxcmdcount == 0){
+                                format(String, sizeof(String), "%s/%s", String, Job8Help[i]);
+                            }else{
+                                format(String, sizeof(String), "%s, /%s", String, Job8Help[i]);
+                            }
+                            maxcmdcount++;
+                        }
+                    }
+                    else if(Spieler[playerid][pJob] == 9){
+                        for(new i = 0; i < sizeof(Job9Help); i++){
+                            if(maxcmdcount == 8){
+                                format(String, sizeof(String), "%s\n", String);
+                                maxcmdcount = 0;
+                            }
+                            if(maxcmdcount == 0){
+                                format(String, sizeof(String), "%s/%s", String, Job9Help[i]);
+                            }else{
+                                format(String, sizeof(String), "%s, /%s", String, Job9Help[i]);
+                            }
+                            maxcmdcount++;
+                        }
+                    }
+                    else if(Spieler[playerid][pJob] == 10){
+                        for(new i = 0; i < sizeof(Job10Help); i++){
+                            if(maxcmdcount == 8){
+                                format(String, sizeof(String), "%s\n", String);
+                                maxcmdcount = 0;
+                            }
+                            if(maxcmdcount == 0){
+                                format(String, sizeof(String), "%s/%s", String, Job10Help[i]);
+                            }else{
+                                format(String, sizeof(String), "%s, /%s", String, Job10Help[i]);
+                            }
+                            maxcmdcount++;
+                        }
+                    }
+                    else if(Spieler[playerid][pJob] == 11){
+                        for(new i = 0; i < sizeof(Job11Help); i++){
+                            if(maxcmdcount == 8){
+                                format(String, sizeof(String), "%s\n", String);
+                                maxcmdcount = 0;
+                            }
+                            if(maxcmdcount == 0){
+                                format(String, sizeof(String), "%s/%s", String, Job11Help[i]);
+                            }else{
+                                format(String, sizeof(String), "%s, /%s", String, Job11Help[i]);
+                            }
+                            maxcmdcount++;
+                        }
+                    }
+                    else if(Spieler[playerid][pJob] == 12){
+                        for(new i = 0; i < sizeof(Job12Help); i++){
+                            if(maxcmdcount == 8){
+                                format(String, sizeof(String), "%s\n", String);
+                                maxcmdcount = 0;
+                            }
+                            if(maxcmdcount == 0){
+                                format(String, sizeof(String), "%s/%s", String, Job12Help[i]);
+                            }else{
+                                format(String, sizeof(String), "%s, /%s", String, Job12Help[i]);
+                            }
+                            maxcmdcount++;
+                        }
+                    }
+                    else if(Spieler[playerid][pJob] == 13){
+                        for(new i = 0; i < sizeof(Job13Help); i++){
+                            if(maxcmdcount == 8){
+                                format(String, sizeof(String), "%s\n", String);
+                                maxcmdcount = 0;
+                            }
+                            if(maxcmdcount == 0){
+                                format(String, sizeof(String), "%s/%s", String, Job13Help[i]);
+                            }else{
+                                format(String, sizeof(String), "%s, /%s", String, Job13Help[i]);
+                            }
+                            maxcmdcount++;
+                        }
+                    }
+                    else if(Spieler[playerid][pJob] == 14){
+                        for(new i = 0; i < sizeof(Job14Help); i++){
+                            if(maxcmdcount == 8){
+                                format(String, sizeof(String), "%s\n", String);
+                                maxcmdcount = 0;
+                            }
+                            if(maxcmdcount == 0){
+                                format(String, sizeof(String), "%s/%s", String, Job14Help[i]);
+                            }else{
+                                format(String, sizeof(String), "%s, /%s", String, Job14Help[i]);
+                            }
+                            maxcmdcount++;
+                        }
+                    }
+                    else if(Spieler[playerid][pJob] == 15){
+                        for(new i = 0; i < sizeof(Job15Help); i++){
+                            if(maxcmdcount == 8){
+                                format(String, sizeof(String), "%s\n", String);
+                                maxcmdcount = 0;
+                            }
+                            if(maxcmdcount == 0){
+                                format(String, sizeof(String), "%s/%s", String, Job15Help[i]);
+                            }else{
+                                format(String, sizeof(String), "%s, /%s", String, Job15Help[i]);
+                            }
+                            maxcmdcount++;
+                        }
+                    }
+                    else if(Spieler[playerid][pJob] == 16){
+                        for(new i = 0; i < sizeof(Job16Help); i++){
+                            if(maxcmdcount == 8){
+                                format(String, sizeof(String), "%s\n", String);
+                                maxcmdcount = 0;
+                            }
+                            if(maxcmdcount == 0){
+                                format(String, sizeof(String), "%s/%s", String, Job16Help[i]);
+                            }else{
+                                format(String, sizeof(String), "%s, /%s", String, Job16Help[i]);
+                            }
+                            maxcmdcount++;
+                        }
+                    }
+                    else if(Spieler[playerid][pJob] == 17){
+                        for(new i = 0; i < sizeof(Job17Help); i++){
+                            if(maxcmdcount == 8){
+                                format(String, sizeof(String), "%s\n", String);
+                                maxcmdcount = 0;
+                            }
+                            if(maxcmdcount == 0){
+                                format(String, sizeof(String), "%s/%s", String, Job17Help[i]);
+                            }else{
+                                format(String, sizeof(String), "%s, /%s", String, Job17Help[i]);
+                            }
+                            maxcmdcount++;
+                        }
+                    }
+                    else if(Spieler[playerid][pJob] == 18){
+                        for(new i = 0; i < sizeof(Job18Help); i++){
+                            if(maxcmdcount == 8){
+                                format(String, sizeof(String), "%s\n", String);
+                                maxcmdcount = 0;
+                            }
+                            if(maxcmdcount == 0){
+                                format(String, sizeof(String), "%s/%s", String, Job18Help[i]);
+                            }else{
+                                format(String, sizeof(String), "%s, /%s", String, Job18Help[i]);
+                            }
+                            maxcmdcount++;
+                        }
+                    }
+                    else if(Spieler[playerid][pJob] == 19){
+                        for(new i = 0; i < sizeof(Job19Help); i++){
+                            if(maxcmdcount == 8){
+                                format(String, sizeof(String), "%s\n", String);
+                                maxcmdcount = 0;
+                            }
+                            if(maxcmdcount == 0){
+                                format(String, sizeof(String), "%s/%s", String, Job19Help[i]);
+                            }else{
+                                format(String, sizeof(String), "%s, /%s", String, Job19Help[i]);
+                            }
+                            maxcmdcount++;
+                        }
+                    }
+                    else if(Spieler[playerid][pJob] == 20){
+                        for(new i = 0; i < sizeof(Job20Help); i++){
+                            if(maxcmdcount == 8){
+                                format(String, sizeof(String), "%s\n", String);
+                                maxcmdcount = 0;
+                            }
+                            if(maxcmdcount == 0){
+                                format(String, sizeof(String), "%s/%s", String, Job20Help[i]);
+                            }else{
+                                format(String, sizeof(String), "%s, /%s", String, Job20Help[i]);
+                            }
+                            maxcmdcount++;
+                        }
+                    }
+                    else if(Spieler[playerid][pJob] == 21){
+                        for(new i = 0; i < sizeof(Job21Help); i++){
+                            if(maxcmdcount == 8){
+                                format(String, sizeof(String), "%s\n", String);
+                                maxcmdcount = 0;
+                            }
+                            if(maxcmdcount == 0){
+                                format(String, sizeof(String), "%s/%s", String, Job21Help[i]);
+                            }else{
+                                format(String, sizeof(String), "%s, /%s", String, Job21Help[i]);
+                            }
+                            maxcmdcount++;
+                        }
+                    }
+                    else if(Spieler[playerid][pJob] == 22){
+                        for(new i = 0; i < sizeof(Job22Help); i++){
+                            if(maxcmdcount == 8){
+                                format(String, sizeof(String), "%s\n", String);
+                                maxcmdcount = 0;
+                            }
+                            if(maxcmdcount == 0){
+                                format(String, sizeof(String), "%s/%s", String, Job22Help[i]);
+                            }else{
+                                format(String, sizeof(String), "%s, /%s", String, Job22Help[i]);
+                            }
+                            maxcmdcount++;
+                        }
+                    }
+                    else if(Spieler[playerid][pJob] == 23){
+                        for(new i = 0; i < sizeof(Job23Help); i++){
+                            if(maxcmdcount == 8){
+                                format(String, sizeof(String), "%s\n", String);
+                                maxcmdcount = 0;
+                            }
+                            if(maxcmdcount == 0){
+                                format(String, sizeof(String), "%s/%s", String, Job23Help[i]);
+                            }else{
+                                format(String, sizeof(String), "%s, /%s", String, Job23Help[i]);
+                            }
+                            maxcmdcount++;
+                        }
+                    }
+                    else if(Spieler[playerid][pJob] == 24){
+                        for(new i = 0; i < sizeof(Job24Help); i++){
+                            if(maxcmdcount == 8){
+                                format(String, sizeof(String), "%s\n", String);
+                                maxcmdcount = 0;
+                            }
+                            if(maxcmdcount == 0){
+                                format(String, sizeof(String), "%s/%s", String, Job24Help[i]);
+                            }else{
+                                format(String, sizeof(String), "%s, /%s", String, Job24Help[i]);
+                            }
+                            maxcmdcount++;
+                        }
+                    }
+                    format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Job-Befehle | -", String, "OK", "");
+                }
+                else if(listitem == 14){//Frakhelp
+                    new maxcmdcount = 0, String[2048];
+                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Übersicht der Fraktions-Befehle | -{FFFFFF}\n\n", String);
+                    for(new i = 0; i < sizeof(LeaderHelp); i++){
+                        if(maxcmdcount == 8){
+                            format(String, sizeof(String), "%s\n", String);
+                            maxcmdcount = 0;
+                        }
+                        if(maxcmdcount == 0){
+                            format(String, sizeof(String), "%s/%s", String, LeaderHelp[i]);
+                        }else{
+                            format(String, sizeof(String), "%s, /%s", String, LeaderHelp[i]);
+                        }
+                        maxcmdcount++;
+                    }
+                    format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Fraktions-Befehle | -", String, "OK", "");
+                }
 
-                    }
-                    else if(Spieler[playerid][pFraktion] == 2)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* FBI ALLGEMEIN*: {FFFFFF}/Clear, /Pdgate, /Dienst, /sliste, /Acceptcop, /Mitglieder, /Dienstmarke, /sp, /Staatskasse, /Haussuchen, /Beamteon");
-                        SendClientMessage(playerid, COLOR_BLUE, "* FBI VOLLSTRECKUNG*: {FFFFFF}/Reinziehen, /Freilassen, /Verhaften, /Entnehmen, /Koffereinziehen, /Offlinearrest, /RufDetektiv");
-                        SendClientMessage(playerid, COLOR_BLUE, "* FBI VOLLSTRECKUNG*: {FFFFFF}/Scheinentziehen, /Arrest, /W (Wantedvergabe), /Caufbrechen, /Zollamt, /Ticket, /Schutzgeldpolizei");
-                        SendClientMessage(playerid, COLOR_BLUE, "* FBI VOLLSTRECKUNG*: {FFFFFF}/Aufbrechen, /Knastzeit, /Finden, /Pflanzeverbrennen, /Zollsperre, /Parkstrafe, /Strafzettel, /Entschaerfen");
-                        SendClientMessage(playerid, COLOR_BLUE, "* FBI CHAT*: {FFFFFF}/Fc, /Bc, /Vk, /Pvk, /Cpartner, /Acceptcpartner, /Ve, /Inthaft, /PNotrufinfo");
-                        SendClientMessage(playerid, COLOR_BLUE, "* FBI KONTROLLEN*: {FFFFFF}/Kofferdurchsuchen, /Durchsuchen, /Promille, /Pakte, /Gefangene, /Meldestelle, /Parkscheinkontrolle");
-                        SendClientMessage(playerid, COLOR_BLUE, "* FBI KONTROLLEN*: {FFFFFF}/VAmt, /Kzsuchen, /Kfzsuchen, /Uclight");
-                        SendClientMessage(playerid, COLOR_BLUE, "* FBI AUSRÜSTUNG*: {FFFFFF}/Copman, /Copfrau, /Rank, /Copcap, /Copcapf, /Copmuetze, /TCop, /Pschild, /Copbrille, /Waffenspind");
-                        SendClientMessage(playerid, COLOR_BLUE, "* FBI SIGNALE*: {FFFFFF}/Vrk, /Hsirene, /Ermitteln, /Pein");
-                    }
-                    else if(Spieler[playerid][pFraktion] == 3)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* SA-MD *: {FFFFFF}/Dienst, /Wiederbeleben, /Sheilen, /Samdgarage, /Mv, /M, /Fc, /Kasse, /Kassenstand");
-                        SendClientMessage(playerid, COLOR_BLUE, "* SA-MD *: {FFFFFF}/Mitglieder, /Sfinden, /Bc, /Sliste, /Acceptsani, /Rtwsirene, /Meinsatz, /Bk, /Dtasche");
-                    }
-                    else if(Spieler[playerid][pFraktion] == 4)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* SA-NA *: {FFFFFF}/Dienst, /News, /Starteventpoint, /Stopeventpoint, /Interview, /Fc, /Kasse, /Kassenstand, /Mitglieder");
-                        SendClientMessage(playerid, COLOR_BLUE, "* SA-NA *: {FFFFFF}/Sanagarage, /Fskin");
-                    }
-                    else if(Spieler[playerid][pFraktion] == 5)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* O-AMT ALLGEMEIN*: {FFFFFF}/Dienst, /Ov, /Ogate, /Oamt, /Beamteon, /Mitglieder, /Zollamt, /Dienstmarke");
-                        SendClientMessage(playerid, COLOR_BLUE, "* O-AMT ALLGEMEIN*: {FFFFFF}/Kasse, /Kassenstand, /Okamera, /Sp");
-                        SendClientMessage(playerid, COLOR_BLUE, "* O-AMT VOLLSTRECKUNG*: {FFFFFF}/Fpunkte, /Ticket, /Strafzettel, /Parkstrafe, /Entnehmen, /Koffereinziehen, /Scheinentziehen, /Blitzerabbauen");
-                        SendClientMessage(playerid, COLOR_BLUE, "* O-AMT VOLLSTRECKUNG*: {FFFFFF}/Tierverbot, /Deltierverbot, /Oparken, /Ofreistellen, /Fmparkkralle, /Mparkkralle");
-                        SendClientMessage(playerid, COLOR_BLUE, "* O-AMT VOLLSTRECKUNG*: {FFFFFF}/Blitzeraufstellen, /Festnehmen, /FParken");
-                        SendClientMessage(playerid, COLOR_BLUE, "* O-AMT KONTROLLEN*: {FFFFFF}/Durchsuchen, /Kofferdurchsuchen, /Vamt, /Pakte, /Kzsuchen, /Kfzsuchen, /Promille");
-                        SendClientMessage(playerid, COLOR_BLUE, "* O-AMT KONTROLLEN*: {FFFFFF}/Parkscheinkontrolle, /Meldestelle, /Sliste, /Vrk, /Vrk2, /Acceptoamt");
-                        SendClientMessage(playerid, COLOR_BLUE, "* O-AMT CHAT*: {FFFFFF}/Bc, /Fc, /M, /Ovk(VERSTÄRKUNG), /Bk");
-
-                    }
-                    else if(Spieler[playerid][pFraktion] == 6)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* GROVE ALLGEMEIN*: {FFFFFF}/Gangwaffen, /Gheilen, /Mitglieder, /Buendnis, /Kasse, /Kassenstand, /Fc, /Bg, /Flock, /Ggd, /FRespawn");
-                        SendClientMessage(playerid, COLOR_BLUE, "* GROVE KIDNAP*: {FFFFFF}/Kidnap, /Mundbinde, /Augenbinde, /Fesseln, /Entfesseln, /Gangjail, /Aufbrechen");
-                        SendClientMessage(playerid, COLOR_BLUE, "* GROVE BLACKLIST*: {FFFFFF}/Frakblacklist, /Addfrakblacklist, /Delfrakblacklist");
-                        SendClientMessage(playerid, COLOR_BLUE, "* GROVE GANGFIGHT*: {FFFFFF}/Gangfight, /Gangfightstop, /Fge, /Gangfightinfo, /Swinfo");
-                        SendClientMessage(playerid, COLOR_BLUE, "* GROVE ERPRESSUNG*: {FFFFFF}/Schutzgeld, /Schutzgeldabbrechen");
-                    }
-                    else if(Spieler[playerid][pFraktion] == 7)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* BALLAS ALLGEMEIN*: {FFFFFF}/Gangwaffen, /Gheilen, /Mitglieder, /Buendnis, /Kasse, /Kassenstand, /Fc, /Bg, /Flock, /Ggd, /FRespawn");
-                        SendClientMessage(playerid, COLOR_BLUE, "* BALLAS KIDNAP*: {FFFFFF}/Kidnap, /Mundbinde, /Augenbinde, /Fesseln, /Entfesseln, /Gangjail, /Aufbrechen");
-                        SendClientMessage(playerid, COLOR_BLUE, "* BALLAS BLACKLIST*: {FFFFFF}/Frakblacklist, /Addfrakblacklist, /Delfrakblacklist");
-                        SendClientMessage(playerid, COLOR_BLUE, "* BALLAS GANGFIGHT*: {FFFFFF}/Gangfight, /Gangfightstop, /Fge, /Gangfightinfo, /Swinfo");
-                        SendClientMessage(playerid, COLOR_BLUE, "* BALLAS ERPRESSUNG*: {FFFFFF}/Schutzgeld, /Schutzgeldabbrechen");
-                    }
-                    else if(Spieler[playerid][pFraktion] == 8)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* FAHRSCHULE *: {FFFFFF}/Startstunde, /Stopstunde, /Startwastunde, /Stopwastunde, /Startwbstunde, /Stopwbstunde");
-                        SendClientMessage(playerid, COLOR_BLUE, "* FAHRSCHULE *: {FFFFFF}/Mitglieder, /Fpreis, /Respawnanhanger, /Kasse, /Kassenstand");
-                        SendClientMessage(playerid, COLOR_BLUE, "* FAHRSCHULE *: {FFFFFF}/Giveschein, /Fc, /Dienst, /FRespawn, /Fstorauf, /Fstorzu, /Fstuerauf, /Fstuerzu");
-                    }
-                    else if(Spieler[playerid][pFraktion] == 9)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* STAAT *: {FFFFFF}/Setsteuern, /Smsg, /Bc, /Dienstmarke, /Kasse, /Kassenstand, /Fc, /Mitglieder");
-                        SendClientMessage(playerid, COLOR_BLUE, "* STAAT *: {FFFFFF}/Amtssteuern, /Staatssystem, /Jobfeuern, /Gebefirma, /Delfirma, /Stelekom, /Ptorauf, /Ptorzu");
-                    }
-                    else if(Spieler[playerid][pFraktion] == 10)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* YAKUZA ALLGEMEIN*: {FFFFFF}/Gangwaffen, /Gheilen, /Mitglieder, /Buendnis, /Kasse, /Kassenstand, /Fc, /Bg, /Flock, /Ggd, /FRespawn");
-                        SendClientMessage(playerid, COLOR_BLUE, "* YAKUZA KIDNAP*: {FFFFFF}/Kidnap, /Mundbinde, /Augenbinde, /Fesseln, /Entfesseln, /Gangjail, /Aufbrechen");
-                        SendClientMessage(playerid, COLOR_BLUE, "* YAKUZA BLACKLIST*: {FFFFFF}/Frakblacklist, /Addfrakblacklist, /Delfrakblacklist");
-                        SendClientMessage(playerid, COLOR_BLUE, "* YAKUZA GANGFIGHT*: {FFFFFF}/Gangfight, /Gangfightstop, /Fge, /Gangfightinfo, /Swinfo");
-                        SendClientMessage(playerid, COLOR_BLUE, "* YAKUZA ERPRESSUNG*: {FFFFFF}/Schutzgeld, /Schutzgeldabbrechen");
-                    }
-                    else if(Spieler[playerid][pFraktion] == 11)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* AZTECAS ALLGEMEIN*: {FFFFFF}/Gangwaffen, /Gheilen, /Mitglieder, /Buendnis, /Kasse, /Kassenstand, /Fc, /Bg, /Flock, /Ggd, /FRespawn");
-                        SendClientMessage(playerid, COLOR_BLUE, "* AZTECAS KIDNAP*: {FFFFFF}/Kidnap, /Mundbinde, /Augenbinde, /Fesseln, /Entfesseln, /Gangjail, /Aufbrechen");
-                        SendClientMessage(playerid, COLOR_BLUE, "* AZTECAS BLACKLIST*: {FFFFFF}/Frakblacklist, /Addfrakblacklist, /Delfrakblacklist");
-                        SendClientMessage(playerid, COLOR_BLUE, "* AZTECAS GANGFIGHT*: {FFFFFF}/Gangfight, /Gangfightstop, /Fge, /Gangfightinfo, /Swinfo");
-                        SendClientMessage(playerid, COLOR_BLUE, "* AZTECAS ERPRESSUNG*: {FFFFFF}/Schutzgeld, /Schutzgeldabbrechen");
-                    }
-                    else if(Spieler[playerid][pFraktion] == 12)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* CK ALLGEMEIN*: {FFFFFF}/Gangwaffen, /Gheilen, /Mitglieder, /Buendnis, /Kasse, /Kassenstand, /Fc, /Bg, /Flock, /Ggd, /FRespawn");
-                        SendClientMessage(playerid, COLOR_BLUE, "* CK KIDNAP*: {FFFFFF}/Kidnap, /Mundbinde, /Augenbinde, /Fesseln, /Entfesseln, /Gangjail, /Aufbrechen");
-                        SendClientMessage(playerid, COLOR_BLUE, "* CK BLACKLIST*: {FFFFFF}/Frakblacklist, /Addfrakblacklist, /Delfrakblacklist");
-                        SendClientMessage(playerid, COLOR_BLUE, "* CK GANGFIGHT*: {FFFFFF}/Gangfight, /Gangfightstop, /Fge, /Gangfightinfo, /Swinfo");
-                        SendClientMessage(playerid, COLOR_BLUE, "* CK ERPRESSUNG*: {FFFFFF}/Schutzgeld, /Schutzgeldabbrechen");
-                    }
-                    else if(Spieler[playerid][pFraktion] == 13)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* VAGOS ALLGEMEIN*: {FFFFFF}/Gangwaffen, /Gheilen, /Mitglieder, /Buendnis, /Kasse, /Kassenstand, /Fc, /Bg, /Flock, /Ggd, /FRespawn");
-                        SendClientMessage(playerid, COLOR_BLUE, "* VAGOS KIDNAP*: {FFFFFF}/Kidnap, /Mundbinde, /Augenbinde, /Fesseln, /Entfesseln, /Gangjail, /Aufbrechen");
-                        SendClientMessage(playerid, COLOR_BLUE, "* VAGOS BLACKLIST*: {FFFFFF}/Frakblacklist, /Addfrakblacklist, /Delfrakblacklist");
-                        SendClientMessage(playerid, COLOR_BLUE, "* VAGOS GANGFIGHT*: {FFFFFF}/Gangfight, /Gangfightstop, /Fge, /Gangfightinfo, /Swinfo");
-                        SendClientMessage(playerid, COLOR_BLUE, "* VAGOS ERPRESSUNG*: {FFFFFF}/Schutzgeld, /Schutzgeldabbrechen");
-                    }
-                    else if(Spieler[playerid][pFraktion] == 14)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* AGENCY *: {FFFFFF}/Accept Hitman, /Hitmanwaffen, /Gheilen, /HWerbung, /Fc, /Flock, /Hmaske, /Kasse, /Kassenstand, /Mitglieder, /Hrelease");
-                        SendClientMessage(playerid, COLOR_BLUE, "* AGENCY *: {FFFFFF}/Arz, /Agbefreien, /Agpreis, /Knastbefreien, /Agtor, /Atorhacken, /Acceptag (Service akzeptieren)");
-                    }
-                    else if(Spieler[playerid][pFraktion] == 15)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* NINEDEMONS *: {FFFFFF}/Ninowaffen, /Gheilen, /Fsafebox, /Fc, /Flock, /Pflanzen, /Kidnap, /Augenbinde");
-                        SendClientMessage(playerid, COLOR_BLUE, "* NINEDEMONS *: {FFFFFF}/Samen, /Samenpunkte, /Sellspice, /Kasse, /Kassenstand, /Mitglieder");
-                        SendClientMessage(playerid, COLOR_BLUE, "* NINEDEMONS *: {FFFFFF}/Samenlager, /Paketeinladen, /Storepakete, /Storesamen, /Samenlagerstatus");
-                    }
-                    else if(Spieler[playerid][pFraktion] == 16)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* ARMY ALLGEMEIN*: {FFFFFF}/Clear, /Pdgate, /Dienst, /sliste, /Acceptcop, /Mitglieder, /Dienstmarke, /sp, /Staatskasse, /Haussuchen, /Beamteon");
-                        SendClientMessage(playerid, COLOR_BLUE, "* ARMY VOLLSTRECKUNG*: {FFFFFF}/Reinziehen, /Freilassen, /Verhaften, /Entnehmen, /Koffereinziehen, /Offlinearrest, /RufDetektiv");
-                        SendClientMessage(playerid, COLOR_BLUE, "* ARMY VOLLSTRECKUNG*: {FFFFFF}/Scheinentziehen, /Arrest, /W (Wantedvergabe), /Caufbrechen, /Zollamt, /Ticket, /Schutzgeldpolizei");
-                        SendClientMessage(playerid, COLOR_BLUE, "* ARMY VOLLSTRECKUNG*: {FFFFFF}/Aufbrechen, /Knastzeit, /Finden, /Pflanzeverbrennen, /Zollsperre, /Parkstrafe, /Strafzettel, /Entschaerfen");
-                        SendClientMessage(playerid, COLOR_BLUE, "* ARMY CHAT*: {FFFFFF}/Fc, /Bc, /Vk, /Pvk, /Cpartner, /Acceptcpartner, /Ve, /Inthaft, /PNotrufinfo");
-                        SendClientMessage(playerid, COLOR_BLUE, "* ARMY KONTROLLEN*: {FFFFFF}/Kofferdurchsuchen, /Durchsuchen, /Promille, /Pakte, /Gefangene, /Meldestelle, /Parkscheinkontrolle");
-                        SendClientMessage(playerid, COLOR_BLUE, "* ARMY KONTROLLEN*: {FFFFFF}/VAmt, /Kzsuchen, /Kfzsuchen, /Uclight");
-                        SendClientMessage(playerid, COLOR_BLUE, "* ARMY AUSRÜSTUNG*: {FFFFFF}/Copman, /Copfrau, /Rank, /Copcap, /Copcapf, /Copmuetze, /TCop, /Pschild, /Copbrille, /Waffenspind");
-                        SendClientMessage(playerid, COLOR_BLUE, "* ARMY SIGNALE*: {FFFFFF}/Vrk, /Hsirene, /Ermitteln, /Pein");
-                    }
-                    else if(Spieler[playerid][pFraktion] == 17)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* WHEELMAN *: {FFFFFF}/Flock, /Wrz, /Wmbefreien, /Wpreis, /Knastbefreien, /Atorhacken, /Kasse, /Kassenstand, /Mitglieder");
-                        SendClientMessage(playerid, COLOR_BLUE, "* WHEELMAN *: {FFFFFF}/Gangwaffen, /Gangheilen, /Waffenlager, /Fsafebox");
-                    }
-                    else if(Spieler[playerid][pFraktion] == 18)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* LVPD ALLGEMEIN*: {FFFFFF}/Clear, /Pdgate, /Dienst, /sliste, /Acceptcop, /Mitglieder, /Dienstmarke, /sp, /Staatskasse, /Haussuchen, /Beamteon");
-                        SendClientMessage(playerid, COLOR_BLUE, "* LVPD VOLLSTRECKUNG*: {FFFFFF}/Reinziehen, /Freilassen, /Verhaften, /Entnehmen, /Koffereinziehen, /Offlinearrest, /RufDetektiv");
-                        SendClientMessage(playerid, COLOR_BLUE, "* LVPD VOLLSTRECKUNG*: {FFFFFF}/Scheinentziehen, /Arrest, /W (Wantedvergabe), /Caufbrechen, /Zollamt, /Ticket, /Schutzgeldpolizei");
-                        SendClientMessage(playerid, COLOR_BLUE, "* LVPD VOLLSTRECKUNG*: {FFFFFF}/Aufbrechen, /Knastzeit, /Finden, /Pflanzeverbrennen, /Zollsperre, /Parkstrafe, /Strafzettel, /Entschaerfen");
-                        SendClientMessage(playerid, COLOR_BLUE, "* LVPD CHAT*: {FFFFFF}/Fc, /Bc, /Vk, /Pvk, /Cpartner, /Acceptcpartner, /Ve, /Inthaft, /PNotrufinfo");
-                        SendClientMessage(playerid, COLOR_BLUE, "* LVPD KONTROLLEN*: {FFFFFF}/Kofferdurchsuchen, /Durchsuchen, /Promille, /Pakte, /Gefangene, /Meldestelle, /Parkscheinkontrolle");
-                        SendClientMessage(playerid, COLOR_BLUE, "* LVPD KONTROLLEN*: {FFFFFF}/VAmt, /Kzsuchen, /Kfzsuchen, /Uclight");
-                        SendClientMessage(playerid, COLOR_BLUE, "* LVPD AUSRÜSTUNG*: {FFFFFF}/Copman, /Copfrau, /Rank, /Copcap, /Copcapf, /Copmuetze, /TCop, /Pschild, /Copbrille, /Waffenspind");
-                        SendClientMessage(playerid, COLOR_BLUE, "* LVPD SIGNALE*: {FFFFFF}/Vrk, /Hsirene, /Ermitteln, /Pein");
-                    }
-                    else if(Spieler[playerid][pFraktion] == 19)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* TERRORIST *: {FFFFFF}/Fc (Frak-Chat), /Kasse, /Kassenstand, /Mitglieder, /Flock");
-                        SendClientMessage(playerid, COLOR_BLUE, "* TERRORIST *: {FFFFFF}/Bombelegen, /Terrorwaffen, /Entfesseln, /Kidnap");
-                    }
-                    else if(Spieler[playerid][pFraktion] == 20)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* OUTLAWZ ALLGEMEIN*: {FFFFFF}/Gangwaffen, /Gheilen, /Mitglieder, /Buendnis, /Kasse, /Kassenstand, /Fc, /Bg, /Flock, /Ggd, /FRespawn");
-                        SendClientMessage(playerid, COLOR_BLUE, "* OUTLAWZ KIDNAP*: {FFFFFF}/Kidnap, /Mundbinde, /Augenbinde, /Fesseln, /Entfesseln, /Gangjail, /Aufbrechen");
-                        SendClientMessage(playerid, COLOR_BLUE, "* OUTLAWZ BLACKLIST*: {FFFFFF}/Frakblacklist, /Addfrakblacklist, /Delfrakblacklist");
-                        SendClientMessage(playerid, COLOR_BLUE, "* OUTLAWZ GANGFIGHT*: {FFFFFF}/Gangfight, /Gangfightstop, /Fge, /Gangfightinfo, /Swinfo");
-                        SendClientMessage(playerid, COLOR_BLUE, "* OUTLAWZ ERPRESSUNG*: {FFFFFF}/Schutzgeld, /Schutzgeldabbrechen");
-                    }
-                    else if(Spieler[playerid][pFraktion] == 21)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* TRIADEN ALLGEMEIN*: {FFFFFF}/Gangwaffen, /Gheilen, /Mitglieder, /Buendnis, /Kasse, /Kassenstand, /Fc, /Bg, /Flock, /Ggd, /FRespawn");
-                        SendClientMessage(playerid, COLOR_BLUE, "* TRIADEN KIDNAP*: {FFFFFF}/Kidnap, /Mundbinde, /Augenbinde, /Fesseln, /Entfesseln, /Gangjail, /Aufbrechen");
-                        SendClientMessage(playerid, COLOR_BLUE, "* TRIADEN BLACKLIST*: {FFFFFF}/Frakblacklist, /Addfrakblacklist, /Delfrakblacklist");
-                        SendClientMessage(playerid, COLOR_BLUE, "* TRIADEN GANGFIGHT*: {FFFFFF}/Gangfight, /Gangfightstop, /Fge, /Gangfightinfo, /Swinfo");
-                        SendClientMessage(playerid, COLOR_BLUE, "* TRIADEN ERPRESSUNG*: {FFFFFF}/Schutzgeld, /Schutzgeldabbrechen");
-                    }
-                    if(Spieler[playerid][pFraktion] == 22)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* ZOLLAMT ALLGEMEIN*: {FFFFFF} /Clear, /Dienst, /Mitglieder, /Dienstmarke, /Staatskasse");
-                        SendClientMessage(playerid, COLOR_BLUE, "* ZOLLAMT VOLLSTRECKUNG*: {FFFFFF}/Reinziehen, /Freilassen, /Verhaften, /Entnehmen, /Koffereinziehen");
-                        SendClientMessage(playerid, COLOR_BLUE, "* ZOLLAMT VOLLSTRECKUNG*: {FFFFFF}/Scheinentziehen, /Arrest, /W (Wantedvergabe), /Caufbrechen, /Zollamt");
-                        SendClientMessage(playerid, COLOR_BLUE, "* ZOLLAMT VOLLSTRECKUNG*: {FFFFFF}/Aufbrechen, /Finden, /Pflanzeverbrennen, /Zollsperre");
-                        SendClientMessage(playerid, COLOR_BLUE, "* ZOLLAMT CHAT*: {FFFFFF}/Fc, /Bc, /Vk(VERSTÄRKUNG), /Zvk(VERSTÄRKUNG BEI EINZELNE PERSON)");
-                        SendClientMessage(playerid, COLOR_BLUE, "* ZOLLAMT KONTROLLEN*: {FFFFFF}/Kofferdurchsuchen, /Durchsuchen, /Promille, /Pakte, /Gefangene, /Meldestelle, /Vamt");
-                        SendClientMessage(playerid, COLOR_BLUE, "* ZOLLAMT SIGNALE*: {FFFFFF}/Vrk, /Hsirene");
-                        SendClientMessage(playerid, COLOR_BLUE, "* ZOLLAMT AUSRÜSTUNG*: {FFFFFF}/Cop, /Pschild, /Copbrille, /Rcv");
-                    }
-                }
-                else if(listitem == 11 ) {
-                    if(Spieler[playerid][pAdmin] >= 1)
-                    {
-                        SendClientMessage(playerid, COLOR_ORANGE, "* SUPPORTER *: {FFFFFF}/Goto, /Gethere, /Spawn, /Kick, /ban (Level 1-3), /spec, /specoff, /Adienst, /Aschlagen, /Gebannt, /Spawncar");
-                        SendClientMessage(playerid, COLOR_ORANGE, "* SUPPORTER *: {FFFFFF}/Setafk, /Mute, /Sichercode, /Sc, /Freeze, /Unfreeze, /Guncheck, /Check, /Checkscheine, /Supauto /Respawncar");
-                        SendClientMessage(playerid, COLOR_ORANGE, "* SUPPORTER *: {FFFFFF}/Removeghettoblaster (/Rghettoblaster), /Gotocp, /Asettings, /Gotohaus, /Regelwarnung, /Delveh");
-                        SendClientMessage(playerid, COLOR_ORANGE, "* SUPPORT TICKET *: {FFFFFF}/Openticket, /Delticket, /Dticket, /Aticket, /Closeticket, /Tickets");
-                        SendClientMessage(playerid, COLOR_ORANGE, "* SUPPORTER *: {FFFFFF}/Rjobcars, /Rfrakcars, /Jobs, /Fraktionen, /Ngeld, /Gotocar, /Getcar, /Gotopos");
-                    }
-                    if(Spieler[playerid][pAdmin] >= 2)
-                    {
-                        SendClientMessage(playerid, COLOR_LIGHTBLUE, "* EVENT-SUPPORTER *: {FFFFFF}/Sethp, /Setarmor, /Veh, /Givegun, /Aeventitem, /Awiederbeleben, /Startevent, /Stopevent");
-                        SendClientMessage(playerid, COLOR_LIGHTBLUE, "* EVENT-SUPPORTER *: {FFFFFF}/Eventpunkte, /Eventuhr, /Eventmarker, /Clearweapons, /Setmark, /Delmark, /Gotomark");
-                        SendClientMessage(playerid, COLOR_LIGHTBLUE, "* EVENT-SUPPORTER *: {FFFFFF}/Waffeumgebung, /Healumgebung, /Armorumgebung, /Freezeumgebung, /Unfreezeumgebung");
-                        SendClientMessage(playerid, COLOR_LIGHTBLUE, "* EVENT-SUPPORTER *: {FFFFFF}/Setmark, /Delmark, /Gotomark, /Addobject, /Editobject, /Gotoobject, /Removeobject");
-                        SendClientMessage(playerid, COLOR_LIGHTBLUE, "* EVENT-SUPPORTER *: {FFFFFF}/Removeallobjects, /Objectlist, /Addlabel, /Removelabel, /Removealllabels");
-                        SendClientMessage(playerid, COLOR_LIGHTBLUE, "* EVENT-SUPPORTER *: {FFFFFF}/Dust2");
-                        
-					}
-                    if(Spieler[playerid][pAdmin] >= 3)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* MODERATOR *: {FFFFFF}/Ban, /Ipban, /Tban, /zollsperre, /Verwarnen, /Prison, /Cprison, /Offprison, /Offcprison, /Clearchat");
-                        SendClientMessage(playerid, COLOR_BLUE, "* MODERATOR *: {FFFFFF}/Gotoliste, /Delallvehs, /Spec, /Specoff, /Changeweather, /Bizkassestand, /Setinterior, /Spielerip");
-                        SendClientMessage(playerid, COLOR_BLUE, "* MODERATOR *: {FFFFFF}/Akteneintrag, /Waffensperre, /Atafelentmieten, /Checkskill, /Afkick, /Configplayer");
-                        SendClientMessage(playerid, COLOR_BLUE, "* MODERATOR *: {FFFFFF}/Entbannen, /Offbannen, /Offtban, /Fraksperre, /Delfraksperre, /Respawnallcars, /Oafkick, /Offverwarnen");
-                        SendClientMessage(playerid, COLOR_BLUE, "* MODERATOR *: {FFFFFF}/Gebeskill, /Gcoff, /Inballon, /Givecar, /Adminwarnung, /Bwstrafe, /Bwstrafen, /Setbwstrafe");
-                        SendClientMessage(playerid, COLOR_BLUE, "* MODERATOR *: {FFFFFF}/Ageld, /Alevel, /Arp, /Offageld, /Lastdmg, /Carowner, /Setkasse");
-					}
-                    if(Spieler[playerid][pAdmin] >= 4)
-                    {
-                        SendClientMessage(playerid, COLOR_DARKRED, "* ADMINISTRATOR *: {FFFFFF}/Sban, /Confighouse, /Configbiz, /Rauswerfenhotel, /Configtanke, /Makeleader, /Setzoneowner, /Gebietupgrade");
-                        SendClientMessage(playerid, COLOR_DARKRED, "* ADMINISTRATOR *: {FFFFFF}/Gebefirma, /Delfirma, /Gebeclub, /Delclub, /Bfreischalten (2. Biz-Schlüssel), /SFreischalten (6. Schlüssel)");
-                        SendClientMessage(playerid, COLOR_DARKRED, "* ADMINISTRATOR *: {FFFFFF}/Awaffenlager, /Fsbreset, /Namechange, /Createhouse, /delhouse, /Fixveh, /Gotoad (AirDrop)");
-                        SendClientMessage(playerid, COLOR_DARKRED, "* ADMINISTRATOR *: {FFFFFF}/Purge, /Delallgvehs, /Adminbase2, /Createfcar, /FCarcolor");
-                        SendClientMessage(playerid, COLOR_DARKRED, "* Vertretung von Benny *: {FFFFFF}/Creategutschein, /Amotor, /Pwchange, /aunlock, /Givecoins, /Configbiz");
-						if(bPurgeEvent) {
-						    SendClientMessage(playerid, COLOR_DARKRED, "* ADMINISTRATOR PURGE *: {FFFFFF}/PGiveGun, /PGiveHealth, /PGiveArmor");
-						}
-					}
-                    if(Spieler[playerid][pAdmin] >= 5)
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* SERVER MANAGER *: {FFFFFF}/Createaplatz, /Createtanke, /Createhotelroom, /Startlotto, /MakeBMOD, /Adminmaske");
-                    }
-                    if(Spieler[playerid][pAdmin] >= 6)
-                    {
-                        SendClientMessage(playerid, COLOR_ORANGE, "* PROJEKTLEITER *: {FFFFFF}/Makeadmin, /Gmx, /Event, /Pwchange, /Givecoins, /Vehcolor, /Jailtimeout");
-                        SendClientMessage(playerid, COLOR_ORANGE, "* PROJEKTLEITER *: {FFFFFF}/Debug, /Debugpos, /Tankstand, /Auftanken");
-                    }
-                    if(IsPlayerAdmin(playerid))
-                    {
-                        SendClientMessage(playerid, COLOR_BLUE, "* RCON *: /Makeadmin, /Gmx");
-                    }
-                }
             }
         }
         case DIALOG_ANTWORT:
@@ -63746,12 +64106,6 @@ CMD:verhaften(playerid, params[])
 }
 
 COMMAND:haustiershop(playerid,params[]) {
-    /*new b = IsPlayerAtBiz(playerid);
-    if(b == 999) return SendClientMessage(playerid, COLOR_RED, "Du bist nicht in der Nähe eines Geschäftes.");
-    new index = GetBizIndexByID( 50 );
-    if( b != index ) {
-         return SendClientMessage(playerid, COLOR_RED, "Nicht am Haustier Geschäft");
-    }*/
     if( !IsPlayerInRangeOfPoint(playerid,3.0, PETSHOP_COORDS)) {
         return SendClientMessage(playerid,COLOR_RED,"Du bist nicht am Haustier Geschäft.");
     }
@@ -64242,133 +64596,6 @@ stock CreatePlayerTacho(playerid) {
 
     return 1;
 }
-/*
-COMMAND:settank(playerid,params[]) {
-    new
-        vehicleid,
-        tank;
-
-    if(sscanf(params,"d",tank)) {
-        return SendClientMessage(playerid,COLOR_RED,"/TANK [Wert]");
-    }
-    vehicleid = GetPlayerVehicleID(playerid);
-    if(!vehicleid) {
-        return SendClientMessage(playerid,COLOR_RED,"Kein Fahrzeug");
-    }
-    new
-        String[64];
-     format(String,sizeof(String),"Neuer Tankstand: %dl",tank);
-     SendClientMessage(playerid,COLOR_YELLOW,String);
-    gGas[vehicleid] = tank;
-    return 1;
-}
-
-
-COMMAND:peilsender(playerid,params) {
-    #pragma unused params
-    if( !IsPlayerInRangeOfPoint(playerid,3.0,1151.7448,-1203.0283,19.5159 )) {
-        return SendClientMessage(playerid,COLOR_RED,"Du kannst hier keine Peilsender kaufen");
-    }
-    new
-        vehicleid;
-    vehicleid = GetPlayerVehicleID(playerid);
-    if(!vehicleid) {
-        return SendClientMessage(playerid,COLOR_RED,"Du bist in keinem Fahrzeug");
-    }
-    if( GetPlayerState(playerid) != PLAYER_STATE_DRIVER ) {
-        return SendClientMessage(playerid,COLOR_RED,"Nur als Fahrer kannst du diese Funktion ausführen");
-    }
-    if( playerid != GetCarOwner(vehicleid) ) {
-        return SendClientMessage(playerid,COLOR_RED,"Dieses Fahrzeug gehört dir nicht!");
-    }
-    ShowPeilsender(playerid);
-    return 1;
-}
-
-stock ShowPeilsender(playerid,step = 0) {
-    if( step == 0 ) {
-        new
-            String[256];
-        for(new i ; i < sizeof(g_Peilsender) ; i++) {
-            format(String,sizeof(String),"%s%s ( %dm ) - %d$\n",String,g_Peilsender[i][P_sText],g_Peilsender[i][P_iDistance],g_Peilsender[i][P_iPrice]);
-        }
-        ShowPlayerDialog(playerid,DIALOG_PEILSENDER_LISTE,DIALOG_STYLE_LIST,"Peilsender Übersicht",String,"Weiter","Abbruch");
-    }
-    else if( step == 1 ) {
-        new
-            index,
-            String[256];
-        index = Spieler[playerid][pPeilsenderTemp];
-        format(String,sizeof(String),"Peilsender: %s\nReichweite: %dm\nPreis: %d$",g_Peilsender[index][P_sText],g_Peilsender[index][P_iDistance],g_Peilsender[index][P_iPrice]);
-        ShowPlayerDialog(playerid,DIALOG_PEILSENDER_KAUFEN,DIALOG_STYLE_MSGBOX,"Peilsender Kaufdetails",String,"Kaufen","Abbruch");
-    }
-    return 1;
-}
-
-
-forward UpdatePeilsender();
-public UpdatePeilsender() {
-    new
-        Float:x,
-        Float:y,
-        Float:z,
-        vehicleid,
-        mapicon,
-        max_vehicles;
-    for(new i ; i < MAX_PLAYERS ; i++) {
-        if( IsPlayerConnected(i) ) {
-            max_vehicles = MaxVehicles(i);
-            for(new j ; j < max_vehicles ; j++) {
-                if( PlayerHaveCar[i][j] ) {
-                    if( PlayerCar[i][j][CarPeilsender] != 0 ) {
-                        //printf("Peilsender Update für Spieler %s und Slot %d",GetName(i),j);
-                        vehicleid = PlayerCar[i][j][CarId];
-                        mapicon = PlayerCar[i][j][CarPeilsenderIcon];
-                        GetVehiclePos(vehicleid,x,y,z);
-
-                        // MAPICON_GLOBAL
-                        Streamer_SetFloatData(STREAMER_TYPE_MAP_ICON,mapicon,E_STREAMER_X,x);
-                        Streamer_SetFloatData(STREAMER_TYPE_MAP_ICON,mapicon,E_STREAMER_Y,y);
-                        Streamer_SetFloatData(STREAMER_TYPE_MAP_ICON,mapicon,E_STREAMER_Z,z);
-                    }
-                }
-            }
-        }
-    }
-    return 1;
-}
-
-stock CreatePeilsender(playerid,slot) {
-
-    new
-        mapicon,
-        index;
-    if( PlayerHaveCar[playerid][slot] ) {
-        if( PlayerCar[playerid][slot][CarPeilsender] != 0 ) {
-            index = ( PlayerCar[playerid][slot][CarPeilsender] - 1 ) ;
-            mapicon = CreateDynamicMapIconEx(0.0,0.0,0.0,55,0,MAPICON_GLOBAL,float(g_Peilsender[index][P_iDistance]) );
-            for(new a = -1; a < MAX_PLAYERS ; a++) {
-                Streamer_RemoveArrayData( STREAMER_TYPE_MAP_ICON , mapicon , E_STREAMER_PLAYER_ID , a );
-            }
-            Streamer_AppendArrayData( STREAMER_TYPE_MAP_ICON , mapicon , E_STREAMER_PLAYER_ID , playerid );
-            PlayerCar[playerid][slot][CarPeilsenderIcon] = mapicon;
-            return 1;
-        }
-    }
-    return 0;
-}
-
-stock DestroyPeilsender(playerid,slot) {
-    if( PlayerHaveCar[playerid][slot] ) {
-        if( PlayerCar[playerid][slot][CarPeilsender] != 0 ) {
-            DestroyDynamicMapIcon(PlayerCar[playerid][slot][CarPeilsenderIcon]);
-            return 1;
-        }
-    }
-    return 0;
-}
-*/
-
 
 forward ConnectBot(c);
 public ConnectBot(c)
@@ -64454,8 +64681,7 @@ public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY
     
     //if (weaponid == WEAPON_DEAGLE/* && HOLDING2(pKeys, KEY_YES)*/) {
     if (weaponid == WEAPON_SILENCED){
-        if (!(Spieler[playerid][pFraktion] == 1 || Spieler[playerid][pFraktion] == 2 || Spieler[playerid][pFraktion] == 16 
-            || Spieler[playerid][pFraktion] == 5 || Spieler[playerid][pFraktion] == 18)) return 1;
+        if (!(Spieler[playerid][pFraktion] == 1 || Spieler[playerid][pFraktion] == 2 || Spieler[playerid][pFraktion] == 16 || Spieler[playerid][pFraktion] == 5 || Spieler[playerid][pFraktion] == 18)) return 1;
 
         if (TazerTime[playerid] == 0) return 0;
 
