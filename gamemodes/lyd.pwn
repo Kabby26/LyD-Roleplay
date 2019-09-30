@@ -983,7 +983,6 @@ forward Float:GetVehicleSpeed(vehicleid);
 #include <strlib>
 #include <floodcontrol>
 //#include <Youtube>
-//#include <>
 
 native IsValidVehicle(vehicleid);
 native gpci(playerid, serial [], len);
@@ -2346,6 +2345,7 @@ enum {
     HTTP_COINBASE
 }
 
+//Checkpoints
 enum {
     CP_NONE,//0
     CP_FINDCAR,//   1
@@ -2661,7 +2661,7 @@ enum {
     CP_GELDTFINISH
 }
 
-//#define TEST
+#define TEST
 
 #if defined TEST // Testserver
 	#define     SQL_HOST            "51.68.175.95"
@@ -2949,8 +2949,6 @@ new meslock[MAX_PLAYERS];
 new oldskin[MAX_PLAYERS];
 new bool:bBlockTelecom = false;
 new bool:bPurgeEvent = false;
-//new flammen[MAX_HOUSES][8];
-//new flammentimer[MAX_HOUSES];
 
 // Frakcars-System
 
@@ -7664,33 +7662,18 @@ public OnPlayerDisconnect(playerid, reason)
     return 1;
 }
 
-#define MAX_CUSTOM_OBJECTS		20
-
-new customObject[MAX_CUSTOM_OBJECTS];
-
-stock DestroyAllCustomObjects() {
-	for (new i; i < sizeof(customObject); i++)
-		DestroyDynamicObject(customObject[i]);
-
-	return 1;
+forward ERROR_RANG_MSG(playerid);
+public ERROR_RANG_MSG(playerid){
+    return SendClientMessage(playerid, COLOR_WHITE, "[{F70D0D}FEHLER{FFFFFF}] {EE600F}Du besitzt nicht die nötigen Berechtigungen für diesen Befehl!");
 }
 
-stock GetCustomObjectFreeIndex() {
-	for (new i; i < sizeof(customObject); i++)
-		if (customObject[i] == 0) return i;
-
-	return MAX_CUSTOM_OBJECTS;
-}
-
-stock GetCustomObjectIDIndex(objectID) {
-	for (new i; i < sizeof(customObject); i++)
-		if (customObject[i] == objectID) return i;
-
-	return MAX_CUSTOM_OBJECTS;
+forward ERROR_FRAKTION_MSG(playerid);
+public ERROR_FRAKTION_MSG(playerid){
+    return SendClientMessage(playerid, COLOR_WHITE, "[{F70D0D}FEHLER{FFFFFF}] {EE600F}Deine Fraktion besitzt nicht die nötigen Berechtigungen für diesen Befehl!");
 }
 
 CMD:setkasse(playerid, params[]) {
-    if (Spieler[playerid][pAdmin] < 3) return SendClientMessage(playerid, COLOR_RED, "Dafür hast du keine Berechtigung.");
+    if (Spieler[playerid][pAdmin] < 3) return ERROR_RANG_MSG(playerid);
     new money;
     if (sscanf(params, "i", money) || money < 1 || money > 1500000000)
         return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING "/Setkasse [$1-$1.500.000.000]");
@@ -7701,59 +7684,13 @@ CMD:setkasse(playerid, params[]) {
     SendAdminMessage(COLOR_YELLOW, message);
     return 1;
 }
-/*
-CMD:destroyallobjects(playerid) {
-	if (Spieler[playerid][pAdmin] < 6) return 1;
-
-	DestroyAllCustomObjects();
-	return SendClientMessage(playerid, COLOR_WHITE, "All custom objects destroyed.");
-}
-
-CMD:destroyobject(playerid, params[]) {
-	if (Spieler[playerid][pAdmin] < 6) return 1;
-
-	new objectID;
-	if (sscanf(params, "i", objectID)) return SendClientMessage(playerid, COLOR_WHITE, "Usage: /destroyobject [Object-ID]");
-	new index = GetCustomObjectIDIndex(objectID);
-	if (index == MAX_CUSTOM_OBJECTS) return SendClientMessage(playerid, COLOR_RED, "Invalid object id.");
-	customObject[index] = 0;
-	DestroyDynamicObject(objectID);
-	return SendClientMessage(playerid, COLOR_WHITE, "Custom object destroyed.");
-}
-
-CMD:editobject(playerid, params[]) {
-	if (Spieler[playerid][pAdmin] < 6) return 1;
-	new objectID;
-	if (sscanf(params, "i", objectID)) return SendClientMessage(playerid, COLOR_WHITE, "Usage: /Editobject [Object-ID]");
-	EditDynamicObject(playerid, objectID);
-	return 1;
-}
-
-CMD:createobject(playerid, params[]) {
-	if (Spieler[playerid][pAdmin] < 6) return 1;
-
-	new modelID;
-	if (sscanf(params, "i", modelID)) return SendClientMessage(playerid, COLOR_WHITE, "Usage: /Createobj [Model-ID]");
-
-	new Float:x, Float:y, Float:z, message[128];
-	GetPlayerPos(playerid, x, y, z);
-	new index = GetCustomObjectFreeIndex();
-	if (index == MAX_CUSTOM_OBJECTS) return SendClientMessage(playerid, COLOR_RED, "Max custom objects exceeded.");
-
-	customObject[index] = CreateDynamicObject(modelID, x, y + 1.0, z + 1.0, 0.000000, 0.000000, 0.000000, GetPlayerVirtualWorld(playerid), GetPlayerInterior(playerid));
-	format(message, sizeof(message), "Object ID: %i, model: %i", customObject[index], modelID);
-	SendClientMessage(playerid, COLOR_WHITE, message);
-	EditObject(playerid, customObject[index]);
-	return 1;
-}
-*/
 
 new Text3D:dlabel;
 new dlabelid=0;
 new Text3D:dlabeldevent[500];
 CMD:addlabel(playerid, params[]){
 	new String[128], Float:x, Float:y, Float:z, Float:Draw, VW;
-	if(Spieler[playerid][pAdmin] < 2) return SendClientMessage(playerid, COLOR_RED, "Du darfst diesen Befehl nicht nutzen!");
+	if(Spieler[playerid][pAdmin] < 2) return ERROR_RANG_MSG(playerid);
 	if(sscanf(params, "s", String)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Addlabel [Text]");
 	GetPlayerPos(playerid, x, y, z);
 	VW = GetPlayerVirtualWorld(playerid);
@@ -7767,38 +7704,26 @@ CMD:addlabel(playerid, params[]){
 
 CMD:removelabel(playerid, params[]){
 	new deldlabelid;
-	if(Spieler[playerid][pAdmin] < 2) return SendClientMessage(playerid, COLOR_RED, "Du darfst diesen Befehl nicht nutzen!");
+	if(Spieler[playerid][pAdmin] < 2) return ERROR_RANG_MSG(playerid);
 	if(sscanf(params, "i", dlabelid)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Removelabel [Server Label-ID]");
 	Delete3DTextLabel(dlabeldevent[deldlabelid]);
 	return 1;
 }
 
 CMD:removealllabels(playerid, params[]){
-	if(Spieler[playerid][pAdmin] < 2) return SendClientMessage(playerid, COLOR_RED, "Du darfst diesen Befehl nicht nutzen!");
+	if(Spieler[playerid][pAdmin] < 2) return ERROR_RANG_MSG(playerid);
 	for(new i = 0; i <=500; i++){
 	    Delete3DTextLabel(dlabeldevent[i]);
 	}
 	SendClientMessage(playerid, COLOR_YELLOW, "[INFO] {FFFFFF}Es wurden alle Labels gelöscht");
 	return 1;
 }
-/*
-CMD:labellist(playerid, params[]){
-    if(Spieler[playerid][pAdmin] < 2) return SendClientMessage(playerid, COLOR_RED, "Du darfst diesen Befehl nicht nutzen!");
-	for(new i = 0; i <=500; i++){
-        new string[128];
-        if(dlabeldevent[i] > 0){
-			format(string, sizeof(string), "Label Server-ID:%i",i,dlabeldevent[i]);
-			SendClientMessage(playerid, COLOR_BLUE, string);
-		}
-	}
-	return 1;
-}
-*/
+
 new objects;
 new objectmodel[5000];
 
 CMD:objectlist(playerid, params[]){
-    if(Spieler[playerid][pAdmin] < 2) return SendClientMessage(playerid, COLOR_RED, "Du darfst diesen Befehl nicht nutzen!");
+    if(Spieler[playerid][pAdmin] < 2) return ERROR_RANG_MSG(playerid);
 	for(new i = 100; i <=5000; i++){
         new string[128];
  		new Float:xo, Float:yo, Float:zo;
@@ -7813,7 +7738,7 @@ CMD:objectlist(playerid, params[]){
 
 CMD:addobject(playerid, params[]){
     new oid,myobject;
-    if(Spieler[playerid][pAdmin] < 2) return SendClientMessage(playerid, COLOR_RED, "Du darfst diesen Befehl nicht nutzen!");
+    if(Spieler[playerid][pAdmin] < 2) return ERROR_RANG_MSG(playerid);
     if(sscanf(params, "i", oid)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Addobject [Objekt-ID]");
 	new Float:x, Float:y, Float:z;
     GetPlayerPos(playerid, x, y, z);
@@ -7825,7 +7750,7 @@ CMD:addobject(playerid, params[]){
 }
 
 CMD:removeallobjects(playerid, params[]){
-	if(Spieler[playerid][pAdmin] < 2) return SendClientMessage(playerid, COLOR_RED, "Du darfst diesen Befehl nicht nutzen!");
+	if(Spieler[playerid][pAdmin] < 2) return ERROR_RANG_MSG(playerid);
 	for(new i = 100; i <=5000; i++){//Erst ab 100, weil darunter andere Objekte sind!!!
 	    DestroyObject(i);
 	}
@@ -7835,7 +7760,7 @@ CMD:removeallobjects(playerid, params[]){
 
 CMD:removeobject(playerid, params[]){
 	new oid;
-	if(Spieler[playerid][pAdmin] < 2) return SendClientMessage(playerid, COLOR_RED, "Du darfst diesen Befehl nicht nutzen!");
+	if(Spieler[playerid][pAdmin] < 2) return ERROR_RANG_MSG(playerid);
 	if(sscanf(params, "i", oid)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Removeobject [Server Objekt-ID]");
 	DestroyObject(oid);
 	return 1;
@@ -7843,7 +7768,7 @@ CMD:removeobject(playerid, params[]){
 
 CMD:editobject(playerid, params[]){
     new oid;
-    if(Spieler[playerid][pAdmin] < 2) return SendClientMessage(playerid, COLOR_RED, "Du darfst diesen Befehl nicht nutzen!");
+    if(Spieler[playerid][pAdmin] < 2) return ERROR_RANG_MSG(playerid);
     if(sscanf(params, "i", oid)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Editobject [Server Object-ID]");
 	EditObject(playerid, oid);
 	return 1;
@@ -7851,7 +7776,7 @@ CMD:editobject(playerid, params[]){
 
 CMD:gotoobject(playerid, params[]){
     new oid;
-    if(Spieler[playerid][pAdmin] < 2) return SendClientMessage(playerid, COLOR_RED, "Du darfst diesen Befehl nicht nutzen!");
+    if(Spieler[playerid][pAdmin] < 2) return ERROR_RANG_MSG(playerid);
     if(sscanf(params, "i", oid)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Gotoobject [Server Object-ID]");
 	new Float:xo, Float:yo, Float:zo;
 	GetObjectPos(oid, xo, yo, zo);
@@ -7873,7 +7798,7 @@ public OnPlayerEditObject(playerid, playerobject, objectid, response, Float:fX, 
 }
 
 CMD:vehcolor(playerid, params[]) {
-    if (Spieler[playerid][pAdmin] < 6) return 1;
+    if (Spieler[playerid][pAdmin] < 6) return ERROR_RANG_MSG(playerid);
     new color1, color2, vehicleid;
     vehicleid = GetPlayerVehicleID(playerid);
     if (!vehicleid) return SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}Du musst in einem Fahrzeug sitzen.");
@@ -7893,15 +7818,15 @@ CMD:vehcolor(playerid, params[]) {
 }
 
 CMD:vw(playerid) {
-	if (Spieler[playerid][pAdmin] < 3) return 1;
+	if (Spieler[playerid][pAdmin] < 3) return ERROR_RANG_MSG(playerid);
 
 	new message[30];
 	format(message, sizeof(message), "Virtual World: %i", GetPlayerVirtualWorld(playerid));
 	return SendClientMessage(playerid, COLOR_WHITE, message);
 }
 
-CMD:debug(playerid, params[]) {
-	if (Spieler[playerid][pAdmin] < 6) return 1;
+CMD:animationdebug(playerid, params[]) {
+	if (Spieler[playerid][pAdmin] < 6) return ERROR_RANG_MSG(playerid);
 
 	new animlib[32], animname[32];
 	if (sscanf(params, "s[32]s[32]", animlib, animname)) return SendClientMessage(playerid, COLOR_WHITE, "Usage: /debug [animlib] [animname]");
@@ -8074,14 +7999,16 @@ CMD:tuningabbauen(playerid)
     }
     return 1;
 }
+
 CMD:delmarker(playerid,params[])
 {
     DisablePlayerCheckpointEx(playerid);
     return 1;
 }
+
 CMD:gebietupgrade(playerid,params[])
 {
-	if(Spieler[playerid][pAdmin] < 4) return SendClientMessage(playerid, COLOR_RED, "Du kannst diesen Befehl nicht nutzen!");
+	if(Spieler[playerid][pAdmin] < 4) return ERROR_RANG_MSG(playerid);
     for(new index;index<MAX_GANGZONES;index++)
     {
         if(!IsPlayerInRangeOfPoint(playerid , 6.0 , g_GangZone[index][GZ_fIconX],g_GangZone[index][GZ_fIconY],g_GangZone[index][GZ_fIconZ])&&index==MAX_GANGZONES-1)
@@ -8297,18 +8224,14 @@ CMD:gebeskill(playerid,params[])
 {
     new pid,skillname[32],skilllevel;
     if(sscanf(params,"us[32]i",pid,skillname,skilllevel))return SendClientMessage(playerid,COLOR_RED,"Befehl: /Gebeskill [playerid] [Skillname] [SkillLevel]");
-    if(Spieler[playerid][pAdmin]>=3)
-    {
-        if(IsPlayerConnected(pid))
-        {
-            if(skilllevel<1||skilllevel>6)
-            {
+    if(Spieler[playerid][pAdmin]>=3){
+        if(IsPlayerConnected(pid)){
+            if(skilllevel<1||skilllevel>6){
                 SendClientMessage(playerid,COLOR_RED,"Fehler: Das ausgewählte Level muss mindestens 1 betragen und maximal 6");
             }
             else if(strcmp(skillname,"Hure",true)==0||strcmp(skillname,"Anwalt",true)==0||strcmp(skillname,"Waffendealer",true)==0||strcmp(skillname,"Detektiv",true)==0||strcmp(skillname,"Drogendealer",true)==0||strcmp(skillname,"Samen",true)==0||strcmp(skillname,"Pilot",true)==0)
             {
-                if(strcmp(skillname,"Hure",true)==0)
-                {
+                if(strcmp(skillname,"Hure",true)==0){
                     if(skilllevel==6){skilllevel=5;}
                     Spieler[pid][pHurePoints]=skilllevel;
                     new string[200];
@@ -8317,31 +8240,24 @@ CMD:gebeskill(playerid,params[])
                     format(string,200,"Du hast erfolgreich dem Spieler %s beim Hure Skill das Level auf %i gesetzt",GetName(pid),skilllevel);
                     SendClientMessage(playerid,COLOR_GREEN,string);
                 }
-                if(strcmp(skillname,"Anwalt",true)==0)
-                {
+                if(strcmp(skillname,"Anwalt",true)==0){
                     new skillpoints;
-                    if(skilllevel==1)
-                    {
+                    if(skilllevel==1){
                         skillpoints=0;
                     }
-                    else if(skilllevel==2)
-                    {
+                    else if(skilllevel==2){
                         skillpoints=20;
                     }
-                    else if(skilllevel==3)
-                    {
+                    else if(skilllevel==3){
                         skillpoints=80;
                     }
-                    else if(skilllevel==4)
-                    {
+                    else if(skilllevel==4){
                         skillpoints=120;
                     }
-                    else if(skilllevel==5)
-                    {
+                    else if(skilllevel==5){
                         skillpoints=250;
                     }
-                    else
-                    {
+                    else{
                         skillpoints=420;
                     }
                     Spieler[pid][pLawyerPoints]=skillpoints;
@@ -8358,28 +8274,22 @@ CMD:gebeskill(playerid,params[])
                 if(strcmp(skillname,"Detektiv",true)==0)
                 {
                     new skillpoints;
-                    if(skilllevel==1)
-                    {
+                    if(skilllevel==1){
                         skillpoints=0;
                     }
-                    else if(skilllevel==2)
-                    {
+                    else if(skilllevel==2){
                         skillpoints=50;
                     }
-                    else if(skilllevel==3)
-                    {
+                    else if(skilllevel==3){
                         skillpoints=150;
                     }
-                    else if(skilllevel==4)
-                    {
+                    else if(skilllevel==4){
                         skillpoints=310;
                     }
-                    else if(skilllevel==5)
-                    {
+                    else if(skilllevel==5){
                         skillpoints=540;
                     }
-                    else
-                    {
+                    else{
                         skillpoints=540;
                     }
                     Spieler[pid][pDetektivPoints]=skillpoints;
@@ -8546,7 +8456,7 @@ CMD:gebeskill(playerid,params[])
     }
     else
     {
-        SendClientMessage(playerid,COLOR_RED,"Keine Berechtigung für diesen Befehl");
+        ERROR_RANG_MSG(playerid);
     }
     return 1;
 }
@@ -8774,7 +8684,7 @@ stock ShowEventItemDialog(playerid, type = DIALOG_EVENT_ITEM_MENU, extravar = 0)
 
 CMD:aeventitem(playerid, params[]) {
     if (!gPlayerLogged[playerid]) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du bist nicht eingeloggt.");
-    if (Spieler[playerid][pAdmin] < 2) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if (Spieler[playerid][pAdmin] < 2) return ERROR_RANG_MSG(playerid);
     return ShowEventItemDialog(playerid);
 }
 
@@ -8799,7 +8709,7 @@ CMD:eventitem(playerid)
 CMD:namechange(playerid, params[])
 {
     new oldName[MAX_PLAYER_NAME], newName[MAX_PLAYER_NAME];//, pID = INVALID_PLAYER_ID;
-    if (Spieler[playerid][pAdmin] < 4) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du besitzt nicht die benötigten Rechte.");
+    if (Spieler[playerid][pAdmin] < 4) return ERROR_RANG_MSG(playerid);
     if (sscanf(params, "s[25]s[25]", oldName, newName))
         return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING "/Namechange [Name] [Neuer Name]");
 
@@ -8838,7 +8748,7 @@ CMD:angelshop(playerid)
 CMD:pwchange(playerid,params[])
 {
     new spielername[MAX_PLAYER_NAME],pw[128];
-    if(Spieler[playerid][pAdmin] < 4)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte");
+    if(Spieler[playerid][pAdmin] < 4)return ERROR_RANG_MSG(playerid);
     if(sscanf(params,"s[32]s[128]",spielername,pw))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Pwchange [Name] [Passwort]");
     if(!IsPlayerConnected(GetPlayerIdFromName(spielername)))
     {
@@ -9056,13 +8966,24 @@ CMD:openticket(playerid, params[])
         }
         else
         {
-            SendClientMessage(playerid, COLOR_RED, "Der Spieler hat kein Ticket geschrieben.");
-            return 1;
+            if(Spieler[playerid][pAdmin] > 2){
+                PlayerNeedsHelp[pID] = 0;
+                format(string, sizeof(string), "> Ticket < - %s hat ein Ticket mit %s erstellt.", GetName(playerid), GetName(pID));
+                SendAdminMessage(COLOR_LIGHTGREEN, string);
+                SendClientMessage(playerid, COLOR_ORANGE, "Du kannst das Ticket mit \"/closeticket [SpielerID/Name]\" schließen.");
+                format(string, sizeof(string), "> Ticket < - Teammitglied %s hat ein Ticket mit dir eröffnet.", GetName(playerid));
+                SendClientMessage(pID, COLOR_LIGHTGREEN, string);
+                SendClientMessage(pID, COLOR_LIGHTGREEN, "Du kannst mit dem Teammitglied reden. Nutze dazu einfach den normalen Chat!");
+                ReportCall[pID] = playerid;
+                ReportCall[playerid] = pID;
+                return 1;
+            }
+            SendClientMessage(playerid, COLOR_RED, "Der Spieler hat kein Ticket geschrieben!");
         }
     }
     else
     {
-        SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte!");
+        ERROR_RANG_MSG(playerid);
         return 1;
     }
     return 1;
@@ -9071,7 +8992,7 @@ CMD:openticket(playerid, params[])
 CMD:tickets(playerid, params[])
 {
     new string[128], str2[2048];
-    if(Spieler[playerid][pAdmin] < 1)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 1)return ERROR_RANG_MSG(playerid);
     new bool:IsOnline;
     for(new i=0;i<MAX_PLAYERS;i++)
     {
@@ -9092,7 +9013,7 @@ CMD:tickets(playerid, params[])
 
 CMD:closeticket(playerid, params[])
 {
-    if(Spieler[playerid][pAdmin] < 1)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 1) return ERROR_RANG_MSG(playerid);
     new pID, string[128];
     if(sscanf(params, "u", pID))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Closeticket [SpielerID/Name]");
     if(!IsPlayerConnected(pID))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
@@ -9125,7 +9046,7 @@ stock SaveReportData(playerid,supporter) {
 
 CMD:delticket(playerid, params[])
 {
-    if(Spieler[playerid][pAdmin] < 1)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 1) return ERROR_RANG_MSG(playerid);
     new pID, string[128];
     if(sscanf(params, "u", pID))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Delticket [SpielerID/Name]");
     if(!IsPlayerConnected(pID))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
@@ -9147,7 +9068,7 @@ CMD:delticket(playerid, params[])
 
 CMD:dticket(playerid, params[])
 {
-    if(Spieler[playerid][pAdmin] < 1)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 1) return ERROR_RANG_MSG(playerid);
     new pID, string[128];
     if(sscanf(params, "us[96]", pID))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Dticket [SpielerID/Name]");
     if(!IsPlayerConnected(pID))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
@@ -9172,7 +9093,7 @@ CMD:dticket(playerid, params[])
 
 CMD:aticket(playerid, params[])
 {
-    if(Spieler[playerid][pAdmin] < 1)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 1) return ERROR_RANG_MSG(playerid);
     new pID, string[128];
     if(sscanf(params, "us[96]", pID))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Aticket [SpielerID/Name]");
     if(!IsPlayerConnected(pID))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
@@ -9320,7 +9241,7 @@ CMD:neulingfinden(playerid, params[])
 
 CMD:adminwarnung(playerid, params[])
 {
-    if(Spieler[playerid][pAdmin] < 3)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 3) return ERROR_RANG_MSG(playerid);
     new pID, string[128];
     if(sscanf(params, "us[96]", pID))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Adminwarnung [SpielerID/Name]");
     if(!IsPlayerConnected(pID))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
@@ -9347,7 +9268,7 @@ CMD:adminwarnung(playerid, params[])
 
 CMD:regelwarnung(playerid, params[])
 {
-    if(Spieler[playerid][pAdmin] < 1)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 1) return ERROR_RANG_MSG(playerid);
     new pID, string[128];
     if(sscanf(params, "us[96]", pID))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Regelwarnung [SpielerID/Name]");
     if(!IsPlayerConnected(pID))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
@@ -9560,7 +9481,7 @@ CMD:loadbenzin(playerid, params[])
 CMD:mute(playerid, params[])
 {
     new pID, grund[64], time, string[128];
-    if(Spieler[playerid][pAdmin] < ADMIN_RANK_SUP)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < ADMIN_RANK_SUP) return ERROR_RANG_MSG(playerid);
     if(sscanf(params, "uis[64]", pID, time, grund))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Mute [SpielerID/Name] [Zeit in Min.] [Grund]");
     if(!IsPlayerConnected(pID))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
     format(string, sizeof(string), "%s wurde von %s für %d Minuten gemutet, Grund: %s", GetName(pID), GetName(playerid), time, grund);
@@ -9614,7 +9535,7 @@ CMD:tban(playerid, params[])
 {
     new pID, grund[64], time;
     if(sscanf(params, "uis[64]", pID, time, grund))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Tban [SpielerID/Name] [Zeit in Min.] [Grund]");
-    if(Spieler[playerid][pAdmin] < 3)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 3) return ERROR_RANG_MSG(playerid);
     if(!IsPlayerConnected(pID))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
     if(Spieler[pID][pAdmin] > 0)return SendClientMessage(playerid, COLOR_RED, "Du kannst keine Supporter bzw. Admins bannen.");
     #if defined USE_NPCS
@@ -9806,7 +9727,7 @@ CMD:kleidung(playerid)
 CMD:guncheck(playerid, params[])
 {
     new pID, string[128];
-    if(Spieler[playerid][pAdmin] < 1)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 1)return ERROR_RANG_MSG(playerid);
     if(sscanf(params, "u", pID))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Guncheck [SpielerID/Name]");
     new weapons[13][2];
     new wpName1[32], wpName2[32], wpName3[32], wpName4[32], wpName5[32], wpName6[32], wpName7[32];
@@ -10020,7 +9941,7 @@ CMD:back(playerid)
 CMD:sethp(playerid, params[])
 {
     new pID, string[128], health;
-    if(Spieler[playerid][pAdmin] < 2)return SendClientMessage(playerid, COLOR_RED, "* Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 2)return ERROR_RANG_MSG(playerid);
     if(sscanf(params, "ui", pID, health))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Sethp [SpielerID/Name] [Leben]");
     if(!IsPlayerConnected(pID))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
     SetPlayerHealth(pID, health);
@@ -10034,7 +9955,7 @@ CMD:sethp(playerid, params[])
 CMD:setafk(playerid,params[])
 {
     new pID;
-    if(Spieler[playerid][pAdmin] < 1)return SendClientMessage(playerid, COLOR_RED, "* Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 1)return ERROR_RANG_MSG(playerid);
     if(sscanf(params,"u", pID))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Setafk [SpielerID]");
     if(Spieler[pID][pTot] == 1 || Spieler[pID][pTot] == 2 )return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist Tot.");
     if(IsAFK[pID] == 1)return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist bereits im AFK-Modus.");
@@ -10055,7 +9976,7 @@ CMD:setafk(playerid,params[])
 CMD:setarmor(playerid, params[])
 {
     new pID, string[128], health;
-    if(Spieler[playerid][pAdmin] < 2)return SendClientMessage(playerid, COLOR_RED, "* Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 2)return ERROR_RANG_MSG(playerid);
     if(sscanf(params, "ui", pID, health))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Setarmor [SpielerID/Name] [Leben]");
     if(!IsPlayerConnected(pID))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
     SetPlayerArmour(pID, health);
@@ -10070,7 +9991,7 @@ CMD:setarmor(playerid, params[])
 CMD:freeze(playerid, params[])
 {
     new pID, string[128];
-    if(Spieler[playerid][pAdmin] < 1)return SendClientMessage(playerid, COLOR_RED, "* Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 1)return ERROR_RANG_MSG(playerid);
     if(sscanf(params, "u", pID))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Freeze [SpielerID/Name]");
     if(!IsPlayerConnected(pID))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
     FreezePlayer(pID);
@@ -10082,7 +10003,7 @@ CMD:freeze(playerid, params[])
 CMD:unfreeze(playerid, params[])
 {
     new pID, string[128];
-    if(Spieler[playerid][pAdmin] < 1)return SendClientMessage(playerid, COLOR_RED, "* Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 1)return ERROR_RANG_MSG(playerid);
     if(sscanf(params, "u", pID))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Unfreeze [SpielerID/Name]");
     if(!IsPlayerConnected(pID))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
     UnfreezePlayer(pID);
@@ -10659,7 +10580,7 @@ public SetPlayerSpawn(playerid)
         if( gPlayerLogged[playerid] == 0 ) {
             // Nicht eingeloggt aber gespawnt ??
             if( Spieler[playerid][bAccountExists] ) {
-                ShowPlayerDialog(playerid, DIALOG_LOGIN, DIALOG_STYLE_PASSWORD, COLOR_HEX_LIGHTBLUE"Anmeldung:", COLOR_HEX_WHITE"Willkommen auf "COLOR_HEX_GREEN"Live your Dream - Roleplay\n"COLOR_HEX_WHITE"Ein Account unter diesem Namen ist bei uns registriert!\nSollte es dein Account sein, dann Logge dich bitte nun ein.\n \n"COLOR_HEX_ORANGE"Behalte dein Passwort immer für dich!\n"COLOR_HEX_RED">Passwort vergessen?< - kontaktiere uns: Admin@LyD-SAMP.de", "OK", "Abbrechen");
+                ShowPlayerDialog(playerid, DIALOG_LOGIN, DIALOG_STYLE_PASSWORD, COLOR_HEX_LIGHTBLUE"Anmeldung:", COLOR_HEX_ORANGE"[LyD]\n\n"COLOR_HEX_WHITE"Willkommen auf "COLOR_HEX_GREEN"Live your Dream - Roleplay\n"COLOR_HEX_WHITE"Ein Account unter diesem Namen ist bei uns registriert!\nSollte es dein Account sein, dann Logge dich bitte nun ein.\n \n"COLOR_HEX_ORANGE"Behalte dein Passwort immer für dich!\n"COLOR_HEX_RED">Passwort vergessen?< - kontaktiere uns: Admin@LyD-SAMP.de", "OK", "Abbrechen");
 
                 Spieler[playerid][tLoginTimeout] = SetTimerEx("PlayerLoginTimeout",30011,false,"d",playerid);
                 Spieler[playerid][tSpawnView] = SetTimerEx("SetPlayerView",5003,false,"dd",playerid,1); // Muss,sonst klappt Spectate nicht
@@ -10810,7 +10731,7 @@ public OnPlayerJail(playerid)
 }
 
 CMD:debugpos(playerid, params[]) {
-    if (Spieler[playerid][pAdmin] < 6) return 0;
+    if (Spieler[playerid][pAdmin] < 6) return ERROR_RANG_MSG(playerid);
 
     new Float:x, Float:y, Float:z;
     GetPlayerPos(playerid, x, y, z);
@@ -11518,7 +11439,7 @@ public OnVehicleDamageStatusUpdate(vehicleid, playerid)
 CMD:spec(playerid, params[])
 {
     new pID, string[128];
-    if (Spieler[playerid][pAdmin] < 1) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if (Spieler[playerid][pAdmin] < 1) return ERROR_RANG_MSG(playerid);
     if(sscanf(params, "u", pID))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Spec [SpielerID/Name]");
     if(!IsPlayerConnected(pID))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
     if(pID == playerid)return SendClientMessage(playerid, COLOR_RED, "Du kannst dich selber nicht spectaten.");
@@ -11535,7 +11456,7 @@ CMD:spec(playerid, params[])
 CMD:specoff(playerid)
 {
     new string[128];
-    if (Spieler[playerid][pAdmin] < 1) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if (Spieler[playerid][pAdmin] < 1) return ERROR_RANG_MSG(playerid);
     if(IsPlayerSpectating[playerid] == 0)return SendClientMessage(playerid, COLOR_RED, "Du bist nicht am spectaten.");
     StopSpectate(playerid);
     format(string, sizeof(string), "* %s spectatet nun nicht mehr.", GetName(playerid));
@@ -11825,7 +11746,7 @@ CMD:startlotto(playerid, params[])
         SendClientMessage(playerid, COLOR_BLUE, INFO_STRING" /Startlotto [Nummer]");
         return 1;
     }
-    if(Spieler[playerid][pAdmin] < 5)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 5)return ERROR_RANG_MSG(playerid);
     if(entry < 1 || entry > 100)return SendClientMessage(playerid, COLOR_ORANGE, "Die Nummer sollte zwischen 1 und 100 sein.");
     format(string, sizeof(string), "** [LOTTO] >> %s hat die Losziehung manuell gestartet. Nummer: %d << **", GetName(playerid), entry);
     SendClientMessageToAll(COLOR_YELLOW, string);
@@ -13124,7 +13045,7 @@ CMD:spawnchange(playerid)
 
 CMD:configtanke(playerid)
 {
-    if(Spieler[playerid][pAdmin] < 4)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 4)return ERROR_RANG_MSG(playerid);
     new t = IsPlayerAtTanke(playerid);
     if(t == 999)return SendClientMessage(playerid, COLOR_RED, "Du bist nicht in der Nähe einer Tankstelle.");
     ShowPlayerDialog(playerid, DIALOG_CONFIGTANKE, DIALOG_STYLE_LIST, "Konfigurieren der Tankstelle", "Besitzer rauswerfen\nKaufpreis ändern\nBenzinkosten ändern\nBeschreibung\nMax. Benzin ändern\nBenzinstand ändern", "Auswählen", "Abbrechen");
@@ -13133,7 +13054,7 @@ CMD:configtanke(playerid)
 
 CMD:confighouse(playerid)
 {
-    if(Spieler[playerid][pAdmin] < 4)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 4)return ERROR_RANG_MSG(playerid);
     new h = IsPlayerAtHouse(playerid);
     if(h == 999)return SendClientMessage(playerid, COLOR_RED, "Du bist nicht in der Nähe eines Hauses.");
     ShowPlayerDialog(playerid, DIALOG_CONFIGHOUSE, DIALOG_STYLE_LIST, "Konfigurieren des Hauses", "Bewohner und Besitzer rauswerfen\nKaufpreis ändern\nMietpreis ändern\nMieten zulassen\nStatus\nInterior\nBeschreibung\nMaximale Anzahl an Mietern", "Auswählen", "Abbrechen");
@@ -13142,7 +13063,7 @@ CMD:confighouse(playerid)
 
 CMD:configbiz(playerid)
 {
-    if(Spieler[playerid][pAdmin] < 4)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 4)return ERROR_RANG_MSG(playerid);
     new b = IsPlayerAtBiz(playerid);
     if(b == 999)return SendClientMessage(playerid, COLOR_RED, "Du bist nicht in der Nähe eines Geschäftes.");
     new dialogCaption[128];
@@ -13153,7 +13074,7 @@ CMD:configbiz(playerid)
 
 CMD:check(playerid, params[])
 {
-    if(Spieler[playerid][pAdmin] < 1)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 1)return ERROR_RANG_MSG(playerid);
     new pID;
     if(sscanf(params, "u", pID))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Check [SpielerID/Name]");
     if(!IsPlayerConnected(pID))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
@@ -13163,7 +13084,7 @@ CMD:check(playerid, params[])
 
 CMD:changeweather(playerid)
 {
-    if(Spieler[playerid][pAdmin] < 3)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 3)return ERROR_RANG_MSG(playerid);
     ChangeWeather();
     new string[128];
     format(string, sizeof(string), "Wetter wurde geändert. (ID: %d)", CurWeather);
@@ -13549,7 +13470,7 @@ CMD:sellwantedcodes(playerid, params[])
 
 CMD:gmx(playerid)
 {
-    if(Spieler[playerid][pAdmin] < 6)return SendClientMessage(playerid, COLOR_RED, "* Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 6)return ERROR_RANG_MSG(playerid);
     if(GMXMode == 1)
     {
         SendClientMessageToAll(COLOR_RED, "ACHTUNG! Der Server wird restartet, warte bitte einen Moment!");
@@ -13815,7 +13736,7 @@ CMD:paketeinladen(playerid, params[])
 
 CMD:setinterior(playerid, params[]) {
 	new interior, pID;
-	if(Spieler[playerid][pAdmin] < 3)return SendClientMessage(playerid, COLOR_DARKRED, "Du besitzt nicht die benötigten Rechte.");
+	if(Spieler[playerid][pAdmin] < 3)return ERROR_RANG_MSG(playerid);
 	if(sscanf(params, "ui", pID,interior))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Setinterior [Spieler/ID] [Interior-ID]");
 	
 	SetPlayerInterior(pID,interior);
@@ -13829,7 +13750,7 @@ CMD:gotopos(playerid, params[])
 {
     new Float:x, Float:y, Float:z, string[128];
     if(sscanf(params, "fff", x,y,z))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Gotopos [Float-X] [Float-Y] [Float-Z]");
-    if(Spieler[playerid][pAdmin] < 1)return SendClientMessage(playerid, COLOR_DARKRED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 1)return ERROR_RANG_MSG(playerid);
     new vID = GetPlayerVehicleID(playerid);
     if(IsPlayerInAnyVehicle(playerid))
     {
@@ -13864,12 +13785,8 @@ CMD:gotopos(playerid, params[])
 CMD:gotocp(playerid, params[]) return cmd_gotomarker(playerid, params);
 
 CMD:gotomarker(playerid, params[]) {
-    if (Spieler[playerid][pAdmin] < 1)
-        return SendClientMessage(playerid, COLOR_DARKRED, "Du besitzt nicht die benötigten Rechte.");
-
-    if (!GetPVarFloat(playerid, "MARKER.X"))
-        return SendClientMessage(playerid, COLOR_DARKRED, "Du hast keinen Checkpoint auf der Karte.");
-
+    if (Spieler[playerid][pAdmin] < 1) return ERROR_RANG_MSG(playerid);
+    if (!GetPVarFloat(playerid, "MARKER.X")) return SendClientMessage(playerid, COLOR_DARKRED, "Du hast keinen Checkpoint auf der Karte.");
     format(params, 128, "%f %f %f", GetPVarFloat(playerid, "MARKER.X"), GetPVarFloat(playerid, "MARKER.Y"), GetPVarFloat(playerid, "MARKER.Z"));
     return cmd_gotopos(playerid, params);
 }
@@ -14029,6 +13946,8 @@ COMMAND:deakaccount(playerid,params[])
         {
             SendClientMessage(playerid,COLOR_RED,"Du kannst nur Spieler deaktivieren!-");
         }
+    }else{
+        ERROR_RANG_MSG(playerid);
     }
     return 1;
 }
@@ -14049,6 +13968,8 @@ COMMAND:aktaccount(playerid,params[])
             format(string,200,"%s %s hat den Account von %s aktiviert.", GetPlayerAdminRang(playerid), GetName(playerid), pname);
             SendUCPAktenEintrag(playerid,GetName(playerid),pname,string);
         }
+    }else{
+        ERROR_RANG_MSG(playerid);
     }
     return 1;
 }
@@ -14441,7 +14362,7 @@ CMD:anrufen(playerid, params[])
 }
 
 CMD:tankstand(playerid, params[]) {
-    if (Spieler[playerid][pAdmin] < 6) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if (Spieler[playerid][pAdmin] < 6) return ERROR_RANG_MSG(playerid);
     new benzinstand, vehicleid = GetPlayerVehicleID(playerid);
     if (!vehicleid) return SendClientMessage(playerid, COLOR_RED, "Du musst in einem Fahrzeug sein.");
     if (sscanf(params, "i", benzinstand)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING "/tankstand [Kraftstoffmenge]");
@@ -14451,7 +14372,7 @@ CMD:tankstand(playerid, params[]) {
 
 CMD:auftanken(playerid, params[])
 {
-    if (Spieler[playerid][pAdmin] < 6) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if (Spieler[playerid][pAdmin] < 6) return ERROR_RANG_MSG(playerid);
     new vehid;
     if (isnull(params)) {
         vehid = GetPlayerVehicleID(playerid);
@@ -14466,7 +14387,7 @@ CMD:auftanken(playerid, params[])
 
 CMD:bwstrafen(playerid) {
     if (!gPlayerLogged[playerid]) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du bist nicht eingeloggt.");
-    if (Spieler[playerid][pAdmin] < 3) return SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}Dafür hast du keine Berechtigung.");
+    if (Spieler[playerid][pAdmin] < 3) return ERROR_RANG_MSG(playerid);
     SetPVarInt(playerid, "BW.PAGE", 0);
     mysql_pquery("SELECT `Name`, `BWStrafe`, `BWStrafeGrund` FROM `accounts` WHERE `BWStrafe` > 0 ORDER BY `BWStrafe` DESC LIMIT 0,21", THREAD_BWSTRAFEN, playerid, gSQL,MySQLThreadOwner);
     return 1;
@@ -14492,7 +14413,7 @@ CMD:bwstrafe(playerid, params[]) {
 }
 
 CMD:setbwstrafe(playerid, params[]) {
-    if (Spieler[playerid][pAdmin] < 4) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if (Spieler[playerid][pAdmin] < 4) return ERROR_RANG_MSG(playerid);
     new pID, hours, playerName[MAX_PLAYER_NAME], reason[128];
     if (GetPVarString(playerid, "OFFBW.NAME", reason, sizeof(reason)) != 0) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du erteilst gerade noch eine Bewährungsstrafe."); 
     if (sscanf(params, "u i s[128]", pID, hours, reason)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING "/Setbwstrafe [Spieler ID/Name] [Spielstunden] [Grund]");
@@ -14534,7 +14455,7 @@ CMD:lastdamage(playerid, params[]) {
 
 CMD:lastdmg(playerid, params[]) {
     new pID;
-    if (Spieler[playerid][pAdmin] < 3) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if (Spieler[playerid][pAdmin] < 3) return ERROR_RANG_MSG(playerid);
     if (sscanf(params, "u", pID))
         return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING "/Lastdmg [SpielerID/Name]");
 
@@ -14575,20 +14496,17 @@ stock ShowConfigPlayerInfo(playerid) {
     SendClientMessage(playerid, COLOR_ORANGE, "* EINGABEN *: Safewantedcodes, Waffenteile, Wantedcodes, SafeSpice, SafeDrogen, SafeWaffenteile, Waffensperre");
     SendClientMessage(playerid, COLOR_ORANGE, "* EINGABEN *: Bankpin, Bankkonto, Skin, Geschlecht, Premium, Spielstunden, Kekse, Pfand");
     SendClientMessage(playerid, COLOR_ORANGE, "* EINGABEN *: Alizsperre, Flizsperre, Glizsperre, Lkwlizsperre, Mlizsperre, Eventpunkte");
-
     if (Spieler[playerid][pAdmin] > 3)
         SendClientMessage(playerid, COLOR_ORANGE, "* EINGABEN (>= Adm.) *: mustuseac");
-
     if (Spieler[playerid][pAdmin] > 4)
         SendClientMessage(playerid, COLOR_ORANGE, "* EINGABEN (>= Dev.) *: adventmin, adventday");
-
     return 1;
 }
 
 CMD:configplayer(playerid, params[])
 {
     new pID, string[140], entry[32], wert, avalstr[32];
-    if(Spieler[playerid][pAdmin] < 3)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 3)return ERROR_RANG_MSG(playerid);
     if(sscanf(params, "us[32]i", pID, entry, wert))
     {
         if (sscanf(params, "us[32]s[32]", pID, entry, avalstr)) return ShowConfigPlayerInfo(playerid);
@@ -15081,7 +14999,7 @@ CMD:createtanke(playerid, params[])
 {
         new chName[32], Preis;
         if(sscanf(params, "is[32]", Preis, chName))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Createtanke [Preis] [Name]");
-        if(Spieler[playerid][pAdmin] < 5)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+        if(Spieler[playerid][pAdmin] < 5)return ERROR_RANG_MSG(playerid);
         new query[512], Float:x, Float:y, Float:z;GetPlayerPos(playerid, x,y,z);
         format(query, sizeof(query), "INSERT INTO `tanken` (`ID`,`EnterX`, `EnterY`, `EnterZ`, `Besitzer`, `Name`, `FillCost`, `Kasse`, `Benzin`, `MaxBenzin`, `Preis`) VALUES (NULL,%.2f, %.2f, %.2f, '%s', '%s', %d, %d, %d, %d, %d)", x,y,z, "Niemand", chName, 50, 0, 0, 1000, Preis);
         mysql_pquery(query,THREAD_CREATETANKE,playerid,gSQL,MySQLThreadOwner);
@@ -15100,7 +15018,7 @@ CMD:createtanke(playerid, params[])
 
 CMD:createaplatz(playerid, params[])
 {
-        if(Spieler[playerid][pAdmin] < 5)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+        if(Spieler[playerid][pAdmin] < 5)return ERROR_RANG_MSG(playerid);
         new fische, query[256];
         if(sscanf(params, "i", fische))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Createaplatz [Fische]");
         if(fische < 0 || fische > 150)return SendClientMessage(playerid, COLOR_RED, "Die Anzahl sollte sich zwischen 0 und 150 befinden!");
@@ -15122,7 +15040,7 @@ CMD:createhouse(playerid, params[])
 {
         new chName[32], HouseType, Preis;
         if(sscanf(params, "iis[32]", HouseType, Preis, chName))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Createhouse [Haus-Typ] [Preis] [Name]");
-        if(Spieler[playerid][pAdmin] < 4)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+        if(Spieler[playerid][pAdmin] < 4)return ERROR_RANG_MSG(playerid);
         new query[1024], Float:x, Float:y, Float:z/* , Float:iX, Float:iY, Float:iZ*/;
         //new Float:px,Float:py,Float:pz;
         GetPlayerPos(playerid, x, y, z);
@@ -16160,7 +16078,7 @@ CMD:copanim(playerid, params[])
 }
 CMD:fallover(playerid, params[])
 {
-    if(Spieler[playerid][pAdmin] < 3)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 3)return ERROR_RANG_MSG(playerid);
     new nr;
     if(sscanf(params, "i", nr))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Fallover [1-5]");
     if(Spieler[playerid][pTot] == 1)return SendClientMessage(playerid, COLOR_RED, "Du kannst keine Animationen ausführen während du verletzt bist.");
@@ -16632,7 +16550,7 @@ stock SavePlayerCar(playerid,slot) {
 
 CMD:givecar(playerid, params[])
 {
-    if(Spieler[playerid][pAdmin] < 3)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 3)return ERROR_RANG_MSG(playerid);
     new pID, vID, color1, color2, neon, stuned;
     if(sscanf(params, "uiiiii", pID, vID, color1, color2, neon, stuned)){SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Givecar [SpielerID/Name] [Vehicle-ID] [Color-1] [Color-2] [Neon] [Special-Tuned]"); SendClientMessage(playerid, COLOR_ORANGE, "Neon-Farben: 0 = Keins, 1 = Blau, 2 = Rot, 3 = Grün, 4 = Weiß, 5 = Pink, 6 = Gelb"); SendClientMessage(playerid, COLOR_ORANGE, "Special-Tuned Typen: 1 = Infernus-Tuned"); return 1;}
     if (vID > 611 || vID < 400) return SendClientMessage(playerid, COLOR_RED, "Die Fahrzeug ID muss zwischen 400 und 611 liegen.");
@@ -17050,7 +16968,7 @@ CMD:carsell(playerid)
 CMD:prison(playerid, params[])
 {
     new pID, time, string[256], reason[64];
-    if(Spieler[playerid][pAdmin] < 3)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 3)return ERROR_RANG_MSG(playerid);
     if(sscanf(params, "uis[64]", pID, time, reason))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Prison [SpielerID/Name] [Zeit in Min.] [Grund]");
     if(!IsPlayerConnected(pID))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
     #if defined USE_NPCS
@@ -17072,7 +16990,7 @@ CMD:prison(playerid, params[])
 }
 
 CMD:gotocar(playerid, params[]) {
-    if (Spieler[playerid][pAdmin] < 1) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if (Spieler[playerid][pAdmin] < 1) return ERROR_RANG_MSG(playerid);
 
     new vehicleid, message[128];
     if (sscanf(params, "i", vehicleid)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING "/Gotocar [Fahrzeug-ID]");
@@ -17091,7 +17009,7 @@ CMD:gotocar(playerid, params[]) {
 }
 
 CMD:getcar(playerid, params[]) {
-    if (Spieler[playerid][pAdmin] < 1) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if (Spieler[playerid][pAdmin] < 1) return ERROR_RANG_MSG(playerid);
 
     new vehicleid, message[128];
     if (sscanf(params, "i", vehicleid)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING "/Getcar [Fahrzeug-ID]");
@@ -17110,7 +17028,7 @@ CMD:getcar(playerid, params[]) {
 CMD:goto(playerid, params[])
 {
     new pID, string[128];
-    if(Spieler[playerid][pAdmin] < 1)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 1)return ERROR_RANG_MSG(playerid);
     if(sscanf(params, "u", pID))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Goto [SpielerID/Name]");
     new Float:x, Float:y, Float:z;
     if(!IsPlayerConnected(pID))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
@@ -17164,7 +17082,7 @@ CMD:goto(playerid, params[])
 CMD:gethere(playerid, params[])
 {
     new pID, string[128];
-    if (Spieler[playerid][pAdmin] < 1) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if (Spieler[playerid][pAdmin] < 1) return ERROR_RANG_MSG(playerid);
     if (sscanf(params, "u", pID)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING "/Gethere [SpielerID/Name]");
     if (pID == INVALID_PLAYER_ID || !gPlayerLogged[pID]) return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
     if (pID == playerid) return SendClientMessage(playerid, COLOR_RED, "Warum willst du dich selbst zu dir teleportieren?");
@@ -17214,7 +17132,7 @@ CMD:gethere(playerid, params[])
 
 
 CMD:spawncar(playerid, params[]) {
-    if (Spieler[playerid][pAdmin] < 1) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if (Spieler[playerid][pAdmin] < 1) return ERROR_RANG_MSG(playerid);
     new vehid;
     if (sscanf(params, "i", vehid)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING" /Spawncar [VehicleID]");
     if (!SetVehicleToRespawn(vehid)) return SendClientMessage(playerid, COLOR_RED, "Die Fahrzeug-ID gibt es nicht.");
@@ -17225,7 +17143,7 @@ CMD:spawncar(playerid, params[]) {
 }
 
 CMD:delfcar(playerid,params[]) {
-    if(Spieler[playerid][pAdmin] < 4)return SendClientMessage(playerid,COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 4)return ERROR_RANG_MSG(playerid);
 	new veh = GetPlayerVehicleID(playerid);
     if(!IsPlayerInVehicle(playerid,veh)) return SendClientMessage(playerid,COLOR_RED,"Du sitzt in keinem Fraktionsfahrzeug.");
     if(FrakCarInfo[veh][f_dbid] == 0 || FrakCarInfo[veh][f_frak] == 0) return SendClientMessage(playerid,COLOR_RED,"Du sitzt in keinem Fraktionsfahrzeug.");
@@ -17260,7 +17178,7 @@ CMD:fpark(playerid,params[]) {
 }
 
 CMD:fcarcolor(playerid,params[]) {
-    if(Spieler[playerid][pAdmin] < 4)return SendClientMessage(playerid,COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 4)return ERROR_RANG_MSG(playerid);
     if(!IsPlayerInAnyVehicle(playerid))return SendClientMessage(playerid, COLOR_RED, "Du bist in keinem Fahrzeug.");
 	new c1,c2;
 	if(sscanf(params,"ii",c1,c2)) return SendClientMessage(playerid,COLOR_BLUE, INFO_STRING"/FCarcolor [Color 1] [Color 2]");
@@ -17286,7 +17204,7 @@ CMD:fcarcolor(playerid,params[]) {
 
 CMD:createfcar(playerid) {
 	new string[256],i=1;
-    if(Spieler[playerid][pAdmin] < 4)return SendClientMessage(playerid,COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 4)return ERROR_RANG_MSG(playerid);
     if(IsPlayerInAnyVehicle(playerid))return SendClientMessage(playerid, COLOR_RED, "Du darfst in keinem Fahrzeug sitzen!");
     for(;i<sizeof(factionNames);i++) {
     	if(strlen(string) == 0) { format(string,sizeof(string),"%s\n%s",factionNames[i]); }
@@ -17301,7 +17219,7 @@ stock IsValidVehicleModelID(vehid) {
 
 CMD:veh(playerid, params[])
 {
-    if(Spieler[playerid][pAdmin] < 2)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 2)return ERROR_RANG_MSG(playerid);
     new vID, color1 = 3, color2 = 3, Float:x, Float:y, Float:z, Float:angle, vehName[32];
     if(sscanf(params, "iI(3)I(3)", vID, color1, color2)) {
         if (sscanf(params, "s[32]", vehName))
@@ -17338,7 +17256,7 @@ CMD:supcar(playerid, params[]) return cmd_supauto(playerid, "");
 CMD:supauto(playerid, params[])
 {
     new string[128];
-    if(Spieler[playerid][pAdmin] < 1)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 1)return ERROR_RANG_MSG(playerid);
     new Float:x, Float:y, Float:z, Float:angle;
     GetPlayerFacingAngle(playerid, angle);
     GetPlayerPos(playerid, x,y,z);
@@ -17361,7 +17279,7 @@ CMD:supauto(playerid, params[])
 CMD:makeadmin(playerid, params[])
 {
     new pID, admid, string[128];
-    if (Spieler[playerid][pAdmin] < 6 && !IsPlayerAdmin(playerid)) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if (Spieler[playerid][pAdmin] < 6 && !IsPlayerAdmin(playerid)) return ERROR_RANG_MSG(playerid);
     if (sscanf(params, "ui", pID, admid)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING" /Makeadmin [SpielerID/Name] [Admin-Rank]");
     if (!IsPlayerConnected(playerid)) return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
     if (admid >= 0 && admid <= 7) {
@@ -17376,7 +17294,7 @@ CMD:makeadmin(playerid, params[])
 CMD:makebmod(playerid, params[])
 {
     new pID, bmodid, string[128];
-    if(Spieler[playerid][pAdmin] < 5)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 5)return ERROR_RANG_MSG(playerid);
     if(sscanf(params, "ui", pID, bmodid))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Makebmod [SpielerID/Name] [Rank 0-2]");
     if(!IsPlayerConnected(playerid))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
     if(bmodid >= 0 || bmodid <= 2)
@@ -17395,7 +17313,7 @@ CMD:makebmod(playerid, params[])
 CMD:spawn(playerid, params[])
 {
     new pID, string[128];
-    if(Spieler[playerid][pAdmin] < 1)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 1)return ERROR_RANG_MSG(playerid);
     if(sscanf(params, "u", pID))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Spawn [SpielerID/Name] [Grund]");
     if(!IsPlayerConnected(pID))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
     if(Spieler[pID][pTot] == 1)
@@ -17413,7 +17331,7 @@ CMD:spawn(playerid, params[])
 CMD:afkick(playerid, params[])
 {
     new pID, string[128];
-    if(Spieler[playerid][pAdmin] < 3)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 3)return ERROR_RANG_MSG(playerid);
     if(sscanf(params, "u", pID))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Afkick [SpielerID/Name]");
     if(!IsPlayerConnected(playerid))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
     if(Spieler[pID][pFraktion] == 0)return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist bereits Zivilist.");
@@ -17428,7 +17346,7 @@ CMD:afkick(playerid, params[])
 CMD:makeleader(playerid, params[])
 {
     new pID, frakid, string[128], fname[50];
-    if(Spieler[playerid][pAdmin] < 4)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 4)return ERROR_RANG_MSG(playerid);
     if(sscanf(params, "ui", pID, frakid))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Makeleader [SpielerID/Name] [Frak-ID]");
     if(!IsPlayerConnected(playerid))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
     if(Spieler[pID][pFraktion] > 0)return SendClientMessage(playerid, COLOR_RED, "* Der Spieler ist noch in einer Fraktion. Benutze erst /Afkick");
@@ -17470,7 +17388,7 @@ CMD:makeleader(playerid, params[])
 CMD:sban(playerid, params[])
 {
     new pID, grund[64], string[128], string1[128];
-    if(Spieler[playerid][pAdmin] < 4)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 4)return ERROR_RANG_MSG(playerid);
     if(sscanf(params, "us[64]", pID, grund))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Sban [SpielerID/Name] [Grund]");
     if(!IsPlayerConnected(pID))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
     if(Spieler[pID][pAdmin] > 0)return SendClientMessage(playerid, COLOR_RED, "Du kannst keine Supporter bzw. Admins bannen.");
@@ -17499,7 +17417,7 @@ CMD:sban(playerid, params[])
 CMD:ban(playerid, params[])
 {
     new pID, grund[64], string[128], string1[128];
-    if (Spieler[playerid][pAdmin] < 1) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if (Spieler[playerid][pAdmin] < 1) return ERROR_RANG_MSG(playerid);
     if (sscanf(params, "us[64]", pID, grund)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING" /Ban [SpielerID/Name] [Grund]");
     if (!IsPlayerConnected(pID)) return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
     if (gPlayerLogged[playerid] != 1 && Spieler[playerid][pAdmin] < 3) return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist noch nicht eingeloggt."); // Spieler nicht bannen wenn noch nicht eingeloggt?
@@ -17540,7 +17458,7 @@ CMD:ban(playerid, params[])
 CMD:ipban(playerid, params[])
 {
     new pID, grund[64], string[128], string1[128];
-    if(Spieler[playerid][pAdmin] < 3)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 3)return ERROR_RANG_MSG(playerid);
     if(sscanf(params, "us[64]", pID, grund))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Ipban [SpielerID/Name] [Grund]");
     if(!IsPlayerConnected(pID))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
     if(Spieler[pID][pAdmin] > 0)return SendClientMessage(playerid, COLOR_RED, "Du kannst keine Supporter bzw. Admins bannen.");
@@ -17576,7 +17494,7 @@ CMD:ipban(playerid, params[])
 CMD:kick(playerid, params[])
 {
     new pID, grund[64], string[128];
-    if(Spieler[playerid][pAdmin] < 1)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 1)return ERROR_RANG_MSG(playerid);
     if(sscanf(params, "us[64]", pID, grund))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Kick [SpielerID/Name] [Grund]");
     if(!IsPlayerConnected(pID))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
     if(Spieler[pID][pAdmin] > 0 && Spieler[playerid][pAdmin] < 5)return SendClientMessage(playerid, COLOR_RED, "Du kannst keine Supporter bzw. Admins kicken.");
@@ -18172,7 +18090,7 @@ COMMAND:vliefers(playerid,params[]){
 CMD:givegun(playerid, params[])
 {
     new pID, wID, ammo, string[128];
-    if(Spieler[playerid][pAdmin] < 2)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 2)return ERROR_RANG_MSG(playerid);
     if(sscanf(params, "uii", pID, wID, ammo))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Givegun [Spieler/Name] [Waffen-ID] [Munition]");
     if(!IsPlayerConnected(pID))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
 
@@ -18202,7 +18120,7 @@ CMD:givegun(playerid, params[])
 
 CMD:setmark(playerid) {
 	new Float:x, Float:y, Float:z;
-    if(Spieler[playerid][pAdmin] < 2)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 2)return ERROR_RANG_MSG(playerid);
     GetPlayerPos(playerid, x, y, z);
     Spieler[playerid][pAMarkX] = x;
     Spieler[playerid][pAMarkY] = y;
@@ -18213,7 +18131,7 @@ CMD:setmark(playerid) {
 }
 
 CMD:gotomark(playerid){
-    if(Spieler[playerid][pAdmin] < 2)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 2)return ERROR_RANG_MSG(playerid);
     if(Spieler[playerid][pAMarkX] == 0)return SendClientMessage(playerid, COLOR_RED, "Es wurde kein gesetzter Punkt gefunden!");
     SetPlayerPos(playerid, Spieler[playerid][pAMarkX], Spieler[playerid][pAMarkY], Spieler[playerid][pAMarkZ]);
     SendClientMessage(playerid, COLOR_BLUE, "Du wurdest zu deinem gesetzen Punkt teleportiert!");
@@ -18221,7 +18139,7 @@ CMD:gotomark(playerid){
 }
 
 CMD:delmark(playerid){
-    if(Spieler[playerid][pAdmin] < 2)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 2)return ERROR_RANG_MSG(playerid);
     if(Spieler[playerid][pAMarkX] == 0)return SendClientMessage(playerid, COLOR_RED, "Es wurde kein gesetzter Punkt gefunden!");
     Spieler[playerid][pAMarkX] = 0;
     Spieler[playerid][pAMarkY] = 0;
@@ -18233,7 +18151,7 @@ CMD:delmark(playerid){
 
 CMD:waffeumgebung(playerid,params[]) {
     new waffeid, munition, Float:reichweite, string[128], Float:giveposx, Float:giveposy, Float:giveposz, Float:getposx, Float:getposy, Float:getposz, Float:distance;
-    if(Spieler[playerid][pAdmin] < 2)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 2)return ERROR_RANG_MSG(playerid);
     if(sscanf(params, "iif", waffeid, munition, reichweite))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Waffeumgebung [WAFFE] [MUNITION] [REICHWEITE]");
     if (Spieler[playerid][pAdmin] < 5 && (waffeid == 38 || waffeid == 37 || waffeid == 36 || waffeid == 35 || waffeid == 45 || waffeid == 44 || waffeid == 40 || waffeid == 39 || waffeid == 26 || waffeid == 28)) return SendClientMessage(playerid, COLOR_RED, "Du kannst diese Waffe nicht vergeben!");
     GetPlayerPos(playerid, giveposx, giveposy, giveposz);
@@ -18255,7 +18173,7 @@ CMD:waffeumgebung(playerid,params[]) {
 
 CMD:healumgebung(playerid,params[]) {
     new Float:reichweite, string[128], Float:giveposx, Float:giveposy, Float:giveposz, Float:getposx, Float:getposy, Float:getposz, Float:distance;
-    if(Spieler[playerid][pAdmin] < 2)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 2)return ERROR_RANG_MSG(playerid);
     if(sscanf(params, "f", reichweite))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Healumgebung [REICHWEITE]");
     GetPlayerPos(playerid, giveposx, giveposy, giveposz);
 	for(new i = 0; i<MAX_PLAYERS; i++){
@@ -18276,7 +18194,7 @@ CMD:healumgebung(playerid,params[]) {
 
 CMD:armorumgebung(playerid,params[]) {
     new Float:reichweite, string[128], Float:giveposx, Float:giveposy, Float:giveposz, Float:getposx, Float:getposy, Float:getposz, Float:distance;
-    if(Spieler[playerid][pAdmin] < 2)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 2)return ERROR_RANG_MSG(playerid);
     if(sscanf(params, "f", reichweite))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Armorumgebung [REICHWEITE]");
     GetPlayerPos(playerid, giveposx, giveposy, giveposz);
 	for(new i = 0; i<MAX_PLAYERS; i++){
@@ -18297,7 +18215,7 @@ CMD:armorumgebung(playerid,params[]) {
 
 CMD:freezeumgebung(playerid,params[]) {
     new Float:reichweite, string[128], Float:giveposx, Float:giveposy, Float:giveposz, Float:getposx, Float:getposy, Float:getposz, Float:distance;
-    if(Spieler[playerid][pAdmin] < 2)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 2)return ERROR_RANG_MSG(playerid);
     if(sscanf(params, "f", reichweite))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Freezeumgebung [REICHWEITE]");
     GetPlayerPos(playerid, giveposx, giveposy, giveposz);
 	for(new i = 0; i<MAX_PLAYERS; i++){
@@ -18318,7 +18236,7 @@ CMD:freezeumgebung(playerid,params[]) {
 
 CMD:unfreezeumgebung(playerid,params[]) {
     new Float:reichweite, string[128], Float:giveposx, Float:giveposy, Float:giveposz, Float:getposx, Float:getposy, Float:getposz, Float:distance;
-    if(Spieler[playerid][pAdmin] < 2)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 2)return ERROR_RANG_MSG(playerid);
     if(sscanf(params, "f", reichweite))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Unfreezeumgebung [REICHWEITE]");
     GetPlayerPos(playerid, giveposx, giveposy, giveposz);
 	for(new i = 0; i<MAX_PLAYERS; i++){
@@ -18704,7 +18622,7 @@ CMD:adminwaffen(playerid)
 {
     if(IsPlayerInRangeOfPoint(playerid, 2.0, aBase_WEAPON_POINT))//Hitman
     {
-        if (Spieler[playerid][pAdmin] < 3) return SendClientMessage(playerid, COLOR_RED, "Dafür hast du keine Berechtigung.");
+        if (Spieler[playerid][pAdmin] < 3) return ERROR_RANG_MSG(playerid);
         if(GetPlayerMoney(playerid) < 100)return SendClientMessage(playerid, COLOR_RED, "Du benötigst $100.");
         GiveHitmanWeapons(playerid);
         SendClientMessage(playerid, COLOR_GREEN, "Adminwaffen erhalten. (Desert Eagle, MP5, Sniper)");
@@ -18776,7 +18694,7 @@ CMD:aheilen(playerid)
 {
     if(IsPlayerInRangeOfPoint(playerid, 2.0, aBase_WEAPON_POINT))//Grove
     {
-        if (Spieler[playerid][pAdmin] < 3) return SendClientMessage(playerid, COLOR_RED, "Dafür hast du keine Berechtigung.");
+        if (Spieler[playerid][pAdmin] < 3) return ERROR_RANG_MSG(playerid);
         if(Spieler[playerid][pHeilReady] == 0)return SendClientMessage(playerid, COLOR_RED, "Du kannst dich noch nicht heilen.");
         Spieler[playerid][pHeilReady] = 0;
         SetPlayerHealth(playerid, 100);
@@ -19120,12 +19038,11 @@ CMD:expertefarbe(playerid)
 CMD:adienst(playerid)
 {
     new string[128];
-    if(!(Spieler[playerid][pAdmin] >= 1)) return SendClientMessage(playerid, COLOR_RED, "Du bist kein Teammitglied!");
+    if(!(Spieler[playerid][pAdmin] >= 1)) return ERROR_RANG_MSG(playerid);
     {
         if(Spieler[playerid][pAdminDienst]==0)
         {
             if(Spieler[playerid][pAdmin] >= 1)SetPlayerColor(playerid, TEAM_SANI_COLOR);
-            //Spieler[playerid][pAdminLabel] = Create3DTextLabel("** ADMINISTRATOR IM DIENST **", 0xFF3030FF, 0.0, 0.0, 0.0, 35.0 , .attachedplayer = playerid );
             format(string, sizeof(string), "* %s arbeitet nun als %s im Dienst *", GetName(playerid), GetPlayerAdminRang(playerid));
             SendAdminMessage(COLOR_RED, string);
             SetPlayerHealth(playerid, 100000);
@@ -19138,28 +19055,10 @@ CMD:adienst(playerid)
             SendAdminMessage(COLOR_RED, string);
             SetPlayerHealth(playerid, 100);
             Spieler[playerid][pAdminDienst] = 0;
-            /*DestroyDynamic3DTextLabel(Spieler[playerid][pAdminLabel]);
-            Spieler[playerid][pAdminLabel] = Text3D:INVALID_3DTEXT_ID;*/
         }
     }
     return 1;
 }
-
-/*CMD:pumasehalles(playerid)
-{
-    if(!(Spieler[playerid][pAdmin] >= 1)) return SendClientMessage(playerid, COLOR_RED, "Du bist kein Teammitglied!");
-    {
-        for(new i =0; i < MAX_PLAYERS;i++)
-        {
-            SetPlayerMarkerForPlayer( playerid, i, 0xFFFFFF00 );
-        }
-        if(Spieler[playerid][pAdmin] >= 1)SetPlayerColor(playerid, TEAM_SANI_COLOR);
-        SendClientMessage(playerid, COLOR_YELLOW, "Alle Spieler werden dir angezeigt.");
-        Spieler[playerid][pAdminDienst] = 1;
-
-    }
-    return 1;
-}*/
 
 CMD:rank(playerid)
 {
@@ -19688,7 +19587,7 @@ CMD:expertehelp(playerid)
 */
 CMD:gotoliste(playerid)
 {
-    if(Spieler[playerid][pAdmin] < 1)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 1)return ERROR_RANG_MSG(playerid);
     ShowPlayerDialog(playerid, DIALOG_GOTOLISTE, DIALOG_STYLE_LIST, "Goto-Liste", "Stadthalle\nSubway\nAmmunation\nLS Strand\nFahrschule\nAutohaus günstig\nAutohaus Luxus\nKrankenhaus\nBank\nLSPD\nMotorradverkauf\nFlugzeugverkauf\nNeulingsspawn\nClubvilla in Los Santos\nStandesamt\n", "Teleportieren", "Abbrechen");
     return 1;
 }
@@ -20296,7 +20195,7 @@ stock RespawnJobCars(jobID) {
 }
 
 CMD:fraktionen(playerid) {
-    if (Spieler[playerid][pAdmin] < 1) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if (Spieler[playerid][pAdmin] < 1) return ERROR_RANG_MSG(playerid);
     new dialogText[512];
     for (new i = 0; i < sizeof(factionNames); i++) format(dialogText, sizeof(dialogText), "%sID: %i\t%s\n", dialogText, i, factionNames[i]);
 	if(Spieler[playerid][pAdmin] < 3){
@@ -20308,7 +20207,7 @@ CMD:fraktionen(playerid) {
 }
 
 CMD:jobs(playerid) {
-    if (Spieler[playerid][pAdmin] < 1) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if (Spieler[playerid][pAdmin] < 1) return ERROR_RANG_MSG(playerid);
     new dialogText[512];
     for (new i = 0; i < sizeof(jobNames); i++) format(dialogText, sizeof(dialogText), "%sID: %i\t%s\n", dialogText, i, jobNames[i]);
     if(Spieler[playerid][pAdmin] < 3){
@@ -20320,7 +20219,7 @@ CMD:jobs(playerid) {
 }
 
 CMD:rjobcars(playerid, params[]) {
-    if (Spieler[playerid][pAdmin] < 1) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if (Spieler[playerid][pAdmin] < 1) return ERROR_RANG_MSG(playerid);
 
     new jobID;
     if (sscanf(params, "%i", jobID)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING" /Rjobcars [Job-ID]");
@@ -20332,7 +20231,7 @@ CMD:rjobcars(playerid, params[]) {
 }
 
 CMD:rfrakcars(playerid, params[]) {
-    if (Spieler[playerid][pAdmin] < 1) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if (Spieler[playerid][pAdmin] < 1) return ERROR_RANG_MSG(playerid);
 
     new factionID;
     if (sscanf(params, "%i", factionID)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING" /Rfrakcars [Fraktions-ID]");
@@ -20374,7 +20273,7 @@ CMD:respawncars(playerid)
 
 CMD:respawncar(playerid)
 {
-    if(Spieler[playerid][pAdmin] < 1) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 1) return ERROR_RANG_MSG(playerid);
     new vID;
     vID = GetPlayerVehicleID(playerid);
     if(IsPlayerInAnyVehicle(playerid))
@@ -20387,16 +20286,6 @@ CMD:respawncar(playerid)
         return 1;
     }
     return 1;
-}
-
-CMD:jailtimeout(playerid, params[]) {
-    if (Spieler[playerid][pAdmin] < 6) return 0;
-    new newTimeout;
-    if (sscanf(params, "i", newTimeout)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING" /Jailtimeout [Sekunden]");
-    JAIL_TIMEOUT = newTimeout;
-    new message[128];
-    format(message, sizeof(message), "Du hast das Jail-Timeout auf %i Sekunden gesetzt.", JAIL_TIMEOUT);
-    return SendClientMessage(playerid, COLOR_YELLOW, message);
 }
 
 CMD:befreien(playerid, params[])
@@ -20777,13 +20666,15 @@ CMD:sc(playerid, params[])
         SendAdminMessage(COLOR_DARKYELLOW, string);
         format(string, sizeof(string), "Name: %s - %s", GetName(playerid), text);
         LogAdminChat(string);
+    }else{
+        ERROR_RANG_MSG(playerid);
     }
     return 1;
 }
 
 CMD:gcoff(playerid)
 {
-    if (Spieler[playerid][pAdmin] < 3) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if (Spieler[playerid][pAdmin] < 3) return ERROR_RANG_MSG(playerid);
     return ToggleASetting(playerid, ASETTING_GLOBALCHAT, false);
 }
 
@@ -20826,7 +20717,7 @@ CMD:gc(playerid, params[])
 
 CMD:admn(playerid, params[])
 {
-    if(!(Spieler[playerid][pAdmin] >= 1))return SendClientMessage(playerid, COLOR_RED, "Du bist kein Teammitglied!");
+    if(!(Spieler[playerid][pAdmin] >= 1))return ERROR_RANG_MSG(playerid);
     if(Spieler[playerid][pMuted]== 1)return SendClientMessage(playerid, COLOR_CHAT_MUTED, "Du bist gemutet.");
     new text[96], pID, string[128];
     if(sscanf(params, "us[96]", pID, text))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Admn [SpielerID/Name] [Nachricht]");
@@ -20923,6 +20814,8 @@ CMD:gmsg(playerid, params[])
         new string[256];
         format(string, sizeof(string), "** %s %s sagt: %s **", GetPlayerAdminRang(playerid), GetName(playerid), text);
         SendClientMessageToAll(COLOR_PINK, string);
+    }else{
+        ERROR_RANG_MSG(playerid);
     }
     return 1;
 }
@@ -21127,7 +21020,7 @@ CMD:awb(playerid, params[]) return cmd_awiederbeleben(playerid, params);
 CMD:awiederbeleben(playerid, params[])
 {
     new pID, string[128];
-    if(Spieler[playerid][pAdmin] < 2)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 2)return ERROR_RANG_MSG(playerid);
     if(sscanf(params, "u", pID))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Awiederbeleben [SpielerID/Name]");
     if(!IsPlayerConnected(pID))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
     if(Spieler[pID][pTot] == 0)return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht tot.");
@@ -22644,43 +22537,6 @@ CMD:stopreinigung(playerid)
     return 1;
 }
 
-/*
-CMD:admins(playerid)
-{
-    if( gPlayerLogged[playerid] == 0 ) return SendClientMessage(playerid,COLOR_RED,"Du bist nicht eingeloggt");
-	new bool:IsOnline;
-	new string[128];
-	new str2[2048];
-	for(new i = 0 ; i < MAX_PLAYERS ; i++)
-	{
-		if(IsPlayerConnected(i) && gPlayerLogged[i] == 1)
-		{
-			if(Spieler[i][pAdmin] > 0)
-			{
-				new rang[32];
-				if(Spieler[i][pAdmin] == ADMIN_RANK_SUP){rang ="Supporter";}
-				else if(Spieler[i][pAdmin] == ADMIN_RANK_SUP_EVENT){rang ="Moderator";}
-				else if(Spieler[i][pAdmin] == ADMIN_RANK_MOD){rang ="Moderator";}
-				else if(Spieler[i][pAdmin] == ADMIN_RANK_ADMIN){rang ="Administrator";}
-				else if(Spieler[i][pAdmin] == ADMIN_RANK_DEVELOPER){rang ="Entwickler";}
-				else if(Spieler[i][pAdmin] == ADMIN_RANK_MANAGER){rang ="Entwickler";}
-				else if(Spieler[i][pAdmin] == ADMIN_RANK_CHIEF){rang ="Projektleiter";}
-				format(string,sizeof(string),"%s %s (ID: %i) (Tel: %d)\n",rang,GetName(i),i,Spieler[i][pHandyNr]);
-				strcat(str2, string);
-				IsOnline = true;
-			}
-		}
-	}
-	if(!IsOnline)
-	{
-		SendClientMessage(playerid, COLOR_RED, "Aktuell ist kein Teammitglied Online");
-		return 1;
-	}
-	ShowPlayerDialog(playerid, DIALOG_ADMINLISTE, DIALOG_STYLE_MSGBOX, COLOR_HEX_ORANGE"Admin-Liste", str2, "Schließen", "");
-	return 1;
-}
-*/
-
 CMD:admins(playerid){
     if( gPlayerLogged[playerid] == 0 ) return SendClientMessage(playerid,COLOR_RED,"Du bist nicht eingeloggt");
     new query[160];
@@ -22693,26 +22549,11 @@ CMD:admins(playerid){
 CMD:liste(playerid)
 {
     if( gPlayerLogged[playerid] == 0 ) return SendClientMessage(playerid,COLOR_RED,"Du bist nicht eingeloggt");
-    /*if(Spieler[playerid][pFraktion] == 1)
-    {
-        ShowPlayerDialog(playerid, DIALOG_LISTE, DIALOG_STYLE_LIST, COLOR_HEX_ORANGE"Spieler-Liste",COLOR_HEX_WHITE"Busfahrer\nTrucker\nPilote\nKFZ-Mechatroniker\nAnwälte\nTaxifahrer\nAdmins\nNews Reporter\nSanitäter\nOrdnungsbeamte\nFahrlehrer\n"COLOR_HEX_ORANGE"Verbrecher", "Auswählen", "Abbrechen");
-        return 1;
-    }
-    else if(Spieler[playerid][pFraktion] == 2)
-    {
-        ShowPlayerDialog(playerid, DIALOG_LISTE, DIALOG_STYLE_LIST, COLOR_HEX_ORANGE"Spieler-Liste",COLOR_HEX_WHITE"Busfahrer\nTrucker\nPilote\nKFZ-Mechatroniker\nAnwälte\nTaxifahrer\nAdmins\nNews Reporter\nSanitäter\nOrdnungsbeamte\nFahrlehrer\n"COLOR_HEX_ORANGE"Verbrecher", "Auswählen", "Abbrechen");
-        return 1;
-    }*/
     if(Spieler[playerid][pFraktion] == 3)
     {
         ShowPlayerDialog(playerid, DIALOG_LISTE, DIALOG_STYLE_LIST, COLOR_HEX_ORANGE"Spieler-Liste", COLOR_HEX_WHITE"Busfahrer\nTrucker\nPilote\nKFZ-Mechatroniker\nAnwälte\nTaxifahrer\nAdmins\nNews Reporter\nSanitäter\nOrdnungsbeamte\nLSPD\nLeaderliste\n"COLOR_HEX_ORANGE"Gestorbene", "Auswählen", "Abbrechen");
         return 1;
-    }/*
-    else if(Spieler[playerid][pFraktion] == 16)
-    {
-        ShowPlayerDialog(playerid, DIALOG_LISTE, DIALOG_STYLE_LIST, COLOR_HEX_ORANGE"Spieler-Liste",COLOR_HEX_WHITE"Busfahrer\nTrucker\nPilote\nKFZ-Mechatroniker\nAnwälte\nTaxifahrer\nAdmins\nNews Reporter\nSanitäter\nOrdnungsbeamte\nFahrlehrer\n"COLOR_HEX_ORANGE"Verbrecher", "Auswählen", "Abbrechen");
-        return 1;
-    }*/
+    }
     ShowPlayerDialog(playerid, DIALOG_LISTE, DIALOG_STYLE_LIST, COLOR_HEX_ORANGE"Spieler-Liste",COLOR_HEX_WHITE"Busfahrer\nTrucker\nPilote\nKFZ-Mechatroniker\nAnwälte\nTaxifahrer\nAdmins\nNews Reporter\nSanitäter\nOrdnungsbeamte\nLSPD\nLeaderliste", "Auswählen", "Abbrechen");
     return 1;
 }
@@ -29811,9 +29652,9 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
     if (dialogid == DIALOG_ASETTINGS) {
         if (!response) return 1;
         if (listitem < 0 || listitem >= sizeof(g_aSettings)) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Ungültige Auswahl.");
-        if (Spieler[playerid][pAdmin] < 1) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Dafür hast du keine Berechtigung.");
+        if (Spieler[playerid][pAdmin] < 1) return ERROR_RANG_MSG(playerid);
         if (Spieler[playerid][pAdmin] < g_aSettings[listitem][ASETTING_RANK]) {
-            SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}Dafür hast du nicht die nötigen Rechte.");
+            ERROR_RANG_MSG(playerid);
             return cmd_asettings(playerid);
         }
 
@@ -39009,7 +38850,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
         }
         case DIALOG_CONFIGBIZ_KASSE: {
             if (!response) return 1;
-            if (Spieler[playerid][pAdmin] < 4) return SendClientMessage(playerid, COLOR_RED, "Dafür hast du keine Berechtigung.");
+            if (Spieler[playerid][pAdmin] < 4) return ERROR_RANG_MSG(playerid);
             new b = IsPlayerAtBiz(playerid);
             if (b == 999) return SendClientMessage(playerid, COLOR_RED, "Da du dich an keinem Geschäft befindest, wurde die Aktion abgebrochen.");
             new amount;
@@ -45158,7 +44999,7 @@ CMD:service(playerid)
 CMD:event(playerid, params[])
 {
     new eingabe[12], entry, string[128];
-    if(Spieler[playerid][pAdmin] < 6)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 6)return ERROR_RANG_MSG(playerid);
     if(sscanf(params, "s[12]i", eingabe, entry))
     {
         SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Event [Typ] [Anzahl]");
@@ -45454,7 +45295,7 @@ CMD:scheinentziehen(playerid, params[])
 
 CMD:giveallscheine(playerid, params[]) {
 	new pID, string[128];
-	if( Spieler[playerid][pAdmin] < 3 ) return SendClientMessage(playerid, COLOR_RED, "Du hast keine Berechtigung dazu.");
+	if( Spieler[playerid][pAdmin] < 3 ) return ERROR_RANG_MSG(playerid);
 	if(sscanf(params, "u", pID))return SendClientMessage(playerid,COLOR_BLUE,INFO_STRING"/Giveallscheine [SpielerID/Name]");
 	if(!IsPlayerConnected(pID))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
 	Spieler[pID][pCarLic] = 1;
@@ -48516,7 +48357,7 @@ stock TreasuryDeposit(money) {
 
 CMD:setzoneowner(playerid, params[]) {
     new zoneid, owner[32];
-    if (Spieler[playerid][pAdmin] < 4) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if (Spieler[playerid][pAdmin] < 4) return ERROR_RANG_MSG(playerid);
     if (sscanf(params, "is[32]", zoneid, owner)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING" /setzoneowner [Gangzone ID] [Fraktionsname]");
     if (zoneid < 0 || zoneid >= MAX_GANGZONES) return SendClientMessage(playerid, COLOR_RED, "Keine gültige GangZone-ID.");
     if (g_GangZone[zoneid][GZ_iStatus] == 1) return SendClientMessage(playerid, COLOR_RED, "In dem Gebiet findet gerade ein Gangfight statt.");
@@ -49331,7 +49172,7 @@ COMMAND:verwarnen(playerid,params[]) {
     }
     else
     {
-        SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte!");
+        ERROR_RANG_MSG(playerid);
         return 1;
     }
     new
@@ -50552,7 +50393,7 @@ COMMAND:aschlagen(playerid,params[]) {
         return SendClientMessage(playerid,COLOR_BLUE, INFO_STRING"/Aschlagen [Spieler]");
     }
     if(Spieler[playerid][pAdmin] < 1) {
-        return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+        return ERROR_RANG_MSG(playerid);
     }
     if( !IsPlayerConnected(giveid) ) {
         return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
@@ -50582,7 +50423,7 @@ COMMAND:entbannen(playerid,params[]) {
         return SendClientMessage(playerid,COLOR_BLUE, INFO_STRING"/Entbannen [Spielername]");
     }
     if(Spieler[playerid][pAdmin] < 3) {
-        return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+        return ERROR_RANG_MSG(playerid);
     }
     /*
     if( !mysql_CheckName(Spielername) ) {
@@ -50636,7 +50477,7 @@ COMMAND:delfraksperre(playerid,params[]) {
     }
     sscanf(sName,"u",giveid);
     if(Spieler[playerid][pAdmin] < 3) {
-        return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+        return ERROR_RANG_MSG(playerid);
     }
     /*
     if( !IsPlayerConnected(giveid) ) {
@@ -50686,7 +50527,7 @@ COMMAND:fraksperre(playerid,params[]) {
     }
     sscanf(sName,"u",giveid);
     if(Spieler[playerid][pAdmin] < 3) {
-        return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+        return ERROR_RANG_MSG(playerid);
     }
     /*
     if( !IsPlayerConnected(giveid) ) {
@@ -51019,9 +50860,9 @@ COMMAND:respawnallcars(playerid, params[]) {
     new hour, minu, sec;
     gettime(hour, minu, sec);
     if (Spieler[playerid][pAdmin] < 3 && hour < 23 && hour > 9)
-        return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+        return ERROR_RANG_MSG(playerid);
     else if (Spieler[playerid][pAdmin] < 1)
-        return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+        return ERROR_RANG_MSG(playerid);
 
     new trailerid, bool:excludeVehicles[MAX_VEHICLES];
     for (new i = 0; i < sizeof(vehicle_truckerBase); i++)
@@ -51330,7 +51171,7 @@ public stopMask(playerid) {
 CMD:amaske(playerid) return cmd_adminmaske(playerid);
 
 CMD:adminmaske(playerid) {
-    if (Spieler[playerid][pAdmin] < 5) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die nötigen Rechte!");
+    if (Spieler[playerid][pAdmin] < 5) return ERROR_RANG_MSG(playerid);
     new poolSize = GetPlayerPoolSize();
     Spieler[playerid][abMaske] = !Spieler[playerid][abMaske];
     if (!Spieler[playerid][abMaske]) {
@@ -51792,46 +51633,6 @@ COMMAND:oamt(playerid,params[]){
     }
     return 1;
 }
-/*COMMAND:kuhreitendfddd(playerid,params[]){
-    if(Spieler[playerid][pAdmin] < 1)return SendClientMessage(playerid, COLOR_RED, "Du bist kein Admin.");
-    SetPlayerAttachedObject(playerid, 3, 16442, 1, -0.635999,0.319998,-0.012999,100.099929,102.400070,1.700000,0.348000,0.387000,0.348000);
-    ApplyAnimation(playerid,"LOWRIDER","Sit_relaxed",1000,1,1,1,1,0,1);
-    ApplyAnimation(playerid,"LOWRIDER","Sit_relaxed",1000,1,1,1,1,0,1);
-    SetTimerEx("CowUpdate",100,true,"d",playerid);
-    return 1;
-}
-forward CowUpdate(playerid);
-public CowUpdate(playerid)
-{
-    new Float:x, Float:y, Float:z, Float:a;
-    new Keys,ud,lr;
-    GetPlayerKeys(playerid,Keys,ud,lr);
-    if(ud < 0)
-    {
-        GetPlayerPos(playerid, x, y, z);
-        GetPlayerFacingAngle(playerid, a);
-        SetPlayerPosFindZ(playerid,x + 1*floatcos(90+a, degrees), y+ 1*floatsin(90-a, degrees), z);
-        ApplyAnimation(playerid,"LOWRIDER","Sit_relaxed",1000,1,1,1,1,0,1);
-    }
-    if(ud > 0)
-    {
-        GetPlayerPos(playerid, x, y, z);
-        GetPlayerFacingAngle(playerid, a);
-        SetPlayerPosFindZ(playerid,x - 1*floatcos(90+a, degrees), y- 1*floatsin(90-a, degrees), z);
-        ApplyAnimation(playerid,"LOWRIDER","Sit_relaxed",1000,1,1,1,1,0,1);
-    }
-    if(lr > 0)
-    {
-        GetPlayerFacingAngle(playerid, a);
-        SetPlayerFacingAngle(playerid, a-10);
-    }
-    if(lr < 0)
-    {
-        GetPlayerFacingAngle(playerid, a);
-        SetPlayerFacingAngle(playerid, a+10);
-    }
-    return 1;
-}*/
 
 COMMAND:copbrille(playerid,params[]){
     if( !(Spieler[playerid][pFraktion] == 1 || Spieler[playerid][pFraktion] == 2 || Spieler[playerid][pFraktion] == 16 || Spieler[playerid][pFraktion] == 22) ) {
@@ -52082,299 +51883,6 @@ COMMAND:pschild(playerid,params[]){
     }
     return 1;
 }
-//================WITZ FÜR PUMA=============================
-COMMAND:pufeuer(playerid,params[]){
-    if( !(Spieler[playerid][pAdmin] == 5 || Spieler[playerid][pAdmin] == 6) ) {
-        return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die nötigen Rechte!");
-    }
-    /*
-    if( GetPlayerSkin(playerid) != 280 ) {
-        return SendClientMessage(playerid, COLOR_RED, "Du kannst diese Funktion nur mit dem Polizei Skin nutzen");
-    }
-    */
-    if( IsPlayerAttachedObjectSlotUsed(playerid,0) ) {
-        RemovePlayerAttachedObject(playerid,0);
-        SendClientMessage(playerid,COLOR_YELLOW,"Entfernt");
-    }
-    else {
-        SetPlayerAttachedObject( playerid, 0, 18690, 1, 0.200000, 0.000000, -1.600000, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000, 1.000000 ); // deer01 - haustier
-        SendClientMessage(playerid,COLOR_YELLOW,"Angesteckt");
-    }
-    return 1;
-}
-COMMAND:wasserfallp(playerid,params[]){
-    if( !(Spieler[playerid][pAdmin] == 5 || Spieler[playerid][pAdmin] == 6) ) {
-        return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die nötigen Rechte!");
-    }
-    /*
-    if( GetPlayerSkin(playerid) != 280 ) {
-        return SendClientMessage(playerid, COLOR_RED, "Du kannst diese Funktion nur mit dem Polizei Skin nutzen");
-    }
-    */
-    if( IsPlayerAttachedObjectSlotUsed(playerid,0) ) {
-        RemovePlayerAttachedObject(playerid,0);
-        SendClientMessage(playerid,COLOR_YELLOW,"Entfernt");
-    }
-    else {
-        SetPlayerAttachedObject( playerid, 0, 18720, 1, 1.000000, 0.000000, 0.100000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000 ); // deer01 - haustier
-        SendClientMessage(playerid,COLOR_YELLOW,"Angesteckt");
-    }
-    return 1;
-}
-COMMAND:glanzt(playerid,params[]){
-    if( !(Spieler[playerid][pAdmin] == 5 || Spieler[playerid][pAdmin] == 6) ) {
-        return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die nötigen Rechte!");
-    }
-    /*
-    if( GetPlayerSkin(playerid) != 280 ) {
-        return SendClientMessage(playerid, COLOR_RED, "Du kannst diese Funktion nur mit dem Polizei Skin nutzen");
-    }
-    */
-    if( IsPlayerAttachedObjectSlotUsed(playerid,0) ) {
-        RemovePlayerAttachedObject(playerid,0);
-        SendClientMessage(playerid,COLOR_YELLOW,"Entfernt");
-    }
-    else {
-        SetPlayerAttachedObject( playerid, 0, 18724, 1, 0.000000, 0.000000, -1.700000, 0.000000, 0.000000, 0.000000, 50.000000, 50.000000, 1.000000 ); // deer01 - haustier
-        SendClientMessage(playerid,COLOR_YELLOW,"Angesteckt");
-    }
-    return 1;
-}
-COMMAND:glanzs(playerid,params[]){
-    if( !(Spieler[playerid][pAdmin] == 5 || Spieler[playerid][pAdmin] == 6) ) {
-        return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die nötigen Rechte!");
-    }
-    /*
-    if( GetPlayerSkin(playerid) != 280 ) {
-        return SendClientMessage(playerid, COLOR_RED, "Du kannst diese Funktion nur mit dem Polizei Skin nutzen");
-    }
-    */
-    if( IsPlayerAttachedObjectSlotUsed(playerid,0) ) {
-        RemovePlayerAttachedObject(playerid,0);
-        SendClientMessage(playerid,COLOR_YELLOW,"Entfernt");
-    }
-    else {
-        SetPlayerAttachedObject( playerid, 0, 18710, 1, 0.400000, 0.000000, -1.500000, 0.000000, 0.000000, 0.000000, 1.000000, 1.000000, 1.000000 ); // deer01 - haustier
-        SendClientMessage(playerid,COLOR_YELLOW,"Angesteckt");
-    }
-    return 1;
-}
-COMMAND:atanke(playerid,params[]){
-    if( !(Spieler[playerid][pAdmin] == 5 || Spieler[playerid][pAdmin] == 6) ) {
-        return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die nötigen Rechte!");
-    }
-    /*
-    if( GetPlayerSkin(playerid) != 280 ) {
-        return SendClientMessage(playerid, COLOR_RED, "Du kannst diese Funktion nur mit dem Polizei Skin nutzen");
-    }
-    */
-    if( IsPlayerAttachedObjectSlotUsed(playerid,0) ) {
-        RemovePlayerAttachedObject(playerid,0);
-        SendClientMessage(playerid,COLOR_YELLOW,"Entfernt");
-    }
-    else {
-        SetPlayerAttachedObject( playerid, 0, 1676, 1, 0.290895, 0.000000, -0.004422, 357.079620, 86.866310, 358.401214, 1.000000, 1.000000, 1.000000 ); // deer01 - haustier
-        SendClientMessage(playerid,COLOR_YELLOW,"Angesteckt");
-    }
-    return 1;
-}
-COMMAND:ahaare(playerid,params[]){
-    if( !(Spieler[playerid][pAdmin] == 5 || Spieler[playerid][pAdmin] == 6) ) {
-        return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die nötigen Rechte!");
-    }
-    /*
-    if( GetPlayerSkin(playerid) != 280 ) {
-        return SendClientMessage(playerid, COLOR_RED, "Du kannst diese Funktion nur mit dem Polizei Skin nutzen");
-    }
-    */
-    if( IsPlayerAttachedObjectSlotUsed(playerid,0) ) {
-        RemovePlayerAttachedObject(playerid,0);
-        SendClientMessage(playerid,COLOR_YELLOW,"Entfernt");
-    }
-    else {
-        SetPlayerAttachedObject( playerid, 0, 19274, 2, 0.090415, -0.013583, 0.000000, 0.000000, 0.000000, 0.000000, 1.000000, 1.000000, 1.000000 ); //Haare
-        SendClientMessage(playerid,COLOR_YELLOW,"Angesteckt");
-    }
-    return 1;
-}
-COMMAND:akuh(playerid,params[]){
-    if( !(Spieler[playerid][pAdmin] == 5 || Spieler[playerid][pAdmin] == 6) ) {
-        return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die nötigen Rechte!");
-    }
-    /*
-    if( GetPlayerSkin(playerid) != 280 ) {
-        return SendClientMessage(playerid, COLOR_RED, "Du kannst diese Funktion nur mit dem Polizei Skin nutzen");
-    }
-    */
-    if( IsPlayerAttachedObjectSlotUsed(playerid,0) ) {
-        RemovePlayerAttachedObject(playerid,0);
-        SendClientMessage(playerid,COLOR_YELLOW,"Entfernt");
-    }
-    else {
-        SetPlayerAttachedObject( playerid, 0, 11470, 15, -0.043005, 0.000000, 0.160083, 350.285247, 359.338409, 167.046310, 1.000000, 1.000000, 1.000000 ); // des_bigbull - kuhh
-        SendClientMessage(playerid,COLOR_YELLOW,"Angesteckt");
-    }
-    return 1;
-}
-
-COMMAND:cjkopf(playerid,params[]){
-    if( !(Spieler[playerid][pAdmin] == 5 || Spieler[playerid][pAdmin] == 6) ) {
-        return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die nötigen Rechte!");
-    }
-    /*
-    if( GetPlayerSkin(playerid) != 280 ) {
-        return SendClientMessage(playerid, COLOR_RED, "Du kannst diese Funktion nur mit dem Polizei Skin nutzen");
-    }
-    */
-    if( IsPlayerAttachedObjectSlotUsed(playerid,0) ) {
-        RemovePlayerAttachedObject(playerid,0);
-        SendClientMessage(playerid,COLOR_YELLOW,"Entfernt");
-    }
-    else {
-        SetPlayerAttachedObject( playerid, 0, 18963, 2, 0.091483, -0.012514, 0.000000, 0.000000, 93.091644, 90.000000, 2.000000, 2.000000, 2.000000 ); // CJElvisHead - gesicht cj
-        SendClientMessage(playerid,COLOR_YELLOW,"Angesteckt");
-    }
-    return 1;
-}
-
-COMMAND:serverengel(playerid,params[]){
-    if( !(Spieler[playerid][pAdmin] == 5 || Spieler[playerid][pAdmin] == 6) ) {
-        return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die nötigen Rechte!");
-    }
-    /*
-    if( GetPlayerSkin(playerid) != 280 ) {
-        return SendClientMessage(playerid, COLOR_RED, "Du kannst diese Funktion nur mit dem Polizei Skin nutzen");
-    }
-    */
-    if( IsPlayerAttachedObjectSlotUsed(playerid,0) ) {
-        RemovePlayerAttachedObject(playerid,0);
-        SendClientMessage(playerid,COLOR_YELLOW,"Entfernt");
-    }
-    else {
-        SetPlayerAttachedObject( playerid, 0, 345, 1, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000 ); // missile - engel
-        SendClientMessage(playerid,COLOR_YELLOW,"Angesteckt");
-    }
-    return 1;
-}
-
-COMMAND:bankraubtasche(playerid,params[]){
-    if( !(Spieler[playerid][pAdmin] == 5 || Spieler[playerid][pAdmin] == 6) ) {
-        return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die nötigen Rechte!");
-    }
-    /*
-    if( GetPlayerSkin(playerid) != 280 ) {
-        return SendClientMessage(playerid, COLOR_RED, "Du kannst diese Funktion nur mit dem Polizei Skin nutzen");
-    }
-    */
-    if( IsPlayerAttachedObjectSlotUsed(playerid,0) ) {
-        RemovePlayerAttachedObject(playerid,0);
-        SendClientMessage(playerid,COLOR_YELLOW,"Entfernt");
-    }
-    else {
-        SetPlayerAttachedObject( playerid, 0, 1550, 15, 0.000000, 0.280000, -0.310000, 0.000000, 15.000000, 0.000000, 1.000000, 1.000000, 1.000000 );
-        SendClientMessage(playerid,COLOR_YELLOW,"Angesteckt");
-    }
-    return 1;
-}
-COMMAND:aosterei(playerid,params[]){
-    if( !(Spieler[playerid][pAdmin] == 5 || Spieler[playerid][pAdmin] == 6) ) {
-        return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die nötigen Rechte!");
-    }
-    /*
-    if( GetPlayerSkin(playerid) != 280 ) {
-        return SendClientMessage(playerid, COLOR_RED, "Du kannst diese Funktion nur mit dem Polizei Skin nutzen");
-    }
-    */
-    if( IsPlayerAttachedObjectSlotUsed(playerid,0) ) {
-        RemovePlayerAttachedObject(playerid,0);
-        SendClientMessage(playerid,COLOR_YELLOW,"Entfernt");
-    }
-    else {
-        SetPlayerAttachedObject( playerid, 0, 19341, 1, -0.324815, 0.027729, 0.000000, 262.441711, 98.712211, 153.388839, 2.099999, 2.099999, 2.099999  ); // osterei
-        SendClientMessage(playerid,COLOR_YELLOW,"Angesteckt");
-    }
-    return 1;
-}
-COMMAND:papagei(playerid,params[]){
-    if( !(Spieler[playerid][pAdmin] == 5 || Spieler[playerid][pAdmin] == 6) ) {
-        return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die nötigen Rechte!");
-    }
-    /*
-    if( GetPlayerSkin(playerid) != 280 ) {
-        return SendClientMessage(playerid, COLOR_RED, "Du kannst diese Funktion nur mit dem Polizei Skin nutzen");
-    }
-    */
-    if( IsPlayerAttachedObjectSlotUsed(playerid,0) ) {
-        RemovePlayerAttachedObject(playerid,0);
-        SendClientMessage(playerid,COLOR_YELLOW,"Entfernt");
-    }
-    else {
-        SetPlayerAttachedObject( playerid, 0, 19078, 1, -1.200000, -0.226378, -0.024134, 0.000000, 357.571014, 0.000000, 8.000000, 8.000000, 7.000000 ); // TheParrot1 - papagei
-        SendClientMessage(playerid,COLOR_YELLOW,"Angesteckt");
-    }
-    return 1;
-}
-
-COMMAND:ageschenk(playerid,params[]){
-    if( !(Spieler[playerid][pAdmin] == 5 || Spieler[playerid][pAdmin] == 6) ) {
-        return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die nötigen Rechte!");
-    }
-    /*
-    if( GetPlayerSkin(playerid) != 280 ) {
-        return SendClientMessage(playerid, COLOR_RED, "Du kannst diese Funktion nur mit dem Polizei Skin nutzen");
-    }
-    */
-    if( IsPlayerAttachedObjectSlotUsed(playerid,0) ) {
-        RemovePlayerAttachedObject(playerid,0);
-        SendClientMessage(playerid,COLOR_YELLOW,"Entfernt");
-    }
-    else {
-        SetPlayerAttachedObject( playerid, 0, 19056, 1, -0.266277, 0.141012, 0.000000, 0.000000, 87.117065, 0.000000, 1.299999, 1.299999, 1.600000 ); // EnExMarker3 - admin marker
-        SendClientMessage(playerid,COLOR_YELLOW,"Aktiviert");
-    }
-    return 1;
-}
-
-COMMAND:amap(playerid,params[]){
-    if( !(Spieler[playerid][pAdmin] == 5 || Spieler[playerid][pAdmin] == 6) ) {
-        return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die nötigen Rechte!");
-    }
-    /*
-    if( GetPlayerSkin(playerid) != 280 ) {
-        return SendClientMessage(playerid, COLOR_RED, "Du kannst diese Funktion nur mit dem Polizei Skin nutzen");
-    }
-    */
-    if( IsPlayerAttachedObjectSlotUsed(playerid,0) ) {
-        RemovePlayerAttachedObject(playerid,0);
-        SendClientMessage(playerid,COLOR_YELLOW,"Entfernt");
-    }
-    else {
-        SetPlayerAttachedObject( playerid, 0, 19167, 1, 0.328450, 0.412087, 0.000000, 271.398742, 4.000000, 269.222015, 4.000000, 4.000000, 4.000000 ); // EnExMarker3 - admin marker
-        SendClientMessage(playerid,COLOR_YELLOW,"Aktiviert");
-    }
-    return 1;
-}
-
-COMMAND:asamp(playerid,params[]){
-    if( !(Spieler[playerid][pAdmin] == 5 || Spieler[playerid][pAdmin] == 6) ) {
-        return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die nötigen Rechte!");
-    }
-    /*
-    if( GetPlayerSkin(playerid) != 280 ) {
-        return SendClientMessage(playerid, COLOR_RED, "Du kannst diese Funktion nur mit dem Polizei Skin nutzen");
-    }
-    */
-    if( IsPlayerAttachedObjectSlotUsed(playerid,0) ) {
-        RemovePlayerAttachedObject(playerid,0);
-        SendClientMessage(playerid,COLOR_YELLOW,"Entfernt");
-    }
-    else {
-        SetPlayerAttachedObject( playerid, 0, 18749, 1, 1.003577, 0.040898, 0.005981, 191.017028, 92.195304, 344.806304, 1.000000, 1.000000, 1.000000 ); // EnExMarker3 - admin marker
-        SendClientMessage(playerid,COLOR_YELLOW,"Aktiviert");
-    }
-    return 1;
-}
-//======================ENDE=======================
 
 COMMAND:vrk(playerid,params[]){
     if (!(Spieler[playerid][pFraktion] == 1 || Spieler[playerid][pFraktion] == 2 || Spieler[playerid][pFraktion] == 5 || Spieler[playerid][pFraktion] == 16 || Spieler[playerid][pFraktion] == 22)) {
@@ -52671,7 +52179,7 @@ COMMAND:settime(playerid,params[]) {
     if(sscanf(params,"i",time)) {
         return SendClientMessage(playerid,COLOR_BLUE, INFO_STRING"/Settime [Uhrzeit]");
     }
-    if(Spieler[playerid][pAdmin] < 3)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 3)return ERROR_RANG_MSG(playerid);
     if( !(0 <= time <= 24 ) ) {
         return SendClientMessage(playerid,COLOR_BLUE, INFO_STRING"/Settime [Uhrzeit ( 0 - 24 )]");
     }
@@ -53804,7 +53312,7 @@ new g_Event[e_Event];
 
 COMMAND:startevent(playerid,params[]) {
     if(Spieler[playerid][pAdmin] < 2) {
-        return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+        return ERROR_RANG_MSG(playerid);
     }
     if( g_Event[E_bStatus] ) {
         return SendClientMessage(playerid, COLOR_RED, "Ein Event läuft noch");
@@ -53828,7 +53336,7 @@ COMMAND:startevent(playerid,params[]) {
 
 COMMAND:stopevent(playerid,params[]) {
     if(Spieler[playerid][pAdmin] < 2) {
-        return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+        return ERROR_RANG_MSG(playerid);
     }
     if( !g_Event[E_bStatus] ) {
         return SendClientMessage(playerid, COLOR_RED, "Aktuell läuft kein Event");
@@ -53871,7 +53379,7 @@ stock ShowPlayerBan(playerid) {
 }
 
 CMD:offageld(playerid, params[]) {
-    if (Spieler[playerid][pAdmin] < 3) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if (Spieler[playerid][pAdmin] < 3) return ERROR_RANG_MSG(playerid);
 
     new sSpieler[MAX_PLAYER_NAME], pID, amount;
     GetPVarString(playerid, "OFFAGELD.NAME", sSpieler, sizeof(sSpieler));
@@ -53889,7 +53397,7 @@ CMD:offageld(playerid, params[]) {
 }
 
 CMD:givecoins(playerid, params[]) {
-    if (Spieler[playerid][pAdmin] < 4) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if (Spieler[playerid][pAdmin] < 4) return ERROR_RANG_MSG(playerid);
 
     new sSpieler[MAX_PLAYER_NAME], amount;
     GetPVarString(playerid, "GIVECOINS.NAME", sSpieler, sizeof(sSpieler));
@@ -53906,9 +53414,7 @@ CMD:givecoins(playerid, params[]) {
 }
 
 COMMAND:offbannen(playerid,params[]) {
-    if(Spieler[playerid][pAdmin] < 3) {
-        return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
-    }
+    if(Spieler[playerid][pAdmin] < 3) return ERROR_RANG_MSG(playerid);
     new
         sSpieler[MAX_PLAYER_NAME],
         sGrund[128];
@@ -53935,9 +53441,7 @@ COMMAND:offbannen(playerid,params[]) {
     return 1;
 }
 COMMAND:oafkick(playerid,params[]) {
-    if(Spieler[playerid][pAdmin] < 3) {
-        return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
-    }
+    if(Spieler[playerid][pAdmin] < 3) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
     new
         sSpieler[MAX_PLAYER_NAME];
     if(sscanf(params,"s[24]",sSpieler)) {
@@ -54725,7 +54229,7 @@ CMD:eventpreise(playerid) {
 
 CMD:eventpunkte(playerid, params[]) {
     if (!gPlayerLogged[playerid]) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du bist nicht eingeloggt.");
-    if (Spieler[playerid][pAdmin] < 2) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if (Spieler[playerid][pAdmin] < 2) return ERROR_RANG_MSG(playerid);
     new playerName[MAX_PLAYER_NAME], pID, points;
     if (GetPVarString(playerid, "OFFEP.NAME", playerName, sizeof(playerName)) != 0) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du verteilst gerade noch Eventpunkte.");
     if (sscanf(params, "ui", pID, points) || !points) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING "/Eventpunkte [Spieler ID/Name] [Punkte]");
@@ -54999,11 +54503,6 @@ COMMAND:offverwarnen(playerid,params[]) {
         if(IsPlayerConnected(giveid)) {
             return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist gerade online.");
         }
-        /*
-        if(!mysql_CheckName(spieler)) {
-            return SendClientMessage(playerid, COLOR_RED, "Der Spieler existiert nicht");
-        }
-        */
         new
             String[128+32];
         if(strlen(reason)!=0)
@@ -55041,7 +54540,7 @@ COMMAND:offverwarnen(playerid,params[]) {
     }
     else
     {
-        SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte!");
+        ERROR_RANG_MSG(playerid);
         return 1;
     }
     new
@@ -55055,7 +54554,7 @@ COMMAND:offverwarnen(playerid,params[]) {
 COMMAND:rangeban(playerid,params[]) {
     new
         giveid;
-    if(Spieler[playerid][pAdmin] < 3) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 3) return ERROR_RANG_MSG(playerid);
     if( sscanf(params,"u",giveid)) {
         return SendClientMessage(playerid,COLOR_BLUE, INFO_STRING"/Rangeban [Spieler/ID]");
     }
@@ -55085,7 +54584,7 @@ COMMAND:rangeban(playerid,params[]) {
 COMMAND:addwhitelist(playerid,params[]) {
     new
         name[MAX_PLAYER_NAME];
-    if(Spieler[playerid][pAdmin] < 3) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 3) return ERROR_RANG_MSG(playerid);
     if( sscanf(params,"s[24]",name)) {
         return SendClientMessage(playerid,COLOR_BLUE, INFO_STRING"/Addwhitelist [Name]");
     }
@@ -55291,7 +54790,7 @@ CMD:upgradeinfo(playerid,params[])
 }
 
 CMD:checkskill(playerid, params[]) {
-    if (Spieler[playerid][pAdmin] < 3) return SendClientMessage(playerid, COLOR_RED, "Dafür hast du keine Berechtigung.");
+    if (Spieler[playerid][pAdmin] < 3) return ERROR_RANG_MSG(playerid);
     new pID;
     if (sscanf(params, "u", pID)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING "/checkskill [Spieler ID/Name]");
     if (!gPlayerLogged[pID]) return SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}Der Spieler ist nicht online.");
@@ -55845,45 +55344,8 @@ Hack_OnVehicleMod(playerid, vehicleid, componentid) {
     }
     return 0;
 }
-/*COMMAND:ngb(playerid,params[]) {
-    if( !IsPlayerExecutive(playerid) ) {
-        return SendClientMessage(playerid, COLOR_RED, "Du bist kein Polizist/FBI!");
-    }
-    new
-        spike,
-        vehicleid,
-        Float:a,
-        Float:x,
-        Float:y,
-        Float:z;
-    vehicleid = GetPlayerVehicleID(playerid);
-    if(vehicleid) {
-        GetVehiclePos(vehicleid,x,y,z);
-        GetVehicleZAngle(vehicleid,a);
-    }
-    else {
-        GetPlayerPos(playerid,x,y,z);
-        GetPlayerFacingAngle(playerid,a);
-    }
-    spike = GetClosestSpike( x ,y , z );
-    if( spike != INVALID_SPIKE ) {
-        DestroySpike( spike );
-        SendClientMessage(playerid,COLOR_YELLOW,"Spikes gelöscht");
-    }
-    else {
-        spike = CreateSpike(x,y,z,a, GetPlayerVirtualWorld(playerid) , GetPlayerInterior(playerid) );
-        if( spike != INVALID_SPIKE ) {
-            SendClientMessage(playerid,COLOR_YELLOW,"Spikes erstellt");
-        }
-        else {
-            SendClientMessage(playerid,COLOR_RED,"Spike-Speicher voll");
-        }
-    }
-    return 1;
-}*/
 
 #define UNUSED_WEAKS 54
-
 
 stock CollectUnusedAccount() {
     mysql_oquery("SELECT `Name` FROM `accounts` WHERE ( UNIX_TIMESTAMP(`LastSeen`) + ( "#UNUSED_WEAKS"*7*24*60*60) )  < UNIX_TIMESTAMP( NOW() )",THREAD_COLLECTUNUSEDACCOUNT,INVALID_PLAYER_ID,gSQL);
@@ -55906,7 +55368,7 @@ stock RemoveAccountLog( text[] ) {
 COMMAND:sichercode(playerid,params[]) {
     new
         giveid;
-    if(Spieler[playerid][pAdmin] < 1) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 1) return ERROR_RANG_MSG(playerid);
     if( sscanf(params,"u",giveid)) {
         return SendClientMessage(playerid,COLOR_BLUE, INFO_STRING"/Sichercode [ID/Name]");
     }
@@ -56100,7 +55562,7 @@ stock AddBlacklistName( name[MAX_PLAYER_NAME] ) {
 COMMAND:nameblacklist(playerid,params[]) {
     new
         name[MAX_PLAYER_NAME];
-    if(Spieler[playerid][pAdmin] < 3 )return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 3 )return ERROR_RANG_MSG(playerid);
     if(sscanf(params,"s[24]",name)) {
         return SendClientMessage(playerid,COLOR_BLUE, INFO_STRING"/Nameblacklist [Name]");
     }
@@ -56141,7 +55603,7 @@ COMMAND:suche(playerid,params[]) {
 
 CMD:purge(playerid, params[]) {
     new status[16],string[128];
-    if (Spieler[playerid][pAdmin] < 4) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte."); // <== Administrator
+    if (Spieler[playerid][pAdmin] < 4) return ERROR_RANG_MSG(playerid);
     if(sscanf(params, "s[16]", status)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Purge [An/Aus]");
     if(strcmp(status, "an", true) == 0) {
         if(bPurgeEvent == false) {
@@ -56171,7 +55633,7 @@ CMD:purge(playerid, params[]) {
 
 CMD:pgivegun(playerid, params[]) {
 	new wID,wMuni,string[128];
-	if (Spieler[playerid][pAdmin] < 4) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+	if (Spieler[playerid][pAdmin] < 4) return ERROR_RANG_MSG(playerid);
     if(!bPurgeEvent)return SendClientMessage(playerid,COLOR_RED,"Aktuell läuft kein Purge-Event, somit kannst du diesen Befehl nicht nutzen.");
     if(sscanf(params, "ii", wID, wMuni))return SendClientMessage(playerid,COLOR_BLUE,INFO_STRING"/PGiveGun [Waffen-ID] [Munition]");
     format(string,sizeof(string),"[PURGE] "COLOR_HEX_WHITE"%s %s gab jedem Spieler Waffen. (ID: %d, Munition: %d)",GetPlayerAdminRang(playerid),GetName(playerid),wID,wMuni);
@@ -56184,7 +55646,7 @@ CMD:pgivegun(playerid, params[]) {
 
 CMD:pgivehealth(playerid, params[]) {
 	new health,string[128];
-	if(Spieler[playerid][pAdmin] < 4)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+	if(Spieler[playerid][pAdmin] < 4)return ERROR_RANG_MSG(playerid);
     if(!bPurgeEvent)return SendClientMessage(playerid,COLOR_RED,"Aktuell läuft kein Purge-Event, somit kannst du diesen Befehl nicht nutzen.");
     if(sscanf(params, "i", health))return SendClientMessage(playerid,COLOR_BLUE,INFO_STRING"/PGiveHealth [Health]");
     format(string,sizeof(string),"[PURGE] "COLOR_HEX_WHITE"%s %s gab jedem Spieler %d Prozent Leben.",GetPlayerAdminRang(playerid),GetName(playerid),health);
@@ -56197,7 +55659,7 @@ CMD:pgivehealth(playerid, params[]) {
 
 CMD:pgivearmor(playerid, params[]) {
 	new armor,string[128];
-	if(Spieler[playerid][pAdmin] < 4)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+	if(Spieler[playerid][pAdmin] < 4)return ERROR_RANG_MSG(playerid);
     if(!bPurgeEvent)return SendClientMessage(playerid,COLOR_RED,"Aktuell läuft kein Purge-Event, somit kannst du diesen Befehl nicht nutzen.");
     if(sscanf(params, "i", armor))return SendClientMessage(playerid,COLOR_BLUE,INFO_STRING"/PGiveArmor [Armor]");
     format(string,sizeof(string),"[PURGE] "COLOR_HEX_WHITE"%s %s gab jedem Spieler %d Prozent Rüstung.",GetPlayerAdminRang(playerid),GetName(playerid),armor);
@@ -61230,7 +60692,7 @@ stock GivePlayerStrafpunkte(playerid,schein,anzahl) {
 }
 
 CMD:checkscheine(playerid, params[]) {
-    if (Spieler[playerid][pAdmin] < 1) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if (Spieler[playerid][pAdmin] < 1) return ERROR_RANG_MSG(playerid);
     new pID;
     if (sscanf(params, "u", pID)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING "/Checkscheine [SpielerID/Name]");
     if (IsPlayerConnected(pID) && gPlayerLogged[pID] == 1) {
@@ -61324,7 +60786,7 @@ CMD:createhotelroom(playerid, params[])
 {
     new chName[32], HotelType, Preis;
     if(sscanf(params, "iis[32]", HotelType, Preis, chName))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Createhotelroom [Hotel-Typ] [MietPreis] [Name]");
-    if(Spieler[playerid][pAdmin] < 5)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 5)return ERROR_RANG_MSG(playerid);
     new query[1024], Float:x, Float:y, Float:z, Float:iX, Float:iY, Float:iZ;
     GetPlayerPos(playerid, x, y, z);
     new interior;
@@ -62046,7 +61508,7 @@ public NPC(var)
 
 COMMAND:allesspeichern(playerid,params[]) {
     #pragma unused params
-    if(Spieler[playerid][pAdmin] < 4) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 4) return ERROR_RANG_MSG(playerid);
     SendClientMessage(playerid,COLOR_YELLOW,"Daten werden zum Speichern gesendet ...");
     //CallLocalFunction("SaveAll", ""); // y_hooks
     SaveAll();
@@ -62652,7 +62114,7 @@ stock GetOnlinePlayers( ) {
     return players;
 }
 COMMAND:technikabteilung(playerid,params[]) {
-    if(Spieler[playerid][pAdmin] < 1)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 1)return ERROR_RANG_MSG(playerid);
     if(isnull(params)) {
         return SendClientMessage(playerid,COLOR_BLUE, INFO_STRING"/Technikabteilung [Nachricht]");
     }
@@ -62665,7 +62127,7 @@ COMMAND:technikabteilung(playerid,params[]) {
 }
 
 COMMAND:akteneintrag(playerid,params[]) {
-    if(Spieler[playerid][pAdmin] < 3)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 3)return ERROR_RANG_MSG(playerid);
     new
         Spielername[MAX_PLAYER_NAME],
         String[128],
@@ -62681,7 +62143,7 @@ COMMAND:akteneintrag(playerid,params[]) {
 }
 
 COMMAND:offprison(playerid,params[]) {
-    if(Spieler[playerid][pAdmin] < 3) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 3) return ERROR_RANG_MSG(playerid);
     new
         Spielername[MAX_PLAYER_NAME],
         String[128],
@@ -63073,7 +62535,7 @@ public FahrzeugVerleih_Pulse() {
 }
 
 COMMAND:hwban(playerid,params[]) {
-    if(Spieler[playerid][pAdmin] < 3) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 3) return ERROR_RANG_MSG(playerid);
     new
         grund[128],
         giveid;
@@ -63429,7 +62891,7 @@ stock MaxVehicles(playerid) {
 }
 
 COMMAND:sfreischalten(playerid,params[] ) {
-    if(Spieler[playerid][pAdmin] < 4)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 4)return ERROR_RANG_MSG(playerid);
     new
         giveid;
     if( sscanf(params,"u",giveid)) {
@@ -63509,7 +62971,7 @@ COMMAND:wdrop(playerid,params[]) {
 }
 
 COMMAND:rauswerfenhotel(playerid,params[]){
-    if(Spieler[playerid][pAdmin] < 4)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 4)return ERROR_RANG_MSG(playerid);
     new
         giveid,
         query[128],
@@ -63737,7 +63199,7 @@ stock SavePremiumWeaponData(playerid,bool:clear = false) {
 COMMAND:spielerip(playerid,params[]) {
     new
         giveid;
-    if(Spieler[playerid][pAdmin] < 3 )return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 3 )return ERROR_RANG_MSG(playerid);
     if( sscanf(params,"u",giveid)) {
         return SendClientMessage(playerid,COLOR_BLUE, INFO_STRING"/Spielerip [Spieler]");
     }
@@ -63855,7 +63317,7 @@ public EventUhr() {
 }
 
 COMMAND:eventuhr(playerid,params[]) {
-    if(Spieler[playerid][pAdmin] < 2)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 2)return ERROR_RANG_MSG(playerid);
     if( g_EventUhr[EU_tTimer] != INVALID_TIMER_ID ) {
         return SendClientMessage(playerid,COLOR_RED,"Ein Eventtimer läuft gerade");
     }
@@ -63868,7 +63330,7 @@ COMMAND:eventuhr(playerid,params[]) {
 COMMAND:eventmarker(playerid,params[]) {
     new
         funktion[32];
-    if(Spieler[playerid][pAdmin] < 2)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 2)return ERROR_RANG_MSG(playerid);
     if(sscanf(params,"s[32]",funktion)) {
         return SendClientMessage(playerid,COLOR_BLUE, INFO_STRING"/Eventmarker [START/LOESCHEN/ABBRECHEN/ERSTELLEN]");
     }
@@ -64062,7 +63524,7 @@ public MoveBallon() {
 }
 
 COMMAND:inballon(playerid,params[]) {
-    if(Spieler[playerid][pAdmin] < 3) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 3) return ERROR_RANG_MSG(playerid);
     new
         Float:x,Float:y,Float:z;
     GetDynamicObjectPos(  g_BallonConfig[BC_iObject] , x ,y ,z);
@@ -64107,7 +63569,7 @@ COMMAND:hausupgrade(playerid,params[]) {
 }
 
 COMMAND:savehausupgrade(playerid,params[]) {
-    if(Spieler[playerid][pAdmin] < 3)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 3)return ERROR_RANG_MSG(playerid);
     new
         String[160],
         house_index,
@@ -65656,7 +65118,7 @@ CMD:fixveh(playerid, params[]) {
 
 CMD:clearchat(playerid, params[])
 {
-    if(Spieler[playerid][pAdmin] < 3)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 3)return ERROR_RANG_MSG(playerid);
     new
         String[128],
         runs = 20;
@@ -65676,13 +65138,6 @@ stock IsPoliceVehicleAllowed(pfraktion,vfraktion) {
     }
     return 0;
 }
-
-/*stock IsAdminVehicleAllowed(playerid) {
-    if (Spieler[playerid][pAdmin] < 3)
-    	return 1;
-    }
-    return 0;
-}*/
 
 COMMAND:hausverkaufen(playerid,params[]) {
     new
@@ -67657,12 +67112,12 @@ stock GetPlayerGangZone(playerid) {
 #define GANGFIGHT_DURATION 40 // Minutes
 
 CMD:gotozone(playerid, params[]) {
-    if (Spieler[playerid][pAdmin] < 3) return SendClientMessage(playerid, COLOR_RED, "Dafür hast du keine Berechtigung.");
+    if (Spieler[playerid][pAdmin] < 3) return ERROR_RANG_MSG(playerid);
     new gfindex = -1;
     if (sscanf(params, "i", gfindex) || gfindex < 0 || gfindex >= MAX_GANGZONES)
         return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING "/Gotozone [INDEX]");
 
-    format(params, 128, "%f %f %f", g_GangZone[gfindex][GZ_fIconX], g_GangZone[gfindex][GZ_fIconY], g_GangZone[gfindex][GZ_fIconZ]);
+    format(params, 128, "%f %f %f", g_GangZone[gfindex-1][GZ_fIconX], g_GangZone[gfindex-1][GZ_fIconY], g_GangZone[gfindex-1][GZ_fIconZ]);
     return cmd_gotopos(playerid, params);
 }
 
@@ -68134,7 +67589,7 @@ stock CheckPlayerFirma(playerid) {
 }
 
 CMD:ngeld(playerid, params[]) {
-    if (Spieler[playerid][pAdmin] < 1) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if (Spieler[playerid][pAdmin] < 1) return ERROR_RANG_MSG(playerid);
     new pID, money;
     if (sscanf(params, "ui", pID, money)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING "/Ngeld [Spieler ID/Name] [$1 - $30.000]");
     if (!gPlayerLogged[pID]) return SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}Der Spieler ist nicht eingeloggt.");
@@ -68150,7 +67605,7 @@ CMD:ngeld(playerid, params[]) {
 }
 
 COMMAND:ageld(playerid,params[]) {
-    if(Spieler[playerid][pAdmin] < 3)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 3)return ERROR_RANG_MSG(playerid);
     new pID, cash, string[128];
     if(sscanf(params, "ud", pID,cash))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Ageld [SpielerID/Name] [BETRAG]");
     if(!IsPlayerConnected(pID))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
@@ -68163,7 +67618,7 @@ COMMAND:ageld(playerid,params[]) {
 }
 
 COMMAND:alevel(playerid,params[]) {
-    if(Spieler[playerid][pAdmin] < 3)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 3)return ERROR_RANG_MSG(playerid);
     new pID, level, string[128];
     if(sscanf(params, "ud", pID,level))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Alevel [SpielerID/Name] [Anzahl]");
     if(!IsPlayerConnected(pID)) return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
@@ -68179,7 +67634,7 @@ COMMAND:alevel(playerid,params[]) {
 
 CMD:clearweapons(playerid, params[]) {
     if (!gPlayerLogged[playerid]) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du bist nicht eingeloggt.");
-    if (Spieler[playerid][pAdmin] < 2) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if (Spieler[playerid][pAdmin] < 2) return ERROR_RANG_MSG(playerid);
 
     new pID;
     if (sscanf(params, "u", pID)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING "/Clearweapons [Spieler ID/Name]");
@@ -68202,7 +67657,7 @@ stock GivePlayerRP(playerid, points) {
 }
 
 COMMAND:arp(playerid,params[]) {
-    if(Spieler[playerid][pAdmin] < 3)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 3)return ERROR_RANG_MSG(playerid);
     new pID, respect, string[128];
     if(sscanf(params, "ud", pID,respect))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Arp [SpielerID/Name] [Anzahl]");
     if(!IsPlayerConnected(pID)) return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
@@ -68217,7 +67672,7 @@ COMMAND:arp(playerid,params[]) {
 }
 
 CMD:awaffenlager(playerid) {
-    if (Spieler[playerid][pAdmin] < 4) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if (Spieler[playerid][pAdmin] < 4) return ERROR_RANG_MSG(playerid);
     new dialogText[256];
     dialogText = "Fraktion\tWaffenteile\n";
     for (new i = 0; i < g_iWaffenLager; i++) format(dialogText, sizeof(dialogText), "%s%s\t%s Stück\n", dialogText, GetFactionName(g_WaffenLager[i][WL_iFraktion]), AddDelimiters(g_WaffenLager[i][WL_iWaffenTeile]));
@@ -68225,7 +67680,7 @@ CMD:awaffenlager(playerid) {
 }
 
 CMD:fsbreset(playerid, params[]) {
-    if (Spieler[playerid][pAdmin] < 4) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if (Spieler[playerid][pAdmin] < 4) return ERROR_RANG_MSG(playerid);
     new fraktion;
     if (sscanf(params, "d", fraktion) || fraktion < 0 || fraktion > sizeof(factionNames)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING "/Fsbreset [Fraktions-ID]");
     
@@ -68408,7 +67863,7 @@ public Pulse_BlitzerWarnung(playerid) {
 }
 
 COMMAND:bfreischalten(playerid,params[]) {
-    if(Spieler[playerid][pAdmin] < 4)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 4)return ERROR_RANG_MSG(playerid);
     new giveid,String[128];
     if(sscanf(params, "u", giveid))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/bfreischalten [SpielerID/Name]");
     if(!IsPlayerConnected(giveid))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
@@ -68444,7 +67899,7 @@ COMMAND:bizkey(playerid,params[]) {
 }
 
 COMMAND:delclub(playerid,params[]) {
-    if(Spieler[playerid][pAdmin] < 4)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 4)return ERROR_RANG_MSG(playerid);
     new name[MAX_PLAYER_NAME],String[128];
     if(sscanf(params, "s[24]", name))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Delclub [SpielerID/Name]");
     mysql_real_escape_string(name,name);
@@ -68791,7 +68246,7 @@ COMMAND:entlassen(playerid, params[]) {
 
 COMMAND:gebefirma(playerid, params[]) {
     if (!gPlayerLogged[playerid]) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du bist nicht eingeloggt.");
-    if (Spieler[playerid][pAdmin] < 4) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du besitzt nicht die benötigten Rechte.");
+    if (Spieler[playerid][pAdmin] < 4) return ERROR_RANG_MSG(playerid);
 
     new pID, firmenid;
     if (sscanf(params, "ud", pID, firmenid) || !( 0 <= firmenid <= sizeof(g_Firma))) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING "/Gebefirma [SpielerID/Name] [Firmen-ID (0-13)]");
@@ -68810,7 +68265,7 @@ COMMAND:gebefirma(playerid, params[]) {
 
 COMMAND:delfirma(playerid, params[]) {
     if (!gPlayerLogged[playerid]) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du bist nicht eingeloggt.");
-    if (Spieler[playerid][pAdmin] < 4) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du besitzt nicht die benötigten Rechte.");
+    if (Spieler[playerid][pAdmin] < 4) return ERROR_RANG_MSG(playerid);
 
     new pName[25];
     if (sscanf(params, "s[24]", pName)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING "/Delfirma [Name]");
@@ -68834,7 +68289,7 @@ COMMAND:delfirma(playerid, params[]) {
 CMD:delhouse(playerid, params[]) return cmd_delhaus(playerid, params);
 
 COMMAND:delhaus(playerid,params[]) {
-    if (Spieler[playerid][pAdmin] < 4) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if (Spieler[playerid][pAdmin] < 4) return ERROR_RANG_MSG(playerid);
 
     new hids;
     for (new i; i < MAX_HOUSES; i++) {
@@ -69000,7 +68455,7 @@ COMMAND:warnblinker(playerid,params[]) {
 }
 
 COMMAND:cprison(playerid,params[]) {
-    if(Spieler[playerid][pAdmin] < 3)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 3)return ERROR_RANG_MSG(playerid);
     new pID, grund[64], anzahl;
     if(sscanf(params, "uis[64]", pID, anzahl,grund))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/cprison [SpielerID/Name] [Anzahl] [Grund]");
     if(!IsPlayerConnected(pID)) return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
@@ -70448,13 +69903,6 @@ COMMAND:buendnisanfrage(playerid,params[]) {
     return 1;
 }
 
-CMD:gangids(playerid)
-{
-    if (Spieler[playerid][pAdmin] < 3) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
-    SendClientMessage(playerid, COLOR_BLUE, "Grove Street = 6 | Ballas = 7 | Yakuza = 10 | Aztecas = 11 | Cali Kartell = 12 | Vagos = 13 | Outlawz = 20 | Triaden = 21");
-    return 1;
-}
-
 COMMAND:buendnisannehmen(playerid,params[]) {
     new
         frak = GetPlayerFaction(playerid);
@@ -70604,7 +70052,7 @@ COMMAND:nc(playerid,params[]) {
 }
 
 COMMAND:delveh(playerid,params[]) {
-    if(Spieler[playerid][pAdmin] < 1)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 1)return ERROR_RANG_MSG(playerid);
     new
         vehicleid;
     vehicleid = GetPlayerVehicleID(playerid);
@@ -70861,7 +70309,7 @@ COMMAND:ov(playerid,params[]) {
 }
 
 COMMAND:gotohaus(playerid,params[] ){
-    if(Spieler[playerid][pAdmin] < 1)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 1)return ERROR_RANG_MSG(playerid);
     new
         index,
         hausid;
@@ -70907,7 +70355,7 @@ COMMAND:spielerinfo(playerid,params[]) {
 }
 
 COMMAND:gebannt(playerid,params[]) {
-    if(Spieler[playerid][pAdmin] < 1)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 1)return ERROR_RANG_MSG(playerid);
     new
         Spielername[MAX_PLAYER_NAME];
     if(sscanf(params,"s[24]",Spielername)) {
@@ -70981,7 +70429,7 @@ stock InitZentralMeldung() {
 }
 
 COMMAND:gebeclub(playerid,params[]) {
-    if(Spieler[playerid][pAdmin] < 3)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 3)return ERROR_RANG_MSG(playerid);
     new
         giveid,
         option,
@@ -71093,7 +70541,7 @@ stock IsPlayerInWantedKillZone(playerid) {
     return 0;
 }
 COMMAND:waffensperre(playerid,params[]) {
-    if(Spieler[playerid][pAdmin] < 3)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 3)return ERROR_RANG_MSG(playerid);
     new
         giveid,
         Spielername[MAX_PLAYER_NAME];
@@ -71601,7 +71049,7 @@ stock GetVehicleName(modelid) {
 }
 
 CMD:aunlock(playerid, params[]) {
-    if (Spieler[playerid][pAdmin] < 4) return 0;
+    if (Spieler[playerid][pAdmin] < 4) return ERROR_RANG_MSG(playerid);
     new toggleDoors = 0;
     sscanf(params, "i", toggleDoors);
     new vehicleid = IsPlayerInAnyVehicle(playerid) ? GetPlayerVehicleID(playerid) : GetClosestVehicle(playerid, 10.0);
@@ -71612,7 +71060,7 @@ CMD:aunlock(playerid, params[]) {
 }
 
 CMD:carowner(playerid) {
-    if (Spieler[playerid][pAdmin] < 3) return SendClientMessage(playerid, COLOR_RED, "Dafür hast du keine Berechtigung.");
+    if (Spieler[playerid][pAdmin] < 3) return ERROR_RANG_MSG(playerid);
     new vehicleid = IsPlayerInAnyVehicle(playerid) ? GetPlayerVehicleID(playerid) : GetClosestVehicle(playerid, 10.0);
     if (vehicleid == INVALID_VEHICLE_ID ) return SendClientMessage(playerid, COLOR_RED, "Du befindest dich nicht in der Nähe eines Fahrzeuges.");
     new besitzer = GetCarOwner(vehicleid);
@@ -71777,7 +71225,7 @@ stock ReturnWeaponName(weaponid) {
 
 COMMAND:delallgvehs(playerid,params[]) {
     #pragma unused params
-    if(Spieler[playerid][pAdmin] < 4)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 4)return ERROR_RANG_MSG(playerid);
     new
         String[128],
         c = 0;
@@ -71795,7 +71243,7 @@ COMMAND:delallgvehs(playerid,params[]) {
 
 COMMAND:delallvehs(playerid,params[]) {
     #pragma unused params
-    if(Spieler[playerid][pAdmin] < 3)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 3)return ERROR_RANG_MSG(playerid);
     new
         String[128],
         c = 0;
@@ -72480,7 +71928,7 @@ COMMAND:hausverstaatlichen(playerid,params[]) {
 }
 
 CMD:asettings(playerid) {
-    if (Spieler[playerid][pAdmin] < 1) return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if (Spieler[playerid][pAdmin] < 1) return ERROR_RANG_MSG(playerid);
     new dialogText[256];
     dialogText = "Einstellung\tStatus\n";
     for (new i = 0; i < sizeof(g_aSettings); i++)
@@ -72491,7 +71939,7 @@ CMD:asettings(playerid) {
 }
 
 COMMAND:creategutschein(playerid,params[]) {
-    if(Spieler[playerid][pAdmin] < 4)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 4)return ERROR_RANG_MSG(playerid);
     new
         code[32],
         gutschein;
@@ -72549,7 +71997,7 @@ CMD:offtban(playerid, params[])
 {
     new sName[24], grund[64], time;
     if(sscanf(params, "s[24]is[64]", sName, time, grund))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/offtban [Name] [Zeit in Min.] [Grund]");
-    if(Spieler[playerid][pAdmin] < 3)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 3)return ERROR_RANG_MSG(playerid);
     if(time < 1 || time > 14400)return SendClientMessage(playerid, COLOR_ORANGE, "Die Zeit sollte sich zwischen 1 und 14400 liegen. (1 Minute oder 10 Tage)");
     // -> THREADED
     new
@@ -72700,7 +72148,7 @@ COMMAND:fahrzeugreparieren(playerid,params[]) {
     return 1;
 }
 COMMAND:offcprison(playerid,params[]) {
-    if(Spieler[playerid][pAdmin] < 3)return SendClientMessage(playerid, COLOR_RED, "Du besitzt nicht die benötigten Rechte.");
+    if(Spieler[playerid][pAdmin] < 3)return ERROR_RANG_MSG(playerid);
     new sName[MAX_PLAYER_NAME], grund[64], anzahl;
     if(sscanf(params, "s[24]is[64]", sName, anzahl,grund))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/offcprison [Name] [Anzahl] [Grund]");
 
