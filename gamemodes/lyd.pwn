@@ -3854,6 +3854,362 @@ new Frak1Help[66][]= {
     {"ermitteln"}
 };
 
+new Frak3Help[17][]= {
+    {"dienst"},
+    {"wiederbeleben"},
+    {"sheilen"},
+    {"samdgarage"},
+    {"mv"},
+    {"m"},
+    {"kasse"},
+    {"kassenstand"},
+    {"mitglieder"},
+    {"sfinden"},
+    {"bc"},
+    {"sliste"},
+    {"acceptsani"},
+    {"rtwsirene"},
+    {"meinsatz"},
+    {"bk"},
+    {"dtasche"}
+};
+
+new Frak4Help[10][]= {
+    {"dienst"},
+    {"news"},
+    {"starteventpoint"},
+    {"stopeventpoint"},
+    {"interview"},
+    {"Kasse"},
+    {"Kassenstand"},
+    {"mitglieder"},
+    {"sanagarage"},
+    {"fskin"}
+};
+
+new Frak5Help[40][]= {
+    {"dienst"},
+    {"ov"},
+    {"ogate"},
+    {"beamteon"},
+    {"mitglieder"},
+    {"zollamt"},
+    {"dienstmarke"},
+    {"kasse"},
+    {"kassenstand"},
+    {"okamera"},
+    {"sp"},
+    {"fpunkte"},
+    {"ticket"},
+    {"strafzettel"},
+    {"parkstrafe"},
+    {"entnehmen"},
+    {"koffereinziehen"},
+    {"scheinentziehen"},
+    {"blitzerabbauen"},
+    {"blitzeraufstellen"},
+    {"tierverbot"},
+    {"deltierverbot"},
+    {"oparken"},
+    {"ofreistellen"},
+    {"fmparkkralle"},
+    {"mparkkralle"},
+    {"festnehmen"},
+    {"fparken"},
+    {"durchsuchen"},
+    {"kofferdurchsuchen"},
+    {"vamt"},
+    {"pakte"},
+    {"kfzsuchen"},
+    {"kzsuchen"},
+    {"promille"},
+    {"bc"},
+    {"fc"},
+    {"m"},
+    {"ovk"},
+    {"bk"}
+};
+
+new FrakGangHelp[28][]= {
+    {"gangwaffen"},
+    {"gheilen"},
+    {"mitglieder"},
+    {"buendnis"},
+    {"kasse"},
+    {"kassenstand"},
+    {"fc"},
+    {"bg"},
+    {"flock"},
+    {"gdg"},
+    {"frespawn"},
+    {"kidnap"},
+    {"mundbinde"},
+    {"augenbinde"},
+    {"fesseln"},
+    {"entfesseln"},
+    {"gangjail"},
+    {"aufbrechen"},
+    {"frakblacklist"},
+    {"addfrakblacklist"},
+    {"delfrakblacklist"},
+    {"gangfight"},
+    {"gangfightstop"},
+    {"fge"},
+    {"gangfightinfo"},
+    {"swinfo"},
+    {"schutzgeld"},
+    {"schutzgeldabbrechen"}
+};
+
+new Frak14Help[17][]= {
+    {"accept hitman"},
+    {"hitmanwaffen"},
+    {"gheilen"},
+    {"hwerbung"},
+    {"fc"},
+    {"flock"},
+    {"hmaske"},
+    {"kasse"},
+    {"kassenstand"},
+    {"mitglieder"},
+    {"hrelease"},
+    {"arz"},
+    {"agbefreien"},
+    {"knastbefreien"},
+    {"agtor"},
+    {"atorhacken"},
+    {"acceptag"}
+};
+
+new Frak15Help[19][]= {
+    {"ninowaffen"},
+    {"gheilen"},
+    {"fsafebox"},
+    {"fc"},
+    {"flock"},
+    {"pflanzen"},
+    {"kidnap"},
+    {"augenbinde"},
+    {"samen"},
+    {"samenpunkte"},
+    {"sellspice"},
+    {"kasse"},
+    {"kassenstand"},
+    {"mitglieder"},
+    {"samenlager"},
+    {"paketeinladen"},
+    {"storepakete"},
+    {"storesamen"},
+    {"samenlagerstatus"}
+};
+
+new Frak19Help[10][]= {
+    {"fc"},
+    {"kasse"},
+    {"kassenstand"},
+    {"kassenstand"},
+    {"mitglieder"},
+    {"flock"},
+    {"bombelegen"},
+    {"terrorwaffen"},
+    {"entfesseln"},
+    {"kidnap"}
+};
+
+new const StandartHelpText[36][] = {
+	{"Supportticket erstellen"},
+    {"Nachricht an Admins versenden"},
+    {"Nachricht an Admins versenden"},
+    {"Spieler anrufen"},
+    {"Navigtionspunkte anzeigen"},
+    {"Spieler suchen"},
+    {"Spielerinformationen anzeigen"},
+    {"Zigarette Rauchen"},
+    {"Zigarette Wegwerfen"},
+    {"Inventare geben"},
+    {"Online Liste"},
+    {"Inventar anzeigen"},
+    {"Koffer holen/weglegen"},
+    {"Koffer öffnen"},
+    {"Firmen anzeigen"},
+    {"Mutezeit anzeigen"},
+    {"Animationsliste"},
+    {"Staatskasse"},
+    {"Leaderliste"},
+    {"Gutscheincode einlösen"},
+    {"Musik abspielen"},
+    {"Mp3Player starten"},
+    {"Ghettoblaster aufstellen"},
+    {"Ghettoblaster entfernen"},
+    {"Jailtime anzeigen"},
+    {"Spawnpunkt ändern"},
+    {"Clubbefehle anzeigen"},
+    {"Werbetafel kaufen"},
+    {"Werbetafel finden"},
+    {"Werbetafel bearbeiten"},
+    {"Eventpreise anzeigen"},
+    {"Minen Informationen"},
+    {"Jobpunkt anzeigen"},
+    {"Jobkleidung anziehen"},
+    {"Skillliste öffnen"},
+    {"Skillupgrade bzw. Skillup einsehen"}
+};
+
+new const MoneyHelpText[6][]= {
+    {"Nächsten Geldautomaten anzeigen"},
+    {"Interaktiv mit Geldautomaten"},
+    {"Überweisung tätigen"},
+    {"Geldcheck vergeben"},
+    {"Handyguthaben einsehen"},
+    {"Zahlungen tätigen"}
+};
+
+new DeathmatchHelpText[17][]= {
+    {"Drogen einnehmen"},
+    {"Spice einnehmen"},
+    {"Kekse essen"},
+    {"Kampfstyle ändern"},
+    {"Waffen aufheben"},
+    {"Knastzeit"},
+    {"Totzeit"},
+    {"Kopfgeld stellen"},
+    {"Drive-By tätigen"},
+    {"Gangfightwette"},
+    {"Gangfight Informationen"},
+    {"Gangfight Informationen"},
+    {"Streetwar Informationen"},
+    {"Tankstelle ausrauben"},
+    {"Bank ausrauben"},
+    {"Geldtransporter ausrauben"},
+    {"NineDemons Safebox ausrauben"}
+};
+
+new SellHelpText[4][]= {
+    {"Kekse verkaufen"},
+    {"Wantedhackercodes verkaufen"},
+    {"Drogen verkaufen"},
+    {"Waffenteile verkaufen"}
+};
+
+new CasinoHelpText[4][]= {
+    {"Spielautomat im Casino"},
+    {"Wettspiel im Casino"},
+    {"kartenspiel im Casino"},
+    {"gluecksrad im Casino"}
+};
+
+new VehicleHelpText[26][]= {
+    {"Radio abspielen"},
+    {"Fahrzeug aufschließen und abschließen"},
+    {"Fahrzeugschlüssel wechseln"},
+    {"Fahrzeugschlüssel Slot ändern"},
+    {"Fahrzeug orten"},
+    {"Fraktionsfahrzeug abschließen"},
+    {"Fahrzeug Tanken"},
+    {"Fahrzeug verkaufen"},
+    {"Parken"},
+    {"Licht"},
+    {"Motor"},
+    {"Fenster öffnen"},
+    {"Spieler aus Fahrzeug rauswerfen"},
+    {"Kanister benutzen"},
+    {"Kofferraum öffnen"},
+    {"Kofferraum ansehen"},
+    {"Fahrzeugschein ansehen"},
+    {"Führerscheine ansehen"},
+    {"Scheinsperre Informationen"},
+    {"Fahrzeug Informationen"},
+    {"Mietfahrzeug abschließen"},
+    {"Fahrzeug mieten"},
+    {"Mietfahrzeug abgeben"},
+    {"Mietfahrzeug abschließen"},
+    {"Mietfahrzeug orten"},
+    {"Führerscheinprüfung starten"}
+};
+
+new HouseHelpText[15][]= {
+    {"Haus kaufen"},
+    {"Wohnort anzeigen"},
+    {"Haussafebox und Waffenlager"},
+    {"Wohnung mieten"},
+    {"Haustür abschließen und aufschließen"},
+    {"Hausmenü"},
+    {"Haus an einen Spieler verkaufen"},
+    {"Haus an den Staat verkaufen"},
+    {"Mieterliste"},
+    {"Mieter kündigen"},
+    {"Allen Mietern kündigen"},
+    {"Haus an den Staat verkaufen"},
+    {"Hoteltür abschließen und aufschließen"},
+    {"Hotelraum mieten"},
+    {"Hotelraum kündigen"}
+};
+
+new BizHelpText[10][]= {
+    {"Business kaufen"},
+    {"Business verkaufen"},
+    {"Business an den Staat verkaufen"},
+    {"Business Kasse"},
+    {"Business Kasse"},
+    {"Business aufschließen und abschließen"},
+    {"Business Eintritt festlegen"},
+    {"Business Waren kaufen"},
+    {"Business Waren kaufen"},
+    {"Business Waren kaufen"}
+};
+
+new TankstelleHelpText[9][]= {
+    {"Tankstelle kaufen"},
+    {"Tankstelle verkaufen"},
+    {"Tankstelle an den Staat verkaufen"},
+    {"Tankstelle Benzinlager"},
+    {"Tankstelle Kasse"},
+    {"Tankstelle Kasse"},
+    {"Tankstelle Sprit kaufen"},
+    {"Tankstelle Sprit kaufen"},
+    {"Tankstelle Sprit kaufen"}
+};
+
+new FirmenHelpText[5][]= {
+    {"Firmen Kasse"},
+    {"Firmen Gehalt anpassen"},
+    {"Firmennachricht"},
+    {"Spieler entlassen"},
+    {"Alle Firmen anzeigen"}
+};
+
+new ChatHelpText[19][]= {
+    {"flüstern"},
+    {"schreien"},
+    {"Neulingschat"},
+    {"Roleplay Chat"},
+    {"Job Chat"},
+    {"Reden Animation"},
+    {"Alle Firmen anzeigen"},
+    {"Gobaler Serverchat"},
+    {"Chats ausschalten"},
+    {"Spieler anrufen"},
+    {"SMS schreiben"},
+    {"Anruf auflegen"},
+    {"Anruf abnehmen"},
+    {"Guthaben einsehen"},
+    {"Handy anschalten und ausschalten"},
+    {"Freundschaftsanfrage senden"},
+    {"Freund löschen"},
+    {"Freundschaftsliste"},
+    {"Freundschaftschat"}
+};
+
+new HaustierHelpText[4][]= {
+    {"Haustier"},
+    {"Haustier verkaufen"},
+    {"Haustier füttern"},
+    {"Haustiershop"}
+};
+
+new LeaderHelpText[1][]= {
+    {"leaderhelp"}
+};
 
 // - - - - - - - - - - - - - - -
 
@@ -19928,14 +20284,7 @@ CMD:fpslimit(playerid)
 CMD:help(playerid)
 {
     if( gPlayerLogged[playerid] == 0 ) return SendClientMessage(playerid,COLOR_RED,"Du bist nicht eingeloggt");
-    ShowPlayerDialog(playerid,DIALOG_CMDHELP,DIALOG_STYLE_LIST,"Hilfebox","{FF0000}Hilfedatenbank (Suche){FFFFFF}\nAllgemeine Befehle\nFinanz Befehle\nDeathmatch Befehle\nVerkauf Befehle\nCasino Befehle\nFahrzeug Befehle\nHaus Befehle\nBusiness Befehle\nTankstellen Befehle\nFirmen Befehle\nChat Befehle\nHaustier Befehle\nLeader Befehle\nJob Befehle","Ansehen","Abbruch");
-    return 1;
-}
-
-CMD:hilfekonsole(playerid)
-{
-    if( gPlayerLogged[playerid] == 0 ) return SendClientMessage(playerid,COLOR_RED,"Du bist nicht eingeloggt");
-    ShowPlayerDialog(playerid,DIALOG_ANTWORT,DIALOG_STYLE_LIST, COLOR_HEX_LIGHTBLUE "HILFEKONSOLE","Respektpunkte und LevelUP\nSpielgeld\ndas Forum\ndas User Control Panel\ndie Server Regeln\nAdministrative Sanktionierungen\nNoDM Zonen\nWaffenverbotszonen\nHäuser und Geschäfte\nPrivatfahrzeuge\nFirmen und Berufe\nBank, Finanzen und OnlineBanking\nHandy und Guthaben\nKleider und Charakter\nAngeln und Fische","Weiter","Abbruch");
+    ShowPlayerDialog(playerid,DIALOG_CMDHELP,DIALOG_STYLE_LIST,"Hilfebox","{FF0000}Hilfedatenbank (Suche){FFFFFF}\nAllgemeine Befehle\nFinanz Befehle\nDeathmatch Befehle\nVerkauf Befehle\nCasino Befehle\nFahrzeug Befehle\nHaus Befehle\nBusiness Befehle\nTankstellen Befehle\nFirmen Befehle\nChat Befehle\nHaustier Befehle\nLeader Befehle\nJob Befehle\nFraktions Befehle","Ansehen","Abbruch");
     return 1;
 }
 
@@ -34727,7 +35076,9 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
         case DIALOG_CMDHELP: {
             if(response) {
                 if(listitem == 0 ) {
-                    ShowPlayerDialog(playerid,DIALOG_ANTWORT,DIALOG_STYLE_LIST, COLOR_HEX_LIGHTBLUE "ANTWORT ZU WICHTIGEN FRAGEN","Respektpunkte und LevelUP\nSpielgeld\ndas Forum\ndas User Control Panel\ndie Server Regeln\nAdministrative Sanktionierungen\nNoDM Zonen\nWaffenverbotszonen\nHäuser und Geschäfte\nPrivatfahrzeuge\nFirmen und Berufe\nBank, Finanzen und OnlineBanking\nHandy und Guthaben\nKleidung und Charakter\nAngeln und Fische","Weiter","Abbruch");
+                    new String[128];
+                    format(String, sizeof(String), "%s{DEA81A}- | LyD ~ Hilfsdatenbank | -{FFFFFF}\n\nGebe hier dein Suchbegriff ein:", String);
+                    ShowPlayerDialog(playerid,DIALOG_ANTWORT,DIALOG_STYLE_INPUT, COLOR_HEX_LIGHTBLUE "Hilfsdatenbank", String, "Suchen", "Abbrechen");
                 }
                 if(listitem == 1 ) {//AllgemeinHelp
                     new maxcmdcount = 0, String[2048];
@@ -35302,23 +35653,123 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                             maxcmdcount++;
                         }
                     }
+                    else{
+                        format(String, sizeof(String), "%sDu hast keinen Job!", String);
+                    }
                     format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
                     ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Job-Befehle | -", String, "OK", "");
                 }
-                else if(listitem == 14){//Frakhelp
+                else if(listitem == 15){//Frakhelp
                     new maxcmdcount = 0, String[2048];
                     format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Übersicht der Fraktions-Befehle | -{FFFFFF}\n\n", String);
-                    for(new i = 0; i < sizeof(LeaderHelp); i++){
-                        if(maxcmdcount == 8){
-                            format(String, sizeof(String), "%s\n", String);
-                            maxcmdcount = 0;
+                    if(Spieler[playerid][pFraktion] == 1 || Spieler[playerid][pFraktion] == 2 || Spieler[playerid][pFraktion] == 16 || Spieler[playerid][pFraktion] == 18){
+                        for(new i = 0; i < sizeof(Frak1Help); i++){
+                            if(maxcmdcount == 8){
+                                format(String, sizeof(String), "%s\n", String);
+                                maxcmdcount = 0;
+                            }
+                            if(maxcmdcount == 0){
+                                format(String, sizeof(String), "%s/%s", String, Frak1Help[i]);
+                            }else{
+                                format(String, sizeof(String), "%s, /%s", String, Frak1Help[i]);
+                            }
+                            maxcmdcount++;
                         }
-                        if(maxcmdcount == 0){
-                            format(String, sizeof(String), "%s/%s", String, LeaderHelp[i]);
-                        }else{
-                            format(String, sizeof(String), "%s, /%s", String, LeaderHelp[i]);
+                    }else if(Spieler[playerid][pFraktion] == 3){
+                        for(new i = 0; i < sizeof(Frak3Help); i++){
+                            if(maxcmdcount == 8){
+                                format(String, sizeof(String), "%s\n", String);
+                                maxcmdcount = 0;
+                            }
+                            if(maxcmdcount == 0){
+                                format(String, sizeof(String), "%s/%s", String, Frak3Help[i]);
+                            }else{
+                                format(String, sizeof(String), "%s, /%s", String, Frak3Help[i]);
+                            }
+                            maxcmdcount++;
                         }
-                        maxcmdcount++;
+                    }else if(Spieler[playerid][pFraktion] == 4){
+                        for(new i = 0; i < sizeof(Frak4Help); i++){
+                            if(maxcmdcount == 8){
+                                format(String, sizeof(String), "%s\n", String);
+                                maxcmdcount = 0;
+                            }
+                            if(maxcmdcount == 0){
+                                format(String, sizeof(String), "%s/%s", String, Frak4Help[i]);
+                            }else{
+                                format(String, sizeof(String), "%s, /%s", String, Frak4Help[i]);
+                            }
+                            maxcmdcount++;
+                        }
+                    }else if(Spieler[playerid][pFraktion] == 5){
+                        for(new i = 0; i < sizeof(Frak5Help); i++){
+                            if(maxcmdcount == 8){
+                                format(String, sizeof(String), "%s\n", String);
+                                maxcmdcount = 0;
+                            }
+                            if(maxcmdcount == 0){
+                                format(String, sizeof(String), "%s/%s", String, Frak5Help[i]);
+                            }else{
+                                format(String, sizeof(String), "%s, /%s", String, Frak5Help[i]);
+                            }
+                            maxcmdcount++;
+                        }
+                    }else if(Spieler[playerid][pFraktion] == 6 || Spieler[playerid][pFraktion] == 7 || Spieler[playerid][pFraktion] == 6
+                    || Spieler[playerid][pFraktion] == 10 || Spieler[playerid][pFraktion] == 11 || Spieler[playerid][pFraktion] == 12
+                    || Spieler[playerid][pFraktion] == 13 || Spieler[playerid][pFraktion] == 20 || Spieler[playerid][pFraktion] == 21){
+                        for(new i = 0; i < sizeof(FrakGangHelp); i++){
+                            if(maxcmdcount == 8){
+                                format(String, sizeof(String), "%s\n", String);
+                                maxcmdcount = 0;
+                            }
+                            if(maxcmdcount == 0){
+                                format(String, sizeof(String), "%s/%s", String, FrakGangHelp[i]);
+                            }else{
+                                format(String, sizeof(String), "%s, /%s", String, FrakGangHelp[i]);
+                            }
+                            maxcmdcount++;
+                        }
+                    }else if(Spieler[playerid][pFraktion] == 14){
+                        for(new i = 0; i < sizeof(Frak14Help); i++){
+                            if(maxcmdcount == 8){
+                                format(String, sizeof(String), "%s\n", String);
+                                maxcmdcount = 0;
+                            }
+                            if(maxcmdcount == 0){
+                                format(String, sizeof(String), "%s/%s", String, Frak14Help[i]);
+                            }else{
+                                format(String, sizeof(String), "%s, /%s", String, Frak14Help[i]);
+                            }
+                            maxcmdcount++;
+                        }
+                    }else if(Spieler[playerid][pFraktion] == 15){
+                        for(new i = 0; i < sizeof(Frak15Help); i++){
+                            if(maxcmdcount == 8){
+                                format(String, sizeof(String), "%s\n", String);
+                                maxcmdcount = 0;
+                            }
+                            if(maxcmdcount == 0){
+                                format(String, sizeof(String), "%s/%s", String, Frak15Help[i]);
+                            }else{
+                                format(String, sizeof(String), "%s, /%s", String, Frak15Help[i]);
+                            }
+                            maxcmdcount++;
+                        }
+                    }else if(Spieler[playerid][pFraktion] == 19){
+                        for(new i = 0; i < sizeof(Frak19Help); i++){
+                            if(maxcmdcount == 8){
+                                format(String, sizeof(String), "%s\n", String);
+                                maxcmdcount = 0;
+                            }
+                            if(maxcmdcount == 0){
+                                format(String, sizeof(String), "%s/%s", String, Frak19Help[i]);
+                            }else{
+                                format(String, sizeof(String), "%s, /%s", String, Frak19Help[i]);
+                            }
+                            maxcmdcount++;
+                        }
+                    }else{
+                        format(String, sizeof(String), "%sDu bist in keiner Fraktion!", String);
                     }
                     format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
                     ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Fraktions-Befehle | -", String, "OK", "");
@@ -35330,213 +35781,75 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
         {
             if(response)
             {
-                if(listitem == 0 )
-                {
-                    new string1[256];
-                    new string2[256];
-                    new string3[256];
-                    new string4[768];
-                    format(string1, sizeof(string1), "Bei jedem PayDay erhältst du hinzu +1 Respektpunkt. Ein PayDay gibt es alle 60 Minuten.\nWann dein nächstes PayDay ist, wird");
-                    format(string2, sizeof(string2), "dir oben rechts angezeigt.\nErreichst du die entsprechende Anzahl an Respektpunkten,");
-                    format(string3, sizeof(string3), "steigst du beim PayDay +1 LevelUP!\nDein Level kann jeder sehen und ist ein Nachweis für deine Aktivität.");
-                    format(string4, sizeof(string4), "\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                    format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-                    ShowPlayerDialog(playerid, DIALOG_ANTWORT, DIALOG_STYLE_MSGBOX, "RESPEKTPUNKTE und LevelUP", string4, "OK", "");
+                new String[2048];
+                format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Ergebnis der Suche | -{FFFFFF}\n\n", String);
+                for(new i = 0; i < sizeof(StandartHelpText); i++){
+                    if(strfind(StandartHelpText[i], inputtext, true) != -1){
+                        format(String, sizeof(String), "%s/%s - %s\n", String, StandartHelp[i], StandartHelpText[i]);
+                    }
                 }
-                if(listitem == 1 )
-                {
-                    new string1[256];
-                    new string2[256];
-                    new string3[256];
-                    new string4[768];
-                    format(string1, sizeof(string1), "Geld verdienst du durchs arbeiten! Beim Arbeitsamt werden dir zahlreiche Berufe angeboten,\n");
-                    format(string2, sizeof(string2), "die auch bei jedem PayDay(alle 60 Minuten) bezahlt werden.\nAuch als Mitglied einer Fraktion erhältst du Gehalt.\n");
-                    format(string3, sizeof(string3), "\n{FF0000}Es ist STRENGST VERBOTEN Geld an andere zu verschenken/verleihen und kann mit einer Sperrung bestraft werden!\n");
-                    format(string4, sizeof(string4), "\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                    format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-                    ShowPlayerDialog(playerid, DIALOG_ANTWORT, DIALOG_STYLE_MSGBOX, "SPIELGELD", string4, "OK", "");
+                for(new i = 0; i < sizeof(BizHelpText); i++){
+                    if(strfind(BizHelpText[i], inputtext, true) != -1){
+                        format(String, sizeof(String), "%s/%s - %s\n", String, BizHelp[i], BizHelpText[i]);
+                    }
                 }
-                if(listitem == 2 )
-                {
-                    new string1[256];
-                    new string2[256];
-                    new string3[256];
-                    new string4[768];
-                    format(string1, sizeof(string1), "Im Forum hast du die Möglichkeit, mit anderen Mitgliedern des Projektes\n");
-                    format(string2, sizeof(string2), "in Themen zu diskutieren. Außerdem kannst du dich für eine Fraktion deiner Wahl bewerben.\n");
-                    format(string3, sizeof(string3), "Bewirbst du dich für eine Fraktion, dann beachte bitte die jeweiligen Mindestvoraussetzungen und nutze die Bewerbungsvorlagen.\n");
-                    format(string4, sizeof(string4), "\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                    format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-                    ShowPlayerDialog(playerid, DIALOG_ANTWORT, DIALOG_STYLE_MSGBOX, "FORUM", string4, "OK", "");
+                for(new i = 0; i < sizeof(CasinoHelpText); i++){
+                    if(strfind(CasinoHelpText[i], inputtext, true) != -1){
+                        format(String, sizeof(String), "%s/%s - %s\n", String, CasinoHelp[i], CasinoHelpText[i]);
+                    }
                 }
-                if(listitem == 3 )
-                {
-                    new string1[256];
-                    new string2[256];
-                    new string3[256];
-                    new string4[768];
-                    format(string1, sizeof(string1), "Im User Control Panel kannst du deine persönlichen Statistiken einsehen und die aktuellen\n");
-                    format(string2, sizeof(string2), "Server Rekorde mitverfolgen. Außerdem kannst du Einstellungen an deinem Spieleraccount vornehmen.\n");
-                    format(string3, sizeof(string3), "Unter anderem kannst du dort auch Beschwerden gegen Spieler einreichen, die gegen Regeln des Servers verstoßen haben.\n");
-                    format(string4, sizeof(string4), "\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                    format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-                    ShowPlayerDialog(playerid, DIALOG_ANTWORT, DIALOG_STYLE_MSGBOX, "UCP", string4, "OK", "");
+                for(new i = 0; i < sizeof(ChatHelpText); i++){
+                    if(strfind(ChatHelpText[i], inputtext, true) != -1){
+                        format(String, sizeof(String), "%s/%s - %s\n", String, ChatHelp[i], ChatHelpText[i]);
+                    }
                 }
-                if(listitem == 4 )
-                {
-                    new string1[256];
-                    new string2[256];
-                    new string3[256];
-                    new string4[768];
-                    format(string1, sizeof(string1), "Die Server Regeln stehen im Forum und sind klar definiert.\n");
-                    format(string2, sizeof(string2), "Bei Verstoß gegen die Server Regeln(den Spielregeln) kann man durch\n");
-                    format(string3, sizeof(string3), "Spiel-Moderatoren entsprechend sanktioniert.\n");
-                    format(string4, sizeof(string4), "\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                    format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-                    ShowPlayerDialog(playerid, DIALOG_ANTWORT, DIALOG_STYLE_MSGBOX, "SERVER REGELN", string4, "OK", "");
+                for(new i = 0; i < sizeof(DeathmatchHelpText); i++){
+                    if(strfind(DeathmatchHelpText[i], inputtext, true) != -1){
+                        format(String, sizeof(String), "%s/%s - %s\n", String, DeathmatchHelp[i], DeathmatchHelpText[i]);
+                    }
                 }
-                if(listitem == 5 )
-                {
-                    new string1[256];
-                    new string2[256];
-                    new string3[256];
-                    new string4[768];
-                    format(string1, sizeof(string1), "Bei administrativen Sanktionierungen, wie Prison, Laufcheckpoints, Verwarnungen\n");
-                    format(string2, sizeof(string2), "oder eine Sperrung, muss man im jeweiligen Bereich im Forum ein Antrag stellen.\n");
-                    format(string3, sizeof(string3), "Dort wird der Sachverhalt mit den zuständigen Admins diskutiert.\n");
-                    format(string4, sizeof(string4), "\n{FFFFFF}Über den Support im Spiel können diese Sachverhalte nicht geklärt werden!\n");
-                    format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-                    ShowPlayerDialog(playerid, DIALOG_ANTWORT, DIALOG_STYLE_MSGBOX, "Administrative Sanktionierungen", string4, "OK", "");
+                for(new i = 0; i < sizeof(FirmenHelpText); i++){
+                    if(strfind(FirmenHelpText[i], inputtext, true) != -1){
+                        format(String, sizeof(String), "%s/%s - %s\n", String, FirmenHelp[i], FirmenHelpText[i]);
+                    }
                 }
-                if(listitem == 6 )
-                {
-                    new string1[256];
-                    new string2[256];
-                    new string3[256];
-                    new string4[768];
-                    format(string1, sizeof(string1), "Befindet man sich in einer NoDM Zone, wird es einem unten auf dem Bildschirm eingeblendet.\n");
-                    format(string2, sizeof(string2), "In NoDM Zonen ist Deathmatch auf anderen Spielern strengst verboten!\n");
-                    format(string3, sizeof(string3), "Sprich: man darf andere Spieler NICHT angreifen oder Schaden zufügen.\n");
-                    format(string4, sizeof(string4), "\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                    format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-                    ShowPlayerDialog(playerid, DIALOG_ANTWORT, DIALOG_STYLE_MSGBOX, "NoDM Zone", string4, "OK", "");
+                for(new i = 0; i < sizeof(HaustierHelpText); i++){
+                    if(strfind(HaustierHelpText[i], inputtext, true) != -1){
+                        format(String, sizeof(String), "%s/%s - %s\n", String, HaustierHelp[i], HaustierHelpText[i]);
+                    }
                 }
-                if(listitem == 7 )
-                {
-                    new string1[256];
-                    new string2[256];
-                    new string3[256];
-                    new string4[768];
-                    format(string1, sizeof(string1), "Waffenverbotszonen sind eine Regelung des Staates.\n");
-                    format(string2, sizeof(string2), "Innerhalb einer Waffenverbotszone darf man seine Schusswaffen nicht benutzen, noch zeigen.\n");
-                    format(string3, sizeof(string3), "Bei Verstoß gegen diese Regelung tritt §3WG des Waffengesetzes ein und der Waffenschein kann durch ein Polizeibeamten entzogen werden.\n");
-                    format(string4, sizeof(string4), "\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                    format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-                    ShowPlayerDialog(playerid, DIALOG_ANTWORT, DIALOG_STYLE_MSGBOX, "WAFFENVERBOTSZONE", string4, "OK", "");
+                for(new i = 0; i < sizeof(HouseHelpText); i++){
+                    if(strfind(HouseHelpText[i], inputtext, true) != -1){
+                        format(String, sizeof(String), "%s/%s - %s\n", String, HouseHelp[i], HouseHelpText[i]);
+                    }
                 }
-                if(listitem == 8 )
-                {
-                    new string1[256];
-                    new string2[256];
-                    new string3[256];
-                    new string4[256];
-                    new string5[1024];
-                    format(string1, sizeof(string1), "In Häuser kann man sich einmieten und sein Spawnpunkt(mit /SPAWNCHANGE) im Haus festlegen.\nOb Mieter zugelassen werden und");
-                    format(string2, sizeof(string2), "wie hoch die Mieten sind, entscheidet der Hausbesitzer.\nAls 'Geschäfte' gelten Verkaufsläden, wie 24/7, Kleidergeschäfte Restaurants");
-                    format(string3, sizeof(string3), "und auch Tankstellen./nDie Besitzer verdienen durch Kunden und müssen immer neue Waren kaufen, damit sie weiter verkaufen können.\n");
-                    format(string4, sizeof(string4), "Häuser und Geschäfte kann man sich kaufen, dazu gelten aber bestimmte Regelungen, die man unbedingt beachten muss.\n");
-                    format(string5, sizeof(string5), "\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                    format(string5, sizeof(string5), "%s%s%s%s%s", string1, string2, string3, string4, string5);
-                    ShowPlayerDialog(playerid, DIALOG_ANTWORT, DIALOG_STYLE_MSGBOX, "GESCHÄFTE und HÄUSER", string5, "OK", "");
+                for(new i = 0; i < sizeof(LeaderHelpText); i++){
+                    if(strfind(LeaderHelpText[i], inputtext, true) != -1){
+                        format(String, sizeof(String), "%s/%s - %s\n", String, LeaderHelp[i], LeaderHelpText[i]);
+                    }
                 }
-                if(listitem == 9 )
-                {
-                    new string1[256];
-                    new string2[256];
-                    new string3[256];
-                    new string4[768];
-                    format(string1, sizeof(string1), "Du kannst 5 Privatfahrzeuge besitzen. Um einer deiner Privatfahrzeuge benutzen zu können, muss du\nals erstes das jeweilige Fahrzeug unter /Carkey auswählen.\n");
-                    format(string2, sizeof(string2), "Danach hast du die Möglichkeit, dein Fahrzeug aufzuschließen/abzuschließen, umzuparken oder zu lokalisieren.\nMit /Parken kannst du dein Fahrzeug an einem beliebigen Ort(auf Parkplätzen natürlich) parken,\n");
-                    format(string3, sizeof(string3), "dort spawnt es bei jedem deiner Login oder wenn es explodiert. Mit /Findcar wird dir markiert, wo dein Fahrzeug sich befindet\nMit /Carsell verkaufst du dein Fahrzeug -> Vorsicht! Du erhältst nur die Hälfte des Kaufpreises zurück!\n");
-                    format(string4, sizeof(string4), "\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                    format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-                    ShowPlayerDialog(playerid, DIALOG_ANTWORT, DIALOG_STYLE_MSGBOX, "FAHRZEUGE", string4, "OK", "");
+                for(new i = 0; i < sizeof(MoneyHelpText); i++){
+                    if(strfind(MoneyHelpText[i], inputtext, true) != -1){
+                        format(String, sizeof(String), "%s/%s - %s\n", String, MoneyHelp[i], MoneyHelpText[i]);
+                    }
                 }
-                if(listitem == 10 )
-                {
-                    new string1[256];
-                    new string2[256];
-                    new string3[256];
-                    new string4[768];
-                    format(string1, sizeof(string1), "Die angebotenen Jobs beim Arbeitsamt sind Firmen. Diese Firmen haben ein Inhaber.\n");
-                    format(string2, sizeof(string2), "Der Firmeninhaber kann Mitarbeiter seiner Firma entlassen und die Gehälter entscheiden.\n");
-                    format(string3, sizeof(string3), "Welcher also der best bezahlte Beruf ist, kann man nie sagen, weil die Firmeninhaber es selbst festlegen und jederzeit ändern können.\n");
-                    format(string4, sizeof(string4), "\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                    format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-                    ShowPlayerDialog(playerid, DIALOG_ANTWORT, DIALOG_STYLE_MSGBOX, "FIRMEN und BERUFE", string4, "OK", "");
+                for(new i = 0; i < sizeof(SellHelpText); i++){
+                    if(strfind(SellHelpText[i], inputtext, true) != -1){
+                        format(String, sizeof(String), "%s/%s - %s\n", String, SellHelp[i], SellHelpText[i]);
+                    }
                 }
-                if(listitem == 11 )
-                {
-                    new string1[256];
-                    new string2[256];
-                    new string3[256];
-                    new string4[256];
-                    new string5[1024];
-                    format(string1, sizeof(string1), "An sehr vielen Orten gibt es Geldautomaten, die du mit /Automat bedienen kannst.\nAn den Geldautomaten kannst du Geld einzahlen, abheben und deinen Kontostand abfragen.\n");
-                    format(string2, sizeof(string2), "Um ein Bankkonto zu eröffnen, wird eine einmalige Gebühr in Höhe von 1.500$ erhoben.\nDie Bank bietet ein Zinssatz von 0.1Prozent an. Jeden PayDay(alle 60Min.) wird dein Kontostand um 1Prozent verzinst,\n");
-                    format(string3, sizeof(string3), "sprich: du erhältst durch die Bank für die Verzinsung Geld! Beispiel: dein Kontostand beträgt 50.000$, 1Prozent Zinsen wären +500$\n");
-                    format(string4, sizeof(string4), "Das OnlineBanking erreichst du über dein Internet Browser unter www.Bank.LyD-SAMP.de.\nDort kannst du Überweisungen an Spieler die online oder offline sind tätigen.\n");
-                    format(string5, sizeof(string5), "\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                    format(string5, sizeof(string5), "%s%s%s%s%s", string1, string2, string3, string4, string5);
-                    ShowPlayerDialog(playerid, DIALOG_ANTWORT, DIALOG_STYLE_MSGBOX, "BANK, FINANZEN und ONLINEBANKING", string5, "OK", "");
+                for(new i = 0; i < sizeof(TankstelleHelpText); i++){
+                    if(strfind(TankstelleHelpText[i], inputtext, true) != -1){
+                        format(String, sizeof(String), "%s/%s - %s\n", String, TankstelleHelp[i], TankstelleHelpText[i]);
+                    }
                 }
-                if(listitem == 12 )
-                {
-                    new string1[256];
-                    new string2[256];
-                    new string3[256];
-                    new string4[256];
-                    new string5[256];
-                    new string6[1280];
-                    format(string1, sizeof(string1), "Der Elektromarkt befindet sich in Los Santos; /Navi -> Verkaufsgeschäfte -> Elektromarkt\n");
-                    format(string2, sizeof(string2), "Dort hast du mit /Elektromarkt eine große Auswahl an Handymarken, von Nokia bis IPhone ist alles zuhaben!\nDer Elektromarkt bietet außerdem auch Handyverträge");
-                    format(string3, sizeof(string3), ", CallYa-Karten und Handyguthaben an.\nEin Handyvertrag kosten dich jeden PayDay $1.800, womit du kostenfrei SMS und Anrufe tätigen kannst.\n");
-                    format(string4, sizeof(string4), "Der Handyvertrag ist jederzeit beim Elektromarkt kündbar. Die Vertragskosten werden autom. jeden PayDay von deinem Bankkonto abgebucht.\nMit einer CallYa-Karte zahlst du mit deinem");
-                    format(string5, sizeof(string5), "verfügbarem Guthaben jeden einzelnen Anrufen ($50) und SMS ($30).\nEine Handynummer erhältst du einmalig und kann nicht gewechselt werden.\n");
-                    format(string6, sizeof(string6), "\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                    format(string6, sizeof(string6), "%s%s%s%s%s%s", string1, string2, string3, string4, string5, string6);
-                    ShowPlayerDialog(playerid, DIALOG_ANTWORT, DIALOG_STYLE_MSGBOX, "HANDY und GUTHABEN", string6, "OK", "");
+                for(new i = 0; i < sizeof(VehicleHelpText); i++){
+                    if(strfind(VehicleHelpText[i], inputtext, true) != -1){
+                        format(String, sizeof(String), "%s/%s - %s\n", String, VehicleHelp[i], VehicleHelpText[i]);
+                    }
                 }
-                if(listitem == 13 )
-                {
-                    new string1[256];
-                    new string2[256];
-                    new string3[256];
-                    new string4[256];
-                    new string5[1024];
-                    format(string1, sizeof(string1), "Unter /Navi -> Kleidergeschäfte werden dir alle Kleidershops aufgelistet, wo du\ndein Skin-Charakter für 500$ wechseln kannst.Solltest du einer Fraktion angehören,");
-                    format(string2, sizeof(string2), "werden\n dir dort auch die Kleidung deine Fraktion zur Auswahl stehen.\n");
-                    format(string3, sizeof(string3), "Dein ausgewählter Skin-Charakter/deine ausgewählte Kleidung behältst du permanent an und kannst du jederzeit");
-                    format(string4, sizeof(string4), "wieder wechseln.\nDie Bewegungsart der verschiedenen Charakteren ist nicht zu ändern!\n");
-                    format(string5, sizeof(string5), "\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                    format(string5, sizeof(string5), "%s%s%s%s%s", string1, string2, string3, string4, string5);
-                    ShowPlayerDialog(playerid, DIALOG_ANTWORT, DIALOG_STYLE_MSGBOX, "KLEIDUNG und CHARAKTER", string5, "OK", "");
-                }
-                if(listitem == 14 )
-                {
-                    new string1[256];
-                    new string2[256];
-                    new string3[256];
-                    new string4[256];
-                    new string5[1024];
-                    format(string1, sizeof(string1), "Fischen kann man nur am Angelplatz, das du unter /Navi -> Weitere Orte -> Angelplatz findest.\n");
-                    format(string2, sizeof(string2), "Um fischen zu können, benötigst du den Angelschein und natürlich auch eine Angel, die du beim Angelshop erwerben kannst.\nMit /Angeln kannst auf dem Angelplatz fischen.");
-                    format(string3, sizeof(string3), "Deine gefangenen Fische kannst du anschließend beim Angelshop verkaufen\noder am Lagerfeuer beim LS Strand mit /Grillen grillen und essen.");
-                    format(string4, sizeof(string4), "\n");
-                    format(string5, sizeof(string5), "\n{FF0000}Bei weiteren Fragen oder Problemen schreib ein Support-Ticket mit dem Befehl /SUP\n");
-                    format(string5, sizeof(string5), "%s%s%s%s%s", string1, string2, string3, string4, string5);
-                    ShowPlayerDialog(playerid, DIALOG_ANTWORT, DIALOG_STYLE_MSGBOX, "ANGELN und FISCHE", string5, "OK", "");
-                }
+                format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
+                ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der allgemeinen Befehle | -", String, "OK", "");
             }
         }
         case DIALOG_DRINKS: {
