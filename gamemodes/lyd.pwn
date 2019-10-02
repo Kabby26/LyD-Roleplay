@@ -3854,9 +3854,10 @@ new Frak1Help[66][]= {
     {"ermitteln"}
 };
 
-new Frak3Help[17][]= {
+new Frak3Help[18][]= {
     {"dienst"},
-    {"wiederbeleben"},
+    {"aufnehmen"},
+    {"deskwb"},
     {"sheilen"},
     {"samdgarage"},
     {"mv"},
@@ -7765,6 +7766,7 @@ public OnPlayerDisconnect(playerid, reason)
     Spieler[playerid][pTankeAngebot][0] = INVALID_PLAYER_ID;
     Spieler[playerid][pTankeAngebot][1] = 0;
     Spieler[playerid][pKillsGangFightSession] = 0;
+    Spieler[playerid][pFRadarStatus] = 0;
     gangfightwettenpp[playerid] = 0;
     gangfightwettenppp[playerid] = 0;
     ReleasePlayerKeys(playerid,false);
@@ -10681,6 +10683,63 @@ CMD:back(playerid)
     return 1;
 }
 
+CMD:ahelp(playerid) return cmd_adminhelp(playerid, "");
+
+CMD:adminhelp(playerid, params[]){
+    if(Spieler[playerid][pAdmin] >= 1)
+    {
+        SendClientMessage(playerid, COLOR_ORANGE, "* SUPPORTER *: {FFFFFF}/Goto, /Gethere, /Spawn, /Kick, /ban (Level 1-3), /spec, /specoff, /Adienst, /Aschlagen, /Gebannt, /Spawncar");
+        SendClientMessage(playerid, COLOR_ORANGE, "* SUPPORTER *: {FFFFFF}/Setafk, /Mute, /Sichercode, /Sc, /Freeze, /Unfreeze, /Guncheck, /Check, /Checkscheine, /Supauto /Respawncar");
+        SendClientMessage(playerid, COLOR_ORANGE, "* SUPPORTER *: {FFFFFF}/Removeghettoblaster (/Rghettoblaster), /Gotocp, /Asettings, /Gotohaus, /Regelwarnung, /Delveh");
+        SendClientMessage(playerid, COLOR_ORANGE, "* SUPPORT TICKET *: {FFFFFF}/Openticket, /Delticket, /Dticket, /Aticket, /Closeticket, /Tickets");
+        SendClientMessage(playerid, COLOR_ORANGE, "* SUPPORTER *: {FFFFFF}/Rjobcars, /Rfrakcars, /Jobs, /Fraktionen, /Ngeld, /Gotocar, /Getcar, /Gotopos");
+    }
+    if(Spieler[playerid][pAdmin] >= 2)
+    {
+        SendClientMessage(playerid, COLOR_LIGHTBLUE, "* EVENT-SUPPORTER *: {FFFFFF}/Sethp, /Setarmor, /Veh, /Givegun, /Aeventitem, /Awiederbeleben, /Startevent, /Stopevent");
+        SendClientMessage(playerid, COLOR_LIGHTBLUE, "* EVENT-SUPPORTER *: {FFFFFF}/Eventpunkte, /Eventuhr, /Eventmarker, /Clearweapons, /Setmark, /Delmark, /Gotomark");
+        SendClientMessage(playerid, COLOR_LIGHTBLUE, "* EVENT-SUPPORTER *: {FFFFFF}/Waffeumgebung, /Healumgebung, /Armorumgebung, /Freezeumgebung, /Unfreezeumgebung");
+        SendClientMessage(playerid, COLOR_LIGHTBLUE, "* EVENT-SUPPORTER *: {FFFFFF}/Setmark, /Delmark, /Gotomark, /Addobject, /Editobject, /Gotoobject, /Removeobject");
+        SendClientMessage(playerid, COLOR_LIGHTBLUE, "* EVENT-SUPPORTER *: {FFFFFF}/Removeallobjects, /Objectlist, /Addlabel, /Removelabel, /Removealllabels");
+        SendClientMessage(playerid, COLOR_LIGHTBLUE, "* EVENT-SUPPORTER *: {FFFFFF}/Dust2");
+        
+    }
+    if(Spieler[playerid][pAdmin] >= 3)
+    {
+        SendClientMessage(playerid, COLOR_BLUE, "* MODERATOR *: {FFFFFF}/Ban, /Ipban, /Tban, /zollsperre, /Verwarnen, /Prison, /Cprison, /Offprison, /Offcprison, /Clearchat");
+        SendClientMessage(playerid, COLOR_BLUE, "* MODERATOR *: {FFFFFF}/Gotoliste, /Delallvehs, /Spec, /Specoff, /Changeweather, /Bizkassestand, /Setinterior, /Spielerip");
+        SendClientMessage(playerid, COLOR_BLUE, "* MODERATOR *: {FFFFFF}/Akteneintrag, /Waffensperre, /Atafelentmieten, /Checkskill, /Afkick, /Configplayer");
+        SendClientMessage(playerid, COLOR_BLUE, "* MODERATOR *: {FFFFFF}/Entbannen, /Offbannen, /Offtban, /Fraksperre, /Delfraksperre, /Respawnallcars, /Oafkick, /Offverwarnen");
+        SendClientMessage(playerid, COLOR_BLUE, "* MODERATOR *: {FFFFFF}/Gebeskill, /Gcoff, /Inballon, /Givecar, /Adminwarnung, /Bwstrafe, /Bwstrafen, /Setbwstrafe");
+        SendClientMessage(playerid, COLOR_BLUE, "* MODERATOR *: {FFFFFF}/Ageld, /Alevel, /Arp, /Offageld, /Lastdmg, /Carowner, /Setkasse");
+    }
+    if(Spieler[playerid][pAdmin] >= 4)
+    {
+        SendClientMessage(playerid, COLOR_DARKRED, "* ADMINISTRATOR *: {FFFFFF}/Sban, /Confighouse, /Configbiz, /Rauswerfenhotel, /Configtanke, /Makeleader, /Setzoneowner, /Gebietupgrade");
+        SendClientMessage(playerid, COLOR_DARKRED, "* ADMINISTRATOR *: {FFFFFF}/Gebefirma, /Delfirma, /Gebeclub, /Delclub, /Bfreischalten (2. Biz-Schlüssel), /SFreischalten (6. Schlüssel)");
+        SendClientMessage(playerid, COLOR_DARKRED, "* ADMINISTRATOR *: {FFFFFF}/Awaffenlager, /Fsbreset, /Namechange, /Createhouse, /delhouse, /Fixveh, /Gotoad (AirDrop)");
+        SendClientMessage(playerid, COLOR_DARKRED, "* ADMINISTRATOR *: {FFFFFF}/Purge, /Delallgvehs, /Adminbase2, /Createfcar, /FCarcolor");
+        SendClientMessage(playerid, COLOR_DARKRED, "* Vertretung von Benny *: {FFFFFF}/Creategutschein, /Amotor, /Pwchange, /aunlock, /Givecoins, /Configbiz");
+        if(bPurgeEvent) {
+            SendClientMessage(playerid, COLOR_DARKRED, "* ADMINISTRATOR PURGE *: {FFFFFF}/PGiveGun, /PGiveHealth, /PGiveArmor");
+        }
+    }
+    if(Spieler[playerid][pAdmin] >= 5)
+    {
+        SendClientMessage(playerid, COLOR_BLUE, "* SERVER MANAGER *: {FFFFFF}/Createaplatz, /Createtanke, /Createhotelroom, /Startlotto, /MakeBMOD, /Adminmaske");
+    }
+    if(Spieler[playerid][pAdmin] >= 6)
+    {
+        SendClientMessage(playerid, COLOR_ORANGE, "* PROJEKTLEITER *: {FFFFFF}/Makeadmin, /Gmx, /Event, /Pwchange, /Givecoins, /Vehcolor, /Jailtimeout");
+        SendClientMessage(playerid, COLOR_ORANGE, "* PROJEKTLEITER *: {FFFFFF}/Debug, /Debugpos, /Tankstand, /Auftanken");
+    }
+    if(IsPlayerAdmin(playerid))
+    {
+        SendClientMessage(playerid, COLOR_BLUE, "* RCON *: /Makeadmin, /Gmx");
+    }
+    return 1;
+}
+
 CMD:sethp(playerid, params[])
 {
     new pID, string[128], health;
@@ -10759,6 +10818,8 @@ CMD:unfreeze(playerid, params[])
 
 public OnPlayerSpawn(playerid)
 {
+    Spieler[playerid][aufgenommen] = 0;
+
     if (!gPlayerLogged[playerid]) {
         SendClientMessage(playerid, COLOR_RED, "Du bist noch nicht eingeloggt.");
         KickDelay(playerid);
@@ -21706,6 +21767,42 @@ CMD:aufnehmen(playerid, params[])
 		SetPlayerCheckpoint(playerid, HOSPITAL[index][0], HOSPITAL[index][1], HOSPITAL[index][2], 2.0);
 		SetPlayerCheckpoint(pID, HOSPITAL[index][0], HOSPITAL[index][1], HOSPITAL[index][2], 2.0);
         Spieler[pID][aufgenommen] = 1;
+    }
+    return 1;
+ }
+
+ CMD:deskwb(playerid, params[]){
+    new pID;
+    if(!(Spieler[playerid][pFraktion] == 3))return SendClientMessage(playerid, COLOR_RED, "Du bist kein Sanitäter.");
+    if(!Spieler[playerid][pDuty]) return SendClientMessage(playerid, COLOR_RED, "Du bist nicht im Dienst.");
+    if(!IsPlayerConnected(pID))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
+    if(sscanf(params, "u", pID))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Deskwb [SpielerID/Name]");
+    if(Spieler[pID][pTotTime] > 0){
+        if(Spieler[pID][aufgenommen] == 1){
+	        if(IsPlayerInRangeOfPoint(playerid, 10.0, 1463.9080, -1063.1261, 23.8477) || IsPlayerInRangeOfPoint(playerid, 10.0, 1185.7225,-1323.6067,13.5590) || IsPlayerInRangeOfPoint(playerid, 10.0, 2002.5291,-1445.5175,13.5615)){
+				new Float:x, Float:y, Float:z, Float:distance, Float:smallestDistance = 10000, index = 0, String[128], string[128];
+				format(String, sizeof(String), "* Patienten %s wurde ins Krankenhaus abgeliefert.", GetName(pID));
+				SendRoundMessage(x, y, z, COLOR_PURPLE, String);
+				format(string, sizeof(string), "[NOTRUFZENTRALE] Verletzter %s wurde wiederbelebt.", GetName(pID));
+	    		SendFraktionMessage(3, COLOR_YELLOW, string);
+	    		Spieler[pID][aufgenommen] = 0;
+				DisablePlayerCheckpointEx(playerid);
+				GetPlayerPos(pID,x,y,z);
+
+                for (new i = 0; i < sizeof(HOSPITAL_Player_POS); i++)
+				if ((distance = GetDistance(x, y, z, HOSPITAL_Player_POS[i][0], HOSPITAL_Player_POS[i][1], HOSPITAL_Player_POS[i][2])) < smallestDistance) index = i, smallestDistance = distance;
+				SetPlayerPos(pID, HOSPITAL_Player_POS[index][0], HOSPITAL_Player_POS[index][1], HOSPITAL_Player_POS[index][2]);
+
+			    for (new i = 0; i < sizeof(HOSPITAL_CAMERA_POS); i++)
+				if ((distance = GetDistance(x, y, z, HOSPITAL_CAMERA_POS[i][0], HOSPITAL_CAMERA_POS[i][1], HOSPITAL_CAMERA_POS[i][2])) < smallestDistance) index = i, smallestDistance = distance;
+				SetPlayerCameraPos(pID, HOSPITAL_CAMERA_POS[index][0], HOSPITAL_CAMERA_POS[index][1], HOSPITAL_CAMERA_POS[index][2]);
+
+				for (new i = 0; i < sizeof(HOSPITAL); i++)
+				if ((distance = GetDistance(x, y, z, HOSPITAL[i][0], HOSPITAL[i][1], HOSPITAL[i][2])) < smallestDistance) index = i, smallestDistance = distance;
+                SetPlayerCameraLookAt(pID, HOSPITAL[index][0], HOSPITAL[index][1], HOSPITAL[index][2]);
+				ShowPlayerDialog(pID, DIALOG_REVIVE_SPAWN, DIALOG_STYLE_LIST, COLOR_HEX_ORANGE"Spawnpunkt wählen", COLOR_HEX_WHITE"Gesetzter Spawnpunkt\nKrankenhaus", "Ausführen", "Abbrechen");
+			}
+        }
     }
     return 1;
  }
@@ -56967,7 +57064,7 @@ COMMAND:krankenversicherung(playerid,params[]) {
     SendClientMessage(playerid,COLOR_YELLOW,String);
     GivePlayerCash(playerid,-50000);
     Kasse[Samd] += 50000;
-    Spieler[playerid][unixKrankenversicherung] = gettime() + 60*24*7;
+    Spieler[playerid][unixKrankenversicherung] = gettime() + 604800;
     return 1;
 }
 
