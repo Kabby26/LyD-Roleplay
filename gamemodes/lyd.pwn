@@ -978,11 +978,9 @@ new g_Bots[][e_Bots] = {
 new MySQLThreadOwner[MAX_PLAYERS],bankchange[MAX_PLAYERS],damagesperre[MAX_PLAYERS];
 #include <ipban>
 forward Float:GetVehicleSpeed(vehicleid);
-//#include <spikes>
 #include <kraftstoff>
 #include <strlib>
 #include <floodcontrol>
-//#include <Youtube>
 
 native IsValidVehicle(vehicleid);
 native gpci(playerid, serial [], len);
@@ -2337,6 +2335,34 @@ stock bool:IsTUVNeeded(distance) {
 #define     DRIVEBYDIALOG 1403
 #define     DIALOG_FRAKTIONEN_LIST 1404
 #define     DIALOG_JOB_LIST 1405
+
+//Schwarzmarkt Start
+#define     DIALOG_SCHWARZMARKT_WAFFENTEILE 1406
+#define     DIALOG_SCHWARZMARKT_WAFFENTEILE_ADMIN 1407
+#define     DIALOG_SCHWARZMARKT_WAFFENTEILE_LAGERN 1408
+#define     DIALOG_SCHWARZMARKT_WAFFENTEILE_AUSLAGERN 1409
+#define     DIALOG_SCHWARZMARKT_WAFFENTEILE_PREIS 1410
+
+#define     DIALOG_SCHWARZMARKT_DROGEN 1411
+#define     DIALOG_SCHWARZMARKT_DROGEN_ADMIN 1412
+#define     DIALOG_SCHWARZMARKT_DROGEN_LAGERN 1413
+#define     DIALOG_SCHWARZMARKT_DROGEN_AUSLAGERN 1414
+#define     DIALOG_SCHWARZMARKT_DROGEN_PREIS 1415
+
+#define     DIALOG_SCHWARZMARKT_SPICE 1416
+#define     DIALOG_SCHWARZMARKT_SPICE_ADMIN 1417
+#define     DIALOG_SCHWARZMARKT_SPICE_LAGERN 1418
+#define     DIALOG_SCHWARZMARKT_SPICE_AUSLAGERN 1419
+#define     DIALOG_SCHWARZMARKT_SPICE_PREIS 1420
+
+#define     DIALOG_SCHWARZMARKT_WANTEDCODES 1421
+#define     DIALOG_SCHWARZMARKT_WANTEDCODES_ADMIN 1422
+#define     DIALOG_SCHWARZMARKT_WANTEDCODES_LAGERN 1423
+#define     DIALOG_SCHWARZMARKT_WANTEDCODES_AUSLAGERN 1424
+#define     DIALOG_SCHWARZMARKT_WANTEDCODES_PREIS 1425
+
+#define     DIALOG_SCHWARZMARKT_WEAPONS 1426
+//Schwarzmarkt Ende
 
 #define     KEIN_KENNZEICHEN    "KEINE PLAKETTE"
 
@@ -4813,6 +4839,19 @@ new Samen3Bestand = 0;
 new Samen4Bestand = 0;
 new Samen5Bestand = 0;
 
+//Schwarzmarkt Start
+new Schwarzmarkt_Waffenteile = 0;
+new Schwarzmarkt_Waffenteile_Preis = 0;
+
+new Schwarzmarkt_Drogen = 0;
+new Schwarzmarkt_Drogen_Preis = 0;
+
+new Schwarzmarkt_Spice = 0;
+new Schwarzmarkt_Spice_Preis = 0;
+
+new Schwarzmarkt_Wantedcodes = 0;
+new Schwarzmarkt_Wantedcodes_Preis = 0;
+
 forward Load_FrakcarsEx();
 forward Reload_FCars();
 forward CREATEFRAKCAR(veh);
@@ -5600,6 +5639,7 @@ new alcatrazGateHackTimestamp = 0;
 #include <maps\adminbase>
 #include <maps\adminbase2>
 #include <maps\dust2>
+#include <maps\schwarzmarkt>
 
 // Systems
 #include <paintball>
@@ -6817,6 +6857,15 @@ public OnGameModeInit2() {
     CreateDynamic3DTextLabel(COLOR_HEX_BLUE"Samen-Pakete\n"COLOR_HEX_WHITE"Tippe /Paketentladen um Pakete auszuladen",  COLOR_WHITE, -66.3187,-1121.1329,0.6501, 15.0);*/
 
 	//CreateDynamic3DTextLabel(COLOR_HEX_BLUE"Peilsender-Verkauf\n"COLOR_HEX_WHITE"Tippe /Peilsender", COLOR_WHITE,  1151.7448,-1203.0283,19.5159, 25.0);//
+
+    //Schwarzmarkt Start
+    CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Schwarzmarkt: Waffenteile\n"COLOR_HEX_WHITE"Tippe /Schwarzmarkt", COLOR_WHITE, -1101.9084,-2861.1260,61.1270, 15.0);
+    CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Schwarzmarkt: Drogen\n"COLOR_HEX_WHITE"Tippe /Schwarzmarkt", COLOR_WHITE, -1104.9402,-2861.1267,61.1270, 15.0);
+    CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Schwarzmarkt: Spice\n"COLOR_HEX_WHITE"Tippe /Schwarzmarkt", COLOR_WHITE, -1098.8091,-2861.1267,61.1270, 15.0);
+    CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Schwarzmarkt: Wantedcodes\n"COLOR_HEX_WHITE"Tippe /Schwarzmarkt", COLOR_WHITE, -1098.1770,-2858.3450,61.1270, 15.0);
+    CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Schwarzmarkt: Waffen\n"COLOR_HEX_WHITE"Tippe /Schwarzmarkt", COLOR_WHITE, -1098.1770,-2855.7100,61.1270, 15.0);
+    //Schwarzmarkt Ende
+
 	gSteuern = 1;
 
     //Gate::Gate();
@@ -35001,6 +35050,304 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 				}
 			}
 		}
+        case DIALOG_SCHWARZMARKT_WAFFENTEILE: {
+            if(response){
+                if(sscanf(inputtext, "{i}")) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast eine ungültige Eingabe getätigt!");
+                new iValue = strval(inputtext);
+                if(Schwarzmarkt_Waffenteile < iValue) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Soviele Waffenteile sind im Schwarzmarkt nicht vorhanden!");
+                if(GetPlayerMoney(playerid) < iValue*Schwarzmarkt_Waffenteile_Preis) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast nicht soviel Geld dabei!");
+                Schwarzmarkt_Waffenteile -= iValue;
+                Spieler[playerid][pWaffenteile] += iValue;
+                GivePlayerCash(playerid, -iValue*Schwarzmarkt_Waffenteile_Preis);
+                SCMFormatted(playerid, COLOR_GREEN, "* Du hast %i Waffenteile für $%i erworben.", iValue, iValue*Schwarzmarkt_Waffenteile_Preis);
+            }
+        }
+        case DIALOG_SCHWARZMARKT_WAFFENTEILE_ADMIN: {
+            if(response){
+                new String[256];
+                if(listitem == 0){//einlagern
+                    format(String, sizeof(String), "{FFFFFF}Wie viele Waffenteile möchtest du in den Schwarzmarkt einlagern?\n\nWaffenteile auf deiner Hand: %i\nWaffenteile im Schwarzmarkt: %i", Spieler[playerid][pWaffenteile], Schwarzmarkt_Waffenteile);
+                    ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_WAFFENTEILE_LAGERN, DIALOG_STYLE_INPUT, "Schwarzmarkt: Waffenteile - Einlagern", String, "Einlagern", "Abbrechen");
+                }else if(listitem == 1){
+                    format(String, sizeof(String), "{FFFFFF}Wie viele Waffenteile möchtest du in den Schwarzmarkt auslagern?\n\nWaffenteile im Schwarzmarkt: %i", Schwarzmarkt_Waffenteile);
+                    ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_WAFFENTEILE_AUSLAGERN, DIALOG_STYLE_INPUT, "Schwarzmarkt: Waffenteile - Auslagern", String, "Einlagern", "Abbrechen");
+                }else if(listitem == 2){
+                    format(String, sizeof(String), "{FFFFFF}Hier kannst du den Preis der Waffenteile anpassen.\n\nWaffenteile im Schwarzmarkt: %i", Schwarzmarkt_Waffenteile);
+                    ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_WAFFENTEILE_PREIS, DIALOG_STYLE_INPUT, "Schwarzmarkt: Waffenteile - Auslagern", String, "Einlagern", "Abbrechen");
+                }
+            }
+        }
+        case DIALOG_SCHWARZMARKT_WAFFENTEILE_LAGERN: {
+            if(response){
+                new String[128];
+                if(sscanf(inputtext, "{i}")) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast eine ungültige Eingabe getätigt!");
+                new iValue = strval(inputtext);
+                if(iValue < 0) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast eine ungültige Eingabe getätigt!");
+                if(iValue > Spieler[playerid][pWaffenteile]) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast nicht soviele Waffenteile auf der Hand!");
+                Schwarzmarkt_Waffenteile += iValue;
+                Spieler[playerid][pWaffenteile] -= iValue;
+                format(String, sizeof(String), "Fraktionsmitglied %s hat %i Waffenteile in dem Schwarzmarkt gelegt!", GetName(playerid), iValue);
+                SendFraktionMessage(19, COLOR_YELLOW, String);
+            }
+        }
+        case DIALOG_SCHWARZMARKT_WAFFENTEILE_AUSLAGERN: {
+            if(response){
+                new String[128];
+                if(sscanf(inputtext, "{i}")) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast eine ungültige Eingabe getätigt!");
+                new iValue = strval(inputtext);
+                if(iValue < 0) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast eine ungültige Eingabe getätigt!");
+                if(Schwarzmarkt_Waffenteile < iValue) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Soviele Waffenteile befinden sich nicht im Schwarzmarkt!");
+                Schwarzmarkt_Waffenteile -= iValue;
+                Spieler[playerid][pWaffenteile] += iValue;
+                format(String, sizeof(String), "Fraktionsmitglied %s hat %i Waffenteile aus dem Schwarzmarkt genommen!", GetName(playerid), iValue);
+                SendFraktionMessage(19, COLOR_YELLOW, String);
+            }
+        }
+        case DIALOG_SCHWARZMARKT_WAFFENTEILE_PREIS: {
+            if(response){
+                new String[128];
+                if(sscanf(inputtext, "{i}")) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast eine ungültige Eingabe getätigt!");
+                new iValue = strval(inputtext);
+                if(iValue < 0) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast eine ungültige Eingabe getätigt!");
+                Schwarzmarkt_Waffenteile_Preis = iValue;
+                format(String, sizeof(String), "Fraktionsmitglied %s hat den Preis der Waffenteile auf $%i geändert!", GetName(playerid), iValue);
+                SendFraktionMessage(19, COLOR_YELLOW, String);
+            }
+        }
+        case DIALOG_SCHWARZMARKT_DROGEN: {
+            if(response){
+                if(sscanf(inputtext, "{i}")) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast eine ungültige Eingabe getätigt!");
+                new iValue = strval(inputtext);
+                if(Schwarzmarkt_Drogen < iValue) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Soviele Drogen sind im Schwarzmarkt nicht vorhanden!");
+                if(GetPlayerMoney(playerid) < iValue*Schwarzmarkt_Drogen_Preis) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast nicht soviel Geld dabei!");
+                Schwarzmarkt_Drogen -= iValue;
+                Spieler[playerid][pDrugs] += iValue;
+                GivePlayerCash(playerid, -iValue*Schwarzmarkt_Drogen_Preis);
+                SCMFormatted(playerid, COLOR_GREEN, "* Du hast %i Drogen für $%i erworben.", iValue, iValue*Schwarzmarkt_Drogen_Preis);
+            }
+        }
+        case DIALOG_SCHWARZMARKT_DROGEN_ADMIN: {
+            if(response){
+                new String[256];
+                if(listitem == 0){//einlagern
+                    format(String, sizeof(String), "{FFFFFF}Wie viele Drogen möchtest du in den Schwarzmarkt einlagern?\n\nDrogen auf deiner Hand: %i\nDrogen im Schwarzmarkt: %i", Spieler[playerid][pDrugs], Schwarzmarkt_Drogen);
+                    ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_DROGEN_LAGERN, DIALOG_STYLE_INPUT, "Schwarzmarkt: Drogen - Einlagern", String, "Einlagern", "Abbrechen");
+                }else if(listitem == 1){
+                    format(String, sizeof(String), "{FFFFFF}Wie viele Drogen möchtest du in den Schwarzmarkt auslagern?\n\nDrogen im Schwarzmarkt: %i", Schwarzmarkt_Drogen);
+                    ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_DROGEN_AUSLAGERN, DIALOG_STYLE_INPUT, "Schwarzmarkt: Drogen - Auslagern", String, "Einlagern", "Abbrechen");
+                }else if(listitem == 2){
+                    format(String, sizeof(String), "{FFFFFF}Hier kannst du den Preis der Drogen anpassen.\n\nDrogen im Schwarzmarkt: %i", Schwarzmarkt_Drogen);
+                    ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_DROGEN_PREIS, DIALOG_STYLE_INPUT, "Schwarzmarkt: Drogen - Auslagern", String, "Einlagern", "Abbrechen");
+                }
+            }
+        }
+        case DIALOG_SCHWARZMARKT_DROGEN_LAGERN: {
+            if(response){
+                new String[128];
+                if(sscanf(inputtext, "{i}")) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast eine ungültige Eingabe getätigt!");
+                new iValue = strval(inputtext);
+                if(iValue < 0) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast eine ungültige Eingabe getätigt!");
+                if(iValue > Spieler[playerid][pDrugs]) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast nicht soviele Drogen auf der Hand!");
+                Schwarzmarkt_Drogen += iValue;
+                Spieler[playerid][pDrugs] -= iValue;
+                format(String, sizeof(String), "Fraktionsmitglied %s hat %i Drogen in dem Schwarzmarkt gelegt!", GetName(playerid), iValue);
+                SendFraktionMessage(19, COLOR_YELLOW, String);
+            }
+        }
+        case DIALOG_SCHWARZMARKT_DROGEN_AUSLAGERN: {
+            if(response){
+                new String[128];
+                if(sscanf(inputtext, "{i}")) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast eine ungültige Eingabe getätigt!");
+                new iValue = strval(inputtext);
+                if(iValue < 0) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast eine ungültige Eingabe getätigt!");
+                if(Schwarzmarkt_Drogen < iValue) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Soviele Drogen befinden sich nicht im Schwarzmarkt!");
+                Schwarzmarkt_Drogen -= iValue;
+                Spieler[playerid][pDrugs] += iValue;
+                format(String, sizeof(String), "Fraktionsmitglied %s hat %i Drogen aus dem Schwarzmarkt genommen!", GetName(playerid), iValue);
+                SendFraktionMessage(19, COLOR_YELLOW, String);
+            }
+        }
+        case DIALOG_SCHWARZMARKT_DROGEN_PREIS: {
+            if(response){
+                new String[128];
+                if(sscanf(inputtext, "{i}")) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast eine ungültige Eingabe getätigt!");
+                new iValue = strval(inputtext);
+                if(iValue < 0) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast eine ungültige Eingabe getätigt!");
+                Schwarzmarkt_Drogen_Preis = iValue;
+                format(String, sizeof(String), "Fraktionsmitglied %s hat den Preis der Drogen auf $%i geändert!", GetName(playerid), iValue);
+                SendFraktionMessage(19, COLOR_YELLOW, String);
+            }
+        }
+        case DIALOG_SCHWARZMARKT_SPICE: {
+            if(response){
+                if(sscanf(inputtext, "{i}")) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast eine ungültige Eingabe getätigt!");
+                new iValue = strval(inputtext);
+                if(Schwarzmarkt_Spice < iValue) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Soviele Spice sind im Schwarzmarkt nicht vorhanden!");
+                if(GetPlayerMoney(playerid) < iValue*Schwarzmarkt_Spice_Preis) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast nicht soviel Geld dabei!");
+                Schwarzmarkt_Spice -= iValue;
+                Spieler[playerid][pSpice] += iValue;
+                GivePlayerCash(playerid, -iValue*Schwarzmarkt_Spice_Preis);
+                SCMFormatted(playerid, COLOR_GREEN, "* Du hast %i Spice für $%i erworben.", iValue, iValue*Schwarzmarkt_Spice_Preis);
+            }
+        }
+        case DIALOG_SCHWARZMARKT_SPICE_ADMIN: {
+            if(response){
+                new String[256];
+                if(listitem == 0){//einlagern
+                    format(String, sizeof(String), "{FFFFFF}Wie viele Spice möchtest du in den Schwarzmarkt einlagern?\n\nSpice auf deiner Hand: %i\nSpice im Schwarzmarkt: %i", Spieler[playerid][pSpice], Schwarzmarkt_Spice);
+                    ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_SPICE_LAGERN, DIALOG_STYLE_INPUT, "Schwarzmarkt: Spice - Einlagern", String, "Einlagern", "Abbrechen");
+                }else if(listitem == 1){
+                    format(String, sizeof(String), "{FFFFFF}Wie viele Spice möchtest du in den Schwarzmarkt auslagern?\n\nSpice im Schwarzmarkt: %i", Schwarzmarkt_Spice);
+                    ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_SPICE_AUSLAGERN, DIALOG_STYLE_INPUT, "Schwarzmarkt: Spice - Auslagern", String, "Einlagern", "Abbrechen");
+                }else if(listitem == 2){
+                    format(String, sizeof(String), "{FFFFFF}Hier kannst du den Preis der Spice anpassen.\n\nSpice im Schwarzmarkt: %i", Schwarzmarkt_Spice);
+                    ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_SPICE_PREIS, DIALOG_STYLE_INPUT, "Schwarzmarkt: Spice - Auslagern", String, "Einlagern", "Abbrechen");
+                }
+            }
+        }
+        case DIALOG_SCHWARZMARKT_SPICE_LAGERN: {
+            if(response){
+                new String[128];
+                if(sscanf(inputtext, "{i}")) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast eine ungültige Eingabe getätigt!");
+                new iValue = strval(inputtext);
+                if(iValue < 0) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast eine ungültige Eingabe getätigt!");
+                if(iValue > Spieler[playerid][pSpice]) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast nicht soviele Spice auf der Hand!");
+                Schwarzmarkt_Spice += iValue;
+                Spieler[playerid][pSpice] -= iValue;
+                format(String, sizeof(String), "Fraktionsmitglied %s hat %i Spice in dem Schwarzmarkt gelegt!", GetName(playerid), iValue);
+                SendFraktionMessage(19, COLOR_YELLOW, String);
+            }
+        }
+        case DIALOG_SCHWARZMARKT_SPICE_AUSLAGERN: {
+            if(response){
+                new String[128];
+                if(sscanf(inputtext, "{i}")) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast eine ungültige Eingabe getätigt!");
+                new iValue = strval(inputtext);
+                if(iValue < 0) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast eine ungültige Eingabe getätigt!");
+                if(Schwarzmarkt_Spice < iValue) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Soviele Spice befinden sich nicht im Schwarzmarkt!");
+                Schwarzmarkt_Spice -= iValue;
+                Spieler[playerid][pSpice] += iValue;
+                format(String, sizeof(String), "Fraktionsmitglied %s hat %i Spice aus dem Schwarzmarkt genommen!", GetName(playerid), iValue);
+                SendFraktionMessage(19, COLOR_YELLOW, String);
+            }
+        }
+        case DIALOG_SCHWARZMARKT_SPICE_PREIS: {
+            if(response){
+                new String[128];
+                if(sscanf(inputtext, "{i}")) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast eine ungültige Eingabe getätigt!");
+                new iValue = strval(inputtext);
+                if(iValue < 0) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast eine ungültige Eingabe getätigt!");
+                Schwarzmarkt_Spice_Preis = iValue;
+                format(String, sizeof(String), "Fraktionsmitglied %s hat den Preis der Spice-Drogen auf $%i geändert!", GetName(playerid), iValue);
+                SendFraktionMessage(19, COLOR_YELLOW, String);
+            }
+        }
+        case DIALOG_SCHWARZMARKT_WANTEDCODES: {
+            if(response){
+                if(sscanf(inputtext, "{i}")) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast eine ungültige Eingabe getätigt!");
+                new iValue = strval(inputtext);
+                if(Schwarzmarkt_Wantedcodes < iValue) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Soviele Wantedcodes sind im Schwarzmarkt nicht vorhanden!");
+                if(GetPlayerMoney(playerid) < iValue*Schwarzmarkt_Wantedcodes_Preis) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast nicht soviel Geld dabei!");
+                Schwarzmarkt_Wantedcodes -= iValue;
+                Spieler[playerid][pWantedCodes] += iValue;
+                GivePlayerCash(playerid, -iValue*Schwarzmarkt_Wantedcodes_Preis);
+                SCMFormatted(playerid, COLOR_GREEN, "* Du hast %i Wantedcodes für $%i erworben.", iValue, iValue*Schwarzmarkt_Wantedcodes_Preis);
+            }
+        }
+        case DIALOG_SCHWARZMARKT_WANTEDCODES_ADMIN: {
+            if(response){
+                new String[256];
+                if(listitem == 0){//einlagern
+                    format(String, sizeof(String), "{FFFFFF}Wie viele Wantedcodes möchtest du in den Schwarzmarkt einlagern?\n\nWantedcodes auf deiner Hand: %i\nWantedcodes im Schwarzmarkt: %i", Spieler[playerid][pWantedCodes], Schwarzmarkt_Wantedcodes);
+                    ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_WANTEDCODES_LAGERN, DIALOG_STYLE_INPUT, "Schwarzmarkt: Wantedcodes - Einlagern", String, "Einlagern", "Abbrechen");
+                }else if(listitem == 1){
+                    format(String, sizeof(String), "{FFFFFF}Wie viele Wantedcodes möchtest du in den Schwarzmarkt auslagern?\n\nWantedcodes im Schwarzmarkt: %i", Schwarzmarkt_Wantedcodes);
+                    ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_WANTEDCODES_AUSLAGERN, DIALOG_STYLE_INPUT, "Schwarzmarkt: Wantedcodes - Auslagern", String, "Einlagern", "Abbrechen");
+                }else if(listitem == 2){
+                    format(String, sizeof(String), "{FFFFFF}Hier kannst du den Preis der Wantedcodes anpassen.\n\nWantedcodes im Schwarzmarkt: %i", Schwarzmarkt_Wantedcodes);
+                    ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_WANTEDCODES_PREIS, DIALOG_STYLE_INPUT, "Schwarzmarkt: Wantedcodes - Auslagern", String, "Einlagern", "Abbrechen");
+                }
+            }
+        }
+        case DIALOG_SCHWARZMARKT_WANTEDCODES_LAGERN: {
+            if(response){
+                new String[128];
+                if(sscanf(inputtext, "{i}")) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast eine ungültige Eingabe getätigt!");
+                new iValue = strval(inputtext);
+                if(iValue < 0) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast eine ungültige Eingabe getätigt!");
+                if(iValue > Spieler[playerid][pWantedCodes]) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast nicht soviele Wantedcodes auf der Hand!");
+                Schwarzmarkt_Wantedcodes += iValue;
+                Spieler[playerid][pWantedCodes] -= iValue;
+                format(String, sizeof(String), "Fraktionsmitglied %s hat %i Wantedcodes in dem Schwarzmarkt gelegt!", GetName(playerid), iValue);
+                SendFraktionMessage(19, COLOR_YELLOW, String);
+            }
+        }
+        case DIALOG_SCHWARZMARKT_WANTEDCODES_AUSLAGERN: {
+            if(response){
+                new String[128];
+                if(sscanf(inputtext, "{i}")) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast eine ungültige Eingabe getätigt!");
+                new iValue = strval(inputtext);
+                if(iValue < 0) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast eine ungültige Eingabe getätigt!");
+                if(Schwarzmarkt_Wantedcodes < iValue) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Soviele Wantedcodes befinden sich nicht im Schwarzmarkt!");
+                Schwarzmarkt_Wantedcodes -= iValue;
+                Spieler[playerid][pWantedCodes] += iValue;
+                format(String, sizeof(String), "Fraktionsmitglied %s hat %i Wantedcodes aus dem Schwarzmarkt genommen!", GetName(playerid), iValue);
+                SendFraktionMessage(19, COLOR_YELLOW, String);
+            }
+        }
+        case DIALOG_SCHWARZMARKT_WANTEDCODES_PREIS: {
+            if(response){
+                new String[128];
+                if(sscanf(inputtext, "{i}")) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast eine ungültige Eingabe getätigt!");
+                new iValue = strval(inputtext);
+                if(iValue < 0) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast eine ungültige Eingabe getätigt!");
+                Schwarzmarkt_Wantedcodes_Preis = iValue;
+                format(String, sizeof(String), "Fraktionsmitglied %s hat den Preis der Wantedcodes-Drogen auf $%i geändert!", GetName(playerid), iValue);
+                SendFraktionMessage(19, COLOR_YELLOW, String);
+            }
+        }
+        case DIALOG_SCHWARZMARKT_WEAPONS: {
+            if(response){
+                new Price, Schuss, needWaffenteile, giveWeapon;
+                if(listitem == 0){//Sniper
+                    Price = 30000;
+                    Schuss = 30;
+                    needWaffenteile = 500;
+                    giveWeapon = 34;
+                }else if(listitem == 1){//uzi
+                    Price = 50000;
+                    Schuss = 200;
+                    needWaffenteile = 1000;
+                    giveWeapon = 28;
+                }else if(listitem == 2){//tec9
+                    Price = 50000;
+                    Schuss = 200;
+                    needWaffenteile = 1000;
+                    giveWeapon = 32;
+                }else if(listitem == 3){//Katana
+                    Price = 10000;
+                    Schuss = 1;
+                    needWaffenteile = 150;
+                    giveWeapon = 8;
+                }else if(listitem == 4){//Granate
+                    Price = 1000000;
+                    Schuss = 1;
+                    needWaffenteile = 750;
+                    giveWeapon = 16;
+                }else if(listitem == 5){//RPG
+                    Price = 15000000;
+                    Schuss = 1;
+                    needWaffenteile = 2000;
+                    giveWeapon = 35;
+                }
+                if(Schwarzmarkt_Waffenteile < needWaffenteile) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Es befinden sich nicht genug Waffenteile im Schwarzmarkt, um diese Waffe bauen zu können!");
+                if(GetPlayerMoney(playerid) < Price) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast zu wenig Geld dabei!");
+                GivePlayerCash(playerid, -Price);
+                GivePlayerWeapon(playerid, giveWeapon, Schuss);
+                Schwarzmarkt_Waffenteile -= needWaffenteile;
+                Kasse[TerrorK] += Price;
+            }
+        }
         case DIALOG_PIN_AENDERN_PIN: {
             if(response) {
                 new
@@ -47725,7 +48072,7 @@ stock isNumeric(const string[])
 stock ForbiddenGun(playerid)
 {
     new weap = GetPlayerWeapon(playerid);
-    if (weap == 16 || weap == 18 || weap == 35 || weap == 36 || weap == 37 || weap== 38 || weap == 44 || weap == 45)
+    if (weap == 18 || weap == 36 || weap == 37 || weap == 38 || weap == 44 || weap == 45)
     {
         return 1;
     }
@@ -48171,6 +48518,29 @@ public SaveInfos()
     format(query,sizeof(query),"UPDATE `infotab` SET `Bestand` = %d WHERE `Info` = '%s'", Samen5Bestand , ("Samen5") );
     mysql_oquery(query,THREAD_SAVEINFOS,INVALID_PLAYER_ID,gSQL);
 
+    format(query,sizeof(query),"UPDATE `infotab` SET `Bestand` = %d WHERE `Info` = '%s'", Schwarzmarkt_Waffenteile , ("SW_WT") );
+    mysql_oquery(query,THREAD_SAVEINFOS,INVALID_PLAYER_ID,gSQL);
+
+    format(query,sizeof(query),"UPDATE `infotab` SET `Bestand` = %d WHERE `Info` = '%s'", Schwarzmarkt_Waffenteile_Preis , ("SW_WT_PREIS") );
+    mysql_oquery(query,THREAD_SAVEINFOS,INVALID_PLAYER_ID,gSQL);
+
+    format(query,sizeof(query),"UPDATE `infotab` SET `Bestand` = %d WHERE `Info` = '%s'", Schwarzmarkt_Drogen , ("SW_DRG") );
+    mysql_oquery(query,THREAD_SAVEINFOS,INVALID_PLAYER_ID,gSQL);
+
+    format(query,sizeof(query),"UPDATE `infotab` SET `Bestand` = %d WHERE `Info` = '%s'", Schwarzmarkt_Drogen_Preis , ("SW_DRG_PREIS") );
+    mysql_oquery(query,THREAD_SAVEINFOS,INVALID_PLAYER_ID,gSQL);
+
+    format(query,sizeof(query),"UPDATE `infotab` SET `Bestand` = %d WHERE `Info` = '%s'", Schwarzmarkt_Spice , ("SW_SPC") );
+    mysql_oquery(query,THREAD_SAVEINFOS,INVALID_PLAYER_ID,gSQL);
+
+    format(query,sizeof(query),"UPDATE `infotab` SET `Bestand` = %d WHERE `Info` = '%s'", Schwarzmarkt_Spice_Preis , ("SW_SPC_PREIS") );
+    mysql_oquery(query,THREAD_SAVEINFOS,INVALID_PLAYER_ID,gSQL);
+
+    format(query,sizeof(query),"UPDATE `infotab` SET `Bestand` = %d WHERE `Info` = '%s'", Schwarzmarkt_Wantedcodes , ("SW_WCD") );
+    mysql_oquery(query,THREAD_SAVEINFOS,INVALID_PLAYER_ID,gSQL);
+
+    format(query,sizeof(query),"UPDATE `infotab` SET `Bestand` = %d WHERE `Info` = '%s'", Schwarzmarkt_Wantedcodes_Preis , ("SW_WCD_PREIS") );
+    mysql_oquery(query,THREAD_SAVEINFOS,INVALID_PLAYER_ID,gSQL);
     return 1;
 }
 
@@ -60197,6 +60567,22 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
             }
             else if(!strcmp(fraktion,"Samen5")) {
                 Samen5Bestand = kassenbestand;
+            }else if(!strcmp(fraktion,"SW_WT")) {
+                Schwarzmarkt_Waffenteile = kassenbestand;
+            }else if(!strcmp(fraktion,"SW_WT_PREIS")) {
+                Schwarzmarkt_Waffenteile_Preis = kassenbestand;
+            }else if(!strcmp(fraktion,"SW_DRG")) {
+                Schwarzmarkt_Drogen = kassenbestand;
+            }else if(!strcmp(fraktion,"SW_DRG_PREIS")) {
+                Schwarzmarkt_Drogen_Preis = kassenbestand;
+            }else if(!strcmp(fraktion,"SW_SPC")) {
+                Schwarzmarkt_Spice = kassenbestand;
+            }else if(!strcmp(fraktion,"SW_SPC_PREIS")) {
+                Schwarzmarkt_Spice_Preis = kassenbestand;
+            }else if(!strcmp(fraktion,"SW_WCD")) {
+                Schwarzmarkt_Wantedcodes = kassenbestand;
+            }else if(!strcmp(fraktion,"SW_WCD_PREIS")) {
+                Schwarzmarkt_Wantedcodes_Preis = kassenbestand;
             }
             else {
                 printf("Keine Kasse definiert für %s mit %d$",fraktion,kassenbestand);
@@ -63281,6 +63667,7 @@ CMD:startsprit(playerid) {
 	SendFraktionMessage(19, COLOR_YELLOW, string);
 	return 1;
 }
+
 CMD:stopsprit(playerid) {
 	new string[128];
     if (!gPlayerLogged[playerid]) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du bist nicht eingeloggt.");
@@ -63296,6 +63683,7 @@ CMD:stopsprit(playerid) {
 	SendFraktionMessage(19, COLOR_YELLOW, string);
 	return 1;
 }
+
 CMD:selbstmord(playerid) {
     if (!gPlayerLogged[playerid]) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du bist nicht eingeloggt.");
 	if(Spieler[playerid][pFraktion] != 19) return SendClientMessage(playerid,COLOR_RED,"[FEHLER] {FFFFFF}Du bist kein Terrorist.");
@@ -63358,6 +63746,7 @@ CMD:selbstmord(playerid) {
 	SetTimerEx("uselbstmord",300000,false,"i",playerid);
 	return 1;
 }
+
 forward uselbstmord(playerid);
 public uselbstmord(playerid) {
 	DeletePVar(playerid, "TERROR.SELBSTMORD");
@@ -63390,6 +63779,58 @@ stock GetBombDrahtColorString( string[] , size = sizeof(string) ) { // scheiss f
     }
     return 1;
 }
+
+//Schwartmarkt Waffenteile Position: -796.7298,1545.3973,27.0659
+//Schwarzmarkt Drogen Position: -782.6193,1545.2587,27.0616
+//Scharzmarkt Spice Position: -779.6065,1554.7498,27.1172
+//Schwarzmarkt Waffen Position: -800.7147,1567.1658,27.1172
+
+CMD:schwarzmarkt(playerid, params[]){
+    if(IsPlayerInRangeOfPoint(playerid, 1, -1101.9084,-2861.1260,61.1270)){//Waffenteile
+        if(Spieler[playerid][pFraktion] == 19){
+            ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_WAFFENTEILE_ADMIN, DIALOG_STYLE_LIST, "Schwarzmarkt: Waffenteile", "{1EA240}Waffenteile einlagern\n{C82619}Waffenteile auslagern\n{DFE213}Preis anpassen", "Auswählen", "Abbrechen"); //ADMIN SCHWARTMARKT
+        }else{
+            new String[256];
+            format(String, sizeof(String),
+            "{FFFFFF}Willkommen am Schwarzmarkt.\n\nHier hast du die Möglichkeit Waffenteile zu erwerben.\nAktueller Lagerbestand: %i Stück\nAktueller Stückpreis: $%i\n\nWaffenteile erwerben:", Schwarzmarkt_Waffenteile, Schwarzmarkt_Waffenteile_Preis);
+            ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_WAFFENTEILE, DIALOG_STYLE_INPUT, "Schwarzmarkt: Waffenteile", String, "Kaufen", "Abbrechen");
+        }
+    }else if(IsPlayerInRangeOfPoint(playerid, 1, -1104.9402,-2861.1267,61.1270)){//Drogen
+        if(Spieler[playerid][pFraktion] == 19){
+            ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_DROGEN_ADMIN, DIALOG_STYLE_LIST, "Schwarzmarkt: Drogen", "{1EA240}Drogen einlagern\n{C82619}Drogen auslagern\n{DFE213}Preis anpassen", "Auswählen", "Abbrechen"); //ADMIN SCHWARTMARKT
+        }else{
+            new String[256];
+            format(String, sizeof(String),
+            "{FFFFFF}Willkommen am Schwarzmarkt.\n\nHier hast du die Möglichkeit Drogen zu erwerben.\nAktueller Lagerbestand: %i Stück\nAktueller Stückpreis: $%i\n\nDrogen erwerben:", Schwarzmarkt_Drogen, Schwarzmarkt_Drogen_Preis);
+            ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_DROGEN, DIALOG_STYLE_INPUT, "Schwarzmarkt: Drogen", String, "Kaufen", "Abbrechen");
+        }
+    }else if(IsPlayerInRangeOfPoint(playerid, 1, -1098.8091,-2861.1267,61.1270)){//Spice
+        if(Spieler[playerid][pFraktion] == 19){
+            ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_SPICE_ADMIN, DIALOG_STYLE_LIST, "Schwarzmarkt: Spice", "{1EA240}Spice einlagern\n{C82619}Spice auslagern\n{DFE213}Preis anpassen", "Auswählen", "Abbrechen"); //ADMIN SCHWARTMARKT
+        }else{
+            new String[256];
+            format(String, sizeof(String),
+            "{FFFFFF}Willkommen am Schwarzmarkt.\n\nHier hast du die Möglichkeit Spice zu erwerben.\nAktueller Lagerbestand: %i Stück\nAktueller Stückpreis: $%i\n\nSpice erwerben:", Schwarzmarkt_Spice, Schwarzmarkt_Spice_Preis);
+            ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_SPICE, DIALOG_STYLE_INPUT, "Schwarzmarkt: Spice", String, "Kaufen", "Abbrechen");
+        }
+    }
+    else if(IsPlayerInRangeOfPoint(playerid, 1, -1098.1770,-2858.3450,61.1270)){//Wantedcodes
+        if(Spieler[playerid][pFraktion] == 19){
+            ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_WANTEDCODES_ADMIN, DIALOG_STYLE_LIST, "Schwarzmarkt: Wantedcodes", "{1EA240}Wantedcodes einlagern\n{C82619}Wantedcodes auslagern\n{DFE213}Wantedcodes anpassen", "Auswählen", "Abbrechen"); //ADMIN SCHWARTMARKT
+        }else{
+            new String[256];
+            format(String, sizeof(String),
+            "{FFFFFF}Willkommen am Schwarzmarkt.\n\nHier hast du die Möglichkeit Wantedcodes zu erwerben.\nAktueller Lagerbestand: %i Stück\nAktueller Stückpreis: $%i\n\nWantedcodes erwerben:", Schwarzmarkt_Wantedcodes, Schwarzmarkt_Wantedcodes_Preis);
+            ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_WANTEDCODES, DIALOG_STYLE_INPUT, "Schwarzmarkt: Spice", String, "Kaufen", "Abbrechen");
+        }
+    }
+    else if(IsPlayerInRangeOfPoint(playerid, 1, -1098.1770,-2855.7100,61.1270)){//Waffen
+        ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_WEAPONS, DIALOG_STYLE_LIST, "Schwarzmarkt: Waffen", "Sniper Rifle - $30.000 - 30 Schuss\nUzi - $50.000 - 200 Schuss\nTec-9 - $50.000 - 200 Schuss\nKatana - $10.000\nGranate - $1.000.000\nRPG - $15.000.000", "Kaufen", "Abbrechen");
+    }
+    return 1;
+}
+
+//TERROR ENDE
 
 stock GetColorCodeFromHex(hexColor)
 {
