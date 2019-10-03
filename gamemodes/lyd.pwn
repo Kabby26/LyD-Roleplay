@@ -35334,11 +35334,6 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                     Schuss = 1;
                     needWaffenteile = 750;
                     giveWeapon = 16;
-                }else if(listitem == 5){//RPG
-                    Price = 15000000;
-                    Schuss = 1;
-                    needWaffenteile = 2000;
-                    giveWeapon = 35;
                 }
                 if(Schwarzmarkt_Waffenteile < needWaffenteile) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Es befinden sich nicht genug Waffenteile im Schwarzmarkt, um diese Waffe bauen zu können!");
                 if(GetPlayerMoney(playerid) < Price) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast zu wenig Geld dabei!");
@@ -63825,7 +63820,7 @@ CMD:schwarzmarkt(playerid, params[]){
         }
     }
     else if(IsPlayerInRangeOfPoint(playerid, 1, -1098.1770,-2855.7100,61.1270)){//Waffen
-        ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_WEAPONS, DIALOG_STYLE_LIST, "Schwarzmarkt: Waffen", "Sniper Rifle - $30.000 - 30 Schuss\nUzi - $50.000 - 200 Schuss\nTec-9 - $50.000 - 200 Schuss\nKatana - $10.000\nGranate - $1.000.000\nRPG - $15.000.000", "Kaufen", "Abbrechen");
+        ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_WEAPONS, DIALOG_STYLE_LIST, "Schwarzmarkt: Waffen", "Sniper Rifle - $30.000 - 30 Schuss\nUzi - $50.000 - 200 Schuss\nTec-9 - $50.000 - 200 Schuss\nKatana - $10.000\nGranate - $1.000.000", "Kaufen", "Abbrechen");
     }
     return 1;
 }
