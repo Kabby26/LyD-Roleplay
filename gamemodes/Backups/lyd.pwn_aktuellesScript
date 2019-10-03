@@ -602,7 +602,7 @@ new jobNames[][] = {
     "Pizzalieferant",
     "Taxifahrer",
     "Drogendealer",
-    "- - -",
+    "Waffendealer",
     "Taschendieb",
     "Prostituierte",
     "Wanted-Hacker",
@@ -2658,13 +2658,10 @@ enum {
     CP_COW_FINISH,
     CP_GELDT,// 163
     CP_GELDT_ENTLEEREN,// 163
-    CP_GELDTFINISH,
-
-    CP_SPRITKLAUEN,
-    CP_ROBSPRIT
+    CP_GELDTFINISH
 }
 
-#define TEST
+//#define TEST
 
 #if defined TEST // Testserver
 	#define     SQL_HOST            "51.68.175.95"
@@ -2941,10 +2938,6 @@ new aiVehicles[MAX_VEHICLES] = {VEH_INVALID,...};
 new permissionleavegz[MAX_PLAYERS];
 new FlasherState[MAX_VEHICLES];
 new LightPwr[MAX_VEHICLES];
-new SpritTimer[MAX_PLAYERS];
-new SpritCheckTimer[MAX_PLAYERS];
-new WTMeldung[MAX_PLAYERS];
-new CheckWVehicle[MAX_PLAYERS];
 new FlashTimer;
 new Flasher[MAX_VEHICLES];
 new sireneobj[MAX_VEHICLES][5];
@@ -5351,7 +5344,7 @@ new gmxtimer;
 new CurWeather;
 
 new drogen[6];
-//new wdealer[6];
+new wdealer[6];
 new combines[6];
 new zugb[3];
 new pizzacar[8];
@@ -6144,8 +6137,6 @@ public OnGameModeInit2() {
     format(lagerstr, sizeof(lagerstr), COLOR_HEX_BLUE"Lagerbestand\n"COLOR_HEX_WHITE"%d Pakete\nTippe /Paketeinladen"COLOR_HEX_BLUE"/"COLOR_HEX_WHITE" um Pakete zu entnehmen\n"COLOR_HEX_BLUE"$500 pro Paket", lagerbestand);
     lager3d = CreateDynamic3DTextLabel(lagerstr, COLOR_WHITE, -38.4148,56.1184,3.1172, 10.0);
     CreateDynamicPickup(1239, 1, -38.4148,56.1184,3.1172,0);
-    CreateDynamicPickup(1239, 1, 1678.1671,2358.7722,10.8203);
-    CreateDynamic3DTextLabel(COLOR_HEX_BLUE"Waffenteile-Pakete\n"COLOR_HEX_WHITE"Tippe /WPakete um Pakete zu entnehmen",  COLOR_WHITE, 1678.1671,2358.7722,10.8203, 15.0);
     CreateDynamicPickup(1239, 1, 2348.1086,-2302.4243,13.5469);
     CreateDynamic3DTextLabel(COLOR_HEX_BLUE"Waffenteile-Pakete\n"COLOR_HEX_WHITE"Tippe /Paketeinladen um Pakete zu entnehmen",  COLOR_WHITE, 2348.1086,-2302.4243,13.5469, 15.0);
     SetTimer("CheckGas", RunOutTime, 1);
@@ -6181,12 +6172,12 @@ public OnGameModeInit2() {
     zugb[2] = AddStaticVehicleEx(538,1654.6897,-1957.9625,13.5469,270.8898,1,1,60*10); // Zug
 
     //Waffenteile Transporter
-    /*wdealer[0] = AddStaticVehicleEx(482,2282.6243,-2351.6001,13.6290,226.3535,6,3,60*10); // WDealer1
+    wdealer[0] = AddStaticVehicleEx(482,2282.6243,-2351.6001,13.6290,226.3535,6,3,60*10); // WDealer1
     wdealer[1] = AddStaticVehicleEx(482,2290.0530,-2343.9314,13.6311,225.6010,4,4,60*10); // WDealer2
     wdealer[2] = AddStaticVehicleEx(482,2297.5593,-2336.3022,13.6220,227.2437,9,9,60*10); // WDealer3
     wdealer[3] = AddStaticVehicleEx(482,2290.8293,-2329.9988,13.6274,226.5028,85,84,60*10); // WDealer4
     wdealer[4] = AddStaticVehicleEx(482,2283.5171,-2337.6597,13.6266,227.1544,108,108,60*10); // WDealer5
-    wdealer[5] = AddStaticVehicleEx(482,2276.0869,-2345.1609,13.6405,225.8990,3,38,60*10); // WDealer6*/
+    wdealer[5] = AddStaticVehicleEx(482,2276.0869,-2345.1609,13.6405,225.8990,3,38,60*10); // WDealer6
 
 	//Farmer Combines
 	combines[0] =AddStaticVehicleEx(532,-29.79999924,-1.29999995,4.19999981,66.24993896,-1,-1,60*10); //Combine
@@ -6297,12 +6288,12 @@ public OnGameModeInit2() {
 		SetVehicleToRespawn(drogen[i]);
 		aiVehicles[ drogen[i] ] = VEH_DROGEN;
 	}
-	/*for(new i=0;i<sizeof(wdealer);i++)
+	for(new i=0;i<sizeof(wdealer);i++)
 	{
 		SetVehicleNumberPlate(wdealer[i], COLOR_HEX_BLACK"LS-98651");
 		SetVehicleToRespawn(wdealer[i]);
 		aiVehicles[ wdealer[i] ] = VEH_WDEALER;
-	}*/
+	}
 	for(new i=0;i<sizeof(vehicle_wantedHackerBase);i++)
 	{
 		SetVehicleNumberPlate(vehicle_wantedHackerBase[i], COLOR_HEX_BLACK"LS-87492");
@@ -6508,7 +6499,7 @@ public OnGameModeInit2() {
 	CreateDynamicPickup(1239, 1, -2656.1047,1416.0248,906.2734, 0);//Waffenshop Club in Las Venturas
 
     CreateDynamicPickup(1240, 1, -2653.5183,1413.5085,906.2734, 0);//Heal Club in Las Venturas
-   	CreateDynamicPickup(1239, 1, -1518.8336,2558.5051,55.8403, 0);//Unloadpunkt Waffendealer
+   	CreateDynamicPickup(1239, 1, -1857.4130,-1618.9630,21.9022, 0);//Unloadpunkt Waffendealer
 	CreateDynamicPickup(1239, 1, -258.9534,-2181.9905,29.0150, 0);//Unloadpunkt Drogendealer
 
 	CreateDynamicPickup(1318, 1, -1548.0554,125.1203,3.5547, 0);//Autodieb kran
@@ -6741,7 +6732,7 @@ public OnGameModeInit2() {
     CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Autolackiererei\n"COLOR_HEX_ORANGE"Preis: 1.500$\n"COLOR_HEX_WHITE"Tippe /Autofarbe", COLOR_WHITE, 1763.4915,2080.2959,10.8203, 20.0);
     CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Abbauwerkstatt\nfür Auto- u. Motorradtuning\n"COLOR_HEX_ORANGE"Preis: 3.000$\n"COLOR_HEX_WHITE"Tippe /Tuningabbauen", COLOR_WHITE, 1782.8275,-1702.7240,13.5096, 20.0);
 
-    CreateDynamic3DTextLabel(COLOR_HEX_BLUE"Entladungspunkt\n"COLOR_HEX_WHITE"Tippe /WPaketeentladen", COLOR_WHITE, -1518.8336,2558.5051,55.8403, 10.0, .worldid = 0);
+    CreateDynamic3DTextLabel(COLOR_HEX_BLUE"Entladungspunkt\n"COLOR_HEX_WHITE"Tippe /Paketentladen", COLOR_WHITE, -1857.4130,-1618.9630,21.9022, 10.0, .worldid = 0);
     CreateDynamic3DTextLabel(COLOR_HEX_BLUE"Entladungspunkt\n"COLOR_HEX_WHITE"Tippe /Paketentladen", COLOR_WHITE, -258.9534,-2181.9905,29.0150, 10.0, .worldid = 0);
 	CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Fahrschule Los Santos\n"COLOR_HEX_WHITE"Tippe /Fahrpruefung\nTippe /Sperrefreikaufen", COLOR_WHITE, -2033.1216,-117.4597,1035.1719, 40.0);
 	CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Paintball - Anlage\nGebäude verlassen mit 'Enter'", COLOR_BLUE, 2169.8208,1618.7504,999.9766, 15.0, .worldid = 0);
@@ -9712,7 +9703,7 @@ CMD:openticket(playerid, params[])
             SendAdminMessage(COLOR_LIGHTGREEN, string);
             SendClientMessage(playerid, COLOR_ORANGE, "Schreibe nun mit dem Spieler. Nutze dazu einfach den normalen Chat!");
             SendClientMessage(playerid, COLOR_ORANGE, "Du kannst das Ticket mit \"/closeticket [SpielerID/Name]\" schließen.");
-            format(string, sizeof(string), "> Ticket < - Dein Ticket wurde von %s %s angenommen.", GetPlayerAdminRang(playerid), GetName(playerid));
+            format(string, sizeof(string), "> Ticket < - Dein Ticket wurde von Supporter %s angenommen.", GetName(playerid));
             SendClientMessage(pID, COLOR_LIGHTGREEN, string);
             SendClientMessage(pID, COLOR_LIGHTGREEN, "Du kannst nun mit dem Teammitglied reden. Nutze dazu einfach den normalen Chat!");
             ReportCall[pID] = playerid;
@@ -10442,8 +10433,8 @@ stock StartPlayerSkinSelection(playerid) {
     }
     else if(Spieler[playerid][pFraktion] == 19)
     {
-        SetPlayerSkin(playerid, 14);
-        pChoosedSkin[playerid] = 14;
+        SetPlayerSkin(playerid, 142);
+        pChoosedSkin[playerid] = 142;
     }
     else if(Spieler[playerid][pFraktion] == 20)
     {
@@ -11591,42 +11582,13 @@ public OnPlayerDeath(playerid, killerid, reason)
     if( IsPlayerInWantedKillZone(killerid) ) {
         bWantedKillZone = 1;
     }
-
-    if(GetPVarInt(playerid, "WAFFENDEALER")) {
-		DeletePVar(playerid, "WAFFENDEALER");
-        KillTimer(WTMeldung[playerid]);
-        KillTimer(CheckWVehicle[playerid]);
-        DisablePlayerCheckpointEx(playerid);
-        
-        format(string, sizeof(string),"HQ: AN ALLE EINHEITEN, %s ist während seiner Waffenteile-Tour gestorben - Die Jagd wird beendet.", GetName(playerid));
-        SendFraktionMessage(1, COLOR_DARKRED, string);
-        SendFraktionMessage(2, COLOR_DARKRED, string);
-        SendFraktionMessage(16, COLOR_DARKRED, string);
-    }
-    
-    if(GetPVarInt(playerid, "SPRITROB")) {
-        format(string,sizeof(string),"Fraktionsmitglied %s ist bei dem Sprit-Raub gestorben und hat die Mission nicht geschafft!",GetName(playerid));
-        SendFraktionMessage(19, COLOR_YELLOW, string);
-        
-		DeletePVar(playerid, "SPRITROB");
-		DeletePVar(playerid, "STARTSPRIT");
-		DeletePVar(playerid, "SPRITMENGE");
-		KillTimer(SpritTimer[playerid]);
-        KillTimer(SpritCheckTimer[playerid]);
-
-        format(string, sizeof(string), "[EILMELDUNG] Räuber %s ist gestorben! Somit wurde der Sprit-Raub abgebrochen!", GetName(playerid), playerid);
-        SendFraktionMessage(1, COLOR_GREEN, string);
-        SendFraktionMessage(2, COLOR_GREEN, string);
-        SendFraktionMessage(16, COLOR_GREEN, string);
-        SendFraktionMessage(18, COLOR_GREEN, string);
-    }
     
     if(GetPVarInt(playerid, "OPEN.AIRDROP")) {
         DeletePVar(playerid, "OPEN.AIRDROP");
         new stringin[128], name[MAX_PLAYER_NAME];
 		GetPlayerName(playerid, name, sizeof(name));
 		SendClientMessage(playerid,COLOR_RED,"Du bist gestorben! Der AirDrop wird nicht mehr geöffnet.");
-		format(stringin,sizeof(stringin),"[AIRDROP] "COLOR_HEX_WHITE"%s hat es nicht geschafft, den AirDrop zu öffnen!", name);
+		format(stringin,sizeof(stringin),"[AIRDROP] "COLOR_HEX_WHITE"%s hat es nicht geschafft, den AirDrop zu öffnet!", name);
 		for(new i; i < MAX_PLAYERS; i++){
 			if(IsAFightFaction(Spieler[playerid][pFraktion])) SendClientMessage(i, COLOR_YELLOW, stringin);
 		}
@@ -14398,7 +14360,7 @@ CMD:paketentladen(playerid)
         SendClientMessage(playerid, COLOR_RED, "Du bist in keinem Transporter!");
         return 1;
     }
-    /*else if(Spieler[playerid][pJob] == 18)
+    else if(Spieler[playerid][pJob] == 18)
     {
         if(!IsPlayerInRangeOfPoint(playerid, 7.0, -1857.4130,-1618.9630,21.9022))return SendClientMessage(playerid, COLOR_RED, "Du bist nicht in der Nähe des Entlagerungspunkts.");
         new vID = GetPlayerVehicleID(playerid);
@@ -14422,7 +14384,7 @@ CMD:paketentladen(playerid)
         }
         SendClientMessage(playerid, COLOR_RED, "Du bist in keinem Transporter!");
         return 1;
-    }*/
+    }
     /*else if(Spieler[playerid][pFraktion] == 15)
     {
         if(!IsPlayerInRangeOfPoint(playerid, 7.0, -66.3187,-1121.1329,0.6501))return SendClientMessage(playerid, COLOR_RED, "Du bist nicht in der Nähe des Entlagerungspunkts.");
@@ -14453,106 +14415,19 @@ CMD:lagerpunkt(playerid, params[]) {
         SetPlayerCheckpointEx(playerid, -38.4148, 56.1184, 3.1172, 2.0, CP_NAVI1);
         return SendClientMessage(playerid, COLOR_YELLOW, "[INFO] {FFFFFF}Der Lagerpunkt für Drogen wurde dir auf der Karte Rot markiert.");
     }
-    /*else if (Spieler[playerid][pJob] == 18) {
+    else if (Spieler[playerid][pJob] == 18) {
         SetPlayerCheckpointEx(playerid, 2348.1086, -2302.4243, 13.5469, 2.0, CP_NAVI1);
         return SendClientMessage(playerid, COLOR_YELLOW, "[INFO] {FFFFFF}Der Lagerpunkt für Waffenteile wurde dir auf der Karte Rot markiert.");
-    }*/
+    }
 
     return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Für deinen Job gibt es keinen Lagerpunkt.");
 }
 
 CMD:samenlager(playerid, params[]){
+	//-111.0688,1133.3749,19.7422
 	if(Spieler[playerid][pFraktion] != 15) return SendClientMessage(playerid, COLOR_RED, "Damit kannst du nichts anfangen!");
 	SendClientMessage(playerid, COLOR_YELLOW, "Das Samenlager wird dir auf der Karte markiert!");
 	SetPlayerCheckpoint(playerid, -111.0688,1133.3749,19.7422, 7.0);
-	return 1;
-}
-
-CMD:findwpakete(playerid) {
-    if (!gPlayerLogged[playerid]) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du bist nicht eingeloggt.");
-	if(!IsMafiaFaction(Spieler[playerid][pFraktion]))return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du gehörst keiner Mafia an.");
-	SendClientMessage(playerid, COLOR_YELLOW,"Der Waffenteile-Punkt wird Dir auf der Karte markiert!");
-	SetPlayerCheckpoint(playerid, 1678.1671,2358.7722,10.8203, 7.0);
-	return 1;
-}
-CMD:wpaketeentladen(playerid) {
-	new veh = GetPlayerVehicleID(playerid), vehiclemodel = GetVehicleModel(veh), newteile = bestand[veh]*400;
-    if (!gPlayerLogged[playerid]) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du bist nicht eingeloggt.");
-	if(!IsMafiaFaction(Spieler[playerid][pFraktion]))return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du gehörst keiner Mafia an.");
-	if(vehiclemodel != 482) return SendClientMessage(playerid, COLOR_RED,"[INFO] {FFFFFF}Du bist in keinem Burrito!");
-	if(FrakCarInfo[veh][f_frak] != Spieler[playerid][pFraktion])return SendClientMessage(playerid, COLOR_RED,"[FEHLER] {FFFFFF}Der Burrito gehört nicht zu deiner Fraktion.");
- 	if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER) return SendClientMessage(playerid,COLOR_RED,"[INFO] {FFFFFF}Du musst der Fahrer des Burritos sein!");
- 	if(!IsPlayerInRangeOfPoint(playerid, 7.0, -1518.8336,2558.5051,55.8403))return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du bist nicht in der Nähe des Entlagerungspunkts.");
-  	if(bestand[veh] < 1)return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast nichts beladen!");
-  	
-  	Spieler[playerid][pWaffenteile] += newteile;
-  	SCMFormatted(playerid, COLOR_YELLOW, "[INFO] {FFFFFF}Du hast %d Pakete abgeliefert und %d Waffenteile erhalten.", bestand[veh], newteile);
-  	bestand[veh] = 0;
-   	PlayerSkillUpgrade(playerid,pWaffenteilePoints,5,1);
-   	
-   	KillTimer(WTMeldung[playerid]);
-   	KillTimer(CheckWVehicle[playerid]);
-   	DeletePVar(playerid, "WAFFENDEALER");
-	return 1;
-}
-CMD:wpakete(playerid, params[]) {
-    new anzahl, veh = GetPlayerVehicleID(playerid), vehiclemodel = GetVehicleModel(veh), newgeld = anzahl*500,
-		maxAnzahl = GetPlayerWaffenteileSkillValue(playerid), newanzahl = anzahl+bestand[veh];
-    if (!gPlayerLogged[playerid]) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du bist nicht eingeloggt.");
-	if(!IsMafiaFaction(Spieler[playerid][pFraktion]))return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du gehörst keiner Mafia an.");
-	if(vehiclemodel != 482) return SendClientMessage(playerid, COLOR_RED,"[INFO] {FFFFFF}Du bist in keinem Burrito!");
-	if(FrakCarInfo[veh][f_frak] != Spieler[playerid][pFraktion])return SendClientMessage(playerid, COLOR_RED,"[FEHLER] {FFFFFF}Der Burrito gehört nicht zu deiner Fraktion.");
- 	if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER) return SendClientMessage(playerid,COLOR_RED,"[INFO] {FFFFFF}Du musst der Fahrer des Burritos sein!");
- 	if(sscanf(params, "i", anzahl))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/WPakete [Anzahl]");
- 	if(!IsPlayerInRangeOfPoint(playerid, 7.0, 1678.1671,2358.7722,10.8203))return SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}Falscher Ort - Tippe /FindWPakete um zum Ort zu gelangen.");
-  	if(anzahl < 0 )return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Ungültige Anzahl.");
-   	if(anzahl > maxAnzahl ) return SCMFormatted(playerid, COLOR_RED,"[INFO] {FFFFFF}Aufgrund deines Skills (%d) kannst du nur %d Päckchen transportieren.",GetPlayerWaffenteileSkillLevel(playerid), maxAnzahl);
-    if(GetPlayerMoney(playerid) < newgeld)return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast nicht genügend Geld!");
-	if(newanzahl > maxAnzahl) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du kannst den Wagen nicht überladen.");
-	
-	bestand[veh] += anzahl;
-	SCMFormatted(playerid, COLOR_YELLOW, "[INFO] {FFFFFF}Der Wagen wurde mit %d Paketen aufgeladen - begebe Dich nun zum Checkpoint.", anzahl);
-	SetPlayerCheckpointEx(playerid, -1518.8336,2558.5051,55.8403, 7.0, CP_SHOWJOB12);
- 	GetPlayerPos(playerid,oldposx[playerid],oldposy[playerid],oldposz[playerid]);
-  	playertimestamp[playerid]=gettime();
-   	GivePlayerCash(playerid, -newgeld);
-   	
-   	SetPVarInt(playerid, "WAFFENDEALER", 1);
-   	CheckWVehicle[playerid] = SetTimerEx("Pulse_WaffenPakete",1007,true,"d",playerid);
-   	
-   	// Nachricht an Cops
-   	WTMeldung[playerid] = SetTimerEx("WTNachricht", 30000, true, "d", playerid);
-	return 1;
-}
-forward Pulse_WaffenPakete(playerid);
-public Pulse_WaffenPakete(playerid) {
-    new veh = GetPlayerVehicleID(playerid), vehiclemodel = GetVehicleModel(veh);
-    if( vehiclemodel != 482 ) {
-        new string[128];
-        SendClientMessage(playerid, COLOR_RED,"[INFO] {FFFFFF}Du bist aus dem Fahrzeug ausgestiegen - Mission beendet.");
-        bestand[veh] = 0;
-        
-        format(string, sizeof(string),"HQ: AN ALLE EINHEITEN, %s hat seine Waffenteile-Tour abgebrochen - Die Jagd wird beendet.", GetName(playerid));
-        SendFraktionMessage(1, COLOR_DARKRED, string);
-        SendFraktionMessage(2, COLOR_DARKRED, string);
-        SendFraktionMessage(16, COLOR_DARKRED, string);
-        
-        DisablePlayerCheckpointEx(playerid);
-        KillTimer(CheckWVehicle[playerid]);
-        KillTimer(WTMeldung[playerid]);
-		DeletePVar(playerid, "WAFFENDEALER");
-	}
-	return 1;
-}
-forward WTNachricht(playerid);
-public WTNachricht(playerid) {
-	new zone[MAX_ZONE_NAME], string[128];
-    GetPlayer2DZone(playerid, zone, sizeof(zone));
-    
-	format(string,sizeof(string),"%s befindet sich mit einem Waffenteile-Truck in %s - Findet ihn!", GetName(playerid), zone);
-	SendFraktionMessage(1, COLOR_DARKRED, string);
-	SendFraktionMessage(2, COLOR_DARKRED, string);
-	SendFraktionMessage(16, COLOR_DARKRED, string);
 	return 1;
 }
 
@@ -14622,7 +14497,7 @@ CMD:paketeinladen(playerid, params[])
         SendClientMessage(playerid, COLOR_RED, "Du bist in keinem Drogen-Transporter.");
         return 1;
     }
-    /*else if(Spieler[playerid][pJob] == 18)
+    else if(Spieler[playerid][pJob] == 18)
     {
         new anzahl, string[128];
         if(sscanf(params, "i", anzahl))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Paketeinladen [Anzahl]");
@@ -14659,7 +14534,7 @@ CMD:paketeinladen(playerid, params[])
         }
         SendClientMessage(playerid, COLOR_RED, "Du bist in keinem Waffen-Transporter.");
         return 1;
-    }*/
+    }
 	return 1;
 }
 
@@ -14746,7 +14621,7 @@ CMD:illegalejobs(playerid)
     if(!IsPlayerInRangeOfPoint(playerid, 5.0, JEFF_COORDS)) return SendClientMessage(playerid, COLOR_RED, "Du bist nicht bei Jeff.");
     SendClientMessage(playerid, COLOR_WHITE, "Jeff sagt: Mh.. Du willst also dein Geld auf eine andere Weise verdienen?");
     SendClientMessage(playerid, COLOR_WHITE, "Ich hab da so einige Jobs für dich auf Lager. Schau dich um!");
-    ShowPlayerDialog(playerid, DIALOG_SCHWARZBERUF, DIALOG_STYLE_LIST, "ILLEGALE JOBS", COLOR_HEX_WHITE">> aktuellen Beruf kündigen\nDrogendealer\nTaschendieb\nProstituierte\nWanted-Hacker\nAutodieb", "Auswählen", "Abbrechen");
+    ShowPlayerDialog(playerid, DIALOG_SCHWARZBERUF, DIALOG_STYLE_LIST, "ILLEGALE JOBS", COLOR_HEX_WHITE">> aktuellen Beruf kündigen\nDrogendealer\nWaffendealer\nTaschendieb\nProstituierte\nWanted-Hacker\nAutodieb", "Auswählen", "Abbrechen");
     return 1;
 }
 
@@ -19528,12 +19403,12 @@ CMD:terrorwaffen(playerid)
     if(IsPlayerInRangeOfPoint(playerid, 2.0, TERRORBASE_SPAWN_POINT))//Terroristen
     {
         if(Spieler[playerid][pGunLic] == 0)return SendClientMessage(playerid, COLOR_RED, "Du besitzt keinen Waffenschein.");
-        if(GetPlayerMoney(playerid) < 7500)return SendClientMessage(playerid, COLOR_RED, "Du benötigst $7500.");
+        if(GetPlayerMoney(playerid) < 2000)return SendClientMessage(playerid, COLOR_RED, "Du benötigst $2000.");
         if(!(Spieler[playerid][pFraktion] == 19))return SendClientMessage(playerid, COLOR_RED, "Du bist kein Terrorist.");
         GiveTerrorWeapons(playerid);
-        SendClientMessage(playerid, COLOR_GREEN, "Du hast dich ausgeruestet. (Desert Eagle, Uzi & AK-47)");
-        GameTextForPlayer(playerid, "~r~-$7500", 2000, 1);
-        GivePlayerCash(playerid, -7500);
+        SendClientMessage(playerid, COLOR_GREEN, "Du hast dich ausgeruestet. (Desert Eagle, Baseballschläger)");
+        GameTextForPlayer(playerid, "~r~-$2000", 2000, 1);
+        GivePlayerCash(playerid, -2000);
     }
     return 1;
 }
@@ -19541,8 +19416,9 @@ CMD:terrorwaffen(playerid)
 stock GiveTerrorWeapons(playerid)
 {
     GivePlayerWeapon(playerid, 24, 100);
-    GivePlayerWeapon(playerid, 28, 200);
-    GivePlayerWeapon(playerid, 30, 250);
+    GivePlayerWeapon(playerid, 30, 300);
+    GivePlayerWeapon(playerid, 39, 5);
+    GivePlayerWeapon(playerid, 4, 1);
     return 1;
 }
 
@@ -21105,7 +20981,7 @@ stock RespawnJobCars(jobID) {
         case 15:    { for (new i = 0; i < sizeof(pizzacar); i++) if (!IsVehicleOccupied(pizzacar[i])) SetVehicleToRespawn(pizzacar[i]); }
         case 16:    { for (new i = 0; i < sizeof(vehicle_taxiStations); i++) if (!IsVehicleOccupied(vehicle_taxiStations[i])) SetVehicleToRespawn(vehicle_taxiStations[i]); }
         case 17:    { for (new i = 0; i < sizeof(drogen); i++) if (!IsVehicleOccupied(drogen[i])) SetVehicleToRespawn(drogen[i]); }
-        //case 18:    { for (new i = 0; i < sizeof(wdealer); i++) if (!IsVehicleOccupied(wdealer[i])) SetVehicleToRespawn(wdealer[i]); }
+        case 18:    { for (new i = 0; i < sizeof(wdealer); i++) if (!IsVehicleOccupied(wdealer[i])) SetVehicleToRespawn(wdealer[i]); }
         case 21:    { for (new i = 0; i < sizeof(vehicle_wantedHackerBase); i++) if (!IsVehicleOccupied(vehicle_wantedHackerBase[i])) SetVehicleToRespawn(vehicle_wantedHackerBase[i]); }
         case 23:    { for (new i = 0; i < sizeof(zugb); i++) if (!IsVehicleOccupied(zugb[i])) SetVehicleToRespawn(zugb[i]); }
         case 24:    { for (new i = 0; i < sizeof(hotdogcar); i++) if (!IsVehicleOccupied(hotdogcar[i])) SetVehicleToRespawn(hotdogcar[i]); }
@@ -23782,13 +23658,13 @@ public OnPlayerEnterVehicle(playerid, vehicleid, ispassenger)
                 pjvar=1;
             }
         }
-        /*for(new jb;jb<sizeof(wdealer);jb++)
+        for(new jb;jb<sizeof(wdealer);jb++)
         {
             if(vehicleid==wdealer[jb])
             {
                 pjvar=1;
             }
-        }*/
+        }
         if(pjvar==1)
         {
             SetTimerEx("fuelcounttimer",5000,false,"i",playerid);
@@ -23860,13 +23736,13 @@ public OnPlayerExitVehicle(playerid, vehicleid)
                 UnLockCar(vehicleid);
             }
         }
-       /*for(new r;r<sizeof(wdealer);r++)
+        for(new r;r<sizeof(wdealer);r++)
         {
             if(vehicleid==wdealer[r])
             {
                 UnLockCar(vehicleid);
             }
-        }*/
+        }
         for(new q;q<sizeof(vehicle_wantedHackerBase);q++)
         {
             if(vehicleid==vehicle_wantedHackerBase[q])
@@ -24387,7 +24263,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
                 }
             }
         }
-        /*else if( aiVehicles[vehicleid] == VEH_WDEALER ) {
+        else if( aiVehicles[vehicleid] == VEH_WDEALER ) {
             for(new i=0;i<sizeof(wdealer);i++)
             {
                 if(vehicleid == wdealer[i])
@@ -24420,7 +24296,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
                     }
                 }
             }
-        }*/
+        }
         else if( aiVehicles[vehicleid] == VEH_WANTEDCAR ) {
             for(new i=0;i<sizeof(vehicle_wantedHackerBase);i++)
             {
@@ -25911,27 +25787,6 @@ public OnPlayerEnterCheckpoint(playerid)
         SendClientMessage(playerid, COLOR_SAMP, "GPS: Sie haben ihr Ziel erreicht.");
         DisablePlayerCheckpointEx(playerid);
     }
-    else if(pCheckpoint[playerid] == CP_SPRITKLAUEN) {
-        SendClientMessage(playerid,COLOR_BLUE, INFO_STRING"/Spritklauen [Liter]");
-        DisablePlayerCheckpointEx(playerid);
-    }
-    else if(pCheckpoint[playerid] == CP_ROBSPRIT)
-    {
-        // TODO: Safebox Terror (Kabby | Maka)
-        SCMFormatted(playerid, COLOR_GREEN,"Du hast die Mission erfolgreich beendet! Die Safebox füllt sich um %d Sprit.",GetPVarInt(playerid, "SPRITMENGE"));
-        
-        DeletePVar(playerid, "SPRITROB");
-		DeletePVar(playerid, "STARTSPRIT");
-		DeletePVar(playerid, "SPRITMENGE");
-        DisablePlayerCheckpointEx(playerid);
-
-        new String[128];
-        format(String, sizeof(String), "[EILMELDUNG] Räuber %s hat den erfolgreich abgeschlossen!", GetName(playerid), playerid);
-        SendFraktionMessage(1, COLOR_ORANGE, String);
-        SendFraktionMessage(2, COLOR_ORANGE, String);
-        SendFraktionMessage(16, COLOR_ORANGE, String);
-        SendFraktionMessage(18, COLOR_ORANGE, String);
-    }
     else if(CP_NAVI1 <= pCheckpoint[playerid] <= CP_NAVI83)
     {
         SendClientMessage(playerid, COLOR_SAMP, "GPS: Sie haben ihr Ziel erreicht.");
@@ -26619,7 +26474,7 @@ public OnPlayerEnterCheckpoint(playerid)
     {
         DisablePlayerCheckpointEx(playerid);
     }
-    if(IsPlayerInRangeOfPoint(playerid,10,-258.9534,-2181.9905,29.0150)||IsPlayerInRangeOfPoint(playerid,10,-1518.8336,2558.5051,55.8403))
+    if(IsPlayerInRangeOfPoint(playerid,10,-258.9534,-2181.9905,29.0150)||IsPlayerInRangeOfPoint(playerid,10,-1857.4130,-1618.9630,21.9022))
     {
         CheckTeleHack(playerid,50000);
 //      printf("waffendealer check aufgerufen");
@@ -29877,37 +29732,17 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
             }
             else if(Spieler[playerid][pFraktion] == 19)
             {
-                if(skin == 14)
-                {
-                    pChoosedSkin[playerid] = 136;
-                }
-                else if(skin == 136)
-                {
-                    pChoosedSkin[playerid] = 137;
-                }
-                else if(skin==137)
-                {
-                    pChoosedSkin[playerid] = 142;
-                }
-                else if(skin==142)
-                {
-                    pChoosedSkin[playerid] = 144;
-                }
-                else if(skin==144)
-                {
-                    pChoosedSkin[playerid] = 200;
-                }
-                else if(skin==200)
+                if(skin == 142)
                 {
                     pChoosedSkin[playerid] = 220;
                 }
-                else if(skin==220)
+                else if(skin == 220)
                 {
                     pChoosedSkin[playerid] = 221;
                 }
                 else if(skin==221)
                 {
-                    pChoosedSkin[playerid] = 222;
+                    pChoosedSkin[playerid] = 142;
                 }
                 SetPlayerSkin(playerid, pChoosedSkin[playerid]);
             }
@@ -34970,10 +34805,9 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		            format(string,sizeof(string),"%s %s hat sich in den Job Drogendealer gesetzt!", GetPlayerAdminRang(playerid), GetName(playerid));
     				SendAdminMessage(COLOR_YELLOW, string);
 				}else if(listitem == 18){
-				    /*Spieler[playerid][pJob] = 18;
+				    Spieler[playerid][pJob] = 18;
 		            format(string,sizeof(string),"%s %s hat sich in den Job Waffendealer gesetzt!", GetPlayerAdminRang(playerid), GetName(playerid));
-    				SendAdminMessage(COLOR_YELLOW, string);*/
-                    SendClientMessage(playerid,COLOR_RED,"[FEHLER] {FFFFFF}Der Job Waffendealer existiert nicht mehr.");
+    				SendAdminMessage(COLOR_YELLOW, string);
 				}else if(listitem == 19){
 				    Spieler[playerid][pJob] = 19;
 		            format(string,sizeof(string),"%s %s hat sich in den Job Taschendieb gesetzt!", GetPlayerAdminRang(playerid), GetName(playerid));
@@ -37908,13 +37742,13 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                     {
                         Spieler[playerid][pJob] = 0;
                         SendClientMessage(playerid, COLOR_WHITE, "Du hast deinen Job gekündigt.");
-                        ShowPlayerDialog(playerid, DIALOG_SCHWARZBERUF, DIALOG_STYLE_LIST, "ILLEGALE JOBS", COLOR_HEX_WHITE">> aktuellen Beruf kündigen\nDrogendealer\nTaschendieb\nProstituierte\nWanted-Hacker\nAutodieb", "Auswählen", "Abbrechen");
+                        ShowPlayerDialog(playerid, DIALOG_SCHWARZBERUF, DIALOG_STYLE_LIST, "ILLEGALE JOBS", COLOR_HEX_WHITE">> aktuellen Beruf kündigen\nDrogendealer\nWaffendealer\nTaschendieb\nProstituierte\nWanted-Hacker\nAutodieb", "Auswählen", "Abbrechen");
                         Spieler[playerid][pJobWechsel] = gettime() + (60*60);
                         return 1;
                     }
                     else
                     {
-                        ShowPlayerDialog(playerid, DIALOG_SCHWARZBERUF, DIALOG_STYLE_LIST, "ILLEGALE JOBS", COLOR_HEX_WHITE">> aktuellen Beruf kündigen\nDrogendealer\nTaschendieb\nProstituierte\nWanted-Hacker\nAutodieb", "Auswählen", "Abbrechen");
+                        ShowPlayerDialog(playerid, DIALOG_SCHWARZBERUF, DIALOG_STYLE_LIST, "ILLEGALE JOBS", COLOR_HEX_WHITE">> aktuellen Beruf kündigen\nDrogendealer\nWaffendealer\nTaschendieb\nProstituierte\nWanted-Hacker\nAutodieb", "Auswählen", "Abbrechen");
                         SendClientMessage(playerid, COLOR_RED, "Du besitzt gar keinen Job.");
                         return 1;
                     }
@@ -37929,16 +37763,6 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                     ShowPlayerDialog(playerid, DIALOG_DDEALER, DIALOG_STYLE_MSGBOX, "Arbeitsamt: Drogendealer", COLOR_HEX_BLUE"Beruf:"COLOR_HEX_WHITE" Drogendealer\n"COLOR_HEX_BLUE"PayDay Gehalt:"COLOR_HEX_WHITE" Unterschiedlich\n"COLOR_HEX_BLUE"Voraussetzungen:"COLOR_HEX_WHITE" Mindestlevel 3\n"COLOR_HEX_BLUE"Job Fahrzeuge:"COLOR_HEX_WHITE" Ja\n"COLOR_HEX_BLUE"Risiken:"COLOR_HEX_WHITE" Erwischt werden durch Beamte", "Annehmen", "Abbrechen");
                     return 1;
                 }
-                /*if(listitem==2)
-                {
-                    if(Spieler[playerid][pJob] > 0)
-                    {
-                        SendClientMessage(playerid, COLOR_RED, "Du hast bereits einen Job.");
-                        return 1;
-                    }
-                    ShowPlayerDialog(playerid, DIALOG_WDEALER, DIALOG_STYLE_MSGBOX, "Arbeitsamt: Waffendealer", COLOR_HEX_BLUE"Beruf:"COLOR_HEX_WHITE" Waffendealer\n"COLOR_HEX_BLUE"PayDay Gehalt:"COLOR_HEX_WHITE" Unterschiedlich\n"COLOR_HEX_BLUE"Voraussetzungen:"COLOR_HEX_WHITE" Mindestlevel 3\n"COLOR_HEX_BLUE"Job Fahrzeuge:"COLOR_HEX_WHITE" Ja\n"COLOR_HEX_BLUE"Risiken:"COLOR_HEX_WHITE" Erwischt werden durch Beamte", "Annehmen", "Abbrechen");
-                    return 1;
-                }*/
                 if(listitem==2)
                 {
                     if(Spieler[playerid][pJob] > 0)
@@ -37946,7 +37770,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                         SendClientMessage(playerid, COLOR_RED, "Du hast bereits einen Job.");
                         return 1;
                     }
-                    ShowPlayerDialog(playerid, DIALOG_TASCHENDIEB, DIALOG_STYLE_MSGBOX, "Arbeitsamt: Taschendieb", COLOR_HEX_BLUE"Beruf:"COLOR_HEX_WHITE" Taschendieb\n"COLOR_HEX_BLUE"PayDay Gehalt:"COLOR_HEX_WHITE" Unterschiedlich\n"COLOR_HEX_BLUE"Voraussetzungen:"COLOR_HEX_WHITE" Mindestlevel 3\n"COLOR_HEX_BLUE"Job Fahrzeuge:"COLOR_HEX_WHITE" Nein\n"COLOR_HEX_BLUE"Risiken:"COLOR_HEX_WHITE" Erwischt werden durch Beamte", "Annehmen", "Abbrechen");
+                    ShowPlayerDialog(playerid, DIALOG_WDEALER, DIALOG_STYLE_MSGBOX, "Arbeitsamt: Waffendealer", COLOR_HEX_BLUE"Beruf:"COLOR_HEX_WHITE" Waffendealer\n"COLOR_HEX_BLUE"PayDay Gehalt:"COLOR_HEX_WHITE" Unterschiedlich\n"COLOR_HEX_BLUE"Voraussetzungen:"COLOR_HEX_WHITE" Mindestlevel 3\n"COLOR_HEX_BLUE"Job Fahrzeuge:"COLOR_HEX_WHITE" Ja\n"COLOR_HEX_BLUE"Risiken:"COLOR_HEX_WHITE" Erwischt werden durch Beamte", "Annehmen", "Abbrechen");
                     return 1;
                 }
                 if(listitem==3)
@@ -37956,7 +37780,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                         SendClientMessage(playerid, COLOR_RED, "Du hast bereits einen Job.");
                         return 1;
                     }
-                    ShowPlayerDialog(playerid, DIALOG_HURE, DIALOG_STYLE_MSGBOX, "Arbeitsamt: Prostituierte", COLOR_HEX_BLUE"Beruf:"COLOR_HEX_WHITE" Prostituierte\n"COLOR_HEX_BLUE"PayDay Gehalt:"COLOR_HEX_WHITE" Unterschiedlich\n"COLOR_HEX_BLUE"Voraussetzungen:"COLOR_HEX_WHITE" Keine\n"COLOR_HEX_BLUE"Job Fahrzeuge:"COLOR_HEX_WHITE" Nein\n"COLOR_HEX_BLUE"Risiken:"COLOR_HEX_WHITE" Aidsgefahr", "Annehmen", "Abbrechen");
+                    ShowPlayerDialog(playerid, DIALOG_TASCHENDIEB, DIALOG_STYLE_MSGBOX, "Arbeitsamt: Taschendieb", COLOR_HEX_BLUE"Beruf:"COLOR_HEX_WHITE" Taschendieb\n"COLOR_HEX_BLUE"PayDay Gehalt:"COLOR_HEX_WHITE" Unterschiedlich\n"COLOR_HEX_BLUE"Voraussetzungen:"COLOR_HEX_WHITE" Mindestlevel 3\n"COLOR_HEX_BLUE"Job Fahrzeuge:"COLOR_HEX_WHITE" Nein\n"COLOR_HEX_BLUE"Risiken:"COLOR_HEX_WHITE" Erwischt werden durch Beamte", "Annehmen", "Abbrechen");
                     return 1;
                 }
                 if(listitem==4)
@@ -37966,10 +37790,20 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                         SendClientMessage(playerid, COLOR_RED, "Du hast bereits einen Job.");
                         return 1;
                     }
-                    ShowPlayerDialog(playerid, DIALOG_JOBWANTED, DIALOG_STYLE_MSGBOX, "Arbeitsamt: Wanted-Hacker", COLOR_HEX_BLUE"Beruf:"COLOR_HEX_WHITE" Wanted-Hacker\n"COLOR_HEX_BLUE"PayDay Gehalt:"COLOR_HEX_WHITE" Unterschiedlich\n"COLOR_HEX_BLUE"Voraussetzungen:"COLOR_HEX_WHITE" Keine\n"COLOR_HEX_BLUE"Job Fahrzeuge:"COLOR_HEX_WHITE" Nein\n"COLOR_HEX_BLUE"Risiken:"COLOR_HEX_WHITE" Erwischt werden durch Beamte", "Annehmen", "Abbrechen");
+                    ShowPlayerDialog(playerid, DIALOG_HURE, DIALOG_STYLE_MSGBOX, "Arbeitsamt: Prostituierte", COLOR_HEX_BLUE"Beruf:"COLOR_HEX_WHITE" Prostituierte\n"COLOR_HEX_BLUE"PayDay Gehalt:"COLOR_HEX_WHITE" Unterschiedlich\n"COLOR_HEX_BLUE"Voraussetzungen:"COLOR_HEX_WHITE" Keine\n"COLOR_HEX_BLUE"Job Fahrzeuge:"COLOR_HEX_WHITE" Nein\n"COLOR_HEX_BLUE"Risiken:"COLOR_HEX_WHITE" Aidsgefahr", "Annehmen", "Abbrechen");
                     return 1;
                 }
                 if(listitem==5)
+                {
+                    if(Spieler[playerid][pJob] > 0)
+                    {
+                        SendClientMessage(playerid, COLOR_RED, "Du hast bereits einen Job.");
+                        return 1;
+                    }
+                    ShowPlayerDialog(playerid, DIALOG_JOBWANTED, DIALOG_STYLE_MSGBOX, "Arbeitsamt: Wanted-Hacker", COLOR_HEX_BLUE"Beruf:"COLOR_HEX_WHITE" Wanted-Hacker\n"COLOR_HEX_BLUE"PayDay Gehalt:"COLOR_HEX_WHITE" Unterschiedlich\n"COLOR_HEX_BLUE"Voraussetzungen:"COLOR_HEX_WHITE" Keine\n"COLOR_HEX_BLUE"Job Fahrzeuge:"COLOR_HEX_WHITE" Nein\n"COLOR_HEX_BLUE"Risiken:"COLOR_HEX_WHITE" Erwischt werden durch Beamte", "Annehmen", "Abbrechen");
+                    return 1;
+                }
+                if(listitem==6)
                 {
                     if(Spieler[playerid][pJob] > 0)
                     {
@@ -49198,12 +49032,6 @@ stock ConvertUnix(unixtstamp)
     return 1;
 }*/
 
-stock IsMafiaFaction(Faction) {
-	if((Faction == 10 || Faction == 12 || Faction == 20 || Faction == 21)) // Yakuza, CK, OutlawZ, Triaden
-	    return 1;
-	return 0;
-}
-
 stock IsAFightFaction(Faction)
 {
     if((Faction == 6 || Faction == 7 || Faction == 10 || Faction == 11 || Faction == 12 || Faction == 13|| Faction == 20 || Faction == 21))
@@ -57585,7 +57413,7 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
                     String[128];
                 format(String,sizeof(String),"%s wurde von Teammitglied %s dauerhaft gesperrt, Grund: %s", name, gebanntvon, bangrund);
                 SendClientMessage(extraid,COLOR_RED,String);
-                format(String,sizeof(String),"Gebannt für: %s",unixtimeban);
+                format(String,sizeof(String),"Gebannt am: %s",unixtimeban);
                 SendClientMessage(extraid,COLOR_RED,String);
             }
             else {
@@ -63198,172 +63026,6 @@ COMMAND:hmenu(playerid,params[]) {
     return 1;
 }
 
-CMD:spritklauen(playerid, params[]) {
-    new veh = GetPlayerVehicleID(playerid), vehiclemodel = GetVehicleModel(veh), string[128], menge;
- 	if (!gPlayerLogged[playerid]) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du bist nicht eingeloggt.");
-	if(Spieler[playerid][pFraktion] != 19) return SendClientMessage(playerid,COLOR_RED,"[FEHLER] {FFFFFF}Du bist kein Terrorist.");
-	if(Spieler[playerid][pRank] < 1) return SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}Du musst mindestens Rank 1 sein.");
-	if(!GetPVarInt(playerid, "STARTSPRIT")) return SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}Beginne erst mit der Mission (/Startsprit)");
-	if(GetPVarInt(playerid, "SPRITROB")) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du führst bereits die Mission durch!");
-	if(vehiclemodel != 403) return SendClientMessage(playerid, COLOR_RED,"[INFO] {FFFFFF}Du bist in keinem Linerunner!");
-	if(FrakCarInfo[veh][f_frak] != 19)return SendClientMessage(playerid, COLOR_RED,"[FEHLER] {FFFFFF}Der Linerunner gehört nicht zu deiner Fraktion.");
- 	if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER) return SendClientMessage(playerid,COLOR_RED,"[INFO] {FFFFFF}Du musst der Fahrer des Linerunners sein!");
- 	if(!IsPlayerInRangeOfPoint(playerid, 3.0, 268.9609,1384.2981,10.1610)) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du bist nicht an der Öl-Raffinerie.");
- 	if(sscanf(params, "d", menge))return SendClientMessage(playerid,COLOR_BLUE, INFO_STRING"/Spritklauen [Liter]");
- 	if(menge < 0 || menge > 8000)return SendClientMessage(playerid, COLOR_RED,"[FEHLER] {FFFFFF}Die Menge muss mind. 1 Liter betragen oder max. 8.000 Liter");
- 	
- 	SCMFormatted(playerid, COLOR_GREEN, "[INFO] {FFFFFF}Du fängst an %d Liter Sprit zu klauen! Halte es 5 Minuten aus.", menge);
- 	SpritTimer[playerid] = SetTimerEx("RobSprit", 300000, false, "d", playerid); // <== 5 Minuten
-    SpritCheckTimer[playerid] = SetTimerEx("RobSpritCheck", 3000, true, "d", playerid); // <== 5 Minuten
- 	SetPVarInt(playerid, "SPRITROB", 1);
- 	SetPVarInt(playerid, "SPRITMENGE", menge);
- 	
- 	Spieler[playerid][pWanteds] += 6;
-	SendClientMessage(playerid, COLOR_DARKRED,"Du hast ein Verbrechen begangen! (Sprit-Raub) Reporter: Polizeizentrale");
-	SCMFormatted(playerid, COLOR_YELLOW,"Dein Aktuelles Wanted Level: %d", Spieler[playerid][pWanteds]);
-	format(string, sizeof(string), "HQ: %s (ID: %d) hat ein Verbrechen begangen: Sprit-Raub, over.", GetName(playerid), playerid);
-	SendFraktionMessage(1, COLOR_RED, string);
-	SendFraktionMessage(2, COLOR_RED, string);
-	SendFraktionMessage(16, COLOR_RED, string);
-	SendFraktionMessage(18, COLOR_RED, string);
-    format(string, sizeof(string), "[EILMELDUNG] Räuber %s hat einen Sprit-Raub gestartet!", GetName(playerid), playerid);
-    SendFraktionMessage(1, COLOR_RED, string);
-	SendFraktionMessage(2, COLOR_RED, string);
-	SendFraktionMessage(16, COLOR_RED, string);
-	SendFraktionMessage(18, COLOR_RED, string);
-	return 1;
-}
-
-forward RobSpritCheck(playerid);
-public RobSpritCheck(playerid) {
-    if(!IsPlayerInRangeOfPoint(playerid, 80.0, 268.9609,1384.2981,10.1610)){
-        new String[128];
-        SendClientMessage(playerid, COLOR_RED, "Die Mission wurde abgebrochen, weil du dich zu weit entfernt hast!");
-        format(String, sizeof(String), "[EILMELDUNG] Räuber %s hat den Sprit-Raub abgebrochen!", GetName(playerid), playerid);
-        SendFraktionMessage(1, COLOR_GREEN, String);
-        SendFraktionMessage(2, COLOR_GREEN, String);
-        SendFraktionMessage(16, COLOR_GREEN, String);
-        SendFraktionMessage(18, COLOR_GREEN, String);
-        KillTimer(SpritTimer[playerid]);
-        KillTimer(SpritCheckTimer[playerid]);
-        DeletePVar(playerid, "SPRITROB");
-		DeletePVar(playerid, "STARTSPRIT");
-		DeletePVar(playerid, "SPRITMENGE");
-    }
-    return 1;
-}
-
-forward RobSprit(playerid);
-public RobSprit(playerid) {
-	SCMFormatted(playerid, COLOR_GREEN,"[INFO] {FFFFFF}Du konntest %d Liter Sprit klauen! Fahre nun zur Schwarzmarkt-Safebox!", GetPVarInt(playerid, "SPRITMENGE"));
-	KillTimer(SpritCheckTimer[playerid]);
-	SetPlayerCheckpointEx(playerid, TERRORBASE_SPAWN_POINT, 6.0, CP_ROBSPRIT);
-	return 1;
-}
-
-CMD:startsprit(playerid) {
-    new veh = GetPlayerVehicleID(playerid), vehiclemodel = GetVehicleModel(veh), string[128];
-    if (!gPlayerLogged[playerid]) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du bist nicht eingeloggt.");
-	if(Spieler[playerid][pFraktion] != 19) return SendClientMessage(playerid,COLOR_RED,"[FEHLER] {FFFFFF}Du bist kein Terrorist.");
-	if(Spieler[playerid][pRank] < 1) return SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}Du musst mindestens Rank 1 sein.");
-	if(GetPVarInt(playerid, "STARTSPRIT"))return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast bereits mit der Mission begonnen. Tippe /Stopsprit");
-	if(GetPVarInt(playerid, "SPRITROB")) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du führst bereits die Mission durch!");
-	if(vehiclemodel != 403) return SendClientMessage(playerid, COLOR_RED,"[INFO] {FFFFFF}Du bist in keinem Linerunner!");
-	if(FrakCarInfo[veh][f_frak] != 19)return SendClientMessage(playerid, COLOR_RED,"[FEHLER] {FFFFFF}Der Linerunner gehört nicht zu deiner Fraktion.");
- 	if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER) return SendClientMessage(playerid,COLOR_RED,"[INFO] {FFFFFF}Du musst der Fahrer des Linerunners sein!");
-	if(IsPlayerInRangeOfPoint(playerid, 3.0, 268.9609,1384.2981,10.1610))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Spritklauen [Liter]");
-	
-	SetPlayerCheckpointEx(playerid, 268.9609,1384.2981,10.1610, 3.0, CP_SPRITKLAUEN);
-	SendClientMessage(playerid, COLOR_YELLOW, "[INFO] {FFFFFF}Dir wurde ein Checkpoint zur Öl-Raffinerie gesetzt.");
-	
-	SetPVarInt(playerid, "STARTSPRIT", 1);
-	format(string,sizeof(string), "Fraktionsmitglied %s hat mit der Sprit-Mission begonnen.", GetName(playerid));
-	SendFraktionMessage(19, COLOR_YELLOW, string);
-	return 1;
-}
-CMD:stopsprit(playerid) {
-	new string[128];
-    if (!gPlayerLogged[playerid]) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du bist nicht eingeloggt.");
-	if(Spieler[playerid][pFraktion] != 19) return SendClientMessage(playerid,COLOR_RED,"[FEHLER] {FFFFFF}Du bist kein Terrorist.");
-	if(Spieler[playerid][pRank] < 1) return SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}Du musst mindestens Rank 1 sein.");
-	if(!GetPVarInt(playerid, "STARTSPRIT")) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast keine Sprit-Mission begonnen.");
-	
-	DeletePVar(playerid, "STARTSPRIT");
-	RemovePlayerFromVehicle(playerid);
-	DisablePlayerCheckpointEx(playerid);
-	
-	format(string,sizeof(string), "Fraktionsmitglied %s hat die Sprit-Mission abgebrochen.", GetName(playerid));
-	SendFraktionMessage(19, COLOR_YELLOW, string);
-	return 1;
-}
-CMD:selbstmord(playerid) {
-    if (!gPlayerLogged[playerid]) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du bist nicht eingeloggt.");
-	if(Spieler[playerid][pFraktion] != 19) return SendClientMessage(playerid,COLOR_RED,"[FEHLER] {FFFFFF}Du bist kein Terrorist.");
-	if(GetPlayerInterior(playerid))return SendClientMessage(playerid, COLOR_RED,"[FEHLER] {FFFFFF}Du kannst den Befehl nicht in einem Interior nutzen!");
-	if(GetPVarInt(playerid, "TERROR.SELBSTMORD"))return SendClientMessage(playerid, COLOR_RED,"[INFO] {FFFFFF}Du kannst nur alle 5 Minuten den Selbstmord-Befehl nutzen.");
-	if(Spieler[playerid][pJailed] != 0)return SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}Du kannst hier den Befehl nicht nutzen.");
-    if(IsAFK[playerid] == 1)return SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}Du bist im AFK-Modus.");
-    new Float:Pos[3], string[128];
-    GameTextForPlayer(playerid,"~n~~n~~r~BOOOOM!!!!",3000,4);
-	GetPlayerPos(playerid,Pos[0],Pos[1],Pos[2]);
-	new randompos = random(20),randexploderadius = random(40)+10;
-	CreateExplosion(Pos[0]+randompos,Pos[1]+randompos,Pos[2]+randompos,7,randexploderadius);
-	randexploderadius = random(30)+10;
-	randompos = random(10);
-	CreateExplosion(Pos[0]+randompos,Pos[1]+randompos,Pos[2]+randompos,7,randexploderadius);
-	randexploderadius = random(30)+10;
-	randompos = random(10);
-	CreateExplosion(Pos[0]+randompos,Pos[1]+randompos,Pos[2]+randompos,7,randexploderadius);
-	randexploderadius = random(30)+10;
-	randompos = random(10);
-	CreateExplosion(Pos[0]+randompos,Pos[1]+randompos,Pos[2]+randompos,7,randexploderadius);
-	randexploderadius = random(30)+10;
-	randompos = random(10);
-	CreateExplosion(Pos[0]+randompos,Pos[1]+randompos,Pos[2]+randompos,7,randexploderadius);
-	randexploderadius = random(30)+10;
-	randompos = random(10);
-	CreateExplosion(Pos[0]+randompos,Pos[1]+randompos,Pos[2]+randompos,7,randexploderadius);
-	randexploderadius = random(30)+10;
-	randompos = random(10);
-	CreateExplosion(Pos[0]+randompos,Pos[1]+randompos,Pos[2]+randompos,7,randexploderadius);
-	randexploderadius = random(30)+10;
-	randompos = random(10);
-	CreateExplosion(Pos[0]+randompos,Pos[1]+randompos,Pos[2]+randompos,7,randexploderadius);
-	randexploderadius = random(30)+10;
-	randompos = random(10);
-	CreateExplosion(Pos[0]+randompos,Pos[1]+randompos,Pos[2]+randompos,7,randexploderadius);
-	randexploderadius = random(30)+10;
-	randompos = random(10);
-	CreateExplosion(Pos[0]+randompos,Pos[1]+randompos,Pos[2]+randompos,7,randexploderadius);
-	randexploderadius = random(30)+10;
-	randompos = random(10);
-	CreateExplosion(Pos[0]+randompos,Pos[1]+randompos,Pos[2]+randompos,7,randexploderadius);
-	randexploderadius = random(30)+10;
-	randompos = random(10);
-	CreateExplosion(Pos[0]+randompos,Pos[1]+randompos,Pos[2]+randompos,7,randexploderadius);
-	randexploderadius = random(30)+10;
-	randompos = random(10);
-	CreateExplosion(Pos[0]+randompos,Pos[1]+randompos,Pos[2]+randompos,7,randexploderadius);
-	SetPlayerHealth(playerid,0);
-	Spieler[playerid][pWanteds] += 3;
-	SendClientMessage(playerid, COLOR_DARKRED,"Du hast ein Verbrechen begangen! (Selbstmord) Reporter: Polizeizentrale");
-	SCMFormatted(playerid, COLOR_YELLOW,"Dein Aktuelles Wanted Level: %d", Spieler[playerid][pWanteds]);
-	format(string, sizeof(string), "HQ: %s (ID: %d) hat ein Verbrechen begangen: Selbstmord, over.", GetName(playerid), playerid);
-	SendFraktionMessage(1, COLOR_RED, string);
-	SendFraktionMessage(2, COLOR_RED, string);
-	SendFraktionMessage(16, COLOR_RED, string);
-	SendFraktionMessage(18, COLOR_RED, string);
-	// 5 Minuten Pause
-	SetPVarInt(playerid, "TERROR.SELBSTMORD", 1);
-	SetTimerEx("uselbstmord",300000,false,"i",playerid);
-	return 1;
-}
-forward uselbstmord(playerid);
-public uselbstmord(playerid) {
-	DeletePVar(playerid, "TERROR.SELBSTMORD");
-	return 1;
-}
-
 COMMAND:bombelegen(playerid,params[]) {
     if(Spieler[playerid][pFraktion] != 19 ) {
         SendClientMessage(playerid, COLOR_RED, "Du bist kein Terrorist.");
@@ -64067,11 +63729,7 @@ COMMAND:wdrop(playerid,params[]) {
         return 1;
     }
     if( ForbiddenGun(playerid) ) {
-        new string[128];
-        SendClientMessage(playerid,COLOR_RED,"Du besitzt eine nicht erlaubte Waffe auf dem Server!");
-        SendClientMessage(playerid,COLOR_RED,"Eine Nachricht an das Admin-Team wurde gesendet.");
-        format(string,sizeof(string),"Warnung: %s wollte eine verbotene Waffe dropen! Umgehend überprüfen!!",GetName(playerid));
-        SendAdminMessage(COLOR_RED,string);
+        SendClientMessage(playerid,COLOR_RED,"Ban-Escape.");
         return 1;
     }
     if( DropWeapon(playerid) == 0 ) {
@@ -68126,13 +67784,13 @@ CMD:gangfight(playerid, params[]) {
         return SCMFormatted(playerid, COLOR_RED, "Dieses Ganggebiet hat noch %i Stunden %i Minuten lang eine Zeitsperre.", h, m);
     }
 
-    // Das System funktioniert jeden Tag von 19 Uhr bis 21 Uhr
-    // Vor & Nach der Zeit ist ein Gangfight ab 2 Gegnern startbar.
+    // Freitag sollte das System von 19-21 Uhr funktionieren, sodass man angreifen kann wenn kein einziges Mitglied da ist der Gegner.
+    // Samstag von 16 - 18 Uhr und Sonntag von 19-22
 
     new day = GetWeekDayNumber(),
-        minimumPlayers = (day == WEEKDAY_MONDAY && WEEKDAY_TUESDAY && WEEKDAY_WEDNESDAY && hour >= 19 && hour < 21) ||
-                         (day == WEEKDAY_THURSDAY && WEEKDAY_FRIDAY && WEEKDAY_SATURDAY && hour >= 19 && hour < 21) ||
-                         (day == WEEKDAY_SUNDAY && hour >= 19 && hour < 21) ? 0 : GANG_FIGHT_PLAYERS;
+        minimumPlayers = (day == WEEKDAY_FRIDAY && hour >= 19 && hour < 21) ||
+                         (day == WEEKDAY_SATURDAY && hour >= 16 && hour < 18) ||
+                         (day == WEEKDAY_SUNDAY && hour >= 19 && hour < 22) ? 0 : GANG_FIGHT_PLAYERS;
 
     if (GetFactionOnlinePlayers(frak) < minimumPlayers)
         return SCMFormatted(playerid, COLOR_RED, "Es müssen mindestens %d Gangmitglieder deiner Fraktion online sein.", minimumPlayers);
