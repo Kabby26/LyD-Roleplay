@@ -4755,7 +4755,13 @@ new Float:ATM[][] = {
     {1466.9621, -1749.8344, 15.0809}, //sh
 	{1495.3919, -1749.8344, 15.0809}, //sh
 	{1488.2028, -1634.4946, 12.9274}, //sh
-	{1292.7639, -994.2083, 32.3353}
+	{1292.7639, -994.2083, 32.3353},
+    {1674.3127, -1033.3083, 1340.3857},//bankint
+    {1674.2822, -1034.2076, 1340.3857},//bankint
+    {1675.4840, -1028.0058, 1340.3857},//bankint
+    {1675.4840, -1033.7684, 1340.3857},//bankint
+    {1674.3127, -1027.5454, 1340.3857},//bankint
+    {1674.2822, -1028.3839, 1340.3857}//bankint
 };
 
 new Float:HOSPITAL[][] = {
@@ -5631,7 +5637,7 @@ new alcatrazGateHackTimestamp = 0;
 #include <maps\truckerBase>
 #include <maps\bankExteriorLs>
 #include <maps\bankInteriorLs>
-#include <maps\bankInteriorLs2>
+//#include <maps\bankInteriorLs2>
 #include <maps\clubExteriorLs>
 #include <maps\clubInteriorLs>
 #include <maps\boatCargoJob>
@@ -11634,6 +11640,8 @@ CMD:debugpos(playerid, params[]) {
 
 public OnPlayerDeath(playerid, killerid, reason)
 {
+    RemovePlayerAttachedObject(playerid, 0);
+
     if (!PlayerIsPaintballing[playerid]) ClearPlayerChat(playerid);
     //RemovePlayerFromVehicle(playerid);
     if (reason == 255) return 0;
@@ -51344,40 +51352,128 @@ public LVBank_Position(diebid) {
 
 forward Bank_Position(diebid);
 public Bank_Position(diebid) {
-    if( GetPlayerInterior(diebid) == 1 ) {
-        if( IsPlayerInRangeOfPoint(diebid, 100.0, BANKINTERIORLS2_ROB_POINT)) {
-            new
-                zeit;
-            zeit = ( gettime() - g_unixBankraub );
-            if( zeit >= 10*60 ) {
-                new
-                    // 200.000 bis 400.000
-                    beute = (random(40000) * 5 ) + 200000, // 200.000$ - 400.000$ in 5$ Schritten
-                    String[128];
-                format(String,sizeof(String),"Du hast die Bank erfolgreich ausgeraubt! Deine Beute: $%s", AddDelimiters(beute));
-                GivePlayerCash(diebid,beute);
-                SendClientMessage(diebid,COLOR_WHITE,String);
-                SendClientMessageToAll(COLOR_RED,"[ZENTRALBANK] Die Los Santos Bank wurde erfolgreich ausgeraubt!");
-
-                KillTimer(g_tPulseBankPosition);
-                g_tPulseBankPosition = INVALID_TIMER_ID;
-
-                RemovePlayerAttachedObject(diebid,0);
-
-                Pulse_Bankraub();
-            }
-            return 1;
+    new count = 0;
+    for(new i = 0; i < MAX_PLAYERS; i++){
+        if(Spieler[i][pFraktion] == 1 || Spieler[i][pFraktion] == 2) return 1;
+        if(GetPlayerVirtualWorld(i) == VW_BANKINTERIORLS){
+            count++;
         }
     }
-    new
-        String[128];
-    SendClientMessage(diebid,COLOR_RED,"Du hast die Bank verlassen! Der Bankraub wurde abgebrochen.");
-    format(String,sizeof(String),"Der Bankraub wurde abgebrochen. Bankräuber %s hat die Bank verlassen oder wurde verhaftet.",GetName(diebid));
-    SendClientMessageToAll(COLOR_GREEN,String);
-    KillTimer(g_tPulseBankPosition);
-    g_tPulseBankPosition = INVALID_TIMER_ID;
-    RemovePlayerAttachedObject(diebid,0);
-    Pulse_Bankraub();
+    if(count == 0){
+        SendClientMessageToAll(COLOR_RED,"[ZENTRALBANK] Der Bankraub in Los Santos wurde durch die Polizei gestoppt!");
+        KillTimer(g_tPulseBankPosition);
+        g_tPulseBankPosition = INVALID_TIMER_ID;
+        Pulse_Bankraub();
+
+        //RESET BANK VARS
+        HP_Tresor[0] = 5000;
+        HP_Tresor[1] = 5000;
+        HP_Tresor[2] = 5000;
+        HP_Tresor[3] = 5000;
+        HP_Tresor[4] = 5000;
+        HP_Tresor[5] = 5000;
+        Wertpap[0] = false;
+        Wertpap[1] = false;
+        Wertpap[2] = false;
+        Wertpap[3] = false;
+        Tresor[0] = false;
+        Tresor[1] = false;
+        Tresor[2] = false;
+        Tresor[3] = false;
+        Update3DTextLabelText(Label_HP_bankInteriorLs[0], 0x008080FF, "{FFFFFF}- Kleiner Tresor -\n\n{CB2720}Verschlossen");
+        Update3DTextLabelText(Label_HP_bankInteriorLs[1], 0x008080FF, "{FFFFFF}- Kleiner Tresor -\n\n{CB2720}Verschlossen");
+        Update3DTextLabelText(Label_HP_bankInteriorLs[2], 0x008080FF, "{FFFFFF}- Kleiner Tresor -\n\n{CB2720}Verschlossen");
+        Update3DTextLabelText(Label_HP_bankInteriorLs[3], 0x008080FF, "{FFFFFF}- Kleiner Tresor -\n\n{CB2720}Verschlossen");
+        Update3DTextLabelText(Label_HP_bankInteriorLs[4], 0x008080FF, "{FFFFFF}- Kleiner Tresor -\n\n{CB2720}Verschlossen");
+        Update3DTextLabelText(Label_HP_bankInteriorLs[5], 0x008080FF, "{FFFFFF}- Kleiner Tresor -\n\n{CB2720}Verschlossen");
+        Update3DTextLabelText(Label_bankInteriorLs[0], 0x008080FF, "{FFFFFF}- Wertpapiere stehlen -\n\n{CB2720}Benutze /Wertpapiere");
+        Update3DTextLabelText(Label_bankInteriorLs[1], 0x008080FF, "{FFFFFF}- Wertpapiere stehlen -\n\n{CB2720}Benutze /Wertpapiere");
+        Update3DTextLabelText(Label_bankInteriorLs[2], 0x008080FF, "{FFFFFF}- Wertpapiere stehlen -\n\n{CB2720}Benutze /Wertpapiere");
+        Update3DTextLabelText(Label_bankInteriorLs[3], 0x008080FF, "{FFFFFF}- Wertpapiere stehlen -\n\n{CB2720}Benutze /Wertpapiere");
+        Update3DTextLabelText(Label_bankInteriorLs[5], 0x008080FF, "{FFFFFF}- Tresore sprengen -\n\n{CB2720}Benutze /C4legen");
+        Update3DTextLabelText(Label_bankInteriorLs[6], 0x008080FF, "{FFFFFF}- Tresore sprengen -\n\n{CB2720}Benutze /C4legen");
+        Update3DTextLabelText(Label_bankInteriorLs[7], 0x008080FF, "{FFFFFF}- Tresore sprengen -\n\n{CB2720}Benutze /C4legen");
+        Update3DTextLabelText(Label_bankInteriorLs[8], 0x008080FF, "{FFFFFF}- Tresore sprengen -\n\n{CB2720}Benutze /C4legen");
+        DestroyDynamicObject(HP_bankInteriorLs[0]);
+        DestroyDynamicObject(HP_bankInteriorLs[1]);
+        DestroyDynamicObject(HP_bankInteriorLs[2]);
+        DestroyDynamicObject(HP_bankInteriorLs[3]);
+        DestroyDynamicObject(HP_bankInteriorLs[4]);
+        DestroyDynamicObject(HP_bankInteriorLs[5]);
+        HP_bankInteriorLs[0] = CreateDynamicObject(2332, 1686.8259, -1031.4426, 1333.7956, 0.0000, 0.0000, -90.0000, VW_BANKINTERIORLS);
+        HP_bankInteriorLs[1] = CreateDynamicObject(2332, 1689.5681, -1019.7673, 1340.2413, 0.0000, 0.0000, 0.0000, VW_BANKINTERIORLS);
+        HP_bankInteriorLs[2] = CreateDynamicObject(2332, 1684.2133, -1035.0657, 1333.7956, 0.0000, 0.0000, 180.0000, VW_BANKINTERIORLS);
+        HP_bankInteriorLs[3] = CreateDynamicObject(2332, 1695.2431, -1019.7673, 1340.2413, 0.0000, 0.0000, 0.0000, VW_BANKINTERIORLS);
+        HP_bankInteriorLs[4] = CreateDynamicObject(2332, 1691.2214, -1035.0546, 1333.7956, 0.0000, 0.0000, 180.0000, VW_BANKINTERIORLS);
+        HP_bankInteriorLs[5] = CreateDynamicObject(2332, 1688.9193, -1030.3500, 1333.7956, 0.0000, 0.0000, 90.0000, VW_BANKINTERIORLS);
+    }
+
+    new zeit;
+    zeit = ( gettime() - g_unixBankraub );
+    if( zeit >= 10*60 ) {
+        new
+            // 200.000 bis 400.000
+            beute = (random(40000) * 5 ) + 200000, // 200.000$ - 400.000$ in 5$ Schritten
+            String[128];
+        format(String,sizeof(String),"Du hast die Bank erfolgreich ausgeraubt! Deine Beute: $%s", AddDelimiters(beute));
+        for(new i = 0; i < MAX_PLAYERS; i++){
+            if(GetPlayerVirtualWorld(i) == VW_BANKINTERIORLS){
+                if(Spieler[i][pFraktion] == 1 || Spieler[i][pFraktion] == 2) return 1;
+                GivePlayerCash(i, beute);
+                SendClientMessage(i, COLOR_WHITE, String);
+                RemovePlayerAttachedObject(i, 0);
+            }
+        }
+
+        SendClientMessageToAll(COLOR_RED,"[ZENTRALBANK] Die Los Santos Bank wurde erfolgreich ausgeraubt!");
+
+        KillTimer(g_tPulseBankPosition);
+        g_tPulseBankPosition = INVALID_TIMER_ID;
+
+        Pulse_Bankraub();
+
+        //RESET BANK VARS
+        HP_Tresor[0] = 5000;
+        HP_Tresor[1] = 5000;
+        HP_Tresor[2] = 5000;
+        HP_Tresor[3] = 5000;
+        HP_Tresor[4] = 5000;
+        HP_Tresor[5] = 5000;
+        Wertpap[0] = false;
+        Wertpap[1] = false;
+        Wertpap[2] = false;
+        Wertpap[3] = false;
+        Tresor[0] = false;
+        Tresor[1] = false;
+        Tresor[2] = false;
+        Tresor[3] = false;
+        Update3DTextLabelText(Label_HP_bankInteriorLs[0], 0x008080FF, "{FFFFFF}- Kleiner Tresor -\n\n{CB2720}Verschlossen");
+        Update3DTextLabelText(Label_HP_bankInteriorLs[1], 0x008080FF, "{FFFFFF}- Kleiner Tresor -\n\n{CB2720}Verschlossen");
+        Update3DTextLabelText(Label_HP_bankInteriorLs[2], 0x008080FF, "{FFFFFF}- Kleiner Tresor -\n\n{CB2720}Verschlossen");
+        Update3DTextLabelText(Label_HP_bankInteriorLs[3], 0x008080FF, "{FFFFFF}- Kleiner Tresor -\n\n{CB2720}Verschlossen");
+        Update3DTextLabelText(Label_HP_bankInteriorLs[4], 0x008080FF, "{FFFFFF}- Kleiner Tresor -\n\n{CB2720}Verschlossen");
+        Update3DTextLabelText(Label_HP_bankInteriorLs[5], 0x008080FF, "{FFFFFF}- Kleiner Tresor -\n\n{CB2720}Verschlossen");
+        Update3DTextLabelText(Label_bankInteriorLs[0], 0x008080FF, "{FFFFFF}- Wertpapiere stehlen -\n\n{CB2720}Benutze /Wertpapiere");
+        Update3DTextLabelText(Label_bankInteriorLs[1], 0x008080FF, "{FFFFFF}- Wertpapiere stehlen -\n\n{CB2720}Benutze /Wertpapiere");
+        Update3DTextLabelText(Label_bankInteriorLs[2], 0x008080FF, "{FFFFFF}- Wertpapiere stehlen -\n\n{CB2720}Benutze /Wertpapiere");
+        Update3DTextLabelText(Label_bankInteriorLs[3], 0x008080FF, "{FFFFFF}- Wertpapiere stehlen -\n\n{CB2720}Benutze /Wertpapiere");
+        Update3DTextLabelText(Label_bankInteriorLs[5], 0x008080FF, "{FFFFFF}- Tresore sprengen -\n\n{CB2720}Benutze /C4legen");
+        Update3DTextLabelText(Label_bankInteriorLs[6], 0x008080FF, "{FFFFFF}- Tresore sprengen -\n\n{CB2720}Benutze /C4legen");
+        Update3DTextLabelText(Label_bankInteriorLs[7], 0x008080FF, "{FFFFFF}- Tresore sprengen -\n\n{CB2720}Benutze /C4legen");
+        Update3DTextLabelText(Label_bankInteriorLs[8], 0x008080FF, "{FFFFFF}- Tresore sprengen -\n\n{CB2720}Benutze /C4legen");
+        DestroyDynamicObject(HP_bankInteriorLs[0]);
+        DestroyDynamicObject(HP_bankInteriorLs[1]);
+        DestroyDynamicObject(HP_bankInteriorLs[2]);
+        DestroyDynamicObject(HP_bankInteriorLs[3]);
+        DestroyDynamicObject(HP_bankInteriorLs[4]);
+        DestroyDynamicObject(HP_bankInteriorLs[5]);
+        HP_bankInteriorLs[0] = CreateDynamicObject(2332, 1686.8259, -1031.4426, 1333.7956, 0.0000, 0.0000, -90.0000, VW_BANKINTERIORLS);
+        HP_bankInteriorLs[1] = CreateDynamicObject(2332, 1689.5681, -1019.7673, 1340.2413, 0.0000, 0.0000, 0.0000, VW_BANKINTERIORLS);
+        HP_bankInteriorLs[2] = CreateDynamicObject(2332, 1684.2133, -1035.0657, 1333.7956, 0.0000, 0.0000, 180.0000, VW_BANKINTERIORLS);
+        HP_bankInteriorLs[3] = CreateDynamicObject(2332, 1695.2431, -1019.7673, 1340.2413, 0.0000, 0.0000, 0.0000, VW_BANKINTERIORLS);
+        HP_bankInteriorLs[4] = CreateDynamicObject(2332, 1691.2214, -1035.0546, 1333.7956, 0.0000, 0.0000, 180.0000, VW_BANKINTERIORLS);
+        HP_bankInteriorLs[5] = CreateDynamicObject(2332, 1688.9193, -1030.3500, 1333.7956, 0.0000, 0.0000, 90.0000, VW_BANKINTERIORLS);
+    }
     return 1;
 }
 
@@ -51578,19 +51674,24 @@ COMMAND:kammerausrauben(playerid, params[]) {
     return 1;
 }
 
-COMMAND:bankausrauben(playerid,params[]) {
-    if ((!IsPlayerInRangeOfPoint(playerid,2.0,2144.1409,1641.5856,993.5761) ) || (GetPlayerInterior(playerid) != 1)) return SendClientMessage(playerid, COLOR_RED, "Du bist nicht in der Los Santos Zentralbank.");
+COMMAND:bankhacken(playerid,params[]) {
+    //if ((!IsPlayerInRangeOfPoint(playerid,2.0,2144.1409,1641.5856,993.5761) ) || (GetPlayerInterior(playerid) != 1)) return SendClientMessage(playerid, COLOR_RED, "Du bist nicht in der Los Santos Zentralbank.");
+    if(GetPlayerVirtualWorld(playerid) != VW_BANKINTERIORLS && !IsPlayerInRangeOfPoint(playerid,2.0,1690.5631,-1022.4385,1340.7509)) return SendClientMessage(playerid, COLOR_RED, "Du bist nicht in der Los Santos Bank!");
     if (g_aSettings[ASETTING_ROBBLOCK][ASETTING_TOGGLE]) return SendClientMessage(playerid, COLOR_RED, "Zurzeit ist die Überfallsperre aktiviert.");
     if (g_iBankraubStatus == Bankraub_Wartezeit) return SendClientMessage(playerid, COLOR_RED, "Die Bank kann zur Zeit nicht ausgeraubt werden.");
     if (g_iBankraubStatus == Bankraub_Aktiv) return SendClientMessage(playerid, COLOR_RED, "Ein Bankraub läuft gerade. ");
     if (!HasPlayerWeapon(playerid)) return SendClientMessage(playerid, COLOR_RED, "Du kannst die Bank nicht ohne eine Waffe ausrauben.");
-    if (GetOnlineExekutive(playerid) < 4) return SendClientMessage(playerid, COLOR_RED, "Es sind nicht genug Spieler der Exekutive online.");
-    new breakingNewsMessage[128];
-    format(breakingNewsMessage, sizeof(breakingNewsMessage), "[ZENTRALBANK] Bankräuber %s raubt die Los Santos Zentralbank aus!", GetName(playerid));
-    SendClientMessageToAll(COLOR_RED, breakingNewsMessage);
-    PlayerPlaySound(playerid, 1058, 0.0, 0.0, 0.0);
+    //if (GetOnlineExekutive(playerid) < 4) return SendClientMessage(playerid, COLOR_RED, "Es sind nicht genug Spieler der Exekutive online.");
+    if(Spieler[playerid][pWantedCodes] < 50) return SendClientMessage(playerid, COLOR_RED, "Du benötigst mindestens 50 Hacker-Codes um den Bankraub zu starten!");
 
-    SendClientMessage(playerid,COLOR_RED,"[ACHTUNG] Die Alarmanlage ist angegangen, die Polizei ist unterwegs! Halte 10 Minuten in der Bank aus!");
+    Spieler[playerid][pWantedCodes] -= 50;
+    SendClientMessage(playerid, COLOR_RED, "Das Hacken ist fehlgeschlagen! Die Polizei wurde informiert!");
+
+    new breakingNewsMessage[128];
+    format(breakingNewsMessage, sizeof(breakingNewsMessage), "[ZENTRALBANK] Die Los Santos Zentralbank wird gerade ausgeraubt!");
+    SendClientMessageToAll(COLOR_RED, breakingNewsMessage);
+
+    //SendClientMessage(playerid,COLOR_RED,"[ACHTUNG] Die Alarmanlage ist angegangen, die Polizei ist unterwegs! Halte 10 Minuten in der Bank aus!");
 
     g_tPulseBankPosition = SetTimerEx("Bank_Position", 1373, 1, "d", playerid);
     g_iBankraubStatus = Bankraub_Aktiv;
@@ -51604,21 +51705,27 @@ COMMAND:bankausrauben(playerid,params[]) {
     KillTimer(g_tPulseBank);
     g_tPulseBank = INVALID_TIMER_ID;
 
-    Spieler[playerid][pWanteds] += 6;
-    SendClientMessage(playerid, COLOR_DARKRED, "Du hast ein Verbrechen begangen! (Raub/Überfall) Reporter: Polizeizentrale");
-    format(breakingNewsMessage, sizeof(breakingNewsMessage), "Dein Aktuelles Wanted Level: %d", Spieler[playerid][pWanteds]);
-    SendClientMessage(playerid, COLOR_YELLOW, breakingNewsMessage);
-    format(breakingNewsMessage, sizeof(breakingNewsMessage), "HQ: %s (ID: %d) hat ein Verbrechen begangen: Raub/Überfall, over.", GetName(playerid), playerid);
-    SendFraktionMessage(1, COLOR_LIGHTRED, breakingNewsMessage);
-    SendFraktionMessage(2, COLOR_LIGHTRED, breakingNewsMessage);
-    SendFraktionMessage(16, COLOR_LIGHTRED, breakingNewsMessage);
-    SendFraktionMessage(18, COLOR_LIGHTRED, breakingNewsMessage);
-    format(breakingNewsMessage, sizeof(breakingNewsMessage), "HQ: Reporter: Polizeizentrale, Aktuelles Wantedlevel: %d, over", Spieler[playerid][pWanteds]);
-    SendFraktionMessage(1, COLOR_LIGHTRED, breakingNewsMessage);
-    SendFraktionMessage(2, COLOR_LIGHTRED, breakingNewsMessage);
-    SendFraktionMessage(16, COLOR_LIGHTRED, breakingNewsMessage);
-    SendFraktionMessage(18, COLOR_LIGHTRED, breakingNewsMessage);
-
+    for(new i = 0; i < MAX_PLAYERS; i++){
+        if(GetPlayerVirtualWorld(i) == VW_BANKINTERIORLS){
+            PlayerPlaySound(playerid, 1058, 0.0, 0.0, 0.0);
+            SetPlayerAttachedObject( i, 0, 1550, 15, 0.000000, 0.280000, -0.310000, 0.000000, 15.000000, 0.000000, 1.000000, 1.000000, 1.000000 );
+            Spieler[i][pWanteds] += 6;
+            SendClientMessage(i, COLOR_DARKRED, "Du hast ein Verbrechen begangen! (Raub/Überfall) Reporter: Polizeizentrale");
+            format(breakingNewsMessage, sizeof(breakingNewsMessage), "Dein Aktuelles Wanted Level: %d", Spieler[i][pWanteds]);
+            SendClientMessage(i, COLOR_YELLOW, breakingNewsMessage);
+            format(breakingNewsMessage, sizeof(breakingNewsMessage), "HQ: %s (ID: %d) hat ein Verbrechen begangen: Raub/Überfall, over.", GetName(i), i);
+            SendFraktionMessage(1, COLOR_LIGHTRED, breakingNewsMessage);
+            SendFraktionMessage(2, COLOR_LIGHTRED, breakingNewsMessage);
+            SendFraktionMessage(16, COLOR_LIGHTRED, breakingNewsMessage);
+            SendFraktionMessage(18, COLOR_LIGHTRED, breakingNewsMessage);
+            format(breakingNewsMessage, sizeof(breakingNewsMessage), "HQ: Reporter: Polizeizentrale, Aktuelles Wantedlevel: %d, over", Spieler[i][pWanteds]);
+            SendFraktionMessage(1, COLOR_LIGHTRED, breakingNewsMessage);
+            SendFraktionMessage(2, COLOR_LIGHTRED, breakingNewsMessage);
+            SendFraktionMessage(16, COLOR_LIGHTRED, breakingNewsMessage);
+            SendFraktionMessage(18, COLOR_LIGHTRED, breakingNewsMessage);
+            SendClientMessage(i, COLOR_RED, "Du wurdest entdeckt! Die Sicherheitskameras haben alle Personen in der Bank indentifiziert!");
+        }
+    }
     return 1;
 }
 
@@ -66016,10 +66123,346 @@ CMD:tazer(playerid, params[]){
 	}
 	return 1;
 }
-     	
+
+new wertpaptimer[MAX_PLAYERS];
+
+CMD:wertpapiere(playerid){
+    if(g_iBankraubStatus != Bankraub_Aktiv) return SendClientMessage(playerid, COLOR_RED, "Aktuell läuft kein Bankraub!");
+    if(IsPlayerInRangeOfPoint(playerid, 1.0, 1696.2445, -1031.0490, 1340.7509)){
+        if(Wertpap[0] == true) return SendClientMessage(playerid, COLOR_RED, "[BANKRAUB] {FFFFFF}Hier sind keine Wertpapiere zu finden!");
+        LoopingAnim(playerid,"COP_AMBIENT","Coplook_shake",4.1, 1, 0, 0, 0, 0, 1);
+        new String[128];
+        format(String, sizeof(String), "{FFFFFF}- Wertpapiere stehlen -\n\n{6CD818}Nicht möglich");
+        Update3DTextLabelText(Label_bankInteriorLs[0], 0x008080FF, String);
+        FreezePlayer(playerid);
+        SendClientMessage(playerid, COLOR_RED, "[BANKRAUB] {FFFFFF}Du suchst gerade nach Wertpapieren. Dies kann einen Moment dauern.");
+        Wertpap[0] = true;
+        wertpaptimer[playerid] = SetTimerEx("unfreezeWertpap", 30000, false, "i", playerid);
+        new breakingNewsMessage[128];
+        Spieler[playerid][pWanteds] += 2;
+        SendClientMessage(playerid, COLOR_DARKRED, "Du hast ein Verbrechen begangen! (Diebstahl von Wertpapieren) Reporter: Polizeizentrale");
+        format(breakingNewsMessage, sizeof(breakingNewsMessage), "Dein Aktuelles Wanted Level: %d", Spieler[playerid][pWanteds]);
+        SendClientMessage(playerid, COLOR_YELLOW, breakingNewsMessage);
+        format(breakingNewsMessage, sizeof(breakingNewsMessage), "HQ: %s (ID: %d) hat ein Verbrechen begangen: Diebstahl von Wertpapieren, over.", GetName(playerid), playerid);
+        SendFraktionMessage(1, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(2, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(16, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(18, COLOR_LIGHTRED, breakingNewsMessage);
+        format(breakingNewsMessage, sizeof(breakingNewsMessage), "HQ: Reporter: Polizeizentrale, Aktuelles Wantedlevel: %d, over", Spieler[playerid][pWanteds]);
+        SendFraktionMessage(1, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(2, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(16, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(18, COLOR_LIGHTRED, breakingNewsMessage);
+    }else if(IsPlayerInRangeOfPoint(playerid, 1.0, 1693.9166,-1029.7340,1340.7509)){
+        if(Wertpap[1] == true) return SendClientMessage(playerid, COLOR_RED, "[BANKRAUB] {FFFFFF}Hier sind keine Wertpapiere zu finden!");
+        LoopingAnim(playerid,"COP_AMBIENT","Coplook_shake",4.1, 1, 0, 0, 0, 0, 1);
+        new String[128];
+        format(String, sizeof(String), "{FFFFFF}- Wertpapiere stehlen -\n\n{6CD818}Nicht möglich");
+        Update3DTextLabelText(Label_bankInteriorLs[1], 0x008080FF, String);
+        FreezePlayer(playerid);
+        SendClientMessage(playerid, COLOR_RED, "[BANKRAUB] {FFFFFF}Du suchst gerade nach Wertpapieren. Dies kann einen Moment dauern.");
+        Wertpap[1] = true;
+        wertpaptimer[playerid] = SetTimerEx("unfreezeWertpap", 30000, false, "i", playerid);
+        new breakingNewsMessage[128];
+        Spieler[playerid][pWanteds] += 2;
+        SendClientMessage(playerid, COLOR_DARKRED, "Du hast ein Verbrechen begangen! (Diebstahl von Wertpapieren) Reporter: Polizeizentrale");
+        format(breakingNewsMessage, sizeof(breakingNewsMessage), "Dein Aktuelles Wanted Level: %d", Spieler[playerid][pWanteds]);
+        SendClientMessage(playerid, COLOR_YELLOW, breakingNewsMessage);
+        format(breakingNewsMessage, sizeof(breakingNewsMessage), "HQ: %s (ID: %d) hat ein Verbrechen begangen: Diebstahl von Wertpapieren, over.", GetName(playerid), playerid);
+        SendFraktionMessage(1, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(2, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(16, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(18, COLOR_LIGHTRED, breakingNewsMessage);
+        format(breakingNewsMessage, sizeof(breakingNewsMessage), "HQ: Reporter: Polizeizentrale, Aktuelles Wantedlevel: %d, over", Spieler[playerid][pWanteds]);
+        SendFraktionMessage(1, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(2, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(16, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(18, COLOR_LIGHTRED, breakingNewsMessage);
+    }else if(IsPlayerInRangeOfPoint(playerid, 1.0, 1692.5431,-1027.2142,1340.7509)){
+        if(Wertpap[2] == true) return SendClientMessage(playerid, COLOR_RED, "[BANKRAUB] {FFFFFF}Hier sind keine Wertpapiere zu finden!");
+        LoopingAnim(playerid,"COP_AMBIENT","Coplook_shake",4.1, 1, 0, 0, 0, 0, 1);
+        new String[128];
+        format(String, sizeof(String), "{FFFFFF}- Wertpapiere stehlen -\n\n{6CD818}Nicht möglich");
+        Update3DTextLabelText(Label_bankInteriorLs[2], 0x008080FF, String);
+        FreezePlayer(playerid);
+        SendClientMessage(playerid, COLOR_RED, "[BANKRAUB] {FFFFFF}Du suchst gerade nach Wertpapieren. Dies kann einen Moment dauern.");
+        Wertpap[2] = true;
+        wertpaptimer[playerid] = SetTimerEx("unfreezeWertpap", 30000, false, "i", playerid);
+        new breakingNewsMessage[128];
+        Spieler[playerid][pWanteds] += 2;
+        SendClientMessage(playerid, COLOR_DARKRED, "Du hast ein Verbrechen begangen! (Diebstahl von Wertpapieren) Reporter: Polizeizentrale");
+        format(breakingNewsMessage, sizeof(breakingNewsMessage), "Dein Aktuelles Wanted Level: %d", Spieler[playerid][pWanteds]);
+        SendClientMessage(playerid, COLOR_YELLOW, breakingNewsMessage);
+        format(breakingNewsMessage, sizeof(breakingNewsMessage), "HQ: %s (ID: %d) hat ein Verbrechen begangen: Diebstahl von Wertpapieren, over.", GetName(playerid), playerid);
+        SendFraktionMessage(1, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(2, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(16, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(18, COLOR_LIGHTRED, breakingNewsMessage);
+        format(breakingNewsMessage, sizeof(breakingNewsMessage), "HQ: Reporter: Polizeizentrale, Aktuelles Wantedlevel: %d, over", Spieler[playerid][pWanteds]);
+        SendFraktionMessage(1, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(2, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(16, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(18, COLOR_LIGHTRED, breakingNewsMessage);
+    }else if(IsPlayerInRangeOfPoint(playerid, 1.0, 1696.9338,-1028.0938,1340.7509)){
+        if(Wertpap[3] == true) return SendClientMessage(playerid, COLOR_RED, "[BANKRAUB] {FFFFFF}Hier sind keine Wertpapiere zu finden!");
+        LoopingAnim(playerid,"COP_AMBIENT","Coplook_shake",4.1, 1, 0, 0, 0, 0, 1);
+        new String[128];
+        format(String, sizeof(String), "{FFFFFF}- Wertpapiere stehlen -\n\n{6CD818}Nicht möglich");
+        Update3DTextLabelText(Label_bankInteriorLs[3], 0x008080FF, String);
+        FreezePlayer(playerid);
+        SendClientMessage(playerid, COLOR_RED, "[BANKRAUB] {FFFFFF}Du suchst gerade nach Wertpapieren. Dies kann einen Moment dauern.");
+        Wertpap[3] = true;
+        wertpaptimer[playerid] = SetTimerEx("unfreezeWertpap", 30000, false, "i", playerid);
+        new breakingNewsMessage[128];
+        Spieler[playerid][pWanteds] += 2;
+        SendClientMessage(playerid, COLOR_DARKRED, "Du hast ein Verbrechen begangen! (Diebstahl von Wertpapieren) Reporter: Polizeizentrale");
+        format(breakingNewsMessage, sizeof(breakingNewsMessage), "Dein Aktuelles Wanted Level: %d", Spieler[playerid][pWanteds]);
+        SendClientMessage(playerid, COLOR_YELLOW, breakingNewsMessage);
+        format(breakingNewsMessage, sizeof(breakingNewsMessage), "HQ: %s (ID: %d) hat ein Verbrechen begangen: Diebstahl von Wertpapieren, over.", GetName(playerid), playerid);
+        SendFraktionMessage(1, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(2, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(16, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(18, COLOR_LIGHTRED, breakingNewsMessage);
+        format(breakingNewsMessage, sizeof(breakingNewsMessage), "HQ: Reporter: Polizeizentrale, Aktuelles Wantedlevel: %d, over", Spieler[playerid][pWanteds]);
+        SendFraktionMessage(1, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(2, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(16, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(18, COLOR_LIGHTRED, breakingNewsMessage);
+    }else{
+        SendClientMessage(playerid, COLOR_RED, "[BANKRAUB] {FFFFFF}Hier sind keine Wertpapiere zu finden!");
+    }
+    return 1;
+}
+
+forward unfreezeWertpap(playerid);
+public unfreezeWertpap(playerid){
+    UnFreeze(playerid);
+    new belohnung = RandomEx(20000, 80000);
+    if(GetPlayerVirtualWorld(playerid) == VW_BANKINTERIORLS){
+        SCMFormatted(playerid, COLOR_GREEN, "[BANKRAUB] {FFFFFF}Du hast Wertpapiere im Wert von $%i gefunden!", belohnung);
+        GivePlayerCash(playerid, belohnung);
+    }
+    ClearAnimations(playerid);
+}
+
+new c4sprengen[MAX_PLAYERS];
+new c4id = 0;
+new Float:c4x = 0.0;
+new Float:c4y = 0.0;
+new Float:c4z = 0.0;
+new bool:isC4 = false;
+
+CMD:c4legen(playerid){
+    if(g_iBankraubStatus != Bankraub_Aktiv) return SendClientMessage(playerid, COLOR_RED, "Aktuell läuft kein Bankraub!");
+    if(Spieler[playerid][pC4] < 1) return SendClientMessage(playerid, COLOR_RED, "Du hast kein C4 zum legen dabei!");
+    if(isC4 == true) return SendClientMessage(playerid, COLOR_RED, "Es kann nur ein Tresor gleichzeigt gesprengt werden!");
+    if(IsPlayerInRangeOfPoint(playerid, 1.0, 1695.7092,-1049.6833,1334.2904)){
+        if(Tresor[0] == true) return SendClientMessage(playerid, COLOR_RED, "[BANKRAUB] {FFFFFF}Hier kannst du kein C4 legen!");
+        OnePlayAnim(playerid, "BOMBER", "BOM_Plant", 4.0, 0, 0, 0, 0, 0); // Place Bomb
+        new String[128];
+        format(String, sizeof(String), "{FFFFFF}- Tresore sprengen -\n\n{6CD818}Nicht möglich");
+        Update3DTextLabelText(Label_bankInteriorLs[5], 0x008080FF, String);
+        c4id = CreateObject(1654, 1695.7092,-1049.6833,1334.1500, 0.0, 0.0, 0.0);
+        c4x = 1695.7092;
+        c4y = -1049.6833;
+        c4z = 1334.2000;
+        c4sprengen[playerid] = SetTimerEx("c4explodieren", 90000, false, "i", playerid);
+        for(new i = 0; i < MAX_PLAYERS; i++){
+            if(GetPlayerVirtualWorld(i) == VW_BANKINTERIORLS){
+                SendClientMessage(i, COLOR_BLUE, "[BANKRAUB] {FFFFFF}Achtung! Es wurde C4 im Tresorraum gelegt!");
+            }
+        }
+        Tresor[0] = true;
+        isC4 = true;
+        new breakingNewsMessage[128];
+        Spieler[playerid][pWanteds] += 4;
+        SendClientMessage(playerid, COLOR_DARKRED, "Du hast ein Verbrechen begangen! (Sprengen von Tresoren) Reporter: Polizeizentrale");
+        format(breakingNewsMessage, sizeof(breakingNewsMessage), "Dein Aktuelles Wanted Level: %d", Spieler[playerid][pWanteds]);
+        SendClientMessage(playerid, COLOR_YELLOW, breakingNewsMessage);
+        format(breakingNewsMessage, sizeof(breakingNewsMessage), "HQ: %s (ID: %d) hat ein Verbrechen begangen: Sprengen von Tresoren, over.", GetName(playerid), playerid);
+        SendFraktionMessage(1, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(2, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(16, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(18, COLOR_LIGHTRED, breakingNewsMessage);
+        format(breakingNewsMessage, sizeof(breakingNewsMessage), "HQ: Reporter: Polizeizentrale, Aktuelles Wantedlevel: %d, over", Spieler[playerid][pWanteds]);
+        SendFraktionMessage(1, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(2, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(16, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(18, COLOR_LIGHTRED, breakingNewsMessage);
+    }else if(IsPlayerInRangeOfPoint(playerid, 1.0, 1692.2316,-1048.0509,1334.2904)){
+        if(Tresor[1] == true) return SendClientMessage(playerid, COLOR_RED, "[BANKRAUB] {FFFFFF}Hier kannst du kein C4 legen!");
+        OnePlayAnim(playerid, "BOMBER", "BOM_Plant", 4.0, 0, 0, 0, 0, 0); // Place Bomb
+        new String[128];
+        format(String, sizeof(String), "{FFFFFF}- Tresore sprengen -\n\n{6CD818}Nicht möglich");
+        Update3DTextLabelText(Label_bankInteriorLs[6], 0x008080FF, String);
+        c4id = CreateObject(1654, 1692.2316,-1048.0509,1334.1500, 0.0, 0.0, 0.0);
+        c4x = 1692.2316;
+        c4y = -1048.0509;
+        c4z = 1334.1500;
+        c4sprengen[playerid] = SetTimerEx("c4explodieren", 90000, false, "i", playerid);
+        for(new i = 0; i < MAX_PLAYERS; i++){
+            if(GetPlayerVirtualWorld(i) == VW_BANKINTERIORLS){
+                SendClientMessage(i, COLOR_BLUE, "[BANKRAUB] {FFFFFF}Achtung! Es wurde C4 im Tresorraum gelegt!");
+            }
+        }
+        Tresor[1] = true;
+        isC4 = true;
+        new breakingNewsMessage[128];
+        Spieler[playerid][pWanteds] += 4;
+        SendClientMessage(playerid, COLOR_DARKRED, "Du hast ein Verbrechen begangen! (Sprengen von Tresoren) Reporter: Polizeizentrale");
+        format(breakingNewsMessage, sizeof(breakingNewsMessage), "Dein Aktuelles Wanted Level: %d", Spieler[playerid][pWanteds]);
+        SendClientMessage(playerid, COLOR_YELLOW, breakingNewsMessage);
+        format(breakingNewsMessage, sizeof(breakingNewsMessage), "HQ: %s (ID: %d) hat ein Verbrechen begangen: Sprengen von Tresoren, over.", GetName(playerid), playerid);
+        SendFraktionMessage(1, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(2, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(16, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(18, COLOR_LIGHTRED, breakingNewsMessage);
+        format(breakingNewsMessage, sizeof(breakingNewsMessage), "HQ: Reporter: Polizeizentrale, Aktuelles Wantedlevel: %d, over", Spieler[playerid][pWanteds]);
+        SendFraktionMessage(1, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(2, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(16, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(18, COLOR_LIGHTRED, breakingNewsMessage);
+    }else if(IsPlayerInRangeOfPoint(playerid, 1.0, 1687.9445,-1047.8927,1334.2904)){
+        if(Tresor[2] == true) return SendClientMessage(playerid, COLOR_RED, "[BANKRAUB] {FFFFFF}Hier kannst du kein C4 legen!");
+        OnePlayAnim(playerid, "BOMBER", "BOM_Plant", 4.0, 0, 0, 0, 0, 0); // Place Bomb
+        new String[128];
+        format(String, sizeof(String), "{FFFFFF}- Tresore sprengen -\n\n{6CD818}Nicht möglich");
+        Update3DTextLabelText(Label_bankInteriorLs[7], 0x008080FF, String);
+        c4id = CreateObject(1654, 1687.9445,-1047.8927,1334.1500, 0.0, 0.0, 0.0);
+        c4x = 1687.9445;
+        c4y = -1047.8927;
+        c4z = 1334.1500;
+        c4sprengen[playerid] = SetTimerEx("c4explodieren", 90000, false, "i", playerid);
+        for(new i = 0; i < MAX_PLAYERS; i++){
+            if(GetPlayerVirtualWorld(i) == VW_BANKINTERIORLS){
+                SendClientMessage(i, COLOR_BLUE, "[BANKRAUB] {FFFFFF}Achtung! Es wurde C4 im Tresorraum gelegt!");
+            }
+        }
+        Tresor[2] = true;
+        isC4 = true;
+        new breakingNewsMessage[128];
+        Spieler[playerid][pWanteds] += 4;
+        SendClientMessage(playerid, COLOR_DARKRED, "Du hast ein Verbrechen begangen! (Sprengen von Tresoren) Reporter: Polizeizentrale");
+        format(breakingNewsMessage, sizeof(breakingNewsMessage), "Dein Aktuelles Wanted Level: %d", Spieler[playerid][pWanteds]);
+        SendClientMessage(playerid, COLOR_YELLOW, breakingNewsMessage);
+        format(breakingNewsMessage, sizeof(breakingNewsMessage), "HQ: %s (ID: %d) hat ein Verbrechen begangen: Sprengen von Tresoren, over.", GetName(playerid), playerid);
+        SendFraktionMessage(1, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(2, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(16, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(18, COLOR_LIGHTRED, breakingNewsMessage);
+        format(breakingNewsMessage, sizeof(breakingNewsMessage), "HQ: Reporter: Polizeizentrale, Aktuelles Wantedlevel: %d, over", Spieler[playerid][pWanteds]);
+        SendFraktionMessage(1, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(2, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(16, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(18, COLOR_LIGHTRED, breakingNewsMessage);
+    }else if(IsPlayerInRangeOfPoint(playerid, 1.0, 1684.5870,-1049.8440,1334.2904)){
+        if(Tresor[3] == true) return SendClientMessage(playerid, COLOR_RED, "[BANKRAUB] {FFFFFF}Hier kannst du kein C4 legen!");
+        OnePlayAnim(playerid, "BOMBER", "BOM_Plant", 4.0, 0, 0, 0, 0, 0); // Place Bomb
+        new String[128];
+        format(String, sizeof(String), "{FFFFFF}- Tresore sprengen -\n\n{6CD818}Nicht möglich");
+        Update3DTextLabelText(Label_bankInteriorLs[8], 0x008080FF, String);
+        c4id = CreateObject(1654, 1684.5870,-1049.8440,1334.2904, 0.0, 0.0, 0.0);
+        c4x = 1684.5870;
+        c4y = -1049.8440;
+        c4z = 1334.1500;
+        c4sprengen[playerid] = SetTimerEx("c4explodieren", 90000, false, "i", playerid);
+        for(new i = 0; i < MAX_PLAYERS; i++){
+            if(GetPlayerVirtualWorld(i) == VW_BANKINTERIORLS){
+                SendClientMessage(i, COLOR_BLUE, "[BANKRAUB] {FFFFFF}Achtung! Es wurde C4 im Tresorraum gelegt!");
+            }
+        }
+        Tresor[3] = true;
+        isC4 = true;
+        new breakingNewsMessage[128];
+        Spieler[playerid][pWanteds] += 4;
+        SendClientMessage(playerid, COLOR_DARKRED, "Du hast ein Verbrechen begangen! (Sprengen von Tresoren) Reporter: Polizeizentrale");
+        format(breakingNewsMessage, sizeof(breakingNewsMessage), "Dein Aktuelles Wanted Level: %d", Spieler[playerid][pWanteds]);
+        SendClientMessage(playerid, COLOR_YELLOW, breakingNewsMessage);
+        format(breakingNewsMessage, sizeof(breakingNewsMessage), "HQ: %s (ID: %d) hat ein Verbrechen begangen: Sprengen von Tresoren, over.", GetName(playerid), playerid);
+        SendFraktionMessage(1, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(2, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(16, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(18, COLOR_LIGHTRED, breakingNewsMessage);
+        format(breakingNewsMessage, sizeof(breakingNewsMessage), "HQ: Reporter: Polizeizentrale, Aktuelles Wantedlevel: %d, over", Spieler[playerid][pWanteds]);
+        SendFraktionMessage(1, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(2, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(16, COLOR_LIGHTRED, breakingNewsMessage);
+        SendFraktionMessage(18, COLOR_LIGHTRED, breakingNewsMessage);
+    }else{
+        SendClientMessage(playerid, COLOR_RED, "[BANKRAUB] {FFFFFF}Hier kannst du kein C4 legen!");
+    }
+    return 1;
+}
+
+forward c4explodieren(playerid);
+public c4explodieren(playerid){
+    DestroyObject(c4id);
+    CreateExplosion(c4x, c4y, c4z, 0, 10.0);
+    c4x = 0.0;
+    c4y = 0.0;
+    c4z = 0.0;
+    isC4 = false;
+    new belohnung = RandomEx(80000, 150000);
+    if(GetPlayerVirtualWorld(playerid) == VW_BANKINTERIORLS){
+        SCMFormatted(playerid, COLOR_GREEN, "[BANKRAUB] Du hast aus den Tresoren $%i erhalten!", belohnung);
+        GivePlayerCash(playerid, belohnung);
+    }
+}
 
 public OnPlayerShootDynamicObject(playerid, weaponid, STREAMER_TAG_OBJECT:objectid, Float:x, Float:y, Float:z) {
     // Calls OnPlayerWeaponShot
+    for(new i; i < 7; i++){
+        if(HP_bankInteriorLs[i] == objectid){
+            if(HP_Tresor[i] <= 0) return 1;
+            if(g_iBankraubStatus != Bankraub_Aktiv) return SendClientMessage(playerid, COLOR_RED, "Aktuell läuft kein Bankraub!");
+            HP_Tresor[i] -= random(30);
+            new String[128];
+            format(String, sizeof(String), "{FFFFFF}- Kleiner Tresor -\n\n{CB2720}Verschlossen\nHP: %i", HP_Tresor[i]);
+            Update3DTextLabelText(Label_HP_bankInteriorLs[i], 0x008080FF, String);
+
+            if(HP_Tresor[i] <= 0){
+                new belohnung = RandomEx(20000, 80000);
+                SCMFormatted(playerid, COLOR_GREEN, "[BANKRAUB] {FFFFFF}Du hast einen kleinen Tresor zerstört! (Belohnung: $%i)", belohnung);
+                GivePlayerCash(playerid, belohnung);
+                Update3DTextLabelText(Label_HP_bankInteriorLs[i], 0x008080FF, "{FFFFFF}- Kleiner Tresor -\n\n{6CD818}Zerstört");
+                if(HP_bankInteriorLs[i] == HP_bankInteriorLs[0]){
+                    DestroyDynamicObject(HP_bankInteriorLs[i]);
+                    HP_bankInteriorLs[0] = CreateDynamicObject(1829, 1686.8259, -1031.4426, 1333.7956, 0.0000, 0.0000, -90.0000, VW_BANKINTERIORLS);//Tresor Auf
+                }else if(HP_bankInteriorLs[i] == HP_bankInteriorLs[1]){
+                    DestroyDynamicObject(HP_bankInteriorLs[i]);
+                    HP_bankInteriorLs[0] = CreateDynamicObject(1829, 1689.5681, -1019.7673, 1340.2413, 0.0000, 0.0000, 0.0000, VW_BANKINTERIORLS);//Tresor Auf
+                }else if(HP_bankInteriorLs[i] == HP_bankInteriorLs[2]){
+                    DestroyDynamicObject(HP_bankInteriorLs[i]);
+                    HP_bankInteriorLs[0] = CreateDynamicObject(1829, 1684.2133, -1035.0657, 1333.7956, 0.0000, 0.0000, 180.0000, VW_BANKINTERIORLS);//Tresor Auf
+                }else if(HP_bankInteriorLs[i] == HP_bankInteriorLs[3]){
+                    DestroyDynamicObject(HP_bankInteriorLs[i]);
+                    HP_bankInteriorLs[0] = CreateDynamicObject(1829, 1695.2431, -1019.7673, 1340.2413, 0.0000, 0.0000, 0.0000, VW_BANKINTERIORLS);//Tresor Auf
+                }else if(HP_bankInteriorLs[i] == HP_bankInteriorLs[4]){
+                    DestroyDynamicObject(HP_bankInteriorLs[i]);
+                    HP_bankInteriorLs[0] = CreateDynamicObject(1829, 1691.2214, -1035.0546, 1333.7956, 0.0000, 0.0000, 180.0000, VW_BANKINTERIORLS);//Tresor Auf
+                }else if(HP_bankInteriorLs[i] == HP_bankInteriorLs[5]){
+                    DestroyDynamicObject(HP_bankInteriorLs[i]);
+                    HP_bankInteriorLs[0] = CreateDynamicObject(1829, 1688.9193, -1030.3500, 1333.7956, 0.0000, 0.0000, 90.0000, VW_BANKINTERIORLS);//Tresor Auf
+                }
+
+                new breakingNewsMessage[128];
+                Spieler[playerid][pWanteds] += 2;
+                SendClientMessage(playerid, COLOR_DARKRED, "Du hast ein Verbrechen begangen! (Zerstören von Tresoren) Reporter: Polizeizentrale");
+                format(breakingNewsMessage, sizeof(breakingNewsMessage), "Dein Aktuelles Wanted Level: %d", Spieler[playerid][pWanteds]);
+                SendClientMessage(playerid, COLOR_YELLOW, breakingNewsMessage);
+                format(breakingNewsMessage, sizeof(breakingNewsMessage), "HQ: %s (ID: %d) hat ein Verbrechen begangen: Zerstören von Tresoren, over.", GetName(playerid), playerid);
+                SendFraktionMessage(1, COLOR_LIGHTRED, breakingNewsMessage);
+                SendFraktionMessage(2, COLOR_LIGHTRED, breakingNewsMessage);
+                SendFraktionMessage(16, COLOR_LIGHTRED, breakingNewsMessage);
+                SendFraktionMessage(18, COLOR_LIGHTRED, breakingNewsMessage);
+                format(breakingNewsMessage, sizeof(breakingNewsMessage), "HQ: Reporter: Polizeizentrale, Aktuelles Wantedlevel: %d, over", Spieler[i][pWanteds]);
+                SendFraktionMessage(1, COLOR_LIGHTRED, breakingNewsMessage);
+                SendFraktionMessage(2, COLOR_LIGHTRED, breakingNewsMessage);
+                SendFraktionMessage(16, COLOR_LIGHTRED, breakingNewsMessage);
+                SendFraktionMessage(18, COLOR_LIGHTRED, breakingNewsMessage);
+            }
+        }
+    }
     return 1;
 }
 
