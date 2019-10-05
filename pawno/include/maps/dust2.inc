@@ -1,5 +1,6 @@
 #include <YSI\y_hooks>
 
+
 // Global interior define
 #define MAPS_DUST2_INTERIOR      	0
 #define DUST2_PORT_POSITION      	-1149.3738, 2390.5486, 146.7129

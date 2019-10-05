@@ -55,13 +55,13 @@ hook OnGameModeInit() {
     object_Schwarzmarkt[27] = CreateObject(19172, -1097.7811, -2855.7246, 60.6085, 0.0000, 0.0000, 90.0000); //SAMPPicture1
     SetObjectMaterial(object_Schwarzmarkt[27], 0, 1419, "break_fence3", "CJ_FRAME_Glass", 0x00000000);
     SetObjectMaterialText(object_Schwarzmarkt[27], "Waffen", 1, OBJECT_MATERIAL_SIZE_256x128, "Arial", 25, 1, 0xFF000000, 0x00000000, 1);
-    object_Schwarzmarkt[28] = CreateObject(19172, -1097.7811, -2855.2617, 60.7510, 0.0000, 16.0000, 90.0000); //SAMPPicture1
+    object_Schwarzmarkt[28] = CreateObject(19172, -1097.7811, -2855.2617, 60.7509, 0.0000, 16.0000, 90.0000); //SAMPPicture1
     SetObjectMaterial(object_Schwarzmarkt[28], 0, 1419, "break_fence3", "CJ_FRAME_Glass", 0x00000000);
     SetObjectMaterialText(object_Schwarzmarkt[28], "illegale", 1, OBJECT_MATERIAL_SIZE_256x128, "Arial", 20, 1, 0xFF000000, 0x00000000, 1);
-    object_Schwarzmarkt[29] = CreateObject(19172, -1098.7220, -2853.8127, 60.5585, 0.0000, 0.0000, 180.0000); //SAMPPicture1
+    object_Schwarzmarkt[29] = CreateObject(19172, -1098.7220, -2853.8527, 60.5584, 0.0000, 0.0000, 180.0000); //SAMPPicture1
     SetObjectMaterial(object_Schwarzmarkt[29], 0, 1419, "break_fence3", "CJ_FRAME_Glass", 0x00000000);
     SetObjectMaterialText(object_Schwarzmarkt[29], "Gegenstände", 1, OBJECT_MATERIAL_SIZE_256x128, "Arial", 25, 1, 0xFF000000, 0x00000000, 1);
-    object_Schwarzmarkt[30] = CreateObject(19172, -1099.3511, -2853.8127, 60.7514, 0.0000, 17.7000, 180.0000); //SAMPPicture1
+    object_Schwarzmarkt[30] = CreateObject(19172, -1099.3510, -2853.8227, 60.7513, 0.0000, 17.7000, 180.0000); //SAMPPicture1
     SetObjectMaterial(object_Schwarzmarkt[30], 0, 1419, "break_fence3", "CJ_FRAME_Glass", 0x00000000);
     SetObjectMaterialText(object_Schwarzmarkt[30], "illegale", 1, OBJECT_MATERIAL_SIZE_256x128, "Arial", 20, 1, 0xFF000000, 0x00000000, 1);
     object_Schwarzmarkt[31] = CreateDynamicObject(356, -1097.5703, -2854.8200, 60.9317, 86.9000, -63.3000, 61.9001); //m4
@@ -80,10 +80,10 @@ hook OnGameModeInit() {
     object_Schwarzmarkt[44] = CreateDynamicObject(19921, -1102.4803, -2862.0517, 61.0190, 0.0000, 0.0000, 17.0000); //CutsceneToolBox1
     object_Schwarzmarkt[45] = CreateDynamicObject(1650, -1097.9991, -2853.4948, 61.2236, 0.0000, 0.0000, 156.0990); //petrolcanm
     object_Schwarzmarkt[46] = CreateDynamicObject(1650, -1097.9628, -2853.6850, 61.2236, 0.0000, 0.0000, 156.0990); //petrolcanm
-    object_Schwarzmarkt[47] = CreateObject(19172, -1101.8349, -2853.8127, 60.5585, 0.0000, 0.0000, 180.0000); //SAMPPicture1
+    object_Schwarzmarkt[47] = CreateObject(19172, -1101.8349, -2853.8227, 60.5584, 0.0000, 0.0000, 180.0000); //SAMPPicture1
     SetObjectMaterial(object_Schwarzmarkt[47], 0, 1419, "break_fence3", "CJ_FRAME_Glass", 0x00000000);
     SetObjectMaterialText(object_Schwarzmarkt[47], "Kennzeichen", 1, OBJECT_MATERIAL_SIZE_256x128, "Arial", 25, 1, 0xFF000000, 0x00000000, 1);
-    object_Schwarzmarkt[48] = CreateObject(19172, -1102.2913, -2853.8127, 60.7588, 0.0000, 6.9999, 180.0000); //SAMPPicture1
+    object_Schwarzmarkt[48] = CreateObject(19172, -1102.2912, -2853.8327, 60.7588, 0.0000, 6.9998, 180.0000); //SAMPPicture1
     SetObjectMaterial(object_Schwarzmarkt[48], 0, 1419, "break_fence3", "CJ_FRAME_Glass", 0x00000000);
     SetObjectMaterialText(object_Schwarzmarkt[48], "Gefälschte", 1, OBJECT_MATERIAL_SIZE_256x128, "Arial", 20, 1, 0xFF000000, 0x00000000, 1);
     object_Schwarzmarkt[49] = CreateDynamicObject(18637, -1099.2606, -2853.3151, 60.8894, 0.0000, 0.0000, 18.2000); //PoliceShield1

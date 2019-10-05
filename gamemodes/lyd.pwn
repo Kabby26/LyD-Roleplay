@@ -136,6 +136,8 @@ Yakuza:
 #define VW_CASINOINTERIOR 50
 #define VW_PAINTBALLGYMLS 10000
 #define VW_DUST2 93
+#define VW_DERBYMAP1 100
+#define VW_DERBYMAP2 101
 
 enum
 {
@@ -901,7 +903,9 @@ enum {
     THREAD_OFFSETLOHN,
     THREAD_PFAND,
     THREAD_SpiceSamen,
-    THREAD_Pilot
+    THREAD_Pilot,
+    THREAD_C4,
+    THREAD_NEW_SIM
     //THREAD_SETUP_POST
 }
 
@@ -2362,7 +2366,16 @@ stock bool:IsTUVNeeded(distance) {
 #define     DIALOG_SCHWARZMARKT_WANTEDCODES_PREIS 1425
 
 #define     DIALOG_SCHWARZMARKT_WEAPONS 1426
+
+#define     DIALOG_SCHWARZMARKT_ILLEGALE_GEGENSTAENDE 1427
+
+#define     DIALOG_SCHWARZMARKT_KENNZEICHEN 1428
+
+#define     DIALOG_SCHWARZMARKT_SIM 1429
 //Schwarzmarkt Ende
+
+#define     DIALOG_MINIGAMES 1450
+#define     DIALOG_CANCEL_ARENA 1451
 
 #define     KEIN_KENNZEICHEN    "KEINE PLAKETTE"
 
@@ -5220,7 +5233,8 @@ enum SpielerDaten {
     pSpiceSamenPoints,
     LoadedPremiumWeapons,
     pPilotPoints,
-    pFRadarStatus
+    pFRadarStatus,
+    pC4
 }
 
 enum e_FahrPruefung {
@@ -5544,6 +5558,7 @@ new alcatrazGateHackTimestamp = 0;
 #include <obj_blinker>
 #include <timestamptodate>
 #include <robbing>
+//#include <minigame>
 
 // MAPS
 #include <maps\samdExterior>
@@ -5640,6 +5655,8 @@ new alcatrazGateHackTimestamp = 0;
 #include <maps\adminbase2>
 #include <maps\dust2>
 #include <maps\schwarzmarkt>
+#include <maps\derby1>
+#include <maps\derby2>
 
 // Systems
 #include <paintball>
@@ -6112,6 +6129,8 @@ public OnGameModeInit2() {
     SetTimer("WantedLabel",15277,true);
     SetTimer("FreeLicence",50021,true);
     SetTimer("GangZone_Pulse",3221,true);
+
+    SetTimer("DerbyTimer", 500, true);
 
     {
         DummyTextDraw = TextDrawCreate(0.0,0.0,"_");
@@ -6859,11 +6878,14 @@ public OnGameModeInit2() {
 	//CreateDynamic3DTextLabel(COLOR_HEX_BLUE"Peilsender-Verkauf\n"COLOR_HEX_WHITE"Tippe /Peilsender", COLOR_WHITE,  1151.7448,-1203.0283,19.5159, 25.0);//
 
     //Schwarzmarkt Start
-    CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Schwarzmarkt: Waffenteile\n"COLOR_HEX_WHITE"Tippe /Schwarzmarkt", COLOR_WHITE, -1101.9084,-2861.1260,61.1270, 15.0);
-    CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Schwarzmarkt: Drogen\n"COLOR_HEX_WHITE"Tippe /Schwarzmarkt", COLOR_WHITE, -1104.9402,-2861.1267,61.1270, 15.0);
-    CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Schwarzmarkt: Spice\n"COLOR_HEX_WHITE"Tippe /Schwarzmarkt", COLOR_WHITE, -1098.8091,-2861.1267,61.1270, 15.0);
-    CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Schwarzmarkt: Wantedcodes\n"COLOR_HEX_WHITE"Tippe /Schwarzmarkt", COLOR_WHITE, -1098.1770,-2858.3450,61.1270, 15.0);
-    CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Schwarzmarkt: Waffen\n"COLOR_HEX_WHITE"Tippe /Schwarzmarkt", COLOR_WHITE, -1098.1770,-2855.7100,61.1270, 15.0);
+    CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Schwarzmarkt: Waffenteile\n"COLOR_HEX_WHITE"Tippe /Schwarzmarkt", COLOR_WHITE, -1101.9084,-2861.1260,61.1270, 5.0);
+    CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Schwarzmarkt: Drogen\n"COLOR_HEX_WHITE"Tippe /Schwarzmarkt", COLOR_WHITE, -1104.9402,-2861.1267,61.1270, 5.0);
+    CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Schwarzmarkt: Spice\n"COLOR_HEX_WHITE"Tippe /Schwarzmarkt", COLOR_WHITE, -1098.8091,-2861.1267,61.1270, 5.0);
+    CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Schwarzmarkt: Wantedcodes\n"COLOR_HEX_WHITE"Tippe /Schwarzmarkt", COLOR_WHITE, -1098.1770,-2858.3450,61.1270, 5.0);
+    CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Schwarzmarkt: Waffen\n"COLOR_HEX_WHITE"Tippe /Schwarzmarkt", COLOR_WHITE, -1098.1770,-2855.7100,61.1270, 5.0);
+    CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Schwarzmarkt: Illegale Gegenstände\n"COLOR_HEX_WHITE"Tippe /Schwarzmarkt", COLOR_WHITE, -1098.7355,-2854.2180,61.1343, 5.0);
+    CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Schwarzmarkt: Kennzeichen\n"COLOR_HEX_WHITE"Tippe /Schwarzmarkt", COLOR_WHITE, -1101.9292,-2854.2185,61.1343, 5.0);
+    CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Schwarzmarkt: SIM-Karten\n"COLOR_HEX_WHITE"Tippe /Schwarzmarkt", COLOR_WHITE, -1105.0177,-2854.2180,61.1343, 5.0);
     //Schwarzmarkt Ende
 
 	gSteuern = 1;
@@ -7230,6 +7252,7 @@ public OnPlayerConnect(playerid)
     Spieler[playerid][pKanister] = 0;
     Spieler[playerid][pHeilReady] = 1;
     Spieler[playerid][pWaffenteile] = 0;
+    Spieler[playerid][pC4] = 0;
     // Spieler[playerid][pDrogen] = 0;
     Spieler[playerid][pSafeTeile] = 0;
     Spieler[playerid][pSafeWantedCodes] = 0;
@@ -8230,6 +8253,7 @@ public OnPlayerDisconnect(playerid, reason)
     Spieler[playerid][pKanister] = 0;
     Spieler[playerid][pHeilReady] = 1;
     Spieler[playerid][pWaffenteile] = 0;
+    Spieler[playerid][pC4] = 0;
     Spieler[playerid][pWantedCodes] = 0;
     Spieler[playerid][pSafeWantedCodes] = 0;
     // Spieler[playerid][pDrogen] = 0;
@@ -8626,6 +8650,14 @@ CMD:vw(playerid) {
 	new message[30];
 	format(message, sizeof(message), "Virtual World: %i", GetPlayerVirtualWorld(playerid));
 	return SendClientMessage(playerid, COLOR_WHITE, message);
+}
+
+CMD:setvw(playerid, params[]) {
+    new vID;
+    if(Spieler[playerid][pAdmin] < 3) return ERROR_RANG_MSG(playerid);
+    if (sscanf(params, "i", vID)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING "/Setvw [VW-ID]");
+    SetPlayerVirtualWorld(playerid, vID);
+    return 1;
 }
 
 CMD:animationdebug(playerid, params[]) {
@@ -12675,7 +12707,7 @@ CMD:supermarkt(playerid)
     if(IsPlayerInRangeOfPoint(playerid, 3.0, 2.3256,-29.0143,1003.5494) && GetPlayerInterior(playerid) == 10 || IsPlayerInRangeOfPoint(playerid, 3.0, 2.2309,-29.0142,1003.5494) && GetPlayerInterior(playerid) == 10 || IsPlayerInRangeOfPoint(playerid, 3.0, 2.1795,-29.0144,1003.5494) && GetPlayerInterior(playerid) == 10 ||
  	   IsPlayerInRangeOfPoint(playerid, 3.0, 2.0509,-29.0145,1003.5494) && GetPlayerInterior(playerid) == 10 || IsPlayerInRangeOfPoint(playerid, 3.0, 2.2932,-29.0144,1003.5494) && GetPlayerInterior(playerid) == 10)
     {
-    	ShowPlayerDialog(playerid, DIALOG_MARKT, DIALOG_STYLE_LIST, "Super Markt", "Telefonbuch ($400)\n5 Kekse ($150)\n10 Zigaretten ($225)\nBrecheisen ($3.500)\nHelm ($2.000)\nMusikkit (MP3-Player + Ghettoblaster) ($2.500)\nKoffer ($1.500)\nRadarfallen-Warnung ($15.000)\nFallschirm ($1.200)\nPfandflaschen verkaufen (+$1.500)", "Kaufen", "Abbrechen");
+    	ShowPlayerDialog(playerid, DIALOG_MARKT, DIALOG_STYLE_LIST, "Super Markt", "Telefonbuch ($400)\n5 Kekse ($150)\n10 Zigaretten ($225)\nHelm ($2.000)\nMusikkit (MP3-Player + Ghettoblaster) ($2.500)\nKoffer ($1.500)\nRadarfallen-Warnung ($15.000)\nFallschirm ($1.200)\nPfandflaschen verkaufen (+$1.500)", "Kaufen", "Abbrechen");
      	return 1;
         }
      else
@@ -21388,6 +21420,24 @@ CMD:ofreistellen(playerid, params[]) {
     Spieler[playerid][pPayCheck] -= 700;
     ShowBuyInformation(playerid,"~y~Fahrzeug ~w~freigestellt!");
     SCMFormatted(besitzer, COLOR_LIGHTBLUE, "Ordnungsbeamter %s hat dein Fahrzeug wieder freigestellt.", GetName(playerid));
+    return 1;
+}
+
+CMD:removekennzeichen(playerid, params[]){
+    new vehicleid;
+    if(!(Spieler[playerid][pFraktion] == 5))return SendClientMessage(playerid, COLOR_RED, "Du bist kein Ordnungsbeamter.");
+    if(sscanf(params, "i", vehicleid))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Removekennzeichen [VEHICLE ID]");
+    if (!GetVehicleModel(vehicleid)) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du musst eine gültige Fahrzeug-ID angeben.");
+    new ownerid = GetCarOwner(vehicleid);
+    new String[128];
+    new slot = GetCarOwnerSlot(ownerid, vehicleid);
+    format(PlayerCar[playerid][slot][CarNumberplate],32,"%s",KEIN_KENNZEICHEN);
+    SetVehicleNumberPlate( vehicleid , KEIN_KENNZEICHEN );
+    SavePlayerCar(playerid,slot);
+    format(String, sizeof(String), "[ZULASSUNGSSTELLE] {FFFFFF}Ordnungsbeamter %s hat ein Kennzeiches des Spielers %s entfernt!", GetName(playerid), GetName(ownerid));
+    SendFraktionMessage(5, COLOR_RED, String);
+    format(String, sizeof(String), "[OAMT] {FFFFFF}Ordnungsbeamter %s hat ein Kennzeichen von deinen Fahrzeug entfernt!", GetName(playerid));
+    SendClientMessage(ownerid, COLOR_RED, String);
     return 1;
 }
 
@@ -35330,7 +35380,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                     needWaffenteile = 150;
                     giveWeapon = 8;
                 }else if(listitem == 4){//Granate
-                    Price = 1000000;
+                    Price = 10000000;
                     Schuss = 1;
                     needWaffenteile = 750;
                     giveWeapon = 16;
@@ -35341,6 +35391,55 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                 GivePlayerWeapon(playerid, giveWeapon, Schuss);
                 Schwarzmarkt_Waffenteile -= needWaffenteile;
                 Kasse[TerrorK] += Price;
+            }
+        }
+        case DIALOG_SCHWARZMARKT_ILLEGALE_GEGENSTAENDE: {
+            if(response){
+                if(listitem == 0){
+                    new needWaffenteile = 1500;
+                    new price = 50000;
+                    if(Schwarzmarkt_Waffenteile < needWaffenteile) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Es befinden sich nicht genug Waffenteile im Schwarzmarkt, um diese Waffe bauen zu können!");
+                    if(GetPlayerMoney(playerid) < price) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast zu wenig Geld dabei!");
+                    GivePlayerCash(playerid, -price);
+                    Spieler[playerid][pC4] += 1;
+                    SendClientMessage(playerid, COLOR_GREEN, "* Du hast C4 gekauft. Sei vorsichtig damit!");
+                }
+            }
+        }
+        case DIALOG_SCHWARZMARKT_KENNZEICHEN: {
+            if(response){
+                new price = 1000000;
+                if(GetPlayerMoney(playerid) < price) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast zu wenig Geld dabei!");
+                new
+				    String[256+64],
+				    slot,
+					vehicleid,
+					modelid;
+				slot = PlayerKey[playerid];
+				vehicleid = PlayerCar[playerid][slot][CarId];
+				modelid = GetVehicleModel(vehicleid);
+                if(strlen(inputtext) > 7) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Dieses Kennzeichen ist zu lang!");
+                format(String,sizeof(String),"Das Fahrzeug %s hat nun das Kennzeichen %s erhalten!", CarName[modelid-400],inputtext);
+                SendClientMessage(playerid, COLOR_GREEN, String);
+                GivePlayerCash(playerid,-1000000);
+                format(PlayerCar[playerid][slot][CarNumberplate],32,"%s",inputtext);
+                SetVehicleNumberPlate( vehicleid , inputtext );
+                SavePlayerCar(playerid,slot);
+            }
+        }
+        case DIALOG_SCHWARZMARKT_SIM: {
+            if(response){
+                new price = 500000;
+                if(GetPlayerMoney(playerid) < price) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast zu wenig Geld dabei!");
+                if(sscanf(inputtext, "{i}")) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast eine ungültige Eingabe getätigt!");
+                if(strlen(inputtext) != 6) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Die Handynummer muss sechs Stellen haben!");
+                new iValue = strval(inputtext);
+                new NameCoins[MAX_PLAYER_NAME];
+                GetPlayerName(playerid, NameCoins, sizeof(NameCoins));
+                SetPVarInt(playerid, "NEWHANDYNR", iValue);
+                new queryCoins[128];
+                format(queryCoins, sizeof(queryCoins), "SELECT `HandyNr` FROM `accounts` WHERE `HandyNr` = '%i'", iValue);
+                mysql_pquery(queryCoins,THREAD_NEW_SIM,playerid,gSQL,MySQLThreadOwner);
             }
         }
         case DIALOG_PIN_AENDERN_PIN: {
@@ -39072,74 +39171,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 					}
 					ShowBuyInformation(playerid,"~y~Zigeretten ~w~gekauft!");
 				}
-				if(listitem==3)//brecheisen
-				{
-				    if(Spieler[playerid][pBrecheisen] < 1)return SendClientMessage(playerid, COLOR_RED, "Du hast bereits ein Brecheisen.");
-				    new preis = 3500;
-					new pVW = GetPlayerVirtualWorld(playerid);
-					if(pVW == 22)
-					{
-						if(GetPlayerMoney(playerid) < preis)return SendClientMessage(playerid, COLOR_RED, "Du hast nicht genügend Geld!");
-						if(Biz[GetBizIndexByID(22)][bWaren] < 2)return SendClientMessage(playerid, COLOR_RED, "Das Geschäft  hat nichtmehr genügend Waren!");
-						Biz[GetBizIndexByID(22)][bWaren] -= 2;
-						Biz[GetBizIndexByID(22)][bKasse] += preis;
-						GivePlayerCash(playerid, -preis);
-						Spieler[playerid][pBrecheisen]++;
-						SendClientMessage(playerid, COLOR_WHITE, "* Du hast dir ein Brecheisen gekauft.");
-					}
-					if(pVW == 23)
-					{
-						if(GetPlayerMoney(playerid) < preis)return SendClientMessage(playerid, COLOR_RED, "Du hast nicht genügend Geld!");
-						if(Biz[23][bWaren] < 2)return SendClientMessage(playerid, COLOR_RED, "Das Geschäft  hat nichtmehr genügend Waren!");
-						Biz[23][bWaren] -= 2;
-						Biz[23][bKasse] += preis;
-						GivePlayerCash(playerid, -preis);
-						Spieler[playerid][pBrecheisen]++;
-						SendClientMessage(playerid, COLOR_WHITE, "* Du hast dir ein Brecheisen gekauft.");
-					}
-					if(pVW == 24)
-					{
-						if(GetPlayerMoney(playerid) < preis)return SendClientMessage(playerid, COLOR_RED, "Du hast nicht genügend Geld!");
-						if(Biz[24][bWaren] < 2)return SendClientMessage(playerid, COLOR_RED, "Das Geschäft  hat nichtmehr genügend Waren!");
-						Biz[24][bWaren] -= 2;
-						Biz[24][bKasse] += preis;
-						GivePlayerCash(playerid, -preis);
-						Spieler[playerid][pBrecheisen]++;
-						SendClientMessage(playerid, COLOR_WHITE, "* Du hast dir ein Brecheisen gekauft.");
-					}
-					if(pVW == 26)
-					{
-						if(GetPlayerMoney(playerid) < preis)return SendClientMessage(playerid, COLOR_RED, "Du hast nicht genügend Geld!");
-						if(Biz[26][bWaren] < 2)return SendClientMessage(playerid, COLOR_RED, "Das Geschäft  hat nichtmehr genügend Waren!");
-						Biz[26][bWaren] -= 2;
-						Biz[26][bKasse] += preis;
-						GivePlayerCash(playerid, -preis);
-						Spieler[playerid][pBrecheisen]++;
-						SendClientMessage(playerid, COLOR_WHITE, "* Du hast dir ein Brecheisen gekauft.");
-					}
-					if(pVW == 27)
-					{
-						if(GetPlayerMoney(playerid) < preis)return SendClientMessage(playerid, COLOR_RED, "Du hast nicht genügend Geld!");
-						if(Biz[27][bWaren] < 2)return SendClientMessage(playerid, COLOR_RED, "Das Geschäft  hat nichtmehr genügend Waren!");
-						Biz[27][bWaren] -= 2;
-						Biz[27][bKasse] += preis;
-						GivePlayerCash(playerid, -preis);
-						SendClientMessage(playerid, COLOR_WHITE, "* Du hast dir ein Brecheisen gekauft.");
-						Spieler[playerid][pBrecheisen]++;
-					}
-					if(pVW == 89)
-					{
-						if(GetPlayerMoney(playerid) < preis)return SendClientMessage(playerid, COLOR_RED, "Du hast nicht genügend Geld!");
-						if(Biz[GetBizIndexByID(89)][bWaren] < 2)return SendClientMessage(playerid, COLOR_RED, "Das Geschäft  hat nichtmehr genügend Waren!");
-						Biz[GetBizIndexByID(89)][bWaren] -= 2;
-						Biz[GetBizIndexByID(89)][bKasse] += preis;
-						GivePlayerCash(playerid, -preis);
-						SendClientMessage(playerid, COLOR_WHITE, "* Du hast dir ein Brecheisen gekauft.");
-						Spieler[playerid][pBrecheisen]++;
-					}
-					ShowBuyInformation(playerid,"~y~Brecheisen ~w~gekauft!");
-				}
-				if(listitem==4)//Helm
+				if(listitem==3)//Helm
 				{
 				    new preis = 2000;
 					new pVW = GetPlayerVirtualWorld(playerid);
@@ -39208,7 +39240,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 					}
 					ShowBuyInformation(playerid,"~y~Helm ~w~gekauft!");
 				}
-				if(listitem==5)//MP3Player
+				if(listitem==4)//MP3Player
 				{
 				    new preis = 1500;
 					new pVW = GetPlayerVirtualWorld(playerid);
@@ -39277,7 +39309,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 					}
 					ShowBuyInformation(playerid,"~y~MP3Player ~w~gekauft!");
 				}
-				if(listitem==6)//Koffer
+				if(listitem==5)//Koffer
 				{
 				    new preis = 1500;
 					new pVW = GetPlayerVirtualWorld(playerid);
@@ -39346,7 +39378,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 					}
 					ShowBuyInformation(playerid,"~y~Koffer ~w~gekauft!");
 				}
-				if(listitem==7)//RadarfallenWarnung
+				if(listitem==6)//RadarfallenWarnung
 				{
 				    new preis = 15000;
 					new pVW = GetPlayerVirtualWorld(playerid);
@@ -39415,7 +39447,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 					}
 					ShowBuyInformation(playerid,"~y~Radarfallen Warner ~w~gekauft!");
 				}
-				if(listitem==8)//Fallschirm
+				if(listitem==7)//Fallschirm
 				{
 					new pVW = GetPlayerVirtualWorld(playerid);
 					if(pVW == 22)
@@ -39486,7 +39518,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 					}
 					ShowBuyInformation(playerid,"~y~Fallschirm ~w~gekauft!");
 				}
-				if(listitem==9)//Pfand
+				if(listitem==8)//Pfand
 				{
 					new pVW = GetPlayerVirtualWorld(playerid);
 					if(pVW == 22)
@@ -44355,6 +44387,7 @@ stock SaveAccount(playerid)
                 `JobWechsel` = %d, \
                 `Krankenversicherung` = %d, \
                 `DrogenSamen` = %d, \
+                `C4` = %d, \
                 `Spice` = %d, \
                 `SafeSpice` = %d, \
                 `Handy` = %d, \
@@ -44376,6 +44409,7 @@ stock SaveAccount(playerid)
                     Spieler[playerid][pJobWechsel],
                     Spieler[playerid][unixKrankenversicherung],
                     Spieler[playerid][pDrogenSamen],
+                    Spieler[playerid][pC4],
                     Spieler[playerid][pSpice],
                     Spieler[playerid][pSafeSpice],
                     Spieler[playerid][pHandy],
@@ -58807,11 +58841,13 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
 			mysql_format(connectionHandle, querySpiceSamen, sizeof(querySpiceSamen), "SELECT `SpiceSamenPoints` FROM `accounts` WHERE `Name` = '%s' ", NameSpiceSamen);
 			mysql_pquery(querySpiceSamen,THREAD_SpiceSamen,playerid,gSQL,MySQLThreadOwner);
 			
-			new NamePilot[MAX_PLAYER_NAME];
-			GetPlayerName(playerid, NamePilot, sizeof(NamePilot));
 			new queryPilot[128];
 			mysql_format(connectionHandle, queryPilot, sizeof(queryPilot), "SELECT `PilotPoints` FROM `accounts` WHERE `Name` = '%s' ", NameSpiceSamen);
 			mysql_pquery(queryPilot,THREAD_Pilot,playerid,gSQL,MySQLThreadOwner);
+
+			new queryC4[128];
+			mysql_format(connectionHandle, queryC4, sizeof(queryC4), "SELECT `C4` FROM `accounts` WHERE `Name` = '%s' ", NameSpiceSamen);
+			mysql_pquery(queryC4,THREAD_C4,playerid,gSQL,MySQLThreadOwner);
 			
 			new queryPfand[128];
 			mysql_format(connectionHandle, queryPfand, sizeof(queryPfand), "SELECT `Pfand` FROM `accounts` WHERE `Name` = '%s' ", NameCoins);
@@ -60351,6 +60387,28 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
 	    	Spieler[extraid][pPilotPoints] = PilotPunkteAnzahl;
 			i++;
 		}
+	}else if(resultid == THREAD_C4){
+		new C4Anzahl;
+	    new i, rows = cache_get_row_count(connectionHandle);
+	    while( i < rows ) {
+	    	C4Anzahl = cache_get_field_content_int(i,"C4", connectionHandle);
+	    	Spieler[extraid][pC4] = C4Anzahl;
+			i++;
+		}
+	}
+    else if(resultid == THREAD_NEW_SIM){
+		new nummer;
+	    new i, rows = cache_get_row_count(connectionHandle);
+	    while( i < rows ) {
+	    	nummer = cache_get_field_content_int(i,"HandyNr", connectionHandle);
+			i++;
+		}
+        new neueNummer = GetPVarInt(extraid, "NEWHANDYNR");
+        if(nummer == neueNummer) return SendClientMessage(extraid, COLOR_RED, "[FEHLER] {FFFFFF}Diese Handynummer wird bereits von einem anderen Spieler verwendet!");
+        Spieler[extraid][pHandyNr] = neueNummer;
+        SCMFormatted(extraid, COLOR_GREEN, "* Du bist nun unter folgender Nummer zu erreichen: %i", neueNummer);
+        SaveAll();
+        mysql_pquery("SELECT NOW()",THREAD_SAVEALL,extraid,gSQL,MySQLThreadOwner);
 	}
 	else if(resultid == THREAD_PFAND) {
 	    new pfandanzahl;
@@ -61496,7 +61554,7 @@ COMMAND:finanzen(playerid, params[]) {
     return 1;
 }
 
-CMD:inventar(playerid, params[]) {
+/*CMD:inventar(playerid, params[]) {
     if (!gPlayerLogged[playerid]) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du bist nicht eingeloggt.");
     new giveid = playerid;
     if (!isnull(params)) {
@@ -61530,8 +61588,28 @@ CMD:inventar(playerid, params[]) {
     }
 
     return SendClientMessage(giveid, COLOR_GREEN, "==========================");
-}
+}*/
 
+CMD:inventar(playerid, params[]) {
+    if (!gPlayerLogged[playerid]) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du bist nicht eingeloggt.");
+    new string[256], ueberschrift[128];
+    if(Spieler[playerid][pDrugs] != 0) { format(string, sizeof(string), "%sDrogen: %i", string, Spieler[playerid][pDrugs]); }
+    if(Spieler[playerid][pSpice] != 0) { format(string, sizeof(string), "%s\nSpice: %i", string, Spieler[playerid][pSpice]); }
+    if(Spieler[playerid][pDrogenSamen] != 0) { format(string, sizeof(string), "%s\nKräutersamen: %i", string, Spieler[playerid][pDrogenSamen]); }
+    if(Spieler[playerid][pDrogenSamen] != 0) { format(string, sizeof(string), "%s\nKräutermischung: %i", string, Spieler[playerid][pDrogenSamen]); }//Hier noch pDrogenSamen durch das neue ND Produkt ersetzen!!!
+    if(Spieler[playerid][pWaffenteile] != 0) { format(string, sizeof(string), "%s\nWaffenteile: %i", string, Spieler[playerid][pWaffenteile]); }
+    if(Spieler[playerid][pWantedCodes] != 0) { format(string, sizeof(string), "%s\nWanted-Codes: %i", string, Spieler[playerid][pWantedCodes]); }
+    if(Spieler[playerid][pKekse] != 0) { format(string, sizeof(string), "%s\nKekse: %i", string, Spieler[playerid][pKekse]); }
+    if(Spieler[playerid][pKanister] != 0) { format(string, sizeof(string), "%s\nKanister: %i", string, Spieler[playerid][pKanister]); }
+    if(Spieler[playerid][pZigaretten] != 0) { format(string, sizeof(string), "%s\nZigaretten: %i", string, Spieler[playerid][pZigaretten]); }
+    if(Spieler[playerid][pPfand] != 0) { format(string, sizeof(string), "%s\nPfandflaschen: %i", string, Spieler[playerid][pPfand]); }
+    if(Spieler[playerid][pZollValid] != 0) { format(string, sizeof(string), "%s\nZollpass: %i", string, Spieler[playerid][pZollValid]); }
+    if(Spieler[playerid][pBrecheisen] != 0) { format(string, sizeof(string), "%s\nBrecheisen: %i", string, Spieler[playerid][pBrecheisen]); }
+    if(Spieler[playerid][pC4] != 0) { format(string, sizeof(string), "%s\nC4: %i", string, Spieler[playerid][pC4]); }
+    format(ueberschrift, sizeof(ueberschrift), "Inventar von: %s", GetName(playerid));
+    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_LIST, ueberschrift, string, "OK", "");
+    return 1;
+}
 
 COMMAND:mydata(playerid,params[]) {
     new
@@ -63775,11 +63853,6 @@ stock GetBombDrahtColorString( string[] , size = sizeof(string) ) { // scheiss f
     return 1;
 }
 
-//Schwartmarkt Waffenteile Position: -796.7298,1545.3973,27.0659
-//Schwarzmarkt Drogen Position: -782.6193,1545.2587,27.0616
-//Scharzmarkt Spice Position: -779.6065,1554.7498,27.1172
-//Schwarzmarkt Waffen Position: -800.7147,1567.1658,27.1172
-
 CMD:schwarzmarkt(playerid, params[]){
     if(IsPlayerInRangeOfPoint(playerid, 1, -1101.9084,-2861.1260,61.1270)){//Waffenteile
         if(Spieler[playerid][pFraktion] == 19){
@@ -63820,7 +63893,24 @@ CMD:schwarzmarkt(playerid, params[]){
         }
     }
     else if(IsPlayerInRangeOfPoint(playerid, 1, -1098.1770,-2855.7100,61.1270)){//Waffen
-        ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_WEAPONS, DIALOG_STYLE_LIST, "Schwarzmarkt: Waffen", "Sniper Rifle - $30.000 - 30 Schuss\nUzi - $50.000 - 200 Schuss\nTec-9 - $50.000 - 200 Schuss\nKatana - $10.000\nGranate - $1.000.000", "Kaufen", "Abbrechen");
+        ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_WEAPONS, DIALOG_STYLE_TABLIST_HEADERS, "Schwarzmarkt: Waffen", "{FFFFFF}Waffe\tPreis\tStückanzahl\nSniper Rifle\t$30.000\t30 Schuss\nUzi\t$50.000\t200 Schuss\nTec-9\t$50.000\t200 Schuss\nKatana\t$10.000\t1 Stück\nGranate\t$10.000.000\t1 Stück", "Kaufen", "Abbrechen");
+    }
+    else if(IsPlayerInRangeOfPoint(playerid, 1, -1098.7355,-2854.2180,61.1343)){//Illegale Gegenstände
+        ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_ILLEGALE_GEGENSTAENDE, DIALOG_STYLE_TABLIST_HEADERS, "Schwarzmarkt: Illegale Gegenstände", "{FFFFFF}Gegenstand\tPreis\nC4\t$50.000\nMaske\t$500.000\nBrecheisen\t$10.000", "Kaufen", "Abbrechen");
+    }
+    else if(IsPlayerInRangeOfPoint(playerid, 1, -1101.9292,-2854.2185,61.1343)){//Kennzeichen
+        if( !PlayerHaveCar[playerid][PlayerKey[playerid]] ) return SendClientMessage(playerid, COLOR_RED, "Du hast gerade kein Fahrzeug gewählt ( /Carkey ).");
+        new String[256];
+        format(String, sizeof(String),
+            "{FFFFFF}Willkommen am Schwarzmarkt.\n\nHier hast du die Möglichkeit, ein individuelles Kennzeichen zu erwerben.\nAktueller Stückpreis: $1.000.000\n\nKennzeichen:");
+        ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_KENNZEICHEN, DIALOG_STYLE_INPUT, "Schwarzmarkt: Kennzeichen", String, "Kaufen", "Abbrechen");
+    }else if(IsPlayerInRangeOfPoint(playerid, 1, -1105.0177,-2854.2180,61.1343)){
+        new String[256];
+        format(String, sizeof(String),
+            "{FFFFFF}Willkommen am Schwarzmarkt.\n\nHier hast du die Möglichkeit, eine individuelle Handynummer zu erwerben.\nAktueller Stückpreis: $500.000\n\nNeue Handynummer:");
+        ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_SIM, DIALOG_STYLE_INPUT, "Schwarzmarkt: SIM-Karte", String, "Kaufen", "Abbrechen");
+    }else{
+        SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du befindest dich an keinem Schwarzmarkt.");
     }
     return 1;
 }
@@ -65445,6 +65535,7 @@ COMMAND:tierverbot(playerid,params[]) {
     Spieler[giveid][pHaustierSpawned] = false;
     return 1;
 }
+
 stock Haustier_SetPlayer(playerid) {
     if( Spieler[playerid][pHaustier] == 1 ) {
         new
@@ -65465,6 +65556,7 @@ stock Haustier_SetPlayer(playerid) {
     }
     return 1;
 }
+
 stock Haustier_RemovePlayer(playerid) {
     if( Spieler[playerid][pHaustier] == 1 ) {
         DestroyDynamicObject( Spieler[playerid][pHaustierObject] );
