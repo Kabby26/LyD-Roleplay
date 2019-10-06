@@ -19349,6 +19349,7 @@ CMD:kidnap(playerid, params[])
      || Spieler[playerid][pFraktion] == 15 || Spieler[playerid][pFraktion] == 17 || Spieler[playerid][pFraktion] == 19 || Spieler[playerid][pFraktion] == 20 || Spieler[playerid][pFraktion] == 21))return SendClientMessage(playerid, COLOR_RED, "Du bist kein Gang/Mafia Mitglied.");
     if(sscanf(params, "u", pID))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Kidnap [SpielerID/Name]");
     if(!IsPlayerConnected(pID))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
+    if (Spieler[pID][pAdminDienst]) return SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}Der Spieler ist gerade im Admindienst.");
     if(pID == playerid)return SendClientMessage(playerid, COLOR_RED, "Du kannst dich nicht selbst entführen!");
     #if defined USE_NPCS
     if( IsPlayerNPC(pID) ) return SendClientMessage(playerid, COLOR_RED, "Du kannst diese Funktion nicht an einem Bot ausführen!");
@@ -51308,7 +51309,7 @@ public NDRob_Position(diebid) {
             zeit = ( gettime() - g_unixNDRob );
             if( zeit >= 10*60 ) {
                 new
-                    beute = (random(2000) * 5 ),
+                    beute = (random(200) * 5 ),
                     String[128];
                 format(String,sizeof(String),"Du hast die Safebox der NineDemons erfolgreich ausgeraubt! Deine Beute: $%s", AddDelimiters(beute));
                 Spieler[diebid][pSpice] +=beute; // gets the random spice
@@ -51319,7 +51320,7 @@ public NDRob_Position(diebid) {
                 KillTimer(g_tPulseRobPosition);
                 g_tPulseRobPosition = INVALID_TIMER_ID;
 
-                RemovePlayerAttachedObject(diebid,0);
+                RemovePlayerAttachedObject(diebid, 0);
 
 				Pulse_NDRob();
 				ndrobspawn[15]=0;
