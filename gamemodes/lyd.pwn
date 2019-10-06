@@ -905,7 +905,8 @@ enum {
     THREAD_SpiceSamen,
     THREAD_Pilot,
     THREAD_C4,
-    THREAD_NEW_SIM
+    THREAD_NEW_SIM,
+    THREAD_RETURN_VALUE
     //THREAD_SETUP_POST
 }
 
@@ -5952,17 +5953,17 @@ public flammentimer(brandid){
 	SendClientMessage(Haus[brandid][hBesitzer], COLOR_RED, "[FEUERWEHR] Der Brand an deinem Haus konnte nicht gelöscht werden! (-7.500$)");
 }
 
-new FRadar[MAX_PLAYERS];
+//new FRadar[MAX_PLAYERS];
 
 CMD:fradar(playerid, params[]) {
 	if(Spieler[playerid][pFraktion] == 0) return SendClientMessage(playerid, COLOR_RED, "Du kannst diesen Befehl nicht nutzen!");
 	if(Spieler[playerid][pFRadarStatus] == 0){
 	    SendClientMessage(playerid, COLOR_GREEN, "[FRADAR] Du hast das FRadar eingeschaltet!");
-  		FRadar[playerid] = SetTimerEx("FRadarTimer", 409, true, "i", playerid);
+  		//FRadar[playerid] = SetTimerEx("FRadarTimer", 150, true, "i", playerid);
   		Spieler[playerid][pFRadarStatus] = 1;
 	}else{
 	    SendClientMessage(playerid, COLOR_RED, "[FRADAR] Du hast das FRadar ausgeschaltet!");
-	    KillTimer(FRadar[playerid]);
+	    //KillTimer(FRadar[playerid]);
 	    Spieler[playerid][pFRadarStatus] = 0;
 	    for(new i; i < 60; i++){
 	        RemovePlayerMapIcon(playerid, 10+i);
@@ -5971,20 +5972,25 @@ CMD:fradar(playerid, params[]) {
 	return 1;
 }
 
-forward FRadarTimer(playerid);
-public FRadarTimer(playerid) {
+forward FRadarTimer();
+public FRadarTimer() {
 	for(new i; i < 60; i++){
-		if(Spieler[i][pFraktion] == Spieler[playerid][pFraktion]){
-			if(i != playerid){
-				new Float:x, Float:y, Float:z;
-  				GetPlayerPos(i, x, y, z);
-				if(IsPlayerInRangeOfPoint(playerid, 250, x, y, z)) {
-	    			SetPlayerMapIcon(playerid, 10+i, x, y, z, 0, 0x3592D7FF, MAPICON_LOCAL);
-				}else{
-	    			RemovePlayerMapIcon(playerid, 10+i);
-				}
-			}
-		}
+        for(new o; o < MAX_PLAYERS; o++){
+            if(Spieler[i][pFraktion] == Spieler[o][pFraktion]){
+                if(i != o){
+                    new Float:x, Float:y, Float:z;
+                    GetPlayerPos(i, x, y, z);
+                    if(IsPlayerInRangeOfPoint(o, 250, x, y, z)) {
+                        SetPlayerMapIcon(o, 10+i, x, y, z, 0, 0x3592D7FF, MAPICON_LOCAL);
+                    }else{
+                        RemovePlayerMapIcon(o, 10+i);
+                    }
+                }
+            }
+            if(Spieler[o][pFRadarStatus] != 1){
+                RemovePlayerMapIcon(o, 10+i);
+            }
+        }
 	}
 	return 1;
 }
@@ -6111,6 +6117,7 @@ public OnGameModeInit2() {
     World_Pulse();
     SetTimer("World_Pulse",60013 * 59 , true ); // Alle ~60 Minuten
     g_EventUhr[EU_tTimer] = INVALID_TIMER_ID;
+    SetTimer("FRadarTimer", 150, true);
 
     Streamer_TickRate(67);
     LoadPlayerColumns();
@@ -60478,7 +60485,15 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
 	    	Spieler[extraid][pCoins] = coinanzahl;
 			i++;
 		}
-	}else if(resultid == THREAD_SpiceSamen){
+	}else if(resultid == THREAD_RETURN_VALUE){
+        new returnvar;
+	    new i, rows = cache_get_row_count(connectionHandle);
+	    while( i < rows ) {
+	    	returnvar = cache_get_field_content_int(i,"userPremium", connectionHandle);
+			i++;
+		}
+        return returnvar;
+    }else if(resultid == THREAD_SpiceSamen){
 		new SamenPunkteAnzahl;
 	    new i, rows = cache_get_row_count(connectionHandle);
 	    while( i < rows ) {
@@ -66041,6 +66056,26 @@ public ConnectBot(c)
 
 public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
 {
+    new playerzone = GetPlayerGangZone(playerid);
+    new hitzone = GetPlayerGangZone(hitid);
+
+    if (hittype == BULLET_HIT_TYPE_PLAYER && IsPlayerConnected(hitid)) {
+        if(playerzone != hitzone){
+            return 0;
+        }
+    }
+    if(hittype == BULLET_HIT_TYPE_VEHICLE){
+        for(new i; i < MAX_PLAYERS; i++){
+            if(GetPlayerVehicleID(i) == hitid){
+                hitzone = GetPlayerGangZone(i);
+                if(playerzone != hitzone){
+                    return 0;
+                }
+            }
+        }
+    }
+
+
     if (!((22 <= weaponid <= 34) || weaponid == 38) && Spieler[playerid][pAdmin] < 5) {
         SendClientMessage(playerid, COLOR_RED, "Gebannt vom Server-System, Grund: Erkannter Player-Crasher");
         Ban(playerid);
