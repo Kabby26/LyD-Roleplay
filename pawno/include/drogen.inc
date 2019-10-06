@@ -148,7 +148,6 @@ stock SetDrogenPflanzenOnFire(index) {
     UpdateDynamic3DTextLabelText(g_DrogenPflanzen[index][DP_text3D], COLOR_WHITE, "[ {009D00}Spicepflanze {FFFFFF}]\n{FF9900}> Die Pflanze wurde verbrannt <");
     //SetTimerEx("DestroyDrogenPflanze",10*1000,false,"d",index);
 	BrenennTimer[index] = SetTimerEx("DestroyDrogenPflanze",60*10000,false,"d",index);
-    g_DrogenPflanzenCount--;
     return 1;
 }
 
@@ -157,7 +156,6 @@ stock DrogenPflanzenFeuerLoeschen(index) {
     g_DrogenPflanzen[index][DP_bDestroyed] = false;
     Pulse_DrogenPflanzen();
 	KillTimer(BrenennTimer[index]);
-    g_DrogenPflanzenCount++;
     return 1;
 }
 
@@ -172,6 +170,8 @@ public DestroyDrogenPflanze(index) {
 
     g_DrogenPflanzen[index][DP_bInUse] = false;
     g_DrogenPflanzen[index][DP_bDestroyed] = false;
+
+    g_DrogenPflanzenCount--;
     return 1;
 }
 stock GetClosestDrogenPflanze(playerid,Float:radius = 8.0) {
@@ -266,14 +266,14 @@ COMMAND:pflanzen(playerid, params[]) {
         return SendFraktionMessage(15, COLOR_YELLOW, message);
     }
 	
-    if (!strcmp(entry, "verbrennen", true)) {
+    if (!strcmp(entry, "zerstoeren", true)) {
         new pflanze = GetClosestDrogenPflanze(playerid, 3.0);
         if (pflanze == -1) return SendClientMessage(playerid, COLOR_RED, "Es ist keine Spicepflanze in deiner Nähe.");
-        SendClientMessage(playerid, COLOR_YELLOW, "Die Spicepflanze wurde verbrannt.");
+        SendClientMessage(playerid, COLOR_YELLOW, "Die Spicepflanze wurde zerstoert.");
 
         new message[145];
-        format(message, sizeof(message), "Member %s hat eine Spicepflanze verbrannt.", GetName(playerid));
-        SetDrogenPflanzenOnFire(pflanze);
+        format(message, sizeof(message), "Member %s hat eine Spicepflanze zerstoert.", GetName(playerid));
+        DestroyDrogenPflanze(pflanze);
         return SendFraktionMessage(15, COLOR_YELLOW, message);
     }
 

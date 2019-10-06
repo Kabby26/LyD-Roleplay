@@ -3580,7 +3580,7 @@ new DeathmatchHelp[17][]= {
     {"gfinfo"},
     {"swinfo"},
     {"tankstelleausrauben"},
-    {"bankausrauben"},
+    {"bankhacken"},
     {"transporterausrauben"},
     {"robninedemons"}
 };
@@ -4051,7 +4051,7 @@ new Frak15Help[19][]= {
     {"samenlagerstatus"}
 };
 
-new Frak19Help[10][]= {
+new Frak19Help[11][]= {
     {"fc"},
     {"kasse"},
     {"kassenstand"},
@@ -4061,7 +4061,8 @@ new Frak19Help[10][]= {
     {"bombelegen"},
     {"terrorwaffen"},
     {"entfesseln"},
-    {"kidnap"}
+    {"kidnap"},
+    {"terrorgate"}
 };
 
 new const StandartHelpText[36][] = {
@@ -5627,7 +5628,7 @@ new alcatrazGateHackTimestamp = 0;
 #include <maps\lcnInterior>
 #include <maps\tuev>
 #include <maps\bikeDealership>
-#include <maps\terrorBase>
+//#include <maps\terrorBase>
 #include <maps\atm>
 #include <maps\trafficLights>
 #include <maps\tollStations>
@@ -5664,6 +5665,7 @@ new alcatrazGateHackTimestamp = 0;
 #include <maps\schwarzmarkt>
 #include <maps\derby1>
 #include <maps\derby2>
+#include <maps\terror>
 
 // Systems
 #include <paintball>
@@ -5990,6 +5992,7 @@ public FRadarTimer() {
             if(Spieler[o][pFRadarStatus] != 1){
                 RemovePlayerMapIcon(o, 10+i);
             }
+            if (!IsPlayerConnected(i) || IsPlayerNPC(i) || !gPlayerLogged[i]) return RemovePlayerMapIcon(o, 10+i);
         }
 	}
 	return 1;
@@ -6620,6 +6623,8 @@ public OnGameModeInit2() {
 	CreateDynamicPickup(1240, 1, -2170.3818,641.4621,1052.3817, 0);//OUTLAWZS
 	CreateDynamicPickup(1240, 1, 326.7928,307.7375,999.1484,-1);//Zollamt Duty
 
+    CreateDynamicPickup(1240, 1,  969.3871,2056.1943,10.8203, 0);//Terror
+
 	//Gang Interior Eingang
 	CreateDynamicPickup(19197, 1,  1999.9869,-1114.0542,27.1250, 0);//Ballas Eingang
 	CreateDynamicPickup(19197, 1, 1804.1870,-2124.9021,13.9424, 0);//Aztecas Eingang
@@ -6789,6 +6794,8 @@ public OnGameModeInit2() {
 
 	CreateDynamic3DTextLabel(COLOR_HEX_BLUE"Staat Dienst\n"COLOR_HEX_WHITE"Tippe /Dienst um in den Dienst zu gehen", COLOR_WHITE, 350.0831,160.1326,1025.7891, 15.0 , .worldid = 1);
     CreateDynamic3DTextLabel(COLOR_HEX_BLUE"OutlawZ Spawn\n"COLOR_HEX_WHITE"Tippe /Gangwaffen zum Ausrüsten\nTippe /Gheilen zum heilen", COLOR_WHITE, -2170.3818,641.4621,1052.3817, 15.0);
+
+    CreateDynamic3DTextLabel(COLOR_HEX_BLUE"Terroristen Spawn\n"COLOR_HEX_WHITE"Tippe /Terrorwaffen zum Ausrüsten\nTippe /Gheilen zum heilen", COLOR_WHITE, 969.3871,2056.1943,10.8203, 15.0);
 
 	//3D Gebäude mit Enter betreten
 	CreateDynamic3DTextLabel(COLOR_HEX_BLUE"Fahrschule\n"COLOR_HEX_WHITE"Gebäude betreten mit 'Enter'", COLOR_WHITE, 1216.5732,-1812.2876,16.5938, 20.0);
@@ -20565,7 +20572,7 @@ CMD:fpslimit(playerid)
 CMD:help(playerid)
 {
     if( gPlayerLogged[playerid] == 0 ) return SendClientMessage(playerid,COLOR_RED,"Du bist nicht eingeloggt");
-    ShowPlayerDialog(playerid,DIALOG_CMDHELP,DIALOG_STYLE_LIST,"Hilfebox","{FF0000}Hilfedatenbank (Suche){FFFFFF}\nAllgemeine Befehle\nFinanz Befehle\nDeathmatch Befehle\nVerkauf Befehle\nCasino Befehle\nFahrzeug Befehle\nHaus Befehle\nBusiness Befehle\nTankstellen Befehle\nFirmen Befehle\nChat Befehle\nHaustier Befehle\nLeader Befehle\nJob Befehle\nFraktions Befehle\nAdmin Befehle","Ansehen","Abbruch");
+    ShowPlayerDialog(playerid,DIALOG_CMDHELP,DIALOG_STYLE_LIST,"Hilfebox","{FF0000}Hilfsdatenbank (Suche){FFFFFF}\nAllgemeine Befehle\nFinanz Befehle\nDeathmatch Befehle\nVerkauf Befehle\nCasino Befehle\nFahrzeug Befehle\nHaus Befehle\nBusiness Befehle\nTankstellen Befehle\nFirmen Befehle\nChat Befehle\nHaustier Befehle\nLeader Befehle\nJob Befehle\nFraktions Befehle\nAdmin Befehle","Ansehen","Abbruch");
     return 1;
 }
 
@@ -45562,7 +45569,7 @@ stock Stats(playerid, targetid)
         format(dialogCaption, sizeof(dialogCaption), "Statistik von %s", GetName(targetid));
         
         new final[2000];
-        format(final, sizeof(final), #COL_LIGHTBLUE "Spielstand:" #COL_DEFAULT "\n\
+        /*format(final, sizeof(final), #COL_LIGHTBLUE "Spielstand:" #COL_DEFAULT "\n\
             Spielername: [%s], Level: [%d], Geburtstag: [%s], Respektpunkte: [%d/%d] \nSpielstunden: [%d], Geschlecht: [%s], PayDay in: [%d Minuten]\n\
             Accounttyp: [%s], Adminrang: [%d], Adminverwarnungen: [%d/3], Fraktionssperre: [%s]\nBargeld: [$%s], Bank: [$%s], Zusätzliche-Steuern: [$%s], Coins: [%d]\n\n\
             " #COL_LIGHTBLUE "Daten:" #COL_DEFAULT "\nTelefonnummer: [%d], Handyvertrag: [%s]\nStaatsangehörigkeit: [%s], Verheiratet mit: [%s]\n\n\
@@ -45582,6 +45589,28 @@ stock Stats(playerid, targetid)
             AddDelimiters(Spieler[targetid][pSpice]), AddDelimiters(Spieler[targetid][pBrecheisen]), AddDelimiters(Spieler[targetid][pSafeDrogen]), AddDelimiters(Spieler[targetid][pSafeTeile]),
             AddDelimiters(Spieler[targetid][pSafeWantedCodes]), AddDelimiters(Spieler[targetid][pSafeSpice]), lotto, AddDelimiters(Spieler[targetid][pZigaretten]),
             AddDelimiters(Spieler[targetid][pKekse]), Spieler[targetid][pKanister], Spieler[targetid][pFische], Spieler[targetid][pKoeder],
+            Spieler[targetid][pAngel] ? "Ja" : "Nein", Spieler[targetid][pKills], Spieler[targetid][pCrimes], Spieler[targetid][pDeaths],
+            Spieler[targetid][pDeaths] == 0 ? float(Spieler[targetid][pKills]) : float(Spieler[targetid][pKills]) / float(Spieler[targetid][pDeaths]),
+            Spieler[targetid][pWantedDeaths], Spieler[targetid][pWanteds], Spieler[targetid][pArrested], Spieler[targetid][pLobe], Spieler[targetid][pEventPoints]
+        );*/
+
+        format(final, sizeof(final), #COL_LIGHTBLUE "Spielstand:" #COL_DEFAULT "\n\
+            Spielername: [%s], Level: [%d], Respektpunkte: [%d/%d], Geburtstag: [%s], Geschlecht: [%s] \nSpielstunden: [%d], PayDay in: [%d Minuten]\n\
+            Accounttyp: [%s], Adminrang: [%d], Adminverwarnungen: [%d/3], Fraktionssperre: [%s]\nBargeld: [$%s], Bank: [$%s], Zusätzliche-Steuern: [$%s], Coins: [%d]\n\n\
+            " #COL_LIGHTBLUE "Daten:" #COL_DEFAULT "\nTelefonnummer: [%d], Handyvertrag: [%s]\nStaatsangehörigkeit: [%s], Verheiratet mit: [%s]\n\n\
+            " #COL_LIGHTBLUE "Beruf:" #COL_DEFAULT "\nFraktion: [%s], Rang: [%s], Fraktionswarns: [%i/3], Beruf: [%s]\n\n\
+            " #COL_LIGHTBLUE "Inventare:" #COL_DEFAULT "\nSafebox Drogen: [%s], Safebox Waffenteile: [%s], Safebox Wantedcodes: [%s], Safebox Spice: [%s]\n\
+            Lotto-Ticket: [%s], Angel: [%s]\n\n\
+            " #COL_LIGHTBLUE "Statistiken:" #COL_DEFAULT "\nMorde: [%d], Verbrechen: [%d], Tode: [%d], KD-Rate: [%.2f], Wantedtode: [%d], Wantedlevel: [%d]\
+            , Knast: [%d]\nLobe: [%d], Eventpunkte: [%d]\n\n"#COL_LIGHTBLUE "Sonstiges:" #COL_DEFAULT "\n",
+            GetName(targetid), Spieler[targetid][pLevel], Spieler[targetid][pExp], Spieler[targetid][pLevel] * 4, Spieler[targetid][pGeburtstag],
+            Spieler[targetid][pSex] == 1 ? "Männlich" : "Weiblich", Spieler[targetid][pHours], 60 - Spieler[targetid][pPayDay],
+            Spieler[targetid][pDonateRank] == 0 ? "Normaler User" : "Clubmitglied", Spieler[targetid][pAdmin], Spieler[targetid][pWarns],
+            Spieler[targetid][pFrakSperre] ? "Ja" : "Nein", AddDelimiters(GetPlayerMoney(targetid)),
+            AddDelimiters(Spieler[targetid][pBank]), AddDelimiters(Spieler[targetid][pSSteuer]), Spieler[targetid][pCoins], Spieler[targetid][pHandyNr],
+            Spieler[targetid][pHandyGeld] == HANDY_VERTRAG ? "Ja" : "Nein", GetPlayerStaat(targetid), Spieler[targetid][pMarriageName], team, rankname, Spieler[targetid][pfrakwarn], jtext,
+            AddDelimiters(Spieler[targetid][pSafeDrogen]), AddDelimiters(Spieler[targetid][pSafeTeile]),
+            AddDelimiters(Spieler[targetid][pSafeWantedCodes]), AddDelimiters(Spieler[targetid][pSafeSpice]), lotto,
             Spieler[targetid][pAngel] ? "Ja" : "Nein", Spieler[targetid][pKills], Spieler[targetid][pCrimes], Spieler[targetid][pDeaths],
             Spieler[targetid][pDeaths] == 0 ? float(Spieler[targetid][pKills]) : float(Spieler[targetid][pKills]) / float(Spieler[targetid][pDeaths]),
             Spieler[targetid][pWantedDeaths], Spieler[targetid][pWanteds], Spieler[targetid][pArrested], Spieler[targetid][pLobe], Spieler[targetid][pEventPoints]
@@ -48262,6 +48291,7 @@ public DetectHacks() {
                     if (Spieler[i][pAntiSpawnKillOn])
                         return SpawnPlayerEx(i);
 
+                    if(Spieler[i][pAdmin] >= 2) return 1;
                     format(string,sizeof(string),"[ACHTUNG] Spieler %s FlyHack Warnung: %d km/h",GetName(i),speed);
                     SendAdminMessage(COLOR_LIGHTRED2,string);
                     Spieler[i][punixFlyhack] = now + 8;
@@ -51688,7 +51718,7 @@ COMMAND:bankhacken(playerid,params[]) {
     if (g_iBankraubStatus == Bankraub_Wartezeit) return SendClientMessage(playerid, COLOR_RED, "Die Bank kann zur Zeit nicht ausgeraubt werden.");
     if (g_iBankraubStatus == Bankraub_Aktiv) return SendClientMessage(playerid, COLOR_RED, "Ein Bankraub läuft gerade. ");
     if (!HasPlayerWeapon(playerid)) return SendClientMessage(playerid, COLOR_RED, "Du kannst die Bank nicht ohne eine Waffe ausrauben.");
-    //if (GetOnlineExekutive(playerid) < 4) return SendClientMessage(playerid, COLOR_RED, "Es sind nicht genug Spieler der Exekutive online.");
+    if (GetOnlineExekutive(playerid) < 4) return SendClientMessage(playerid, COLOR_RED, "Es sind nicht genug Spieler der Exekutive online.");
     if(Spieler[playerid][pWantedCodes] < 50) return SendClientMessage(playerid, COLOR_RED, "Du benötigst mindestens 50 Hacker-Codes um den Bankraub zu starten!");
 
     Spieler[playerid][pWantedCodes] -= 50;
@@ -61725,6 +61755,8 @@ CMD:inventar(playerid, params[]) {
     if(Spieler[playerid][pKanister] != 0) { format(string, sizeof(string), "%s\nKanister: %i", string, Spieler[playerid][pKanister]); }
     if(Spieler[playerid][pZigaretten] != 0) { format(string, sizeof(string), "%s\nZigaretten: %i", string, Spieler[playerid][pZigaretten]); }
     if(Spieler[playerid][pPfand] != 0) { format(string, sizeof(string), "%s\nPfandflaschen: %i", string, Spieler[playerid][pPfand]); }
+    if(Spieler[playerid][pFische] != 0) { format(string, sizeof(string), "%s\nFisch: %i", string, Spieler[playerid][pFische]); }
+    if(Spieler[playerid][pKoeder] != 0) { format(string, sizeof(string), "%s\nKöder %i", string, Spieler[playerid][pKoeder]); }
     if(Spieler[playerid][pZollValid] != 0) { format(string, sizeof(string), "%s\nZollpass: %i", string, Spieler[playerid][pZollValid]); }
     if(Spieler[playerid][pBrecheisen] != 0) { format(string, sizeof(string), "%s\nBrecheisen: %i", string, Spieler[playerid][pBrecheisen]); }
     if(Spieler[playerid][pC4] != 0) { format(string, sizeof(string), "%s\nC4: %i", string, Spieler[playerid][pC4]); }
@@ -66061,7 +66093,11 @@ public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY
 
     if (hittype == BULLET_HIT_TYPE_PLAYER && IsPlayerConnected(hitid)) {
         if(playerzone != hitzone){
-            return 0;
+            for(new i ; i < iGangZones ; i++){
+                if( g_GangZone[i][GZ_iStatus] == 1 ){
+                    return 0;
+                }
+            }
         }
     }
     if(hittype == BULLET_HIT_TYPE_VEHICLE){
@@ -66069,7 +66105,11 @@ public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY
             if(GetPlayerVehicleID(i) == hitid){
                 hitzone = GetPlayerGangZone(i);
                 if(playerzone != hitzone){
-                    return 0;
+                    for(new o ; o < iGangZones ; o++){
+                        if( g_GangZone[o][GZ_iStatus] == 1 ){
+                            return 0;
+                        }
+                    }
                 }
             }
         }
