@@ -2384,6 +2384,8 @@ stock bool:IsTUVNeeded(distance) {
 #define     DIALOG_MINIGAMES 1450
 #define     DIALOG_CANCEL_ARENA 1451
 
+#define     DIALOG_AHELP 1452
+
 #define     KEIN_KENNZEICHEN    "KEINE PLAKETTE"
 
 enum {
@@ -3521,752 +3523,7 @@ enum e_Blitzer {
 
 new g_iBlitzer, g_Blitzer[MAX_BLITZER][e_Blitzer];
 
-// - - - - - - -  - - - - - - -  <-- HELP SYSTEM
-
-new const StandartHelp[36][] = {
-	{"sup"},
-    {"admin"},
-    {"admin"},
-    {"anrufen"},
-    {"navi"},
-    {"suche"},
-    {"spielerinfo"},
-    {"rauchzig"},
-    {"zigweg"},
-    {"geben"},
-    {"liste"},
-    {"inventar"},
-    {"koffer"},
-    {"kofferauf"},
-    {"firmen"},
-    {"mutetime"},
-    {"animlist"},
-    {"staatskasse"},
-    {"leader"},
-    {"gutscheincode"},
-    {"musik"},
-    {"mp3player"},
-    {"ghettoblaster"},
-    {"removeghettoblaster"},
-    {"jailtime"},
-    {"spawnchange"},
-    {"clubhelp"},
-    {"werbetafelkaufen"},
-    {"werbetafelfinden"},
-    {"werbetafel"},
-    {"eventpreise"},
-    {"mineninfo"},
-    {"showjob"},
-    {"jobkleidung"},
-    {"skill"},
-    {"upgradeinfo"}
-};
-
-new const MoneyHelp[6][]= {
-    {"findatm"},
-    {"automat"},
-    {"ueberweisen"},
-    {"gebecheck"},
-    {"guthaben"},
-    {"zahlen"}
-};
-
-new DeathmatchHelp[17][]= {
-    {"nimmdrogen"},
-    {"nimmspice"},
-    {"isskeks"},
-    {"kampfstyle"},
-    {"pickwaffe"},
-    {"jailtime"},
-    {"tottime"},
-    {"killauftrag"},
-    {"driveby"},
-    {"gangfightwette"},
-    {"gangfightinfo"},
-    {"gfinfo"},
-    {"swinfo"},
-    {"tankstelleausrauben"},
-    {"bankhacken"},
-    {"transporterausrauben"},
-    {"robninedemons"}
-};
-
-new SellHelp[4][]= {
-    {"sellkekse"},
-    {"sellwantedcodes"},
-    {"solldrogen"},
-    {"sellwaffenteile"}
-};
-
-new CasinoHelp[4][]= {
-    {"spielautomat"},
-    {"wettspiel"},
-    {"kartenspiel"},
-    {"gluecksrad"}
-};
-
-new VehicleHelp[26][]= {
-    {"radio"},
-    {"carlock"},
-    {"carkey"},
-    {"movecarkey"},
-    {"findcar"},
-    {"flock"},
-    {"tanken"},
-    {"carsell"},
-    {"parken"},
-    {"licht"},
-    {"motor"},
-    {"fenster"},
-    {"rauswerfen"},
-    {"kanister"},
-    {"kofferraum"},
-    {"kofferraumansehen"},
-    {"fahrzeugschein"},
-    {"scheine"},
-    {"scheinsperre"},
-    {"fahrzeuginfo"},
-    {"lock"},
-    {"mieten"},
-    {"entmieten"},
-    {"mietlock"},
-    {"findmietcar"},
-    {"fahrpruefung"}
-};
-
-new HouseHelp[15][]= {
-    {"hauskaufen"},
-    {"zuhause"},
-    {"hausupgrade"},
-    {"hausmieten"},
-    {"haustuer"},
-    {"hausmenu"},
-    {"hausverkaufen"},
-    {"hausverstaatlichen"},
-    {"hausmietung"},
-    {"hausraus"},
-    {"hausrausalle"},
-    {"hausabgeben"},
-    {"hoteltuer"},
-    {"miethotelraum"},
-    {"entmietenhotelraum"}
-};
-
-new BizHelp[10][]= {
-    {"bizkaufen"},
-    {"bizverkaufen"},
-    {"bizverstaatlichen"},
-    {"bizkassestand"},
-    {"bizkasse"},
-    {"biztuer"},
-    {"eintritt"},
-    {"warenverkaufsstelle1"},
-    {"warenverkaufsstelle2"},
-    {"warenverkaufsstelle3"}
-};
-
-new TankstelleHelp[9][]= {
-    {"tankekaufen"},
-    {"tankstelleverkaufen"},
-    {"tankeverstaatlichen"},
-    {"maxbenzin"},
-    {"tankkassestand"},
-    {"tankkasse"},
-    {"spritverkaufsstelle1"},
-    {"spritverkaufsstelle2"},
-    {"spritverkaufsstelle3"}
-};
-
-new FirmenHelp[5][]= {
-    {"firmenkasse"},
-    {"firmengehalt"},
-    {"firmennachricht"},
-    {"entlassen"},
-    {"firmen"}
-};
-
-new ChatHelp[19][]= {
-    {"f"},
-    {"s"},
-    {"nc"},
-    {"ic"},
-    {"jc"},
-    {"chatanim"},
-    {"firmen"},
-    {"gc"},
-    {"chatoff"},
-    {"anrufen"},
-    {"sms"},
-    {"auflegen"},
-    {"abnehmen"},
-    {"guthaben"},
-    {"handystatus"},
-    {"sendfs"},
-    {"delfs"},
-    {"fsliste"},
-    {"fschat"}
-};
-
-new HaustierHelp[4][]= {
-    {"haustier"},
-    {"sellhaustier"},
-    {"fuettern"},
-    {"haustiershop"}
-};
-
-new LeaderHelp[1][]= {
-    {"leaderhelp"}
-};
-
-new Job1Help[2][]= {
-    {"startbauer"},
-    {"stopbauer"}
-};
-
-new Job2Help[2][]= {
-    {"startlinie"},
-    {"stoplinie"}
-};
-
-new Job3Help[6][]= {
-    {"loadbenzin"},
-    {"startbenzin"},
-    {"loadwaren"},
-    {"startwaren"},
-    {"ladung"},
-    {"entladen"}
-};
-
-new Job4Help[2][]= {
-    {"startflug"},
-    {"stopflug"}
-};
-
-new Job5Help[2][]= {
-    {"nachtanken"},
-    {"reparieren"}
-};
-
-new Job6Help[2][]= {
-    {"befreien"},
-    {"sliste"}
-};
-
-new Job7Help[2][]= {
-    {"startreinigung"},
-    {"stopreinigung"}
-};
-
-new Job8Help[3][]= {
-    {"startmuell"},
-    {"stopmuell"},
-    {"entleeren"}
-};
-
-new Job9Help[2][]= {
-    {"startgarten"},
-    {"stopgarten"}
-};
-
-new Job10Help[2][]= {
-    {"startbauerbeiter"},
-    {"stopbauerbeiter"}
-};
-
-new Job11Help[2][]= {
-    {"startschiff"},
-    {"stopschiff"}
-};
-
-new Job12Help[2][]= {
-    {"starttransport"},
-    {"stoptransport"}
-};
-
-new Job13Help[1][]= {
-    {"eisverkaufen"}
-};
-
-new Job14Help[2][]= {
-    {"dfinden"},
-    {"dzeigen"}
-};
-
-new Job15Help[2][]= {
-    {"pizzaverkaufen"},
-    {"sliste"}
-};
-
-new Job16Help[1][]= {
-    {"starttaxi"}
-};
-
-new Job17Help[2][]= {
-    {"paketeinladen"},
-    {"paketentladen"}
-};
-
-new Job18Help[2][]= {
-    {"paketeinladen"},
-    {"paketentladen"}
-};
-
-new Job19Help[1][]= {
-    {"tascheklauen"}
-};
-
-new Job20Help[1][]= {
-    {"sex"}
-};
-
-new Job21Help[3][]= {
-    {"wantedhacken"},
-    {"wcodes"},
-    {"sellwantedcodes"}
-};
-
-new Job22Help[1][]= {
-    {"autoknacken"}
-};
-
-new Job23Help[2][]= {
-    {"startzug"},
-    {"stopzug"}
-};
-
-new Job24Help[1][]= {
-    {"hotdogverkaufen"}
-};
-
-new Frak1Help[66][]= {
-    {"clear"},
-    {"pdclear"},
-    {"dienst"},
-    {"sliste"},
-    {"acceptcop"},
-    {"mitglieder"},
-    {"dienstmarke"},
-    {"sp"},
-    {"staatskasse"},
-    {"haussuchen"},
-    {"beamteon"},
-    {"reinziehen"},
-    {"freilassen"},
-    {"verhaften"},
-    {"entnehmen"},
-    {"koffereinziehen"},
-    {"offlinearrest"},
-    {"rufdetektiv"},
-    {"scheinentziehen"},
-    {"arrest"},
-    {"w"},
-    {"caufbrechen"},
-    {"zollamt"},
-    {"ticket"},
-    {"schutzgeldpolizei"},
-    {"aufbrechen"},
-    {"knastzeit"},
-    {"finden"},
-    {"pflanzeverbrennen"},
-    {"zollsperre"},
-    {"parkstrafe"},
-    {"strafzettel"},
-    {"entschaerfen"},
-    {"fc"},
-    {"bc"},
-    {"vk"},
-    {"pvk"},
-    {"cpartner"},
-    {"acceptpartner"},
-    {"ve"},
-    {"kofferdurchsuchen"},
-    {"durchsuchen"},
-    {"promille"},
-    {"pakte"},
-    {"gefangene"},
-    {"meldestelle"},
-    {"parkscheinkontrolle"},
-    {"vamt"},
-    {"kfzsuchen"},
-    {"kzsuchen"},
-    {"uclight"},
-    {"copman"},
-    {"copfrau"},
-    {"rank"},
-    {"rankfrau"},
-    {"copcap"},
-    {"copcapf"},
-    {"copmuetze"},
-    {"tcop"},
-    {"pschild"},
-    {"copbrille"},
-    {"waffenspind"},
-    {"vrk"},
-    {"hsirene"},
-    {"pein"},
-    {"ermitteln"}
-};
-
-new Frak3Help[18][]= {
-    {"dienst"},
-    {"aufnehmen"},
-    {"deskwb"},
-    {"sheilen"},
-    {"samdgarage"},
-    {"mv"},
-    {"m"},
-    {"kasse"},
-    {"kassenstand"},
-    {"mitglieder"},
-    {"sfinden"},
-    {"bc"},
-    {"sliste"},
-    {"acceptsani"},
-    {"rtwsirene"},
-    {"meinsatz"},
-    {"bk"},
-    {"dtasche"}
-};
-
-new Frak4Help[10][]= {
-    {"dienst"},
-    {"news"},
-    {"starteventpoint"},
-    {"stopeventpoint"},
-    {"interview"},
-    {"Kasse"},
-    {"Kassenstand"},
-    {"mitglieder"},
-    {"sanagarage"},
-    {"fskin"}
-};
-
-new Frak5Help[40][]= {
-    {"dienst"},
-    {"ov"},
-    {"ogate"},
-    {"beamteon"},
-    {"mitglieder"},
-    {"zollamt"},
-    {"dienstmarke"},
-    {"kasse"},
-    {"kassenstand"},
-    {"okamera"},
-    {"sp"},
-    {"fpunkte"},
-    {"ticket"},
-    {"strafzettel"},
-    {"parkstrafe"},
-    {"entnehmen"},
-    {"koffereinziehen"},
-    {"scheinentziehen"},
-    {"blitzerabbauen"},
-    {"blitzeraufstellen"},
-    {"tierverbot"},
-    {"deltierverbot"},
-    {"oparken"},
-    {"ofreistellen"},
-    {"fmparkkralle"},
-    {"mparkkralle"},
-    {"festnehmen"},
-    {"fparken"},
-    {"durchsuchen"},
-    {"kofferdurchsuchen"},
-    {"vamt"},
-    {"pakte"},
-    {"kfzsuchen"},
-    {"kzsuchen"},
-    {"promille"},
-    {"bc"},
-    {"fc"},
-    {"m"},
-    {"ovk"},
-    {"bk"}
-};
-
-new FrakGangHelp[28][]= {
-    {"gangwaffen"},
-    {"gheilen"},
-    {"mitglieder"},
-    {"buendnis"},
-    {"kasse"},
-    {"kassenstand"},
-    {"fc"},
-    {"bg"},
-    {"flock"},
-    {"gdg"},
-    {"frespawn"},
-    {"kidnap"},
-    {"mundbinde"},
-    {"augenbinde"},
-    {"fesseln"},
-    {"entfesseln"},
-    {"gangjail"},
-    {"aufbrechen"},
-    {"frakblacklist"},
-    {"addfrakblacklist"},
-    {"delfrakblacklist"},
-    {"gangfight"},
-    {"gangfightstop"},
-    {"fge"},
-    {"gangfightinfo"},
-    {"swinfo"},
-    {"schutzgeld"},
-    {"schutzgeldabbrechen"}
-};
-
-new Frak14Help[17][]= {
-    {"accept hitman"},
-    {"hitmanwaffen"},
-    {"gheilen"},
-    {"hwerbung"},
-    {"fc"},
-    {"flock"},
-    {"hmaske"},
-    {"kasse"},
-    {"kassenstand"},
-    {"mitglieder"},
-    {"hrelease"},
-    {"arz"},
-    {"agbefreien"},
-    {"knastbefreien"},
-    {"agtor"},
-    {"atorhacken"},
-    {"acceptag"}
-};
-
-new Frak15Help[19][]= {
-    {"ninowaffen"},
-    {"gheilen"},
-    {"fsafebox"},
-    {"fc"},
-    {"flock"},
-    {"pflanzen"},
-    {"kidnap"},
-    {"augenbinde"},
-    {"samen"},
-    {"samenpunkte"},
-    {"sellspice"},
-    {"kasse"},
-    {"kassenstand"},
-    {"mitglieder"},
-    {"samenlager"},
-    {"paketeinladen"},
-    {"storepakete"},
-    {"storesamen"},
-    {"samenlagerstatus"}
-};
-
-new Frak19Help[11][]= {
-    {"fc"},
-    {"kasse"},
-    {"kassenstand"},
-    {"kassenstand"},
-    {"mitglieder"},
-    {"flock"},
-    {"bombelegen"},
-    {"terrorwaffen"},
-    {"entfesseln"},
-    {"kidnap"},
-    {"terrorgate"}
-};
-
-new const StandartHelpText[36][] = {
-	{"Supportticket erstellen"},
-    {"Nachricht an Admins versenden"},
-    {"Nachricht an Admins versenden"},
-    {"Spieler anrufen"},
-    {"Navigtionspunkte anzeigen"},
-    {"Spieler suchen"},
-    {"Spielerinformationen anzeigen"},
-    {"Zigarette Rauchen"},
-    {"Zigarette Wegwerfen"},
-    {"Inventare geben"},
-    {"Online Liste"},
-    {"Inventar anzeigen"},
-    {"Koffer holen/weglegen"},
-    {"Koffer öffnen"},
-    {"Firmen anzeigen"},
-    {"Mutezeit anzeigen"},
-    {"Animationsliste"},
-    {"Staatskasse"},
-    {"Leaderliste"},
-    {"Gutscheincode einlösen"},
-    {"Musik abspielen"},
-    {"Mp3Player starten"},
-    {"Ghettoblaster aufstellen"},
-    {"Ghettoblaster entfernen"},
-    {"Jailtime anzeigen"},
-    {"Spawnpunkt ändern"},
-    {"Clubbefehle anzeigen"},
-    {"Werbetafel kaufen"},
-    {"Werbetafel finden"},
-    {"Werbetafel bearbeiten"},
-    {"Eventpreise anzeigen"},
-    {"Minen Informationen"},
-    {"Jobpunkt anzeigen"},
-    {"Jobkleidung anziehen"},
-    {"Skillliste öffnen"},
-    {"Skillupgrade bzw. Skillup einsehen"}
-};
-
-new const MoneyHelpText[6][]= {
-    {"Nächsten Geldautomaten anzeigen"},
-    {"Interaktiv mit Geldautomaten"},
-    {"Überweisung tätigen"},
-    {"Geldcheck vergeben"},
-    {"Handyguthaben einsehen"},
-    {"Zahlungen tätigen"}
-};
-
-new DeathmatchHelpText[17][]= {
-    {"Drogen einnehmen"},
-    {"Spice einnehmen"},
-    {"Kekse essen"},
-    {"Kampfstyle ändern"},
-    {"Waffen aufheben"},
-    {"Knastzeit"},
-    {"Totzeit"},
-    {"Kopfgeld stellen"},
-    {"Drive-By tätigen"},
-    {"Gangfightwette"},
-    {"Gangfight Informationen"},
-    {"Gangfight Informationen"},
-    {"Streetwar Informationen"},
-    {"Tankstelle ausrauben"},
-    {"Bank ausrauben"},
-    {"Geldtransporter ausrauben"},
-    {"NineDemons Safebox ausrauben"}
-};
-
-new SellHelpText[4][]= {
-    {"Kekse verkaufen"},
-    {"Wantedhackercodes verkaufen"},
-    {"Drogen verkaufen"},
-    {"Waffenteile verkaufen"}
-};
-
-new CasinoHelpText[4][]= {
-    {"Spielautomat im Casino"},
-    {"Wettspiel im Casino"},
-    {"kartenspiel im Casino"},
-    {"gluecksrad im Casino"}
-};
-
-new VehicleHelpText[26][]= {
-    {"Radio abspielen"},
-    {"Fahrzeug aufschließen und abschließen"},
-    {"Fahrzeugschlüssel wechseln"},
-    {"Fahrzeugschlüssel Slot ändern"},
-    {"Fahrzeug orten"},
-    {"Fraktionsfahrzeug abschließen"},
-    {"Fahrzeug Tanken"},
-    {"Fahrzeug verkaufen"},
-    {"Parken"},
-    {"Licht"},
-    {"Motor"},
-    {"Fenster öffnen"},
-    {"Spieler aus Fahrzeug rauswerfen"},
-    {"Kanister benutzen"},
-    {"Kofferraum öffnen"},
-    {"Kofferraum ansehen"},
-    {"Fahrzeugschein ansehen"},
-    {"Führerscheine ansehen"},
-    {"Scheinsperre Informationen"},
-    {"Fahrzeug Informationen"},
-    {"Mietfahrzeug abschließen"},
-    {"Fahrzeug mieten"},
-    {"Mietfahrzeug abgeben"},
-    {"Mietfahrzeug abschließen"},
-    {"Mietfahrzeug orten"},
-    {"Führerscheinprüfung starten"}
-};
-
-new HouseHelpText[15][]= {
-    {"Haus kaufen"},
-    {"Wohnort anzeigen"},
-    {"Haussafebox und Waffenlager"},
-    {"Wohnung mieten"},
-    {"Haustür abschließen und aufschließen"},
-    {"Hausmenü"},
-    {"Haus an einen Spieler verkaufen"},
-    {"Haus an den Staat verkaufen"},
-    {"Mieterliste"},
-    {"Mieter kündigen"},
-    {"Allen Mietern kündigen"},
-    {"Haus an den Staat verkaufen"},
-    {"Hoteltür abschließen und aufschließen"},
-    {"Hotelraum mieten"},
-    {"Hotelraum kündigen"}
-};
-
-new BizHelpText[10][]= {
-    {"Business kaufen"},
-    {"Business verkaufen"},
-    {"Business an den Staat verkaufen"},
-    {"Business Kasse"},
-    {"Business Kasse"},
-    {"Business aufschließen und abschließen"},
-    {"Business Eintritt festlegen"},
-    {"Business Waren kaufen"},
-    {"Business Waren kaufen"},
-    {"Business Waren kaufen"}
-};
-
-new TankstelleHelpText[9][]= {
-    {"Tankstelle kaufen"},
-    {"Tankstelle verkaufen"},
-    {"Tankstelle an den Staat verkaufen"},
-    {"Tankstelle Benzinlager"},
-    {"Tankstelle Kasse"},
-    {"Tankstelle Kasse"},
-    {"Tankstelle Sprit kaufen"},
-    {"Tankstelle Sprit kaufen"},
-    {"Tankstelle Sprit kaufen"}
-};
-
-new FirmenHelpText[5][]= {
-    {"Firmen Kasse"},
-    {"Firmen Gehalt anpassen"},
-    {"Firmennachricht"},
-    {"Spieler entlassen"},
-    {"Alle Firmen anzeigen"}
-};
-
-new ChatHelpText[19][]= {
-    {"flüstern"},
-    {"schreien"},
-    {"Neulingschat"},
-    {"Roleplay Chat"},
-    {"Job Chat"},
-    {"Reden Animation"},
-    {"Alle Firmen anzeigen"},
-    {"Gobaler Serverchat"},
-    {"Chats ausschalten"},
-    {"Spieler anrufen"},
-    {"SMS schreiben"},
-    {"Anruf auflegen"},
-    {"Anruf abnehmen"},
-    {"Guthaben einsehen"},
-    {"Handy anschalten und ausschalten"},
-    {"Freundschaftsanfrage senden"},
-    {"Freund löschen"},
-    {"Freundschaftsliste"},
-    {"Freundschaftschat"}
-};
-
-new HaustierHelpText[4][]= {
-    {"Haustier"},
-    {"Haustier verkaufen"},
-    {"Haustier füttern"},
-    {"Haustiershop"}
-};
-
-new LeaderHelpText[1][]= {
-    {"leaderhelp"}
-};
-
-// - - - - - - - - - - - - - - -
+//Help System im help include!!!
 
 #define MAX_HAUS_MOEBEL 30
 
@@ -5419,7 +4676,7 @@ new gmxtimer;
 new CurWeather;
 
 new drogen[6];
-//new wdealer[6];
+new wdealer[6];
 new combines[6];
 new zugb[3];
 new pizzacar[8];
@@ -5574,6 +4831,8 @@ new alcatrazGateHackTimestamp = 0;
 #include <timestamptodate>
 #include <robbing>
 //#include <minigame>
+#include <gangdrugs>
+#include <help>
 
 // MAPS
 #include <maps\samdExterior>
@@ -6133,6 +5392,7 @@ public OnGameModeInit2() {
     LoadPlayerColumns();
     ExtFire_Init();
     InitDrogenPflanzen();
+    InitDrogengang_pflanzen();
     Riesenrad_Init();
     Zoll_Init();
     ShowPlayerMarkers(0);
@@ -6263,12 +5523,12 @@ public OnGameModeInit2() {
     zugb[2] = AddStaticVehicleEx(538,1654.6897,-1957.9625,13.5469,270.8898,1,1,60*10); // Zug
 
     //Waffenteile Transporter
-    /*wdealer[0] = AddStaticVehicleEx(482,2282.6243,-2351.6001,13.6290,226.3535,6,3,60*10); // WDealer1
+    wdealer[0] = AddStaticVehicleEx(482,2282.6243,-2351.6001,13.6290,226.3535,6,3,60*10); // WDealer1
     wdealer[1] = AddStaticVehicleEx(482,2290.0530,-2343.9314,13.6311,225.6010,4,4,60*10); // WDealer2
     wdealer[2] = AddStaticVehicleEx(482,2297.5593,-2336.3022,13.6220,227.2437,9,9,60*10); // WDealer3
     wdealer[3] = AddStaticVehicleEx(482,2290.8293,-2329.9988,13.6274,226.5028,85,84,60*10); // WDealer4
     wdealer[4] = AddStaticVehicleEx(482,2283.5171,-2337.6597,13.6266,227.1544,108,108,60*10); // WDealer5
-    wdealer[5] = AddStaticVehicleEx(482,2276.0869,-2345.1609,13.6405,225.8990,3,38,60*10); // WDealer6*/
+    wdealer[5] = AddStaticVehicleEx(482,2276.0869,-2345.1609,13.6405,225.8990,3,38,60*10); // WDealer6
 
 	//Farmer Combines
 	combines[0] =AddStaticVehicleEx(532,-29.79999924,-1.29999995,4.19999981,66.24993896,-1,-1,60*10); //Combine
@@ -6379,12 +5639,12 @@ public OnGameModeInit2() {
 		SetVehicleToRespawn(drogen[i]);
 		aiVehicles[ drogen[i] ] = VEH_DROGEN;
 	}
-	/*for(new i=0;i<sizeof(wdealer);i++)
+	for(new i=0;i<sizeof(wdealer);i++)
 	{
 		SetVehicleNumberPlate(wdealer[i], COLOR_HEX_BLACK"LS-98651");
 		SetVehicleToRespawn(wdealer[i]);
 		aiVehicles[ wdealer[i] ] = VEH_WDEALER;
-	}*/
+	}
 	for(new i=0;i<sizeof(vehicle_wantedHackerBase);i++)
 	{
 		SetVehicleNumberPlate(vehicle_wantedHackerBase[i], COLOR_HEX_BLACK"LS-87492");
@@ -10806,7 +10066,7 @@ CMD:back(playerid)
 CMD:ahelp(playerid) return cmd_adminhelp(playerid, "");
 
 CMD:adminhelp(playerid, params[]){
-    if(Spieler[playerid][pAdmin] >= 1)
+    /*if(Spieler[playerid][pAdmin] >= 1)
     {
         SendClientMessage(playerid, COLOR_ORANGE, "* SUPPORTER *: {FFFFFF}/Goto, /Gethere, /Spawn, /Kick, /ban (Level 1-3), /spec, /specoff, /Adienst, /Aschlagen, /Gebannt, /Spawncar");
         SendClientMessage(playerid, COLOR_ORANGE, "* SUPPORTER *: {FFFFFF}/Setafk, /Mute, /Sichercode, /Sc, /Freeze, /Unfreeze, /Guncheck, /Check, /Checkscheine, /Supauto /Respawncar");
@@ -10859,7 +10119,18 @@ CMD:adminhelp(playerid, params[]){
     if(IsPlayerAdmin(playerid))
     {
         SendClientMessage(playerid, COLOR_BLUE, "* RCON *: /Makeadmin, /Gmx");
-    }
+    }*/
+    new String[1024];
+    if(Spieler[playerid][pAdmin] >= 0) format(String, sizeof(String), "%sSupporter Befehle", String);
+    if(Spieler[playerid][pAdmin] >= 1) format(String, sizeof(String), "%s\nEvent-Supporter Befehle", String);
+    if(Spieler[playerid][pAdmin] >= 2) format(String, sizeof(String), "%s\nModerator Befehle", String);
+    if(Spieler[playerid][pAdmin] >= 4) format(String, sizeof(String), "%s\nAdministrator Befehle", String);
+    if(Spieler[playerid][pAdmin] >= 4) format(String, sizeof(String), "%s\nProjektleitung Vertretung Befehle", String);
+    if(Spieler[playerid][pAdmin] >= 5) format(String, sizeof(String), "%s\nServer-Manager Befehle", String);
+    if(Spieler[playerid][pAdmin] >= 6) format(String, sizeof(String), "%s\nProjektleiter Befehle", String);
+    if(Spieler[playerid][pFV] == 1) format(String, sizeof(String), "%s\nFraktionsverwalter Befehle", String);
+
+    ShowPlayerDialog(playerid, DIALOG_AHELP, DIALOG_STYLE_LIST, "Admin Help", String, "Öffnen", "Schließen");
     return 1;
 }
 
@@ -14062,6 +13333,30 @@ CMD:isskeks(playerid)
     {
         SendClientMessage(playerid,COLOR_RED,"Da du Schaden genommen hast, kannst du erst nach 5 Sekunden deine HP wieder pushen.");
     }
+    
+    //GF Check
+    /*new playerzone = GetPlayerGangZone(playerid);
+
+    if(playerzone != -1){
+        if(g_GangZone[playerzone][GZ_iStatus] == 1){
+            if(Spieler[playerid][pFraktion] == g_GangZone[playerzone][GZ_iAttacker]){
+                for(new i; i < MAX_PLAYERS; i++){
+                    if(Spieler[i][pFraktion] == g_GangZone[playerzone][GZ_iOwner]){
+                        new gegnetzone = GetPlayerGangZone(i);
+                        if(playerzone == gegnetzone) SendClientMessage(playerid, COLOR_RED, "GEGNER IM GEBIET!!!");
+                    }
+                }
+            }else if(Spieler[playerid][pFraktion] == g_GangZone[playerzone][GZ_iOwner]){
+                for(new i; i < MAX_PLAYERS; i++){
+                    if(Spieler[i][pFraktion] == g_GangZone[playerzone][GZ_iAttacker]){
+                        new gegnetzone = GetPlayerGangZone(i);
+                        if(playerzone == gegnetzone) SendClientMessage(playerid, COLOR_RED, "GEGNER IM GEBIET!!!");
+                    }
+                }
+            }
+        }
+    }*/
+
     else if( Spieler[playerid][pKekseValue] >= 7 ) {
         SendClientMessage(playerid,COLOR_RED,"Du hast zu viele Kekse hintereinander gegessen!");
         ApplyAnimation( playerid , "FOOD", "EAT_Vomit_P", 4.1,0,1,1,0,-1,1);
@@ -14514,7 +13809,7 @@ CMD:paketentladen(playerid)
         SendClientMessage(playerid, COLOR_RED, "Du bist in keinem Transporter!");
         return 1;
     }
-    /*else if(Spieler[playerid][pJob] == 18)
+    else if(Spieler[playerid][pJob] == 18)
     {
         if(!IsPlayerInRangeOfPoint(playerid, 7.0, -1857.4130,-1618.9630,21.9022))return SendClientMessage(playerid, COLOR_RED, "Du bist nicht in der Nähe des Entlagerungspunkts.");
         new vID = GetPlayerVehicleID(playerid);
@@ -14538,7 +13833,7 @@ CMD:paketentladen(playerid)
         }
         SendClientMessage(playerid, COLOR_RED, "Du bist in keinem Transporter!");
         return 1;
-    }*/
+    }
     /*else if(Spieler[playerid][pFraktion] == 15)
     {
         if(!IsPlayerInRangeOfPoint(playerid, 7.0, -66.3187,-1121.1329,0.6501))return SendClientMessage(playerid, COLOR_RED, "Du bist nicht in der Nähe des Entlagerungspunkts.");
@@ -14561,18 +13856,16 @@ CMD:paketentladen(playerid)
     return 1;
 }
 
-
-
 CMD:lagerpunkt(playerid, params[]) {
     if (!gPlayerLogged[playerid]) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du bist nicht eingeloggt.");
     if (Spieler[playerid][pJob] == 17) {
         SetPlayerCheckpointEx(playerid, -38.4148, 56.1184, 3.1172, 2.0, CP_NAVI1);
         return SendClientMessage(playerid, COLOR_YELLOW, "[INFO] {FFFFFF}Der Lagerpunkt für Drogen wurde dir auf der Karte Rot markiert.");
     }
-    /*else if (Spieler[playerid][pJob] == 18) {
+    else if (Spieler[playerid][pJob] == 18) {
         SetPlayerCheckpointEx(playerid, 2348.1086, -2302.4243, 13.5469, 2.0, CP_NAVI1);
         return SendClientMessage(playerid, COLOR_YELLOW, "[INFO] {FFFFFF}Der Lagerpunkt für Waffenteile wurde dir auf der Karte Rot markiert.");
-    }*/
+    }
 
     return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Für deinen Job gibt es keinen Lagerpunkt.");
 }
@@ -14581,94 +13874,6 @@ CMD:samenlager(playerid, params[]){
 	if(Spieler[playerid][pFraktion] != 15) return SendClientMessage(playerid, COLOR_RED, "Damit kannst du nichts anfangen!");
 	SendClientMessage(playerid, COLOR_YELLOW, "Das Samenlager wird dir auf der Karte markiert!");
 	SetPlayerCheckpoint(playerid, -111.0688,1133.3749,19.7422, 7.0);
-	return 1;
-}
-
-CMD:findwpakete(playerid) {
-    if (!gPlayerLogged[playerid]) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du bist nicht eingeloggt.");
-	if(!IsMafiaFaction(Spieler[playerid][pFraktion]))return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du gehörst keiner Mafia an.");
-	SendClientMessage(playerid, COLOR_YELLOW,"Der Waffenteile-Punkt wird Dir auf der Karte markiert!");
-	SetPlayerCheckpoint(playerid, 1678.1671,2358.7722,10.8203, 7.0);
-	return 1;
-}
-CMD:wpaketeentladen(playerid) {
-	new veh = GetPlayerVehicleID(playerid), vehiclemodel = GetVehicleModel(veh), newteile = bestand[veh]*400;
-    if (!gPlayerLogged[playerid]) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du bist nicht eingeloggt.");
-	if(!IsMafiaFaction(Spieler[playerid][pFraktion]))return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du gehörst keiner Mafia an.");
-	if(vehiclemodel != 482) return SendClientMessage(playerid, COLOR_RED,"[INFO] {FFFFFF}Du bist in keinem Burrito!");
-	if(FrakCarInfo[veh][f_frak] != Spieler[playerid][pFraktion])return SendClientMessage(playerid, COLOR_RED,"[FEHLER] {FFFFFF}Der Burrito gehört nicht zu deiner Fraktion.");
- 	if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER) return SendClientMessage(playerid,COLOR_RED,"[INFO] {FFFFFF}Du musst der Fahrer des Burritos sein!");
- 	if(!IsPlayerInRangeOfPoint(playerid, 7.0, -1518.8336,2558.5051,55.8403))return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du bist nicht in der Nähe des Entlagerungspunkts.");
-  	if(bestand[veh] < 1)return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast nichts beladen!");
-  	
-  	Spieler[playerid][pWaffenteile] += newteile;
-  	SCMFormatted(playerid, COLOR_YELLOW, "[INFO] {FFFFFF}Du hast %d Pakete abgeliefert und %d Waffenteile erhalten.", bestand[veh], newteile);
-  	bestand[veh] = 0;
-   	PlayerSkillUpgrade(playerid,pWaffenteilePoints,5,1);
-   	
-   	KillTimer(WTMeldung[playerid]);
-   	KillTimer(CheckWVehicle[playerid]);
-   	DeletePVar(playerid, "WAFFENDEALER");
-	return 1;
-}
-CMD:wpakete(playerid, params[]) {
-    new anzahl, veh = GetPlayerVehicleID(playerid), vehiclemodel = GetVehicleModel(veh), newgeld = anzahl*500,
-		maxAnzahl = GetPlayerWaffenteileSkillValue(playerid), newanzahl = anzahl+bestand[veh];
-    if (!gPlayerLogged[playerid]) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du bist nicht eingeloggt.");
-	if(!IsMafiaFaction(Spieler[playerid][pFraktion]))return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du gehörst keiner Mafia an.");
-	if(vehiclemodel != 482) return SendClientMessage(playerid, COLOR_RED,"[INFO] {FFFFFF}Du bist in keinem Burrito!");
-	if(FrakCarInfo[veh][f_frak] != Spieler[playerid][pFraktion])return SendClientMessage(playerid, COLOR_RED,"[FEHLER] {FFFFFF}Der Burrito gehört nicht zu deiner Fraktion.");
- 	if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER) return SendClientMessage(playerid,COLOR_RED,"[INFO] {FFFFFF}Du musst der Fahrer des Burritos sein!");
- 	if(sscanf(params, "i", anzahl))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/WPakete [Anzahl]");
- 	if(!IsPlayerInRangeOfPoint(playerid, 7.0, 1678.1671,2358.7722,10.8203))return SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}Falscher Ort - Tippe /FindWPakete um zum Ort zu gelangen.");
-  	if(anzahl < 0 )return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Ungültige Anzahl.");
-   	if(anzahl > maxAnzahl ) return SCMFormatted(playerid, COLOR_RED,"[INFO] {FFFFFF}Aufgrund deines Skills (%d) kannst du nur %d Päckchen transportieren.",GetPlayerWaffenteileSkillLevel(playerid), maxAnzahl);
-    if(GetPlayerMoney(playerid) < newgeld)return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast nicht genügend Geld!");
-	if(newanzahl > maxAnzahl) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du kannst den Wagen nicht überladen.");
-	
-	bestand[veh] += anzahl;
-	SCMFormatted(playerid, COLOR_YELLOW, "[INFO] {FFFFFF}Der Wagen wurde mit %d Paketen aufgeladen - begebe Dich nun zum Checkpoint.", anzahl);
-	SetPlayerCheckpointEx(playerid, -1518.8336,2558.5051,55.8403, 7.0, CP_SHOWJOB12);
- 	GetPlayerPos(playerid,oldposx[playerid],oldposy[playerid],oldposz[playerid]);
-  	playertimestamp[playerid]=gettime();
-   	GivePlayerCash(playerid, -newgeld);
-   	
-   	SetPVarInt(playerid, "WAFFENDEALER", 1);
-   	CheckWVehicle[playerid] = SetTimerEx("Pulse_WaffenPakete",1007,true,"d",playerid);
-   	
-   	// Nachricht an Cops
-   	WTMeldung[playerid] = SetTimerEx("WTNachricht", 30000, true, "d", playerid);
-	return 1;
-}
-forward Pulse_WaffenPakete(playerid);
-public Pulse_WaffenPakete(playerid) {
-    new veh = GetPlayerVehicleID(playerid), vehiclemodel = GetVehicleModel(veh);
-    if( vehiclemodel != 482 ) {
-        new string[128];
-        SendClientMessage(playerid, COLOR_RED,"[INFO] {FFFFFF}Du bist aus dem Fahrzeug ausgestiegen - Mission beendet.");
-        bestand[veh] = 0;
-        
-        format(string, sizeof(string),"HQ: AN ALLE EINHEITEN, %s hat seine Waffenteile-Tour abgebrochen - Die Jagd wird beendet.", GetName(playerid));
-        SendFraktionMessage(1, COLOR_DARKRED, string);
-        SendFraktionMessage(2, COLOR_DARKRED, string);
-        SendFraktionMessage(16, COLOR_DARKRED, string);
-        
-        DisablePlayerCheckpointEx(playerid);
-        KillTimer(CheckWVehicle[playerid]);
-        KillTimer(WTMeldung[playerid]);
-		DeletePVar(playerid, "WAFFENDEALER");
-	}
-	return 1;
-}
-forward WTNachricht(playerid);
-public WTNachricht(playerid) {
-	new zone[MAX_ZONE_NAME], string[128];
-    GetPlayer2DZone(playerid, zone, sizeof(zone));
-    
-	format(string,sizeof(string),"%s befindet sich mit einem Waffenteile-Truck in %s - Findet ihn!", GetName(playerid), zone);
-	SendFraktionMessage(1, COLOR_DARKRED, string);
-	SendFraktionMessage(2, COLOR_DARKRED, string);
-	SendFraktionMessage(16, COLOR_DARKRED, string);
 	return 1;
 }
 
@@ -14738,7 +13943,7 @@ CMD:paketeinladen(playerid, params[])
         SendClientMessage(playerid, COLOR_RED, "Du bist in keinem Drogen-Transporter.");
         return 1;
     }
-    /*else if(Spieler[playerid][pJob] == 18)
+    else if(Spieler[playerid][pJob] == 18)
     {
         new anzahl, string[128];
         if(sscanf(params, "i", anzahl))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Paketeinladen [Anzahl]");
@@ -14775,7 +13980,7 @@ CMD:paketeinladen(playerid, params[])
         }
         SendClientMessage(playerid, COLOR_RED, "Du bist in keinem Waffen-Transporter.");
         return 1;
-    }*/
+    }
 	return 1;
 }
 
@@ -14862,7 +14067,7 @@ CMD:illegalejobs(playerid)
     if(!IsPlayerInRangeOfPoint(playerid, 5.0, JEFF_COORDS)) return SendClientMessage(playerid, COLOR_RED, "Du bist nicht bei Jeff.");
     SendClientMessage(playerid, COLOR_WHITE, "Jeff sagt: Mh.. Du willst also dein Geld auf eine andere Weise verdienen?");
     SendClientMessage(playerid, COLOR_WHITE, "Ich hab da so einige Jobs für dich auf Lager. Schau dich um!");
-    ShowPlayerDialog(playerid, DIALOG_SCHWARZBERUF, DIALOG_STYLE_LIST, "ILLEGALE JOBS", COLOR_HEX_WHITE">> aktuellen Beruf kündigen\nDrogendealer\nTaschendieb\nProstituierte\nWanted-Hacker\nAutodieb", "Auswählen", "Abbrechen");
+    ShowPlayerDialog(playerid, DIALOG_SCHWARZBERUF, DIALOG_STYLE_LIST, "ILLEGALE JOBS", COLOR_HEX_WHITE">> aktuellen Beruf kündigen\nDrogendealer\nWaffendealer\nTaschendieb\nProstituierte\nWanted-Hacker\nAutodieb", "Auswählen", "Abbrechen");
     return 1;
 }
 
@@ -15690,6 +14895,7 @@ CMD:configplayer(playerid, params[])
         if(wert < 0 || wert > 22) return SendClientMessage(playerid, COLOR_ORANGE, "Der Wert sollte zwischen 0 und 22 liegen.");
         Spieler[pID][pFraktion] = wert;
         if (wert == 15) AddPlayerToPlantArrayData(pID);
+        if( IsAFightFaction( Spieler[pID][pFraktion] ) ) AddPlayerToPlantArrayDataGang(pID);
         else RemovePlayerFromPlantArrayData(pID);
         format(string, sizeof(string), "Deine Fraktion wurde von %s %s auf %s gesetzt.", GetPlayerAdminRang(playerid), GetName(playerid), factionNames[wert]);
         SendClientMessage(pID, COLOR_LIGHTBLUE, string);
@@ -21300,7 +20506,7 @@ stock RespawnJobCars(jobID) {
         case 15:    { for (new i = 0; i < sizeof(pizzacar); i++) if (!IsVehicleOccupied(pizzacar[i])) SetVehicleToRespawn(pizzacar[i]); }
         case 16:    { for (new i = 0; i < sizeof(vehicle_taxiStations); i++) if (!IsVehicleOccupied(vehicle_taxiStations[i])) SetVehicleToRespawn(vehicle_taxiStations[i]); }
         case 17:    { for (new i = 0; i < sizeof(drogen); i++) if (!IsVehicleOccupied(drogen[i])) SetVehicleToRespawn(drogen[i]); }
-        //case 18:    { for (new i = 0; i < sizeof(wdealer); i++) if (!IsVehicleOccupied(wdealer[i])) SetVehicleToRespawn(wdealer[i]); }
+        case 18:    { for (new i = 0; i < sizeof(wdealer); i++) if (!IsVehicleOccupied(wdealer[i])) SetVehicleToRespawn(wdealer[i]); }
         case 21:    { for (new i = 0; i < sizeof(vehicle_wantedHackerBase); i++) if (!IsVehicleOccupied(vehicle_wantedHackerBase[i])) SetVehicleToRespawn(vehicle_wantedHackerBase[i]); }
         case 23:    { for (new i = 0; i < sizeof(zugb); i++) if (!IsVehicleOccupied(zugb[i])) SetVehicleToRespawn(zugb[i]); }
         case 24:    { for (new i = 0; i < sizeof(hotdogcar); i++) if (!IsVehicleOccupied(hotdogcar[i])) SetVehicleToRespawn(hotdogcar[i]); }
@@ -22947,6 +22153,7 @@ CMD:accept(playerid, params[])
             StartPlayerSkinSelection(playerid);
             SendClientMessage(playerid, COLOR_GREEN, "Wähle nun deinen Fraktionsskin!");
             if (frakid == 15) AddPlayerToPlantArrayData(playerid);
+            if( IsAFightFaction( Spieler[playerid][pFraktion] ) ) AddPlayerToPlantArrayDataGang(playerid);
             SaveAccount(playerid);
         }
     }
@@ -23995,13 +23202,13 @@ public OnPlayerEnterVehicle(playerid, vehicleid, ispassenger)
                 pjvar=1;
             }
         }
-        /*for(new jb;jb<sizeof(wdealer);jb++)
+        for(new jb;jb<sizeof(wdealer);jb++)
         {
             if(vehicleid==wdealer[jb])
             {
                 pjvar=1;
             }
-        }*/
+        }
         if(pjvar==1)
         {
             SetTimerEx("fuelcounttimer",5000,false,"i",playerid);
@@ -24073,13 +23280,12 @@ public OnPlayerExitVehicle(playerid, vehicleid)
                 UnLockCar(vehicleid);
             }
         }
-       /*for(new r;r<sizeof(wdealer);r++)
-        {
+        for(new r;r<sizeof(wdealer);r++){
             if(vehicleid==wdealer[r])
             {
                 UnLockCar(vehicleid);
             }
-        }*/
+        }
         for(new q;q<sizeof(vehicle_wantedHackerBase);q++)
         {
             if(vehicleid==vehicle_wantedHackerBase[q])
@@ -24600,7 +23806,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
                 }
             }
         }
-        /*else if( aiVehicles[vehicleid] == VEH_WDEALER ) {
+        else if( aiVehicles[vehicleid] == VEH_WDEALER ) {
             for(new i=0;i<sizeof(wdealer);i++)
             {
                 if(vehicleid == wdealer[i])
@@ -24633,7 +23839,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
                     }
                 }
             }
-        }*/
+        }
         else if( aiVehicles[vehicleid] == VEH_WANTEDCAR ) {
             for(new i=0;i<sizeof(vehicle_wantedHackerBase);i++)
             {
@@ -36597,6 +35803,148 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 
             }
         }
+        case DIALOG_AHELP:
+        {
+            if(response){
+                if(listitem == 0){//Supporter
+                    new maxcmdcount = 0, String[2048];
+                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Übersicht der Supporter-Befehle | -{FFFFFF}\n\n", String);
+                    for(new i = 0; i < sizeof(SupporterHelp); i++){
+                        if(maxcmdcount == 8){
+                            format(String, sizeof(String), "%s\n", String);
+                            maxcmdcount = 0;
+                        }
+                        if(maxcmdcount == 0){
+                            format(String, sizeof(String), "%s/%s", String, SupporterHelp[i]);
+                        }else{
+                            format(String, sizeof(String), "%s, /%s", String, SupporterHelp[i]);
+                        }
+                        maxcmdcount++;
+                    }
+                    format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Supporter-Befehle | -", String, "OK", "");
+                }else if(listitem == 1){//Event Supporter
+                    new maxcmdcount = 0, String[2048];
+                    format(String, sizeof(String), "%s\t\t\t\t{DEA81A}- | LyD ~ Übersicht der Event-Supporter-Befehle | -{FFFFFF}\n\n", String);
+                    for(new i = 0; i < sizeof(EventSupporterHelp); i++){
+                        if(maxcmdcount == 8){
+                            format(String, sizeof(String), "%s\n", String);
+                            maxcmdcount = 0;
+                        }
+                        if(maxcmdcount == 0){
+                            format(String, sizeof(String), "%s/%s", String, EventSupporterHelp[i]);
+                        }else{
+                            format(String, sizeof(String), "%s, /%s", String, EventSupporterHelp[i]);
+                        }
+                        maxcmdcount++;
+                    }
+                    format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Event-Supporter-Befehle | -", String, "OK", "");
+                }else if(listitem == 2){//Mod
+                    new maxcmdcount = 0, String[2048];
+                    format(String, sizeof(String), "%s\t\t\t\t{DEA81A}- | LyD ~ Übersicht der Moderator-Befehle | -{FFFFFF}\n\n", String);
+                    for(new i = 0; i < sizeof(ModeratorHelp); i++){
+                        if(maxcmdcount == 8){
+                            format(String, sizeof(String), "%s\n", String);
+                            maxcmdcount = 0;
+                        }
+                        if(maxcmdcount == 0){
+                            format(String, sizeof(String), "%s/%s", String, ModeratorHelp[i]);
+                        }else{
+                            format(String, sizeof(String), "%s, /%s", String, ModeratorHelp[i]);
+                        }
+                        maxcmdcount++;
+                    }
+                    format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Moderator-Befehle | -", String, "OK", "");
+                }else if(listitem == 3){//Admin
+                    new maxcmdcount = 0, String[2048];
+                    format(String, sizeof(String), "%s\t\t\t\t{DEA81A}- | LyD ~ Übersicht der Administrator-Befehle | -{FFFFFF}\n\n", String);
+                    for(new i = 0; i < sizeof(AdministratorHelp); i++){
+                        if(maxcmdcount == 8){
+                            format(String, sizeof(String), "%s\n", String);
+                            maxcmdcount = 0;
+                        }
+                        if(maxcmdcount == 0){
+                            format(String, sizeof(String), "%s/%s", String, AdministratorHelp[i]);
+                        }else{
+                            format(String, sizeof(String), "%s, /%s", String, AdministratorHelp[i]);
+                        }
+                        maxcmdcount++;
+                    }
+                    format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Administrator-Befehle | -", String, "OK", "");
+                }else if(listitem == 4){//Benny Vertretung
+                    new maxcmdcount = 0, String[2048];
+                    format(String, sizeof(String), "%s\t\t{DEA81A}- | LyD ~ Übersicht der Benny Vertretung-Befehle | -{FFFFFF}\n\n", String);
+                    for(new i = 0; i < sizeof(VertretungBennyHelp); i++){
+                        if(maxcmdcount == 8){
+                            format(String, sizeof(String), "%s\n", String);
+                            maxcmdcount = 0;
+                        }
+                        if(maxcmdcount == 0){
+                            format(String, sizeof(String), "%s/%s", String, VertretungBennyHelp[i]);
+                        }else{
+                            format(String, sizeof(String), "%s, /%s", String, VertretungBennyHelp[i]);
+                        }
+                        maxcmdcount++;
+                    }
+                    format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Benny Vertretung-Befehle | -", String, "OK", "");
+                }else if(listitem == 5){//Server Manager
+                    new maxcmdcount = 0, String[2048];
+                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Übersicht der Benny Vertretung-Befehle | -{FFFFFF}\n\n", String);
+                    for(new i = 0; i < sizeof(ManagerHelp); i++){
+                        if(maxcmdcount == 8){
+                            format(String, sizeof(String), "%s\n", String);
+                            maxcmdcount = 0;
+                        }
+                        if(maxcmdcount == 0){
+                            format(String, sizeof(String), "%s/%s", String, ManagerHelp[i]);
+                        }else{
+                            format(String, sizeof(String), "%s, /%s", String, ManagerHelp[i]);
+                        }
+                        maxcmdcount++;
+                    }
+                    format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Benny Vertretung-Befehle | -", String, "OK", "");
+                }else if(listitem == 6){//Projektleiter
+                    new maxcmdcount = 0, String[2048];
+                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Übersicht der Projektleiter-Befehle | -{FFFFFF}\n\n", String);
+                    for(new i = 0; i < sizeof(ProjektleiterHelp); i++){
+                        if(maxcmdcount == 8){
+                            format(String, sizeof(String), "%s\n", String);
+                            maxcmdcount = 0;
+                        }
+                        if(maxcmdcount == 0){
+                            format(String, sizeof(String), "%s/%s", String, ProjektleiterHelp[i]);
+                        }else{
+                            format(String, sizeof(String), "%s, /%s", String, ProjektleiterHelp[i]);
+                        }
+                        maxcmdcount++;
+                    }
+                    format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Projektleiter-Befehle | -", String, "OK", "");
+                }else if(listitem == 7){//Frakverwalter
+                    new maxcmdcount = 0, String[2048];
+                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Übersicht der Fraktionsverwalter-Befehle | -{FFFFFF}\n\n", String);
+                    for(new i = 0; i < sizeof(FraktionsverwalterHelp); i++){
+                        if(maxcmdcount == 8){
+                            format(String, sizeof(String), "%s\n", String);
+                            maxcmdcount = 0;
+                        }
+                        if(maxcmdcount == 0){
+                            format(String, sizeof(String), "%s/%s", String, FraktionsverwalterHelp[i]);
+                        }else{
+                            format(String, sizeof(String), "%s, /%s", String, FraktionsverwalterHelp[i]);
+                        }
+                        maxcmdcount++;
+                    }
+                    format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Fraktionsverwalter-Befehle | -", String, "OK", "");
+                }
+            }
+        }
         case DIALOG_ANTWORT:
         {
             if(response)
@@ -38463,13 +37811,13 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                     {
                         Spieler[playerid][pJob] = 0;
                         SendClientMessage(playerid, COLOR_WHITE, "Du hast deinen Job gekündigt.");
-                        ShowPlayerDialog(playerid, DIALOG_SCHWARZBERUF, DIALOG_STYLE_LIST, "ILLEGALE JOBS", COLOR_HEX_WHITE">> aktuellen Beruf kündigen\nDrogendealer\nTaschendieb\nProstituierte\nWanted-Hacker\nAutodieb", "Auswählen", "Abbrechen");
+                        ShowPlayerDialog(playerid, DIALOG_SCHWARZBERUF, DIALOG_STYLE_LIST, "ILLEGALE JOBS", COLOR_HEX_WHITE">> aktuellen Beruf kündigen\nDrogendealer\nWaffendealer\nTaschendieb\nProstituierte\nWanted-Hacker\nAutodieb", "Auswählen", "Abbrechen");
                         Spieler[playerid][pJobWechsel] = gettime() + (60*60);
                         return 1;
                     }
                     else
                     {
-                        ShowPlayerDialog(playerid, DIALOG_SCHWARZBERUF, DIALOG_STYLE_LIST, "ILLEGALE JOBS", COLOR_HEX_WHITE">> aktuellen Beruf kündigen\nDrogendealer\nTaschendieb\nProstituierte\nWanted-Hacker\nAutodieb", "Auswählen", "Abbrechen");
+                        ShowPlayerDialog(playerid, DIALOG_SCHWARZBERUF, DIALOG_STYLE_LIST, "ILLEGALE JOBS", COLOR_HEX_WHITE">> aktuellen Beruf kündigen\nDrogendealer\nWaffendealer\nTaschendieb\nProstituierte\nWanted-Hacker\nAutodieb", "Auswählen", "Abbrechen");
                         SendClientMessage(playerid, COLOR_RED, "Du besitzt gar keinen Job.");
                         return 1;
                     }
@@ -38484,16 +37832,6 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                     ShowPlayerDialog(playerid, DIALOG_DDEALER, DIALOG_STYLE_MSGBOX, "Arbeitsamt: Drogendealer", COLOR_HEX_BLUE"Beruf:"COLOR_HEX_WHITE" Drogendealer\n"COLOR_HEX_BLUE"PayDay Gehalt:"COLOR_HEX_WHITE" Unterschiedlich\n"COLOR_HEX_BLUE"Voraussetzungen:"COLOR_HEX_WHITE" Mindestlevel 3\n"COLOR_HEX_BLUE"Job Fahrzeuge:"COLOR_HEX_WHITE" Ja\n"COLOR_HEX_BLUE"Risiken:"COLOR_HEX_WHITE" Erwischt werden durch Beamte", "Annehmen", "Abbrechen");
                     return 1;
                 }
-                /*if(listitem==2)
-                {
-                    if(Spieler[playerid][pJob] > 0)
-                    {
-                        SendClientMessage(playerid, COLOR_RED, "Du hast bereits einen Job.");
-                        return 1;
-                    }
-                    ShowPlayerDialog(playerid, DIALOG_WDEALER, DIALOG_STYLE_MSGBOX, "Arbeitsamt: Waffendealer", COLOR_HEX_BLUE"Beruf:"COLOR_HEX_WHITE" Waffendealer\n"COLOR_HEX_BLUE"PayDay Gehalt:"COLOR_HEX_WHITE" Unterschiedlich\n"COLOR_HEX_BLUE"Voraussetzungen:"COLOR_HEX_WHITE" Mindestlevel 3\n"COLOR_HEX_BLUE"Job Fahrzeuge:"COLOR_HEX_WHITE" Ja\n"COLOR_HEX_BLUE"Risiken:"COLOR_HEX_WHITE" Erwischt werden durch Beamte", "Annehmen", "Abbrechen");
-                    return 1;
-                }*/
                 if(listitem==2)
                 {
                     if(Spieler[playerid][pJob] > 0)
@@ -38501,7 +37839,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                         SendClientMessage(playerid, COLOR_RED, "Du hast bereits einen Job.");
                         return 1;
                     }
-                    ShowPlayerDialog(playerid, DIALOG_TASCHENDIEB, DIALOG_STYLE_MSGBOX, "Arbeitsamt: Taschendieb", COLOR_HEX_BLUE"Beruf:"COLOR_HEX_WHITE" Taschendieb\n"COLOR_HEX_BLUE"PayDay Gehalt:"COLOR_HEX_WHITE" Unterschiedlich\n"COLOR_HEX_BLUE"Voraussetzungen:"COLOR_HEX_WHITE" Mindestlevel 3\n"COLOR_HEX_BLUE"Job Fahrzeuge:"COLOR_HEX_WHITE" Nein\n"COLOR_HEX_BLUE"Risiken:"COLOR_HEX_WHITE" Erwischt werden durch Beamte", "Annehmen", "Abbrechen");
+                    ShowPlayerDialog(playerid, DIALOG_WDEALER, DIALOG_STYLE_MSGBOX, "Arbeitsamt: Waffendealer", COLOR_HEX_BLUE"Beruf:"COLOR_HEX_WHITE" Waffendealer\n"COLOR_HEX_BLUE"PayDay Gehalt:"COLOR_HEX_WHITE" Unterschiedlich\n"COLOR_HEX_BLUE"Voraussetzungen:"COLOR_HEX_WHITE" Mindestlevel 3\n"COLOR_HEX_BLUE"Job Fahrzeuge:"COLOR_HEX_WHITE" Ja\n"COLOR_HEX_BLUE"Risiken:"COLOR_HEX_WHITE" Erwischt werden durch Beamte", "Annehmen", "Abbrechen");
                     return 1;
                 }
                 if(listitem==3)
@@ -38511,7 +37849,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                         SendClientMessage(playerid, COLOR_RED, "Du hast bereits einen Job.");
                         return 1;
                     }
-                    ShowPlayerDialog(playerid, DIALOG_HURE, DIALOG_STYLE_MSGBOX, "Arbeitsamt: Prostituierte", COLOR_HEX_BLUE"Beruf:"COLOR_HEX_WHITE" Prostituierte\n"COLOR_HEX_BLUE"PayDay Gehalt:"COLOR_HEX_WHITE" Unterschiedlich\n"COLOR_HEX_BLUE"Voraussetzungen:"COLOR_HEX_WHITE" Keine\n"COLOR_HEX_BLUE"Job Fahrzeuge:"COLOR_HEX_WHITE" Nein\n"COLOR_HEX_BLUE"Risiken:"COLOR_HEX_WHITE" Aidsgefahr", "Annehmen", "Abbrechen");
+                    ShowPlayerDialog(playerid, DIALOG_TASCHENDIEB, DIALOG_STYLE_MSGBOX, "Arbeitsamt: Taschendieb", COLOR_HEX_BLUE"Beruf:"COLOR_HEX_WHITE" Taschendieb\n"COLOR_HEX_BLUE"PayDay Gehalt:"COLOR_HEX_WHITE" Unterschiedlich\n"COLOR_HEX_BLUE"Voraussetzungen:"COLOR_HEX_WHITE" Mindestlevel 3\n"COLOR_HEX_BLUE"Job Fahrzeuge:"COLOR_HEX_WHITE" Nein\n"COLOR_HEX_BLUE"Risiken:"COLOR_HEX_WHITE" Erwischt werden durch Beamte", "Annehmen", "Abbrechen");
                     return 1;
                 }
                 if(listitem==4)
@@ -38521,10 +37859,20 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                         SendClientMessage(playerid, COLOR_RED, "Du hast bereits einen Job.");
                         return 1;
                     }
-                    ShowPlayerDialog(playerid, DIALOG_JOBWANTED, DIALOG_STYLE_MSGBOX, "Arbeitsamt: Wanted-Hacker", COLOR_HEX_BLUE"Beruf:"COLOR_HEX_WHITE" Wanted-Hacker\n"COLOR_HEX_BLUE"PayDay Gehalt:"COLOR_HEX_WHITE" Unterschiedlich\n"COLOR_HEX_BLUE"Voraussetzungen:"COLOR_HEX_WHITE" Keine\n"COLOR_HEX_BLUE"Job Fahrzeuge:"COLOR_HEX_WHITE" Nein\n"COLOR_HEX_BLUE"Risiken:"COLOR_HEX_WHITE" Erwischt werden durch Beamte", "Annehmen", "Abbrechen");
+                    ShowPlayerDialog(playerid, DIALOG_HURE, DIALOG_STYLE_MSGBOX, "Arbeitsamt: Prostituierte", COLOR_HEX_BLUE"Beruf:"COLOR_HEX_WHITE" Prostituierte\n"COLOR_HEX_BLUE"PayDay Gehalt:"COLOR_HEX_WHITE" Unterschiedlich\n"COLOR_HEX_BLUE"Voraussetzungen:"COLOR_HEX_WHITE" Keine\n"COLOR_HEX_BLUE"Job Fahrzeuge:"COLOR_HEX_WHITE" Nein\n"COLOR_HEX_BLUE"Risiken:"COLOR_HEX_WHITE" Aidsgefahr", "Annehmen", "Abbrechen");
                     return 1;
                 }
                 if(listitem==5)
+                {
+                    if(Spieler[playerid][pJob] > 0)
+                    {
+                        SendClientMessage(playerid, COLOR_RED, "Du hast bereits einen Job.");
+                        return 1;
+                    }
+                    ShowPlayerDialog(playerid, DIALOG_JOBWANTED, DIALOG_STYLE_MSGBOX, "Arbeitsamt: Wanted-Hacker", COLOR_HEX_BLUE"Beruf:"COLOR_HEX_WHITE" Wanted-Hacker\n"COLOR_HEX_BLUE"PayDay Gehalt:"COLOR_HEX_WHITE" Unterschiedlich\n"COLOR_HEX_BLUE"Voraussetzungen:"COLOR_HEX_WHITE" Keine\n"COLOR_HEX_BLUE"Job Fahrzeuge:"COLOR_HEX_WHITE" Nein\n"COLOR_HEX_BLUE"Risiken:"COLOR_HEX_WHITE" Erwischt werden durch Beamte", "Annehmen", "Abbrechen");
+                    return 1;
+                }
+                if(listitem==6)
                 {
                     if(Spieler[playerid][pJob] > 0)
                     {
@@ -59207,6 +58555,8 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
             }
 
             AddPlayerToPlantArrayData(playerid);
+
+            AddPlayerToPlantArrayDataGang(playerid);
             
             ShowPlayerDialog(playerid, DIALOG_SPAWNMELDUNG, DIALOG_STYLE_MSGBOX, "LyD - Roleplay", "LyD ist ZURÜCK und im Forum findest du einen Eventplan!\nWas für Events, zu welcher Uhrzeit stattfinden, steht im Forum: www.LyD-SAMP.de\n\nProjektdaten:\n\nServer IP: Server.LyD-SAMP.de\nTeamspeak IP: TS.LyD-SAMP.de\nForum Adresse: www.LyD-SAMP.de\n\nSchau täglich auf unserem Forum vorbei, um über Neuigkeiten informiert zu sein!", "OK", "");
             /*
