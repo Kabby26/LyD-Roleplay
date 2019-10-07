@@ -906,7 +906,13 @@ enum {
     THREAD_Pilot,
     THREAD_C4,
     THREAD_NEW_SIM,
-    THREAD_RETURN_VALUE
+    THREAD_MAKEADMIN_CHECK,
+    THREAD_MAKEADMIN,
+    THREAD_FV,
+    THREAD_MAKEBMOD_CHECK,
+    THREAD_MAKEBMOD,
+    THREAD_MAKEFV_CHECK,
+    THREAD_MAKEFV
     //THREAD_SETUP_POST
 }
 
@@ -5242,7 +5248,8 @@ enum SpielerDaten {
     LoadedPremiumWeapons,
     pPilotPoints,
     pFRadarStatus,
-    pC4
+    pC4,
+    pFV
 }
 
 enum e_FahrPruefung {
@@ -7392,6 +7399,7 @@ public OnPlayerConnect(playerid)
     pFPS[playerid] = 0;
 
     Spieler[playerid][pBMOD] = 0;
+    Spieler[playerid][pFV] = 0;
     Spieler[playerid][pLobe] = 0;
     Spieler[playerid][pKoffer] = false;
     Spieler[playerid][pHelm] = 0;
@@ -8388,6 +8396,7 @@ public OnPlayerDisconnect(playerid, reason)
     pFPS[playerid] = 0;
 
     Spieler[playerid][pBMOD] = 0;
+    Spieler[playerid][pFV] = 0;
     Spieler[playerid][pLobe] = 0;
     Spieler[playerid][pKoffer] = false;
     Spieler[playerid][pHelm] = 0;
@@ -8863,7 +8872,8 @@ CMD:delmarker(playerid,params[])
 
 CMD:gebietupgrade(playerid,params[])
 {
-	if(Spieler[playerid][pAdmin] < 4) return ERROR_RANG_MSG(playerid);
+	if(Spieler[playerid][pAdmin] < 3)return ERROR_RANG_MSG(playerid);
+    if(Spieler[playerid][pFV] != 1)return ERROR_RANG_MSG(playerid);
     for(new index;index<MAX_GANGZONES;index++)
     {
         if(!IsPlayerInRangeOfPoint(playerid , 6.0 , g_GangZone[index][GZ_fIconX],g_GangZone[index][GZ_fIconY],g_GangZone[index][GZ_fIconZ])&&index==MAX_GANGZONES-1)
@@ -10823,12 +10833,15 @@ CMD:adminhelp(playerid, params[]){
         SendClientMessage(playerid, COLOR_BLUE, "* MODERATOR *: {FFFFFF}/Gebeskill, /Gcoff, /Inballon, /Givecar, /Adminwarnung, /Bwstrafe, /Bwstrafen, /Setbwstrafe");
         SendClientMessage(playerid, COLOR_BLUE, "* MODERATOR *: {FFFFFF}/Ageld, /Alevel, /Arp, /Offageld, /Lastdmg, /Carowner, /Setkasse");
     }
+    if(Spieler[playerid][pFV] == 1){
+        SendClientMessage(playerid, COLOR_BLUE, "{D818A9}* FRAKTIONSVERWALTER *: {FFFFFF}/Makeleader, /Setzoneowner, /Gebietupgrade, /Awaffenlager, /Fsbreset");
+        SendClientMessage(playerid, COLOR_BLUE, "{D818A9}* FRAKTIONSVERWALTER *: {FFFFFF}/Createfcar, /FCarcolor, /Delfcar");
+    }
     if(Spieler[playerid][pAdmin] >= 4)
     {
-        SendClientMessage(playerid, COLOR_DARKRED, "* ADMINISTRATOR *: {FFFFFF}/Sban, /Confighouse, /Configbiz, /Rauswerfenhotel, /Configtanke, /Makeleader, /Setzoneowner, /Gebietupgrade");
-        SendClientMessage(playerid, COLOR_DARKRED, "* ADMINISTRATOR *: {FFFFFF}/Gebefirma, /Delfirma, /Gebeclub, /Delclub, /Bfreischalten (2. Biz-Schlüssel), /SFreischalten (6. Schlüssel)");
-        SendClientMessage(playerid, COLOR_DARKRED, "* ADMINISTRATOR *: {FFFFFF}/Awaffenlager, /Fsbreset, /Namechange, /Createhouse, /delhouse, /Fixveh, /Gotoad (AirDrop)");
-        SendClientMessage(playerid, COLOR_DARKRED, "* ADMINISTRATOR *: {FFFFFF}/Purge, /Delallgvehs, /Adminbase2, /Createfcar, /FCarcolor");
+        SendClientMessage(playerid, COLOR_DARKRED, "* ADMINISTRATOR *: {FFFFFF}/Sban, /Confighouse, /Configbiz, /Rauswerfenhotel, /Configtanke, /Gebefirma, /Delfirma, /Gebeclub, /Delclub");
+        SendClientMessage(playerid, COLOR_DARKRED, "* ADMINISTRATOR *: {FFFFFF}/Bfreischalten (2. Biz-Schlüssel), /SFreischalten (6. Schlüssel), /Namechange, /Createhouse, /delhouse");
+        SendClientMessage(playerid, COLOR_DARKRED, "* ADMINISTRATOR *: {FFFFFF}/Fixveh, /Gotoad (AirDrop), /Purge, /Delallgvehs, /Adminbase2");
         SendClientMessage(playerid, COLOR_DARKRED, "* Vertretung von Benny *: {FFFFFF}/Creategutschein, /Amotor, /Pwchange, /aunlock, /Givecoins, /Configbiz");
         if(bPurgeEvent) {
             SendClientMessage(playerid, COLOR_DARKRED, "* ADMINISTRATOR PURGE *: {FFFFFF}/PGiveGun, /PGiveHealth, /PGiveArmor");
@@ -10836,11 +10849,11 @@ CMD:adminhelp(playerid, params[]){
     }
     if(Spieler[playerid][pAdmin] >= 5)
     {
-        SendClientMessage(playerid, COLOR_BLUE, "* SERVER MANAGER *: {FFFFFF}/Createaplatz, /Createtanke, /Createhotelroom, /Startlotto, /MakeBMOD, /Adminmaske");
+        SendClientMessage(playerid, COLOR_BLUE, "* SERVER MANAGER *: {FFFFFF}/Createaplatz, /Createtanke, /Createhotelroom, /Startlotto, /MakeBMOD, /MakeFV, /Adminmaske");
     }
     if(Spieler[playerid][pAdmin] >= 6)
     {
-        SendClientMessage(playerid, COLOR_ORANGE, "* PROJEKTLEITER *: {FFFFFF}/Makeadmin, /Gmx, /Event, /Pwchange, /Givecoins, /Vehcolor, /Jailtimeout");
+        SendClientMessage(playerid, COLOR_ORANGE, "* PROJEKTLEITER *: {FFFFFF}/Makeadmin, /Offmakeadmin, /Gmx, /Event, /Pwchange, /Givecoins, /Vehcolor, /Jailtimeout");
         SendClientMessage(playerid, COLOR_ORANGE, "* PROJEKTLEITER *: {FFFFFF}/Debug, /Debugpos, /Tankstand, /Auftanken");
     }
     if(IsPlayerAdmin(playerid))
@@ -18175,7 +18188,8 @@ CMD:spawncar(playerid, params[]) {
 }
 
 CMD:delfcar(playerid,params[]) {
-    if(Spieler[playerid][pAdmin] < 4)return ERROR_RANG_MSG(playerid);
+    if(Spieler[playerid][pAdmin] < 3)return ERROR_RANG_MSG(playerid);
+    if(Spieler[playerid][pFV] != 1)return ERROR_RANG_MSG(playerid);
 	new veh = GetPlayerVehicleID(playerid);
     if(!IsPlayerInVehicle(playerid,veh)) return SendClientMessage(playerid,COLOR_RED,"Du sitzt in keinem Fraktionsfahrzeug.");
     if(FrakCarInfo[veh][f_dbid] == 0 || FrakCarInfo[veh][f_frak] == 0) return SendClientMessage(playerid,COLOR_RED,"Du sitzt in keinem Fraktionsfahrzeug.");
@@ -18210,7 +18224,8 @@ CMD:fpark(playerid,params[]) {
 }
 
 CMD:fcarcolor(playerid,params[]) {
-    if(Spieler[playerid][pAdmin] < 4)return ERROR_RANG_MSG(playerid);
+    if(Spieler[playerid][pAdmin] < 3)return ERROR_RANG_MSG(playerid);
+    if(Spieler[playerid][pFV] != 1)return ERROR_RANG_MSG(playerid);
     if(!IsPlayerInAnyVehicle(playerid))return SendClientMessage(playerid, COLOR_RED, "Du bist in keinem Fahrzeug.");
 	new c1,c2;
 	if(sscanf(params,"ii",c1,c2)) return SendClientMessage(playerid,COLOR_BLUE, INFO_STRING"/FCarcolor [Color 1] [Color 2]");
@@ -18236,7 +18251,8 @@ CMD:fcarcolor(playerid,params[]) {
 
 CMD:createfcar(playerid) {
 	new string[256],i=1;
-    if(Spieler[playerid][pAdmin] < 4)return ERROR_RANG_MSG(playerid);
+    if(Spieler[playerid][pAdmin] < 3)return ERROR_RANG_MSG(playerid);
+    if(Spieler[playerid][pFV] != 1)return ERROR_RANG_MSG(playerid);
     if(IsPlayerInAnyVehicle(playerid))return SendClientMessage(playerid, COLOR_RED, "Du darfst in keinem Fahrzeug sitzen!");
     for(;i<sizeof(factionNames);i++) {
     	if(strlen(string) == 0) { format(string,sizeof(string),"%s\n%s",factionNames[i]); }
@@ -18313,13 +18329,33 @@ CMD:makeadmin(playerid, params[])
     new pID, admid, string[128];
     if (Spieler[playerid][pAdmin] < 6 && !IsPlayerAdmin(playerid)) return ERROR_RANG_MSG(playerid);
     if (sscanf(params, "ui", pID, admid)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING" /Makeadmin [SpielerID/Name] [Admin-Rank]");
-    if (!IsPlayerConnected(playerid)) return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
+    if (!IsPlayerConnected(pID)){
+        return SendClientMessage(playerid, COLOR_RED, "[MAKEADMIN] {FFFFFF}Der Spieler ist nicht online! Benutze /Offmakeadmin [Name]");
+    }
     if (admid >= 0 && admid <= 7) {
         Spieler[pID][pAdmin] = admid;
-        format(string, sizeof(string), "[ADMIN]: %s wurde von %s zum %s ernannt.", GetName(pID), GetName(playerid), GetPlayerAdminRang(pID));
+        format(string, sizeof(string), "[ADMIN]: %s wurde von %s %s zum %s ernannt.", GetName(pID), GetPlayerAdminRang(playerid), GetName(playerid), GetPlayerAdminRang(pID));
         return SendClientMessageToAll(COLOR_DARKRED, string);
     }
 
+    return SendClientMessage(playerid, COLOR_RED, "Der Rank muss zwischen 0 und 7 liegen.");
+}
+
+CMD:offmakeadmin(playerid, params[]){
+    new pID[24], admid, id;
+    if (Spieler[playerid][pAdmin] < 6 && !IsPlayerAdmin(playerid)) return ERROR_RANG_MSG(playerid);
+    if (sscanf(params, "s[24]i", pID, admid)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING" /Offmakeadmin [Name] [Admin-Rank]");
+    if (!sscanf(pID, "u", id) && IsPlayerConnected(id)) return SendClientMessage(playerid, COLOR_RED, "[MAKEADMIN] {FFFFFF}Der Spieler ist zurzeit online. Benutze /Offmakeadmin.");
+    if (admid >= 0 && admid <= 7) {
+        new str[24];
+        format(str, sizeof(str), "%s", pID);
+        SetPVarString(playerid, "MAKEADMINNAME", str);
+        SetPVarInt(playerid, "MAKEADMINRANK", admid);
+        new query[256];
+        format(query, sizeof(query), "SELECT `Name` FROM `accounts` WHERE `Name` = '%s' LIMIT 1", pID);
+        mysql_pquery(query, THREAD_MAKEADMIN_CHECK, playerid, gSQL, MySQLThreadOwner);
+        return 1;
+    }
     return SendClientMessage(playerid, COLOR_RED, "Der Rank muss zwischen 0 und 7 liegen.");
 }
 
@@ -18329,17 +18365,71 @@ CMD:makebmod(playerid, params[])
     if(Spieler[playerid][pAdmin] < 5)return ERROR_RANG_MSG(playerid);
     if(sscanf(params, "ui", pID, bmodid))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Makebmod [SpielerID/Name] [Rank 0-2]");
     if(!IsPlayerConnected(playerid))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
-    if(bmodid >= 0 || bmodid <= 2)
-    {
+    if(bmodid == 0 || bmodid == 2 || bmodid == 1) {
         new bmodname[30];
         if(bmodid == 0){ bmodname="Normalen Spieler";}
         else if(bmodid == 1){ bmodname ="Beschwerdemoderator";}
         else if(bmodid == 2){ bmodname ="Beschwerdemoderator-Leiter";}
         Spieler[pID][pBMOD] = bmodid;
-        format(string, sizeof(string), "%s %s hat %s zum %s ernannt.", GetPlayerAdminRang(playerid), GetName(playerid), GetName(pID), bmodname );
+        format(string, sizeof(string), "[BESCHWERDEMODERATOR] {FFFFFF}%s %s hat %s zum %s ernannt.", GetPlayerAdminRang(playerid), GetName(playerid), GetName(pID), bmodname );
+        SendAdminMessage(COLOR_DARKRED, string);
+        return 1;
+    }
+    return SendClientMessage(playerid, COLOR_RED, "[BESCHWERDEMODERATOR] {FFFFFF}Der Rank muss zwischen 0 und 2 liegen.");
+}
+
+CMD:offmakebmod(playerid, params[]){
+    new pID[24], admid, id;
+    if (Spieler[playerid][pAdmin] < 6 && !IsPlayerAdmin(playerid)) return ERROR_RANG_MSG(playerid);
+    if (sscanf(params, "s[24]i", pID, admid)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING" /Offmakebmod [Name] [0-2]");
+    if (!sscanf(pID, "u", id) && IsPlayerConnected(id)) return SendClientMessage(playerid, COLOR_RED, "[BESCHWERDEMODERATOR] {FFFFFF}Der Spieler ist zurzeit online. Benutze /Offmakebmod.");
+    if(admid == 0 || admid == 2 || admid == 1) {
+        new str[24];
+        format(str, sizeof(str), "%s", pID);
+        SetPVarString(playerid, "MAKEADMINNAME", str);
+        SetPVarInt(playerid, "MAKEADMINRANK", admid);
+        new query[256];
+        format(query, sizeof(query), "SELECT `Name` FROM `accounts` WHERE `Name` = '%s' LIMIT 1", pID);
+        mysql_pquery(query, THREAD_MAKEBMOD_CHECK, playerid, gSQL, MySQLThreadOwner);
+        return 1;
+    }
+    return SendClientMessage(playerid, COLOR_RED, "[BESCHWERDEMODERATOR] {FFFFFF}Der Rank muss zwischen 0 und 2 liegen.");
+}
+
+CMD:makefv(playerid, params[])
+{
+    new pID, fvid, string[128];
+    if(Spieler[playerid][pAdmin] < 5)return ERROR_RANG_MSG(playerid);
+    if(sscanf(params, "ui", pID, fvid))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Makefv [SpielerID/Name] [Rank 0-1]");
+    if(!IsPlayerConnected(playerid))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
+    if(fvid == 0 || fvid == 1)
+    {
+        new bmodname[30];
+        if(fvid == 0){ bmodname="Normalen Spieler";}
+        else if(fvid == 1){ bmodname ="Fraktionsverwalter";}
+        Spieler[pID][pFV] = fvid;
+        format(string, sizeof(string), "[FRAKTIONSVERWALTUNG] {FFFFFF}%s %s hat %s zum %s ernannt.", GetPlayerAdminRang(playerid), GetName(playerid), GetName(pID), bmodname );
         SendAdminMessage(COLOR_DARKRED, string);
     }
     return 1;
+}
+
+CMD:offmakefv(playerid, params[]){
+    new pID[24], admid, id;
+    if (Spieler[playerid][pAdmin] < 6 && !IsPlayerAdmin(playerid)) return ERROR_RANG_MSG(playerid);
+    if (sscanf(params, "s[24]i", pID, admid)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING" /Offmakefv [Name] [0-2]");
+    if (!sscanf(pID, "u", id) && IsPlayerConnected(id)) return SendClientMessage(playerid, COLOR_RED, "[FRAKTIONSVERWALTUNG] {FFFFFF}Der Spieler ist zurzeit online. Benutze /Offmakefv.");
+    if(admid == 0 || admid == 1) {
+        new str[24];
+        format(str, sizeof(str), "%s", pID);
+        SetPVarString(playerid, "MAKEADMINNAME", str);
+        SetPVarInt(playerid, "MAKEADMINRANK", admid);
+        new query[256];
+        format(query, sizeof(query), "SELECT `Name` FROM `accounts` WHERE `Name` = '%s' LIMIT 1", pID);
+        mysql_pquery(query, THREAD_MAKEFV_CHECK, playerid, gSQL, MySQLThreadOwner);
+        return 1;
+    }
+    return SendClientMessage(playerid, COLOR_RED, "[FRAKTIONSVERWALTUNG] {FFFFFF}Der Rank muss zwischen 0 und 1 liegen.");
 }
 
 CMD:spawn(playerid, params[])
@@ -18378,7 +18468,8 @@ CMD:afkick(playerid, params[])
 CMD:makeleader(playerid, params[])
 {
     new pID, frakid, string[128], fname[50];
-    if(Spieler[playerid][pAdmin] < 4)return ERROR_RANG_MSG(playerid);
+    if(Spieler[playerid][pAdmin] < 3)return ERROR_RANG_MSG(playerid);
+    if(Spieler[playerid][pFV] != 1)return ERROR_RANG_MSG(playerid);
     if(sscanf(params, "ui", pID, frakid))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Makeleader [SpielerID/Name] [Frak-ID]");
     if(!IsPlayerConnected(playerid))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
     if(Spieler[pID][pFraktion] > 0)return SendClientMessage(playerid, COLOR_RED, "* Der Spieler ist noch in einer Fraktion. Benutze erst /Afkick");
@@ -30563,13 +30654,13 @@ public OnPlayerResume(playerid, pausedtime) {
 public OnPlayerUpdate(playerid)
 {
     Spieler[playerid][unixUpdate] = gettime();
-    if (Spieler[playerid][bNoDMZone]) { // in DM ZONE
+    /*if (Spieler[playerid][bNoDMZone]) { // in DM ZONE
         new weaponid = GetPlayerWeapon(playerid);
         if (weaponid != 0 && weaponid != 1) {
             SetPlayerArmedWeapon(playerid, 0);
             return 0; // kein sync zulassen
         }
-    }
+    }*/
     //Gears_OnPlayerUpdate(playerid);
     //DriveBy_OnPlayerUpdate(playerid);
 
@@ -44457,6 +44548,7 @@ stock SaveAccount(playerid)
                 `Experte` = %d, \
                 `Lobe` = %d, \
                 `BMOD` = %d, \
+                `FV` = %d, \
                 `Kreditwert` = %d, \
                 `KreditGezahlt` = %d, \
                 `MP3Player` = %d, \
@@ -44472,6 +44564,7 @@ stock SaveAccount(playerid)
                     Spieler[playerid][pExperte],
                     Spieler[playerid][pLobe],
                     Spieler[playerid][pBMOD],
+                    Spieler[playerid][pFV],
                     Spieler[playerid][pKreditwert],
                     Spieler[playerid][pKreditGezahlt],
                     Spieler[playerid][pMP3Player],
@@ -49746,7 +49839,8 @@ stock TreasuryDeposit(money) {
 
 CMD:setzoneowner(playerid, params[]) {
     new zoneid, owner[32];
-    if (Spieler[playerid][pAdmin] < 4) return ERROR_RANG_MSG(playerid);
+    if(Spieler[playerid][pAdmin] < 3)return ERROR_RANG_MSG(playerid);
+    if(Spieler[playerid][pFV] != 1)return ERROR_RANG_MSG(playerid);
     if (sscanf(params, "is[32]", zoneid, owner)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING" /setzoneowner [Gangzone ID] [Fraktionsname]");
     if (zoneid < 0 || zoneid >= MAX_GANGZONES) return SendClientMessage(playerid, COLOR_RED, "Keine gültige GangZone-ID.");
     if (g_GangZone[zoneid][GZ_iStatus] == 1) return SendClientMessage(playerid, COLOR_RED, "In dem Gebiet findet gerade ein Gangfight statt.");
@@ -51956,6 +52050,24 @@ stock GetPlayerAdminRang(playerid) {
     return adminName;
 }
 
+stock GetPlayerAdminRangByID(id) {
+    new adminName[30] = "";
+    switch (id) {
+        case 0: { adminName = "Normaler Spieler"; }
+        case 1: { adminName = "Supporter"; }
+        case 2: { adminName = "Event-Supporter"; }
+        case 3: { adminName = "Moderator"; }
+        case 4: { adminName = "Administrator"; }
+        case 5: { adminName = "Server-Manager"; }
+        case 6: { adminName = "Projektleiter"; }
+        case 7: { adminName = "Entwickler"; }
+
+        default: {}
+    }
+
+    return adminName;
+}
+
 COMMAND:delfraksperre(playerid,params[]) {
     new
         sName[MAX_PLAYER_NAME],
@@ -52819,13 +52931,13 @@ public OnPlayerEnterDynamicArea(playerid, areaid) {
     //printf("OnPlayerEnterDynamicArea(%d,%d)",playerid,areaid);
     //if(Gate_OnPlayerEnterDynamicArea(playerid,areaid)) return 1;
     Gang_OnPlayerEnterDynamicArea(playerid,areaid);
-    for(new i ; i < sizeof(g_aiNoDM) ; i++) {
+    /*for(new i ; i < sizeof(g_aiNoDM) ; i++) {
         if( g_aiNoDM[i] == areaid) {
             TextDrawShowForPlayer(playerid,tdNoDM);
             Spieler[playerid][bNoDMZone] = true;
             break;
         }
-    }
+    }*/
     if( areaid == g_iAlhambra ) {
         PlayAudioStreamForPlayer(playerid,SOUND_ALHAMBRA,0.0,0.0,0.0,60.0);
     }
@@ -53012,13 +53124,13 @@ public OnPlayerLeaveDynamicArea(playerid, areaid) {
             }
         }
     }
-    for(new i ; i < sizeof(g_aiNoDM) ; i++) {
+    /*for(new i ; i < sizeof(g_aiNoDM) ; i++) {
         if( g_aiNoDM[i] == areaid) {
             TextDrawHideForPlayer(playerid,tdNoDM);
             Spieler[playerid][bNoDMZone] = false;
             break;
         }
-    }
+    }*/
     return 1;
 }
 
@@ -58998,6 +59110,10 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
 			mysql_format(connectionHandle, queryPfand, sizeof(queryPfand), "SELECT `Pfand` FROM `accounts` WHERE `Name` = '%s' ", NameCoins);
 			mysql_pquery(queryPfand,THREAD_PFAND,playerid,gSQL,MySQLThreadOwner);
 
+            new queryFV[128];
+			mysql_format(connectionHandle, queryFV, sizeof(queryFV), "SELECT `FV` FROM `accounts` WHERE `Name` = '%s' ", NameCoins);
+			mysql_pquery(queryFV,THREAD_FV,playerid,gSQL,MySQLThreadOwner);
+
             cache_get_row(0, 137, Spieler[playerid][pMarriageName], connectionHandle);
             Spieler[playerid][pAdventMin] = cache_get_row_int(0,143,connectionHandle);
             Spieler[playerid][pMustUseAC] = cache_get_row_int(0, 144, connectionHandle);
@@ -60259,6 +60375,117 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
         DeletePVar(extraid, "GIVECOINS.AMOUNT");
         return 1;
     }
+    else if( resultid == THREAD_MAKEADMIN_CHECK) {
+        if (!cache_get_row_count(connectionHandle)) {
+            DeletePVar(extraid, "MAKEADMINNAME");
+            DeletePVar(extraid, "MAKEADMINRANK");
+            return SendClientMessage(extraid, COLOR_RED, "[INFO] {FFFFFF}Der Spieler existiert nicht.");
+        }
+        new str[24];
+        GetPVarString(extraid, "MAKEADMINNAME", str, sizeof(str));
+        new adminvar = GetPVarInt(extraid, "MAKEADMINRANK");
+
+        if (isnull(str)) {
+            DeletePVar(extraid, "MAKEADMINNAME");
+            DeletePVar(extraid, "MAKEADMINRANK");
+            return SendClientMessage(extraid, COLOR_RED, "[INFO] {FFFFFF}Es ist ein Fehler aufgetreten.");
+        }
+
+        new query1[256];
+        format(query1, sizeof(query1), "UPDATE `accounts` SET `Admin` = %d WHERE `Name` = '%s'", adminvar, str);
+        mysql_pquery(query1, THREAD_MAKEADMIN, extraid, gSQL, MySQLThreadOwner);
+
+    }
+    else if( resultid == THREAD_MAKEADMIN ) {
+
+        new str[24];
+        GetPVarString(extraid, "MAKEADMINNAME", str, sizeof(str));
+        new adminvar = GetPVarInt(extraid, "MAKEADMINRANK");
+
+        new string[128];
+        format(string, sizeof(string), "[ADMIN]: %s wurde von %s %s zum %s ernannt.", str,  GetPlayerAdminRang(extraid), GetName(extraid), GetPlayerAdminRangByID(adminvar));
+        SendClientMessageToAll(COLOR_DARKRED, string);
+
+        DeletePVar(extraid, "MAKEADMINNAME");
+        DeletePVar(extraid, "MAKEADMINRANK");
+    }
+    else if( resultid == THREAD_MAKEBMOD_CHECK) {
+        if (!cache_get_row_count(connectionHandle)) {
+            DeletePVar(extraid, "MAKEADMINNAME");
+            DeletePVar(extraid, "MAKEADMINRANK");
+            return SendClientMessage(extraid, COLOR_RED, "[INFO] {FFFFFF}Der Spieler existiert nicht.");
+        }
+        new str[24];
+        GetPVarString(extraid, "MAKEADMINNAME", str, sizeof(str));
+        new adminvar = GetPVarInt(extraid, "MAKEADMINRANK");
+
+        if (isnull(str)) {
+            DeletePVar(extraid, "MAKEADMINNAME");
+            DeletePVar(extraid, "MAKEADMINRANK");
+            return SendClientMessage(extraid, COLOR_RED, "[INFO] {FFFFFF}Es ist ein Fehler aufgetreten.");
+        }
+
+        new query1[256];
+        format(query1, sizeof(query1), "UPDATE `accounts` SET `BMOD` = %d WHERE `Name` = '%s'", adminvar, str);
+        mysql_pquery(query1, THREAD_MAKEBMOD, extraid, gSQL, MySQLThreadOwner);
+
+    }
+    else if( resultid == THREAD_MAKEBMOD ) {
+
+        new str[24];
+        GetPVarString(extraid, "MAKEADMINNAME", str, sizeof(str));
+        new adminvar = GetPVarInt(extraid, "MAKEADMINRANK");
+
+        new bmodname[30];
+        if(adminvar == 0){ bmodname="Normalen Spieler";}
+        else if(adminvar == 1){ bmodname ="Beschwerdemoderator";}
+        else if(adminvar == 2){ bmodname ="Beschwerdemoderator-Leiter";}
+
+        new string[128];
+        format(string, sizeof(string), "[BESCHWERDEMODERATOR] {FFFFFF}%s %s hat %s zum %s ernannt.", GetPlayerAdminRang(extraid), GetName(extraid), str, bmodname );
+        SendAdminMessage(COLOR_DARKRED, string);
+
+        DeletePVar(extraid, "MAKEADMINNAME");
+        DeletePVar(extraid, "MAKEADMINRANK");
+    }
+    else if( resultid == THREAD_MAKEFV_CHECK) {
+        if (!cache_get_row_count(connectionHandle)) {
+            DeletePVar(extraid, "MAKEADMINNAME");
+            DeletePVar(extraid, "MAKEADMINRANK");
+            return SendClientMessage(extraid, COLOR_RED, "[INFO] {FFFFFF}Der Spieler existiert nicht.");
+        }
+        new str[24];
+        GetPVarString(extraid, "MAKEADMINNAME", str, sizeof(str));
+        new adminvar = GetPVarInt(extraid, "MAKEADMINRANK");
+
+        if (isnull(str)) {
+            DeletePVar(extraid, "MAKEADMINNAME");
+            DeletePVar(extraid, "MAKEADMINRANK");
+            return SendClientMessage(extraid, COLOR_RED, "[INFO] {FFFFFF}Es ist ein Fehler aufgetreten.");
+        }
+
+        new query1[256];
+        format(query1, sizeof(query1), "UPDATE `accounts` SET `FV` = %d WHERE `Name` = '%s'", adminvar, str);
+        mysql_pquery(query1, THREAD_MAKEFV, extraid, gSQL, MySQLThreadOwner);
+
+    }
+    else if( resultid == THREAD_MAKEFV ) {
+
+        new str[24];
+        GetPVarString(extraid, "MAKEADMINNAME", str, sizeof(str));
+        new adminvar = GetPVarInt(extraid, "MAKEADMINRANK");
+
+        new bmodname[30];
+        if(adminvar == 0){ bmodname="Normalen Spieler";}
+        else if(adminvar == 1){ bmodname ="Fraktionsverwalter";}
+
+        new string[128];
+        format(string, sizeof(string), "[FRAKTIONSVERWALTUNG] {FFFFFF}%s %s hat %s zum %s ernannt.", GetPlayerAdminRang(extraid), GetName(extraid), str, bmodname );
+        SendAdminMessage(COLOR_DARKRED, string);
+
+        DeletePVar(extraid, "MAKEADMINNAME");
+        DeletePVar(extraid, "MAKEADMINRANK");
+    }
     else if( resultid == THREAD_OAFKICK ) {
 
     }
@@ -60516,14 +60743,6 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
 	    	Spieler[extraid][pCoins] = coinanzahl;
 			i++;
 		}
-	}else if(resultid == THREAD_RETURN_VALUE){
-        new returnvar;
-	    new i, rows = cache_get_row_count(connectionHandle);
-	    while( i < rows ) {
-	    	returnvar = cache_get_field_content_int(i,"userPremium", connectionHandle);
-			i++;
-		}
-        return returnvar;
     }else if(resultid == THREAD_SpiceSamen){
 		new SamenPunkteAnzahl;
 	    new i, rows = cache_get_row_count(connectionHandle);
@@ -60569,6 +60788,15 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
 	    while( i < rows) {
 	        pfandanzahl = cache_get_field_content_int(i,"Pfand", connectionHandle);
 	        Spieler[extraid][pPfand] = pfandanzahl;
+	        i++;
+	    }
+	}
+    else if(resultid == THREAD_FV) {
+	    new fv;
+	    new i, rows = cache_get_row_count(connectionHandle);
+	    while( i < rows) {
+	        fv = cache_get_field_content_int(i,"FV", connectionHandle);
+	        Spieler[extraid][pFV] = fv;
 	        i++;
 	    }
 	}
@@ -61702,7 +61930,6 @@ COMMAND:finanzen(playerid, params[]) {
     SCMFormatted(giveid, COLOR_YELLOW, "Finanzen von: {FFFFFF}%s", GetName(playerid));
     SCMFormatted(giveid, COLOR_YELLOW, "Bargeld: {FFFFFF}$%s", AddDelimiters(GetPlayerMoney(playerid)));
     SCMFormatted(giveid, COLOR_YELLOW, "Kontostand: {FFFFFF}$%s", AddDelimiters(Spieler[playerid][pBank]));
-    //SCMFormatted(giveid, COLOR_YELLOW, "Coins: {FFFFFF}%s", AddDelimiters(Spieler[playerid][pCoins]));
     SendClientMessage(giveid, COLOR_GREEN, "=========================");
     return 1;
 }
@@ -69699,7 +69926,8 @@ COMMAND:arp(playerid,params[]) {
 }
 
 CMD:awaffenlager(playerid) {
-    if (Spieler[playerid][pAdmin] < 4) return ERROR_RANG_MSG(playerid);
+    if(Spieler[playerid][pAdmin] < 3)return ERROR_RANG_MSG(playerid);
+    if(Spieler[playerid][pFV] != 1)return ERROR_RANG_MSG(playerid);
     new dialogText[256];
     dialogText = "Fraktion\tWaffenteile\n";
     for (new i = 0; i < g_iWaffenLager; i++) format(dialogText, sizeof(dialogText), "%s%s\t%s Stück\n", dialogText, GetFactionName(g_WaffenLager[i][WL_iFraktion]), AddDelimiters(g_WaffenLager[i][WL_iWaffenTeile]));
@@ -69707,7 +69935,8 @@ CMD:awaffenlager(playerid) {
 }
 
 CMD:fsbreset(playerid, params[]) {
-    if (Spieler[playerid][pAdmin] < 4) return ERROR_RANG_MSG(playerid);
+    if(Spieler[playerid][pAdmin] < 3)return ERROR_RANG_MSG(playerid);
+    if(Spieler[playerid][pFV] != 1)return ERROR_RANG_MSG(playerid);
     new fraktion;
     if (sscanf(params, "d", fraktion) || fraktion < 0 || fraktion > sizeof(factionNames)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING "/Fsbreset [Fraktions-ID]");
     
