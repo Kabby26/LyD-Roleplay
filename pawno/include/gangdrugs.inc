@@ -190,14 +190,12 @@ public Pulse_Drogengang_pflanzen() {
         if (g_Drogengang_pflanzen[i][DP_iFortschritt] >= (DROGENgang_pflaNZE_REIF + DROGENgang_pflaNZE_UEBERREIF)) {
             DestroyDrogengang_pflanze(i);
             g_Drogengang_pflanzenCount--;
-            //SendFraktionMessage(15, COLOR_ORANGE, "Eine Drogenpflanze ist eingegangen.");
         }
         else if (g_Drogengang_pflanzen[i][DP_iFortschritt] < DROGENgang_pflaNZE_REIF) {
             g_Drogengang_pflanzen[i][DP_iWasser]--;
             if (g_Drogengang_pflanzen[i][DP_iWasser] <= 0) {
                 DestroyDrogengang_pflanze(i);
                 g_Drogengang_pflanzenCount--;
-                //SendFraktionMessage(15, COLOR_ORANGE, "Eine Drogenpflanze ist vertrocknet.");
             }
         }
 
@@ -251,7 +249,6 @@ COMMAND:gangpflanzen(playerid, params[]) {
         format(message, sizeof(message), "Member %s hat eine Drogenpflanze gelöscht.", GetName(playerid));*/
         Drogengang_pflanzenFeuerLoes(gang_pflanze);
         return 1;
-        //return SendFraktionMessage(15, COLOR_YELLOW, message);
     }
 	
     if (!strcmp(entry, "verbrennen", true)) {
@@ -263,7 +260,6 @@ COMMAND:gangpflanzen(playerid, params[]) {
         format(message, sizeof(message), "Member %s hat eine Drogenpflanze zerstoert.", GetName(playerid));*/
         SetDrogengang_pflanzenOnFire(gang_pflanze);
         return 1;
-        //return SendFraktionMessage(15, COLOR_YELLOW, message);
     }
 
     /*if (!strcmp(entry, "suchen", true)) {
@@ -291,16 +287,16 @@ COMMAND:gangpflanzen(playerid, params[]) {
         if (g_Drogengang_pflanzenCount >= 200) return SendClientMessage(playerid, COLOR_RED, "Es sind bereits 200 Drogenpflanzen angebaut.");
         new gang_pflanze = GetClosestDrogengang_pflanze(playerid); 
         if (gang_pflanze != -1) return SendClientMessage(playerid, COLOR_RED, "Hier ist bereits eine Drogenpflanze.");
-        if (Spieler[playerid][pDrogenSamen] < 1) return SendClientMessage(playerid, COLOR_RED, "Du besitzt keine Samen, um eine Drogenpflanze anzubauen.");
+        if (Spieler[playerid][pGangDrogenSamen] < 1) return SendClientMessage(playerid, COLOR_RED, "Du besitzt keine Samen, um eine Drogenpflanze anzubauen.");
 
         new Float:x, Float:y, Float:z;
         GetPlayerPos(playerid, x, y, z);
         if (!CreateDrogengang_pflanzen(playerid, x, y, z)) return SendClientMessage(playerid, COLOR_RED, "Du kannst gerade keine gang_pflanze anbauen.");
-        Spieler[playerid][pDrogenSamen]--;
+        Spieler[playerid][pGangDrogenSamen]--;
         new message[145];
-        if (Spieler[playerid][pDrogenSamen] == 0) message = "Eine Drogenpflanze wird gezogen. Du hast {FFFFFF}keine {FFFF00}Samen mehr übrig.";
-        else if (Spieler[playerid][pDrogenSamen] == 1) message = "Eine Drogenpflanze wird gezogen. Du hast noch {FFFFFF}einen {FFFF00}Samen übrig.";
-        else format(message, sizeof(message), "Eine Drogenpflanze wird gezogen. Du hast noch {FFFFFF}%d {FFFF00}Samen übrig.", Spieler[playerid][pDrogenSamen]);
+        if (Spieler[playerid][pGangDrogenSamen] == 0) message = "Eine Drogenpflanze wird gezogen. Du hast {FFFFFF}keine {FFFF00}Samen mehr übrig.";
+        else if (Spieler[playerid][pGangDrogenSamen] == 1) message = "Eine Drogenpflanze wird gezogen. Du hast noch {FFFFFF}einen {FFFF00}Samen übrig.";
+        else format(message, sizeof(message), "Eine Drogenpflanze wird gezogen. Du hast noch {FFFFFF}%d {FFFF00}Samen übrig.", Spieler[playerid][pGangDrogenSamen]);
         SendClientMessage(playerid, COLOR_YELLOW, message);
         SetTimerEx("TogglePlayerControllableEx", 1000, false, "dd", playerid, true);
         FreezePlayer(playerid);

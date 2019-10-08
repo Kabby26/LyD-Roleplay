@@ -372,6 +372,41 @@ COMMAND:nimmspice(playerid,params[]) {
         SendClientMessage(playerid,COLOR_RED,"Du musst noch einen Moment warten, bis du wieder Spice nehmen kannst.");
         return 1;
     }
+
+    //GF Check
+    new playerzone = GetPlayerGangZone(playerid);
+    new bool:isGebiet = false;
+
+    if(playerzone != -1){
+        if(g_GangZone[playerzone][GZ_iStatus] == 1){
+            if(Spieler[playerid][pFraktion] == g_GangZone[playerzone][GZ_iAttacker]){
+                for(new i; i < MAX_PLAYERS; i++){
+                    if(Spieler[i][pFraktion] == g_GangZone[playerzone][GZ_iOwner]){
+                        new gegnetzone = GetPlayerGangZone(i);
+                        if(playerzone == gegnetzone){
+                            //SendClientMessage(playerid, COLOR_RED, "GEGNER IM GEBIET!!!");
+                            isGebiet = true;
+                        }
+                    }
+                }
+            }else if(Spieler[playerid][pFraktion] == g_GangZone[playerzone][GZ_iOwner]){
+                for(new i; i < MAX_PLAYERS; i++){
+                    if(Spieler[i][pFraktion] == g_GangZone[playerzone][GZ_iAttacker]){
+                        new gegnetzone = GetPlayerGangZone(i);
+                        if(playerzone == gegnetzone){
+                            //SendClientMessage(playerid, COLOR_RED, "GEGNER IM GEBIET!!!");
+                            isGebiet = true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    if(isGebiet == true) return SendClientMessage(playerid, COLOR_DARKRED, "[GANGFIGHT] Es befinden sich noch Gegner im Gebiet!");
+
+    //GF Check Ende
+
     new
         Float:armor;
     GetPlayerArmour(playerid,armor);
@@ -399,7 +434,11 @@ COMMAND:nimmspice(playerid,params[]) {
     new Float:x, Float:y, Float:z;
     new string[128];
     GetPlayerPos(playerid, x,y,z);
-    format(string, sizeof(string), "* %s nimmt Spice zu sich.", GetName(playerid));
+    if(Spieler[playerid][bMaske]){
+        format(string, sizeof(string), "* Ein Maskierter nimmt Spice zu sich.");
+    }else{
+        format(string, sizeof(string), "* %s nimmt Spice zu sich.", GetName(playerid));
+    }
     SendRoundMessage(x,y,z, COLOR_PURPLE, string);
 
     return 1;

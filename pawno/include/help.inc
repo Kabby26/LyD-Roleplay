@@ -317,7 +317,7 @@ new Job24Help[1][]= {
     {"hotdogverkaufen"}
 };
 
-new Frak1Help[67][]= {
+new Frak1Help[68][]= {
     {"clear"},
     {"pdclear"},
     {"dienst"},
@@ -384,10 +384,11 @@ new Frak1Help[67][]= {
     {"vrk"},
     {"hsirene"},
     {"pein"},
-    {"ermitteln"}
+    {"ermitteln"},
+    {"findfcars"}
 };
 
-new Frak3Help[18][]= {
+new Frak3Help[19][]= {
     {"dienst"},
     {"aufnehmen"},
     {"deskwb"},
@@ -405,10 +406,11 @@ new Frak3Help[18][]= {
     {"rtwsirene"},
     {"meinsatz"},
     {"bk"},
-    {"dtasche"}
+    {"dtasche"},
+    {"findfcars"}
 };
 
-new Frak4Help[10][]= {
+new Frak4Help[11][]= {
     {"dienst"},
     {"news"},
     {"starteventpoint"},
@@ -418,10 +420,11 @@ new Frak4Help[10][]= {
     {"Kassenstand"},
     {"mitglieder"},
     {"sanagarage"},
-    {"fskin"}
+    {"fskin"},
+    {"findfcars"}
 };
 
-new Frak5Help[40][]= {
+new Frak5Help[41][]= {
     {"dienst"},
     {"ov"},
     {"ogate"},
@@ -461,10 +464,11 @@ new Frak5Help[40][]= {
     {"fc"},
     {"m"},
     {"ovk"},
-    {"bk"}
+    {"bk"},
+    {"findfcars"}
 };
 
-new FrakGangHelp[29][]= {
+new FrakGangHelp[34][]= {
     {"gangwaffen"},
     {"gheilen"},
     {"mitglieder"},
@@ -493,10 +497,15 @@ new FrakGangHelp[29][]= {
     {"swinfo"},
     {"schutzgeld"},
     {"schutzgeldabbrechen"},
-    {"gangpflanzen"}
+    {"gangpflanzen"},
+    {"findfcars"},
+    {"samenpaketeinladen"},
+    {"samenpaketentladen"},
+    {"samenlagerpunkt"},
+    {"selldrogen"}
 };
 
-new Frak14Help[17][]= {
+new Frak14Help[18][]= {
     {"accept hitman"},
     {"hitmanwaffen"},
     {"gheilen"},
@@ -513,10 +522,11 @@ new Frak14Help[17][]= {
     {"knastbefreien"},
     {"agtor"},
     {"atorhacken"},
-    {"acceptag"}
+    {"acceptag"},
+    {"findfcars"}
 };
 
-new Frak15Help[19][]= {
+new Frak15Help[20][]= {
     {"ninowaffen"},
     {"gheilen"},
     {"fsafebox"},
@@ -527,7 +537,7 @@ new Frak15Help[19][]= {
     {"augenbinde"},
     {"samen"},
     {"samenpunkte"},
-    {"sellspice"},
+    {"sellkrauter"},
     {"kasse"},
     {"kassenstand"},
     {"mitglieder"},
@@ -535,10 +545,11 @@ new Frak15Help[19][]= {
     {"paketeinladen"},
     {"storepakete"},
     {"storesamen"},
-    {"samenlagerstatus"}
+    {"samenlagerstatus"},
+    {"findfcars"}
 };
 
-new Frak19Help[11][]= {
+new Frak19Help[12][]= {
     {"fc"},
     {"kasse"},
     {"kassenstand"},
@@ -549,7 +560,8 @@ new Frak19Help[11][]= {
     {"terrorwaffen"},
     {"entfesseln"},
     {"kidnap"},
-    {"terrorgate"}
+    {"terrorgate"},
+    {"findfcars"}
 };
 
 new const StandartHelpText[36][] = {
