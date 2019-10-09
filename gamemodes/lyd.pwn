@@ -17653,26 +17653,48 @@ CMD:supauto(playerid, params[])
 CMD:makeadmin(playerid, params[])
 {
     new pID, admid, string[128];
-    if (Spieler[playerid][pAdmin] < 6 && !IsPlayerAdmin(playerid)) return ERROR_RANG_MSG(playerid);
+    if (Spieler[playerid][pAdmin] < 4) return ERROR_RANG_MSG(playerid);
     if (sscanf(params, "ui", pID, admid)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING" /Makeadmin [SpielerID/Name] [Admin-Rank]");
     if (!IsPlayerConnected(pID)){
-        return SendClientMessage(playerid, COLOR_RED, "[MAKEADMIN] {FFFFFF}Der Spieler ist nicht online! Benutze /Offmakeadmin [Name]");
+        return SendClientMessage(playerid, COLOR_RED, "[MAKEADMIN] {FFFFFF}Der Spieler ist nicht online! Benutze /Offmakeadmin [Name] [Admin-Rank]");
     }
-    if (admid >= 0 && admid <= 7) {
+
+    if (admid >= 0 && admid <= 3) {
         Spieler[pID][pAdmin] = admid;
         format(string, sizeof(string), "[ADMIN]: %s wurde von %s %s zum %s ernannt.", GetName(pID), GetPlayerAdminRang(playerid), GetName(playerid), GetPlayerAdminRang(pID));
         return SendClientMessageToAll(COLOR_DARKRED, string);
     }
 
-    return SendClientMessage(playerid, COLOR_RED, "Der Rank muss zwischen 0 und 7 liegen.");
+    if (admid >= 0 && admid <= 7 && Spieler[playerid][pAdmin] >= 6) {
+        Spieler[pID][pAdmin] = admid;
+        format(string, sizeof(string), "[ADMIN]: %s wurde von %s %s zum %s ernannt.", GetName(pID), GetPlayerAdminRang(playerid), GetName(playerid), GetPlayerAdminRang(pID));
+        return SendClientMessageToAll(COLOR_DARKRED, string);
+    }else{
+        SendClientMessage(playerid, COLOR_RED, "[MAKEADMIN] {FFFFFF}Du nur maximal den Adminrang 3 setzen!");
+        return 1;
+    }
+
+    //return SendClientMessage(playerid, COLOR_RED, "Der Rank muss zwischen 0 und 7 liegen.");
 }
 
 CMD:offmakeadmin(playerid, params[]){
     new pID[24], admid, id;
-    if (Spieler[playerid][pAdmin] < 6 && !IsPlayerAdmin(playerid)) return ERROR_RANG_MSG(playerid);
+    if (Spieler[playerid][pAdmin] < 4) return ERROR_RANG_MSG(playerid);
     if (sscanf(params, "s[24]i", pID, admid)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING" /Offmakeadmin [Name] [Admin-Rank]");
     if (!sscanf(pID, "u", id) && IsPlayerConnected(id)) return SendClientMessage(playerid, COLOR_RED, "[MAKEADMIN] {FFFFFF}Der Spieler ist zurzeit online. Benutze /Offmakeadmin.");
-    if (admid >= 0 && admid <= 7) {
+    
+    if (admid >= 0 && admid <= 3) {
+        new str[24];
+        format(str, sizeof(str), "%s", pID);
+        SetPVarString(playerid, "MAKEADMINNAME", str);
+        SetPVarInt(playerid, "MAKEADMINRANK", admid);
+        new query[256];
+        format(query, sizeof(query), "SELECT `Name` FROM `accounts` WHERE `Name` = '%s' LIMIT 1", pID);
+        mysql_pquery(query, THREAD_MAKEADMIN_CHECK, playerid, gSQL, MySQLThreadOwner);
+        return 1;
+    }
+
+    if (admid >= 0 && admid <= 7 && Spieler[playerid][pAdmin] >= 6) {
         new str[24];
         format(str, sizeof(str), "%s", pID);
         SetPVarString(playerid, "MAKEADMINNAME", str);
@@ -17688,7 +17710,7 @@ CMD:offmakeadmin(playerid, params[]){
 CMD:makebmod(playerid, params[])
 {
     new pID, bmodid, string[128];
-    if(Spieler[playerid][pAdmin] < 5)return ERROR_RANG_MSG(playerid);
+    if(Spieler[playerid][pAdmin] < 4)return ERROR_RANG_MSG(playerid);
     if(sscanf(params, "ui", pID, bmodid))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Makebmod [SpielerID/Name] [Rank 0-2]");
     if(!IsPlayerConnected(playerid))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
     if(bmodid == 0 || bmodid == 2 || bmodid == 1) {
@@ -17706,7 +17728,7 @@ CMD:makebmod(playerid, params[])
 
 CMD:offmakebmod(playerid, params[]){
     new pID[24], admid, id;
-    if (Spieler[playerid][pAdmin] < 6 && !IsPlayerAdmin(playerid)) return ERROR_RANG_MSG(playerid);
+    if (Spieler[playerid][pAdmin] < 4) return ERROR_RANG_MSG(playerid);
     if (sscanf(params, "s[24]i", pID, admid)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING" /Offmakebmod [Name] [0-2]");
     if (!sscanf(pID, "u", id) && IsPlayerConnected(id)) return SendClientMessage(playerid, COLOR_RED, "[BESCHWERDEMODERATOR] {FFFFFF}Der Spieler ist zurzeit online. Benutze /Offmakebmod.");
     if(admid == 0 || admid == 2 || admid == 1) {
@@ -17725,7 +17747,7 @@ CMD:offmakebmod(playerid, params[]){
 CMD:makefv(playerid, params[])
 {
     new pID, fvid, string[128];
-    if(Spieler[playerid][pAdmin] < 5)return ERROR_RANG_MSG(playerid);
+    if(Spieler[playerid][pAdmin] < 4)return ERROR_RANG_MSG(playerid);
     if(sscanf(params, "ui", pID, fvid))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Makefv [SpielerID/Name] [Rank 0-1]");
     if(!IsPlayerConnected(playerid))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
     if(fvid == 0 || fvid == 1)
@@ -17742,7 +17764,7 @@ CMD:makefv(playerid, params[])
 
 CMD:offmakefv(playerid, params[]){
     new pID[24], admid, id;
-    if (Spieler[playerid][pAdmin] < 6 && !IsPlayerAdmin(playerid)) return ERROR_RANG_MSG(playerid);
+    if (Spieler[playerid][pAdmin] < 4) return ERROR_RANG_MSG(playerid);
     if (sscanf(params, "s[24]i", pID, admid)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING" /Offmakefv [Name] [0-2]");
     if (!sscanf(pID, "u", id) && IsPlayerConnected(id)) return SendClientMessage(playerid, COLOR_RED, "[FRAKTIONSVERWALTUNG] {FFFFFF}Der Spieler ist zurzeit online. Benutze /Offmakefv.");
     if(admid == 0 || admid == 1) {

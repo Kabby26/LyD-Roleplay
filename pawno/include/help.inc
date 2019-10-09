@@ -924,13 +924,18 @@ new AdministratorHelp[23][]= {
     {"PGiveArmor"}
 };
 
-new VertretungBennyHelp[6][]= {
+new VertretungBennyHelp[11][]= {
     {"Creategutschein"},
     {"Amotor"},
     {"Pwchange"},
     {"Aunlock"},
     {"Givecoins"},
-    {"Configbiz"}
+    {"Configbiz"},
+    {"Makeadmin (0-3)"},
+    {"Makebmod"},
+    {"Offmakebmod"},
+    {"Makefv"},
+    {"Offmakefv"}
 };
 
 new ManagerHelp[7][]= {
