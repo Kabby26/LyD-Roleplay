@@ -51,12 +51,12 @@ hook OnPlayerDisconnect(playerid, reason) {
     return 1;
 }
 
-hook OnGameModeInit() {
+/*hook OnGameModeInit() {
     for (new i = 0; i < sizeof(seedPoints); i++) {
         CreateDynamicPickup(1279, 1, seedPoints[i][SEED_POINT_fX], seedPoints[i][SEED_POINT_fY], seedPoints[i][SEED_POINT_fZ], 0);
         CreateDynamic3DTextLabel("Spice Drogensamen\n" COLOR_HEX_WHITE "Tippe /Getsamen", COLOR_YELLOW, seedPoints[i][SEED_POINT_fX], seedPoints[i][SEED_POINT_fY], seedPoints[i][SEED_POINT_fZ], 15.0);
     }
-}
+}*/
 
 // Custom functions
 

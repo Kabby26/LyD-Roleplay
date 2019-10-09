@@ -742,6 +742,7 @@ enum {
     THREAD_BAN,
     THREAD_IPBAN,
     THREAD_MITGLIEDER,
+    THREAD_MITGLIEDER_AUSWAHL,
     THREAD_ACCEPTMARRIAGE,
     THREAD_CHECK_SECURECODE,
     THREAD_SET_SECURECODE,
@@ -2393,6 +2394,9 @@ stock bool:IsTUVNeeded(distance) {
 #define     DIALOG_AHELP 1452
 
 #define     DIALOG_FINDFCAR 1453
+#define     DIALOG_MEMBER_RESULT 1454
+#define     DIALOG_MEMBER_RANK 1455
+#define     DIALOG_MEMBER_LOHN 1456
 
 #define     KEIN_KENNZEICHEN    "KEINE PLAKETTE"
 
@@ -3342,7 +3346,7 @@ enum {
 #define BANKRAUB_ZEIT (40*60)
 new g_tPulseBank, g_unixBankraub, g_tPulseBankPosition, g_iBankraubStatus= Bankraub_Bereit, g_aiVehicleSirene[MAX_VEHICLES][4];
 
-#define NINEDEMONSROB_ZEIT (40*60)
+#define NINEDEMONSROB_ZEIT (180*60)
 new g_tPulseND, g_unixNDRob, g_tPulseRobPosition, g_iNDRobStatus= Bankraub_Bereit;
 
 new FischNamen[8][64] = {
@@ -3389,7 +3393,8 @@ enum e_FraktionSafeBox {
     FSB_iWantedcodes,
     FSB_iSpice,
     FSB_iKrauter,
-    FSB_iGSamen
+    FSB_iGSamen,
+    FSB_iSprit
 }
 
 new g_FraktionsSafeBox[22][e_FraktionSafeBox];
@@ -5168,7 +5173,7 @@ public MinuteTimer(playerid) {
 	       	}
 		}
 	    if(c > 1){//Mindestens 1 Medic online
-			new brandid = Random(MAX_HOUSES);
+			new brandid = RandomEx(1, MAX_HOUSES);
 			if(brandid == 0){
 			    //SendClientMessageToAll(COLOR_RED, "** DEBUG: Hausnummer 0");
 			}else if(strcmp(Haus[brandid][hBesitzer],"Niemand",true)==0){
@@ -5854,6 +5859,9 @@ public OnGameModeInit2() {
 	CreateDynamicPickup(19197, 1, 286.14,-40.63,1001.52, 53);//Ausgang Ammu LV
 
 
+    CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Starterpack\n"COLOR_HEX_WHITE"Tippe /Starterpack", COLOR_WHITE, 808.8542,-1347.3077,13.5416, 8.0);
+    CreateDynamicPickup(1239, 1,  808.8542,-1347.3077,13.5416, 0);
+
 	//Info Position
 
 	CreateDynamicPickup(1239, 1, 822.3183,1.8747,1004.1797, -1);//Posthaus /Post
@@ -5892,6 +5900,10 @@ public OnGameModeInit2() {
 	CreateDynamicPickup(1279, 1, -2170.3828,635.3927,1052.3750, 0);//Fsavebox Outlawz
 	CreateDynamicPickup(1279, 1, 2811.7188,-1165.9420,1025.5703, 0);//Fsavebox Vagos
     CreateDynamicPickup(1279, 1, 938.9147,1729.0337,8.8516, 0);//fsafebox Wheelman
+    CreateDynamicPickup(1279, 1, 965.5599,2056.0374,10.8203, 0);//fsafebox Terroristen
+
+    //Terror Spritbox
+    CreateDynamicPickup(1277, 1, 952.1439,2083.6968,10.8203, 0);
 
 	//Duty und Spawn Points
 	CreateDynamicPickup(1240, 1, 331.0788,1128.5469,1083.8828, 0);//Ballas Herz
@@ -5926,6 +5938,7 @@ public OnGameModeInit2() {
 	CreateDynamicPickup(1254, 1, 2809.7944,-1171.9598,1025.5703, 0);//Vagos Waffenlager
 	CreateDynamicPickup(1254, 1, -2165.1348,644.2082,1052.3750, 0);//Outlawz Waffenlager
     CreateDynamicPickup(1254, 1, 938.8259, 1737.8749, 8.8516, 0);//Wheelman Waffenlager
+    CreateDynamicPickup(1254, 1, 976.3067,2058.1931,10.8203, 0);//Wheelman Waffenlager
 
 	//Fahrtticket
 	/*CreateDynamicPickup(1274, 1, 374.6658,-2121.6416,7.8820, 0);//Fallturm
@@ -6061,6 +6074,7 @@ public OnGameModeInit2() {
 	CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Vagos - Waffenlager\n"COLOR_HEX_WHITE"Tippe /Waffenlager", COLOR_WHITE, 2809.7944,-1171.9598,1025.5703, 15.0, .testlos = 1);//Waffenlager
 	CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"OutlawZ - Waffenlager\n"COLOR_HEX_WHITE"Tippe /Waffenlager", COLOR_WHITE, -2165.1348,644.2082,1052.3750, 15.0, .testlos = 1);//Waffenlager
     CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Wheelman - Waffenlager\n"COLOR_HEX_WHITE"Tippe /Waffenlager", COLOR_WHITE, 938.8259,1737.8749,8.8516, 15.0, .testlos = 1);//Waffenlager
+    CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Terroristen - Waffenlager\n"COLOR_HEX_WHITE"Tippe /Waffenlager", COLOR_WHITE, 976.3067,2058.1931,10.8203, 15.0, .testlos = 1);//Waffenlager
 
     //Job 3D Text
     CreateDynamic3DTextLabel(COLOR_HEX_BLUE"Bauarbeiter\n"COLOR_HEX_WHITE"Tippe /Steineladen", COLOR_WHITE, 635.8752,862.5970,-42.6892, 10.0, .worldid = 0);
@@ -6089,6 +6103,10 @@ public OnGameModeInit2() {
     CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Safebox der Vagos\n"COLOR_HEX_WHITE"Tippe /FSafebox", COLOR_WHITE, 2811.7188,-1165.9420,1025.5703, 8.0);
     CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Safebox der OutlawZ\n"COLOR_HEX_WHITE"Tippe /FSafebox", COLOR_WHITE, -2170.3828,635.3927,1052.3750, 8.0);
     CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Safebox der Wheelman\n"COLOR_HEX_WHITE"Tippe /FSafebox", COLOR_WHITE, 938.9147,1729.0337,8.8516, 8.0);
+    CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Safebox der Terroristen\n"COLOR_HEX_WHITE"Tippe /FSafebox", COLOR_WHITE, 965.5599,2056.0374,10.8203, 8.0);
+
+    //Terror Spritbox
+    CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Spritlager der Terroristen\n"COLOR_HEX_WHITE"Tippe /Spritlager", COLOR_WHITE, 952.1439,2083.6968,10.8203, 8.0);
 
 	//3D Infotext
 	//CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"SERVER - EXPERTE\nFreischalten mit:"COLOR_HEX_WHITE"/Experte", COLOR_WHITE, 814.4642,-1345.7327,13.5320, 15.0);
@@ -10087,13 +10105,13 @@ CMD:ahelp(playerid) return cmd_adminhelp(playerid, "");
 CMD:adminhelp(playerid, params[]){
     new String[1024];
     if(Spieler[playerid][pFV] == 1) format(String, sizeof(String), "%s\nFraktionsverwalter Befehle\n", String);
-    if(Spieler[playerid][pAdmin] >= 0) format(String, sizeof(String), "%sSupporter Befehle", String);
-    if(Spieler[playerid][pAdmin] >= 1) format(String, sizeof(String), "%s\nEvent-Supporter Befehle", String);
-    if(Spieler[playerid][pAdmin] >= 2) format(String, sizeof(String), "%s\nModerator Befehle", String);
-    if(Spieler[playerid][pAdmin] >= 4) format(String, sizeof(String), "%s\nAdministrator Befehle", String);
-    if(Spieler[playerid][pAdmin] >= 4) format(String, sizeof(String), "%s\nProjektleitung Vertretung Befehle", String);
-    if(Spieler[playerid][pAdmin] >= 5) format(String, sizeof(String), "%s\nServer-Manager Befehle", String);
-    if(Spieler[playerid][pAdmin] >= 6) format(String, sizeof(String), "%s\nProjektleiter Befehle", String);
+    if(Spieler[playerid][pAdmin] > 0) format(String, sizeof(String), "%sSupporter Befehle", String);
+    if(Spieler[playerid][pAdmin] > 1) format(String, sizeof(String), "%s\nEvent-Supporter Befehle", String);
+    if(Spieler[playerid][pAdmin] > 2) format(String, sizeof(String), "%s\nModerator Befehle", String);
+    if(Spieler[playerid][pAdmin] > 3) format(String, sizeof(String), "%s\nAdministrator Befehle", String);
+    if(Spieler[playerid][pAdmin] > 3) format(String, sizeof(String), "%s\nProjektleitung Vertretung Befehle", String);
+    if(Spieler[playerid][pAdmin] > 4) format(String, sizeof(String), "%s\nServer-Manager Befehle", String);
+    if(Spieler[playerid][pAdmin] > 5) format(String, sizeof(String), "%s\nProjektleiter Befehle", String);
 
     ShowPlayerDialog(playerid, DIALOG_AHELP, DIALOG_STYLE_LIST, "Admin Help", String, "Öffnen", "Schließen");
     return 1;
@@ -25459,8 +25477,9 @@ public OnPlayerEnterCheckpoint(playerid)
     }
     else if(pCheckpoint[playerid] == CP_ROBSPRIT)
     {
-        // TODO: Safebox Terror (Kabby | Maka)
         SCMFormatted(playerid, COLOR_GREEN,"Du hast die Mission erfolgreich beendet! Die Safebox füllt sich um %d Sprit.",GetPVarInt(playerid, "SPRITMENGE"));
+
+        g_FraktionsSafeBox[19][FSB_iSprit] += GetPVarInt(playerid, "SPRITMENGE");
         
         DeletePVar(playerid, "SPRITROB");
 		DeletePVar(playerid, "STARTSPRIT");
@@ -28278,1242 +28297,460 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
             {
                 if(Spieler[playerid][pSex] == 1)
                 {
-                    if(skin == 2)
-                    {
-                        pChoosedSkin[playerid] = 3;
-                    }
-                    else if(skin == 3)
-                    {
-                        pChoosedSkin[playerid] = 5;
-                    }
-                    else if(skin== 5)
-                    {
-                        pChoosedSkin[playerid] = 6;
-                    }
-                    else if(skin == 6)
-                    {
+                    if(skin == 2){
                         pChoosedSkin[playerid] = 7;
-                    }
-                    else if(skin == 7)
-                    {
-                        pChoosedSkin[playerid] = 14;
-                    }
-                    else if(skin == 14)
-                    {
+                    }else if(skin == 7){
                         pChoosedSkin[playerid] = 18;
-                    }
-                    else if(skin == 18)
-                    {
-                        pChoosedSkin[playerid] = 20;
-                    }
-                    else if(skin == 20)
-                    {
+                    }else if(skin == 18){
+                        pChoosedSkin[playerid] = 19;
+                    }else if(skin == 19){
                         pChoosedSkin[playerid] = 21;
-                    }
-                    else if(skin == 21)
-                    {
+                    }else if(skin == 21){
                         pChoosedSkin[playerid] = 22;
-                    }
-                    else if(skin == 22)
-                    {
+                    }else if(skin == 22){
                         pChoosedSkin[playerid] = 23;
-                    }
-                    else if(skin == 23)
-                    {
-                        pChoosedSkin[playerid] = 24;
-                    }
-                    else if(skin == 24)
-                    {
-                        pChoosedSkin[playerid] = 25;
-                    }
-                    else if(skin == 25)
-                    {
-                        pChoosedSkin[playerid] = 26;
-                    }
-                    else if(skin == 26)
-                    {
-                        pChoosedSkin[playerid] = 28;
-                    }
-                    else if(skin == 28)
-                    {
-                        pChoosedSkin[playerid] = 29;
-                    }
-                    else if(skin == 29)
-                    {
-                        pChoosedSkin[playerid] = 33;
-                    }
-                    else if(skin == 33)
-                    {
-                        pChoosedSkin[playerid] = 35;
-                    }
-                    else if(skin == 35)
-                    {
-                        pChoosedSkin[playerid] = 36;
-                    }
-                    else if(skin == 36)
-                    {
-                        pChoosedSkin[playerid] = 37;
-                    }
-                    else if(skin == 37)
-                    {
-                        pChoosedSkin[playerid] = 45;
-                    }
-                    else if(skin == 45)
-                    {
-                        pChoosedSkin[playerid] = 44;
-                    }
-                    else if(skin == 44)
-                    {
-                        pChoosedSkin[playerid] = 58;
-                    }
-                    else if(skin == 58)
-                    {
-                        pChoosedSkin[playerid] = 59;
-                    }
-                    else if(skin == 59)
-                    {
-                        pChoosedSkin[playerid] = 60;
-                    }
-                    else if(skin == 60)
-                    {
-                        pChoosedSkin[playerid] = 66;
-                    }
-                    else if(skin == 66)
-                    {
-                        pChoosedSkin[playerid] = 68;
-                    }
-                    else if(skin == 68)
-                    {
-                        pChoosedSkin[playerid] = 67;
-                    }
-                    else if(skin == 67)
-                    {
-                        pChoosedSkin[playerid] = 72;
-                    }
-                    else if(skin == 72)
-                    {
-                        pChoosedSkin[playerid] = 73;
-                    }
-                    else if(skin == 73)
-                    {
-                        pChoosedSkin[playerid] = 78;
-                    }
-                    else if(skin == 78)
-                    {
-                        pChoosedSkin[playerid] = 94;
-                    }
-                    else if(skin == 94)
-                    {
-                        pChoosedSkin[playerid] = 95;
-                    }
-                    else if(skin == 95)
-                    {
-                        pChoosedSkin[playerid] = 97;
-                    }
-                    else if(skin == 97)
-                    {
-                        pChoosedSkin[playerid] = 98;
-                    }
-                    else if(skin == 98)
-                    {
+                    }else if(skin == 23){
                         pChoosedSkin[playerid] = 101;
-                    }
-                    else if(skin == 101)
-                    {
-                        pChoosedSkin[playerid] = 132;
-                    }
-                    else if(skin == 132)
-                    {
-                        pChoosedSkin[playerid] = 133;
-                    }
-                    else if(skin == 133)
-                    {
-                        pChoosedSkin[playerid] = 134;
-                    }
-                    else if(skin == 134)
-                    {
-                        pChoosedSkin[playerid] = 135;
-                    }
-                    else if(skin == 135)
-                    {
-                        pChoosedSkin[playerid] = 136;
-                    }
-                    else if(skin == 136)
-                    {
-                        pChoosedSkin[playerid] = 137;
-                    }
-                    else if(skin == 137)
-                    {
-                        pChoosedSkin[playerid] = 144;
-                    }
-                    else if(skin == 144)
-                    {
-                        pChoosedSkin[playerid] = 146;
-                    }
-                    else if(skin == 146)
-                    {
+                    }else if(skin == 101){
                         pChoosedSkin[playerid] = 154;
-                    }
-                    else if(skin == 154)
-                    {
-                        pChoosedSkin[playerid] = 158;
-                    }
-                    else if(skin == 158)
-                    {
-                        pChoosedSkin[playerid] = 159;
-                    }
-                    else if(skin == 159)
-                    {
-                        pChoosedSkin[playerid] = 160;
-                    }
-                    else if(skin == 160)
-                    {
+                    }else if(skin == 154){
                         pChoosedSkin[playerid] = 170;
-                    }
-                    else if(skin == 170)
-                    {
-                        pChoosedSkin[playerid] = 180;
-                    }
-                    else if(skin == 180)
-                    {
-                        pChoosedSkin[playerid] = 181;
-                    }
-                    else if(skin == 181)
-                    {
-                        pChoosedSkin[playerid] = 182;
-                    }
-                    else if(skin == 182)
-                    {
-                        pChoosedSkin[playerid] = 183;
-                    }
-                    else if(skin == 183)
-                    {
-                        pChoosedSkin[playerid] = 188;
-                    }
-                    else if(skin == 188)
-                    {
-                        pChoosedSkin[playerid] = 210;
-                    }
-                    else if(skin == 210)
-                    {
-                        pChoosedSkin[playerid] = 213;
-                    }
-                    else if(skin == 213)
-                    {
+                    }else if(skin == 170){
                         pChoosedSkin[playerid] = 230;
-                    }
-                    else if(skin == 230)
-                    {
-                        pChoosedSkin[playerid] = 235;
-                    }
-                    else if(skin == 235)
-                    {
-                        pChoosedSkin[playerid] = 236;
-                    }
-                    else if(skin == 236)
-                    {
-                        pChoosedSkin[playerid] = 239;
-                    }
-                    else if(skin == 239)
-                    {
-                        pChoosedSkin[playerid] = 241;
-                    }
-                    else if(skin == 241)
-                    {
-                        pChoosedSkin[playerid] = 242;
-                    }
-                    else if(skin == 242)
-                    {
-                        pChoosedSkin[playerid] = 250;
-                    }
-                    else if(skin == 250)
-                    {
-                        pChoosedSkin[playerid] = 258;
-                    }
-                    else if(skin == 258)
-                    {
-                        pChoosedSkin[playerid] = 259;
-                    }
-                    else if(skin == 259)
-                    {
-                        pChoosedSkin[playerid] = 262;
-                    }
-                    else if(skin == 262)
-                    {
-                        pChoosedSkin[playerid] = 289;
-                    }
-                    else if(skin == 289)
-                    {
-                        pChoosedSkin[playerid] = 297;
-                    }
-                    else if(skin == 297)
-                    {
-                        pChoosedSkin[playerid] = 299;
-                    }
-                    else if(skin == 299)
-                    {
+                    }else{
                         pChoosedSkin[playerid] = 2;
                     }
                     SetPlayerSkin(playerid, pChoosedSkin[playerid]);
                 }
                 else if(Spieler[playerid][pSex] == 2)
                 {
-                    if(skin == 12)
-                    {
-                        pChoosedSkin[playerid] = 31;
-                    }
-                    else if(skin == 31)
-                    {
-                        pChoosedSkin[playerid] = 38;
-                    }
-                    else if(skin == 38)
-                    {
-                        pChoosedSkin[playerid] = 39;
-                    }
-                    else if(skin == 39)
-                    {
-                        pChoosedSkin[playerid] = 40;
-                    }
-                    else if(skin == 40)
-                    {
-                        pChoosedSkin[playerid] = 41;
-                    }
-                    else if(skin == 41)
-                    {
-                        pChoosedSkin[playerid] = 53;
-                    }
-                    else if(skin == 53)
-                    {
-                        pChoosedSkin[playerid] = 55;
-                    }
-                    else if(skin == 55)
-                    {
-                        pChoosedSkin[playerid] = 56;
-                    }
-                    else if(skin == 56)
-                    {
-                        pChoosedSkin[playerid] = 69;
-                    }
-                    else if(skin == 69)
-                    {
-                        pChoosedSkin[playerid] = 88;
-                    }
-                    else if(skin == 88)
-                    {
-                        pChoosedSkin[playerid] = 89;
-                    }
-                    else if(skin == 89)
-                    {
-                        pChoosedSkin[playerid] = 90;
-                    }
-                    else if(skin == 90)
-                    {
-                        pChoosedSkin[playerid] = 91;
-                    }
-                    else if(skin == 91)
-                    {
-                        pChoosedSkin[playerid] = 93;
-                    }
-                    else if(skin == 93)
-                    {
-                        pChoosedSkin[playerid] = 129;
-                    }
-                    else if(skin == 129)
-                    {
-                        pChoosedSkin[playerid] = 130;
-                    }
-                    else if(skin == 130)
-                    {
-                        pChoosedSkin[playerid] = 131;
-                    }
-                    else if(skin == 131)
-                    {
-                        pChoosedSkin[playerid] = 138;
-                    }
-                    else if(skin == 138)
-                    {
-                        pChoosedSkin[playerid] = 139;
-                    }
-                    else if(skin == 139)
-                    {
-                        pChoosedSkin[playerid] = 140;
-                    }
-                    else if(skin == 140)
-                    {
-                        pChoosedSkin[playerid] = 141;
-                    }
-                    else if(skin == 141)
-                    {
-                        pChoosedSkin[playerid] = 145;
-                    }
-                    else if(skin == 145)
-                    {
-                        pChoosedSkin[playerid] = 151;
-                    }
-                    else if(skin == 151)
-                    {
-                        pChoosedSkin[playerid] = 157;
-                    }
-                    else if(skin == 157)
-                    {
-                        pChoosedSkin[playerid] = 190;
-                    }
-                    else if(skin==190)
-                    {
+                    if(skin == 56){
                         pChoosedSkin[playerid] = 192;
-                    }
-                    else if(skin==192)
-                    {
-                        pChoosedSkin[playerid] = 196;
-                    }
-                    else if(skin==196)
-                    {
-                        pChoosedSkin[playerid] = 197;
-                    }
-                    else if(skin==197)
-                    {
-                        pChoosedSkin[playerid] = 198;
-                    }
-                    else if(skin==198)
-                    {
-                        pChoosedSkin[playerid] = 199;
-                    }
-                    else if(skin==199)
-                    {
-                        pChoosedSkin[playerid] = 201;
-                    }
-                    else if(skin==201)
-                    {
-                        pChoosedSkin[playerid] = 214;
-                    }
-                    else if(skin==214)
-                    {
-                        pChoosedSkin[playerid] = 215;
-                    }
-                    else if(skin==215)
-                    {
-                        pChoosedSkin[playerid] = 216;
-                    }
-                    else if(skin==216)
-                    {
-                        pChoosedSkin[playerid] = 218;
-                    }
-                    else if(skin==218)
-                    {
-                        pChoosedSkin[playerid] = 226;
-                    }
-                    else if(skin==226)
-                    {
-                        pChoosedSkin[playerid] = 231;
-                    }
-                    else if(skin==231)
-                    {
-                        pChoosedSkin[playerid] = 232;
-                    }
-                    else if(skin==232)
-                    {
+                    }else if(skin == 192){
+                        pChoosedSkin[playerid] = 211;
+                    }else if(skin == 211){
                         pChoosedSkin[playerid] = 233;
-                    }
-                    else if(skin==233)
-                    {
-                        pChoosedSkin[playerid] = 251;
-                    }
-                    else if(skin==251)
-                    {
-                        pChoosedSkin[playerid] = 12;
+                    }else if(skin == 233){
+                        pChoosedSkin[playerid] = 56;
+                    }else{
+                        pChoosedSkin[playerid] = 56;
                     }
                     SetPlayerSkin(playerid, pChoosedSkin[playerid]);
                 }
             }
             else if(Spieler[playerid][pFraktion] == 1)
             {
-                if(skin == 265)
-                {
+                if(skin == 265){
                     pChoosedSkin[playerid] = 266;
-                }
-                else if(skin == 266)
-                {
+                }else if(skin == 266){
                     pChoosedSkin[playerid] = 267;
-                }
-                else if(skin == 267)
-                {
-                    pChoosedSkin[playerid] = 300;
-                }
-                else if(skin == 300)
-                {
-                    pChoosedSkin[playerid] = 301;
-                }
-                else if(skin == 301)
-                {
-                    pChoosedSkin[playerid] = 302;
-                }
-                else if(skin == 302)
-                {
-                    pChoosedSkin[playerid] = 306;
-                }
-                else if(skin == 306)
-                {
-                    pChoosedSkin[playerid] = 307;
-                }
-                else if(skin == 307)
-                {
-                    pChoosedSkin[playerid] = 309;
-                }
-                else if(skin == 309)
-                {
-                    pChoosedSkin[playerid] = 310;
-                }
-                else if(skin == 310)
-                {
+                }else if(skin == 267){
+                    pChoosedSkin[playerid] = 280;
+                }else if(skin == 280){
                     pChoosedSkin[playerid] = 284;
-                }
-                else if(skin == 284)
-                {
+                }else if(skin == 284){
                     pChoosedSkin[playerid] = 285;
-                }
-                else if(skin == 285)
-                {
-                    pChoosedSkin[playerid] = 72;
-                }
-                else if(skin == 72)
-                {
-                    pChoosedSkin[playerid] = 59;
-                }
-                else if(skin == 59)
-                {
-                    pChoosedSkin[playerid] = 7;
-                }
-                else if(skin == 7)
-                {
-                    pChoosedSkin[playerid] = 60;
-                }
-                else if(skin == 60)
-                {
+                }else if(skin == 285){
+                    pChoosedSkin[playerid] = 300;
+                }else if(skin == 300){
+                    pChoosedSkin[playerid] = 303;
+                }else if(skin == 303){
+                    pChoosedSkin[playerid] = 304;
+                }else if(skin == 304){
+                    pChoosedSkin[playerid] = 306;
+                }else if(skin == 306){
+                    pChoosedSkin[playerid] = 12;
+                }else if(skin == 12){
                     pChoosedSkin[playerid] = 93;
-                }
-                else if(skin == 93)
-                {
-                    pChoosedSkin[playerid] = 192;
-                }
-                else if(skin==192)
-                {
+                }else if(skin == 93){
+                    pChoosedSkin[playerid] = 170;
+                }else if(skin == 170){
+                    pChoosedSkin[playerid] = 188;
+                }else if(skin == 188){
+                    pChoosedSkin[playerid] = 265;
+                }else{
                     pChoosedSkin[playerid] = 265;
                 }
                 SetPlayerSkin(playerid, pChoosedSkin[playerid]);
             }
             else if(Spieler[playerid][pFraktion] == 2)
             {
-                if(skin == 286)
-                {
+                if(skin == 286){
                     pChoosedSkin[playerid] = 59;
-                }
-                else if(skin == 59)
-                {
+                }else if(skin == 59){
                     pChoosedSkin[playerid] = 150;
-                }
-                else if(skin == 150)
-                {
+                }else if(skin == 150){
                     pChoosedSkin[playerid] = 285;
-                }
-                else if(skin == 285)
-                {
+                }else if(skin == 285){
                     pChoosedSkin[playerid] = 281;
-                }
-                else if(skin == 281)
-                {
+                }else if(skin == 281){
                     pChoosedSkin[playerid] = 60;
-                }
-                else if(skin == 60)
-                {
+                }else if(skin == 60){
                     pChoosedSkin[playerid] = 141;
-                }
-                else if(skin == 141)
-                {
+                }else if(skin == 141){
                     pChoosedSkin[playerid] = 2;
-                }
-                else if(skin == 2)
-                {
+                }else if(skin == 2){
                     pChoosedSkin[playerid] = 7;
-                }
-                else if(skin == 7)
-                {
+                }else if(skin == 7){
                     pChoosedSkin[playerid] = 25;
-                }
-                else if(skin == 25)
-                {
+                }else if(skin == 25){
                     pChoosedSkin[playerid] = 72;
-                }
-                else if(skin == 72)
-                {
+                }else if(skin == 72){
                     pChoosedSkin[playerid] = 192;
-                }
-                else if(skin == 192)
-                {
+                }else if(skin == 192){
                     pChoosedSkin[playerid] = 211;
-                }
-                else if(skin == 211)
-                {
+                }else if(skin == 211){
                     pChoosedSkin[playerid] = 93;
-                }
-                else if(skin==93)
-                {
+                }else if(skin==93){
                     pChoosedSkin[playerid] = 286;
                 }
                 SetPlayerSkin(playerid, pChoosedSkin[playerid]);
             }
             else if(Spieler[playerid][pFraktion] == 3)
             {
-                if(skin == 274)
-                {
+                if(skin == 70){
+                    pChoosedSkin[playerid] = 274;
+                }else if(skin == 274){
                     pChoosedSkin[playerid] = 275;
-                }
-                else if(skin == 275)
-                {
+                }else if(skin == 275){
                     pChoosedSkin[playerid] = 276;
-                }
-                else if(skin == 276)
-                {
+                }else if(skin == 276){
                     pChoosedSkin[playerid] = 277;
-                }
-                else if(skin == 277)
-                {
+                }else if(skin == 277){
+                    pChoosedSkin[playerid] = 278;
+                }else if(skin == 278){
                     pChoosedSkin[playerid] = 279;
-                }
-                else if(skin == 279)
-                {
+                }else if(skin == 279){
                     pChoosedSkin[playerid] = 308;
-                }
-                else if(skin == 308)
-                {
-                    pChoosedSkin[playerid] = 2;
-                }
-                else if(skin == 2)
-                {
-                    pChoosedSkin[playerid] = 7;
-                }
-                else if(skin == 7)
-                {
-                    pChoosedSkin[playerid] = 25;
-                }
-                else if(skin == 25)
-                {
-                    pChoosedSkin[playerid] = 72;
-                }
-                else if(skin == 72)
-                {
-                    pChoosedSkin[playerid] = 60;
-                }
-                else if(skin == 60)
-                {
-                    pChoosedSkin[playerid] = 35;
-                }
-                else if(skin == 35)
-                {
-                    pChoosedSkin[playerid] = 101;
-                }
-                else if(skin == 101)
-                {
+                }else if(skin == 308){
+                    pChoosedSkin[playerid] = 12;
+                }else if(skin == 12){
                     pChoosedSkin[playerid] = 93;
-                }
-                else if(skin == 93)
-                {
-                    pChoosedSkin[playerid] = 192;
-                }
-                else if(skin==192)
-                {
+                }else if(skin == 93){
+                    pChoosedSkin[playerid] = 170;
+                }else if(skin == 170){
+                    pChoosedSkin[playerid] = 188;
+                }else if(skin == 188){
+                    pChoosedSkin[playerid] = 265;
+                }else{
                     pChoosedSkin[playerid] = 274;
                 }
                 SetPlayerSkin(playerid, pChoosedSkin[playerid]);
             }
             else if(Spieler[playerid][pFraktion] == 4)
             {
-                if(skin == 57)
-                {
+                if(skin == 57){
                     pChoosedSkin[playerid] = 187;
-                }
-                else if(skin == 187)
-                {
+                }else if(skin == 187){
                     pChoosedSkin[playerid] = 147;
-                }
-                else if(skin == 147)
-                {
+                }else if(skin == 147){
                     pChoosedSkin[playerid] = 192;
-                }
-                else if(skin == 192)
-                {
+                }else if(skin == 192){
                     pChoosedSkin[playerid] = 40;
-                }
-                else if(skin == 40)
-                {
+                }else if(skin == 40){
                     pChoosedSkin[playerid] = 91;
-                }
-                else if(skin == 91)
-                {
+                }else if(skin == 91){
                     pChoosedSkin[playerid] = 2;
-                }
-                else if(skin == 2)
-                {
+                }else if(skin == 2){
                     pChoosedSkin[playerid] = 66;
-                }
-                else if(skin == 66)
-                {
+                }else if(skin == 66){
                     pChoosedSkin[playerid] = 1;
-                }
-                else if(skin == 1)
-                {
+                }else if(skin == 1){
                     pChoosedSkin[playerid] = 15;
-                }
-                else if(skin == 15)
-                {
+                }else if(skin == 15){
                     pChoosedSkin[playerid] = 23;
-                }
-                else if(skin == 23)
-                {
+                }else if(skin == 23){
                     pChoosedSkin[playerid] = 29;
-                }
-                else if(skin == 29)
-                {
+                }else if(skin == 29){
                     pChoosedSkin[playerid] = 72;
-                }
-                else if(skin == 72)
-                {
+                }else if(skin == 72){
                     pChoosedSkin[playerid] = 57;
                 }
                 SetPlayerSkin(playerid, pChoosedSkin[playerid]);
             }
             else if(Spieler[playerid][pFraktion] == 5)
             {
-                if(skin == 50)
-                {
-                    pChoosedSkin[playerid] = 71;
-                }
-                else if(skin == 71)
-                {
-                    pChoosedSkin[playerid] = 192;
-                }
-                else if(skin == 192)
-                {
-                    pChoosedSkin[playerid] = 59;
-                }
-                else if(skin == 59)
-                {
-                    pChoosedSkin[playerid] = 60;
-                }
-                else if(skin == 60)
-                {
-                    pChoosedSkin[playerid] = 2;
-                }
-                else if(skin == 2)
-                {
-                    pChoosedSkin[playerid] = 7;
-                }
-                else if(skin == 7)
-                {
-                    pChoosedSkin[playerid] = 25;
-                }
-                else if(skin == 25)
-                {
-                    pChoosedSkin[playerid] = 72;
-                }
-                else if(skin == 72)
-                {
+                if(skin == 71){
+                    pChoosedSkin[playerid] = 305;
+                }else if(skin == 305){
+                    pChoosedSkin[playerid] = 12;
+                }else if(skin == 12){
                     pChoosedSkin[playerid] = 93;
-                }
-                else if(skin==93)
-                {
-                    pChoosedSkin[playerid] = 50;
+                }else if(skin == 93){
+                    pChoosedSkin[playerid] = 170;
+                }else if(skin == 170){
+                    pChoosedSkin[playerid] = 188;
+                }else if(skin == 188){
+                    pChoosedSkin[playerid] = 265;
+                }else{
+                    pChoosedSkin[playerid] = 71;
                 }
                 SetPlayerSkin(playerid, pChoosedSkin[playerid]);
             }
             else if(Spieler[playerid][pFraktion] == 6)
             {
-                if(skin == 105)
-                {
-                    pChoosedSkin[playerid] = 106;
-                }
-                else if(skin == 106)
-                {
-                    pChoosedSkin[playerid] = 107;
-                }
-                else if(skin == 107)
-                {
-                    pChoosedSkin[playerid] = 269;
-                }
-                else if(skin == 269)
-                {
-                    pChoosedSkin[playerid] = 270;
-                }
-                else if(skin == 270)
-                {
-                    pChoosedSkin[playerid] = 271;
-                }
-                else if(skin == 271)
-                {
-                    pChoosedSkin[playerid] = 149;
-                }
-                else if(skin == 149)
-                {
-                    pChoosedSkin[playerid] = 86;
-                }
-                else if(skin == 86)
-                {
-                    pChoosedSkin[playerid] = 65;
-                }
-                else if(skin == 65)
-                {
+                if(skin == 65){
                     pChoosedSkin[playerid] = 105;
+                }else if(skin == 105){
+                    pChoosedSkin[playerid] = 106;
+                }else if(skin == 106){
+                    pChoosedSkin[playerid] = 107;
+                }else if(skin == 107){
+                    pChoosedSkin[playerid] = 269;
+                }else if(skin == 269){
+                    pChoosedSkin[playerid] = 270;
+                }else if(skin == 270){
+                    pChoosedSkin[playerid] = 271;
+                }else if(skin == 271){
+                    pChoosedSkin[playerid] = 65;
+                }else{
+                    pChoosedSkin[playerid] = 65;
                 }
                 SetPlayerSkin(playerid, pChoosedSkin[playerid]);
             }
             else if(Spieler[playerid][pFraktion] == 7)
             {
-                if(skin == 102)
-                {
-                    pChoosedSkin[playerid] = 103;
-                }
-                else if(skin == 103)
-                {
-                    pChoosedSkin[playerid] = 104;
-                }
-                else if(skin == 104)
-                {
-                    pChoosedSkin[playerid] = 195;
-                }
-                else if(skin == 195)
-                {
-                    pChoosedSkin[playerid] = 13;
-                }
-                else if(skin == 13)
-                {
-                    pChoosedSkin[playerid] = 293;
-                }
-                else if(skin == 293)
-                {
+                if(skin == 13){
                     pChoosedSkin[playerid] = 102;
+                }else if(skin == 102){
+                    pChoosedSkin[playerid] = 103;
+                }else if(skin == 103){
+                    pChoosedSkin[playerid] = 104;
+                }else if(skin == 104){
+                    pChoosedSkin[playerid] = 293;
+                }else if(skin == 293){
+                    pChoosedSkin[playerid] = 13;
+                }else{
+                    pChoosedSkin[playerid] = 13;
                 }
                 SetPlayerSkin(playerid, pChoosedSkin[playerid]);
             }
             else if(Spieler[playerid][pFraktion] == 8)
             {
-                if(skin == 240)
-                {
+                if(skin == 240){
                     pChoosedSkin[playerid] = 194;
-                }
-                else if(skin == 194)
-                {
+                }else if(skin == 194){
                     pChoosedSkin[playerid] = 240;
                 }
                 SetPlayerSkin(playerid, pChoosedSkin[playerid]);
             }
             else if(Spieler[playerid][pFraktion] == 9)
             {
-                if(skin == 170)
-                {
-                    pChoosedSkin[playerid] = 163;
-                }
-                else if(skin == 163)
-                {
+                if(skin == 163){
                     pChoosedSkin[playerid] = 164;
-                }
-                else if(skin == 164)
-                {
-                    pChoosedSkin[playerid] = 215;
-                }
-                else if(skin == 172)
-                {
-                    pChoosedSkin[playerid] = 60;
-                }
-                else if(skin == 60)
-                {
+                }else if(skin == 164){
                     pChoosedSkin[playerid] = 165;
-                }
-                else if(skin == 165)
-                {
+                }else if(skin == 165){
                     pChoosedSkin[playerid] = 166;
-                }
-                else if(skin == 166)
-                {
-                    pChoosedSkin[playerid] = 148;
-                }
-                else if(skin == 148)
-                {
-                    pChoosedSkin[playerid] = 17;
-                }
-                else if(skin == 17)
-                {
-                    pChoosedSkin[playerid] = 150;
-                }
-                else if(skin == 150)
-                {
-                    pChoosedSkin[playerid] = 296;
-                }
-                else if(skin == 296)
-                {
-                    pChoosedSkin[playerid] = 170;
+                }else if(skin == 166){
+                    pChoosedSkin[playerid] = 295;
+                }else if(skin == 295){
+                    pChoosedSkin[playerid] = 163;
+                }else{
+                    pChoosedSkin[playerid] = 163;
                 }
                 SetPlayerSkin(playerid, pChoosedSkin[playerid]);
             }
             else if(Spieler[playerid][pFraktion] == 10)
             {
-                if(skin == 123)
-                {
-                    pChoosedSkin[playerid] = 122;
-                }
-                else if(skin == 122)
-                {
-                    pChoosedSkin[playerid] = 203;
-                }
-                else if(skin == 203)
-                {
-                    pChoosedSkin[playerid] = 204;
-                }
-                else if(skin == 204)
-                {
-                    pChoosedSkin[playerid] = 169;
-                }
-                else if(skin == 169)
-                {
-                    pChoosedSkin[playerid] = 228;
-                }
-                else if(skin == 228)
-                {
-                    pChoosedSkin[playerid] = 186;
-                }
-                else if(skin==186)
-                {
+                if(skin == 122){
                     pChoosedSkin[playerid] = 123;
+                }else if(skin == 123){
+                    pChoosedSkin[playerid] = 169;
+                }else if(skin == 169){
+                    pChoosedSkin[playerid] = 186;
+                }else if(skin == 186){
+                    pChoosedSkin[playerid] = 203;
+                }else if(skin == 203){
+                    pChoosedSkin[playerid] = 228;
+                }else if(skin == 228){
+                    pChoosedSkin[playerid] = 122;
+                }else{
+                    pChoosedSkin[playerid] = 122;
                 }
                 SetPlayerSkin(playerid, pChoosedSkin[playerid]);
             }
             else if(Spieler[playerid][pFraktion] == 11)
             {
-                if(skin == 114)
-                {
+                if(skin == 114){
                     pChoosedSkin[playerid] = 115;
-                }
-                else if(skin == 115)
-                {
+                }else if(skin == 115){
                     pChoosedSkin[playerid] = 116;
-                }
-                else if(skin == 116)
-                {
+                }else if(skin == 116){
+                    pChoosedSkin[playerid] = 172;
+                }else if(skin == 172){
                     pChoosedSkin[playerid] = 173;
-                }
-                else if(skin == 173)
-                {
+                }else if(skin == 173){
                     pChoosedSkin[playerid] = 174;
-                }
-                else if(skin == 174)
-                {
-                    pChoosedSkin[playerid] = 176;
-                }
-                else if(skin == 176)
-                {
-                    pChoosedSkin[playerid] = 177;
-                }
-                else if(skin == 177)
-                {
-                    pChoosedSkin[playerid] = 156;
-                }
-                else if(skin == 156)
-                {
-                    pChoosedSkin[playerid] = 175;
-                }
-                else if(skin==175)
-                {
+                }else if(skin == 174){
+                    pChoosedSkin[playerid] = 114;
+                }else{
                     pChoosedSkin[playerid] = 114;
                 }
                 SetPlayerSkin(playerid, pChoosedSkin[playerid]);
             }
             else if(Spieler[playerid][pFraktion] == 12)
             {
-                if(skin == 46)
-                {
+                if(skin == 46){
                     pChoosedSkin[playerid] = 184;
-                }
-                else if(skin == 184)
-                {
+                }else if(skin == 184){
                     pChoosedSkin[playerid] = 185;
-                }
-                else if(skin == 185)
-                {
+                }else if(skin == 185){
                     pChoosedSkin[playerid] = 223;
-                }
-                else if(skin == 113)
-                {
-                    pChoosedSkin[playerid] = 223;
-                }
-                else if(skin == 223)
-                {
+                }else if(skin == 223){
+                    pChoosedSkin[playerid] = 273;
+                }else if(skin == 273){
+                    pChoosedSkin[playerid] = 46;
+                }else{
                     pChoosedSkin[playerid] = 46;
                 }
                 SetPlayerSkin(playerid, pChoosedSkin[playerid]);
             }
             else if(Spieler[playerid][pFraktion] == 13)
             {
-                if(skin == 110)
-                {
-                    pChoosedSkin[playerid] = 109;
-                }
-                else if(skin == 109)
-                {
+                if(skin == 47){
                     pChoosedSkin[playerid] = 108;
-                }
-                else if(skin == 108)
-                {
-                    pChoosedSkin[playerid] = 292;
-                }
-                else if(skin == 292)
-                {
-                    pChoosedSkin[playerid] = 298;
-                }
-                else if(skin==298)
-                {
+                }else if(skin == 108){
+                    pChoosedSkin[playerid] = 109;
+                }else if(skin == 109){
                     pChoosedSkin[playerid] = 110;
+                }else if(skin == 110){
+                    pChoosedSkin[playerid] = 292;
+                }else if(skin == 292){
+                    pChoosedSkin[playerid] = 47;
+                }else{
+                    pChoosedSkin[playerid] = 47;
                 }
                 SetPlayerSkin(playerid, pChoosedSkin[playerid]);
             }
             else if(Spieler[playerid][pFraktion] == 15)
-            { // 247, 248, 100, 261, 291, 146, 158, 162, 199, 200, 201
-                if(skin == 248)
-                {
-                    pChoosedSkin[playerid] = 247;
-                }
-                else if(skin == 247)
-                {
-                    pChoosedSkin[playerid] = 261;
-                }
-                else if(skin == 261)
-                {
-                    pChoosedSkin[playerid] = 291;
-                }
-                else if(skin == 291)
-                {
+            {
+                if(skin == 32){
                     pChoosedSkin[playerid] = 100;
-                }
-                else if(skin == 100)
-                {
-                    pChoosedSkin[playerid] = 146;
-                }
-                else if(skin == 146)
-                {
+                }else if(skin == 100){
                     pChoosedSkin[playerid] = 158;
-                }
-                else if(skin == 158)
-                {
-                    pChoosedSkin[playerid] = 162;
-                }
-                else if(skin == 162)
-                {
-                    pChoosedSkin[playerid] = 199;
-                }
-                else if(skin == 199)
-                {
-                    pChoosedSkin[playerid] = 200;
-                }
-                else if(skin == 200)
-                {
-                    pChoosedSkin[playerid] = 201;
-                }
-                else if(skin == 201)
-                {
+                }else if(skin == 158){
+                    pChoosedSkin[playerid] = 247;
+                }else if(skin == 247){
                     pChoosedSkin[playerid] = 248;
+                }else if(skin == 248){
+                    pChoosedSkin[playerid] = 254;
+                }else if(skin == 254){
+                    pChoosedSkin[playerid] = 32;
+                }else{
+                    pChoosedSkin[playerid] = 32;
                 }
                 SetPlayerSkin(playerid, pChoosedSkin[playerid]);
             }
             else if(Spieler[playerid][pFraktion] == 16)
             {
-                if(skin == 282)
-                {
+                if(skin == 282){
                     pChoosedSkin[playerid] = 281;
-                }
-                else if(skin == 281)
-                {
+                }else if(skin == 281){
                     pChoosedSkin[playerid] = 59;
-                }
-                else if(skin == 59)
-                {
+                }else if(skin == 59){
                     pChoosedSkin[playerid] = 60;
-                }
-                else if(skin == 60)
-                {
+                }else if(skin == 60){
                     pChoosedSkin[playerid] = 141;
-                }
-                else if(skin == 141)
-                {
+                }else if(skin == 141){
                     pChoosedSkin[playerid] = 148;
-                }
-                else if(skin == 148)
-                {
+                }else if(skin == 148){
                     pChoosedSkin[playerid] = 150;
-                }
-                else if(skin == 150)
-                {
+                }else if(skin == 150){
                     pChoosedSkin[playerid] = 2;
-                }
-                else if(skin == 2)
-                {
+                }else if(skin == 2){
                     pChoosedSkin[playerid] = 7;
-                }
-                else if(skin == 7)
-                {
+                }else if(skin == 7){
                     pChoosedSkin[playerid] = 25;
-                }
-                else if(skin == 25)
-                {
+                }else if(skin == 25){
                     pChoosedSkin[playerid] = 72;
-                }
-                else if(skin == 72)
-                {
+                }else if(skin == 72){
                     pChoosedSkin[playerid] = 192;
-                }
-                else if(skin == 192)
-                {
+                }else if(skin == 192){
                     pChoosedSkin[playerid] = 211;
-                }
-                else if(skin == 211)
-                {
+                }else if(skin == 211){
                     pChoosedSkin[playerid] = 93;
-                }
-                else if(skin==93)
-                {
+                }else if(skin==93){
                     pChoosedSkin[playerid] = 282;
                 }
                 SetPlayerSkin(playerid, pChoosedSkin[playerid]);
             }
             else if(Spieler[playerid][pFraktion] == 17)
             {
-                if(skin == 202)
-                {
+                if(skin == 202){
                     pChoosedSkin[playerid] = 217;
-                }
-                else if(skin == 217)
-                {
+                }else if(skin == 217){
                     pChoosedSkin[playerid] = 89;
-                }
-                else if(skin == 89)
-                {
+                }else if(skin == 89){
                     pChoosedSkin[playerid] = 242;
-                }
-                else if(skin==242)
-                {
+                }else if(skin==242){
                     pChoosedSkin[playerid] = 202;
                 }
                 SetPlayerSkin(playerid, pChoosedSkin[playerid]);
             }
             else if(Spieler[playerid][pFraktion] == 18)
             {
-                if(skin == 287)
-                {
+                if(skin == 287){
                     pChoosedSkin[playerid] = 59;
-                }
-                else if(skin == 59)
-                {
+                }else if(skin == 59){
                     pChoosedSkin[playerid] = 191;
-                }
-                else if(skin==191)
-                {
+                }else if(skin==191){
                     pChoosedSkin[playerid] = 287;
                 }
                 SetPlayerSkin(playerid, pChoosedSkin[playerid]);
             }
             else if(Spieler[playerid][pFraktion] == 19)
             {
-                if(skin == 14)
-                {
-                    pChoosedSkin[playerid] = 136;
-                }
-                else if(skin == 136)
-                {
-                    pChoosedSkin[playerid] = 137;
-                }
-                else if(skin==137)
-                {
-                    pChoosedSkin[playerid] = 142;
-                }
-                else if(skin==142)
-                {
+                if(skin == 142){
+                    pChoosedSkin[playerid] = 143;
+                }else if(skin == 143){
                     pChoosedSkin[playerid] = 144;
-                }
-                else if(skin==144)
-                {
-                    pChoosedSkin[playerid] = 200;
-                }
-                else if(skin==200)
-                {
+                }else if(skin == 144){
                     pChoosedSkin[playerid] = 220;
-                }
-                else if(skin==220)
-                {
+                }else if(skin == 220){
                     pChoosedSkin[playerid] = 221;
-                }
-                else if(skin==221)
-                {
+                }else if(skin == 221){
                     pChoosedSkin[playerid] = 222;
+                }else if(skin == 222){
+                    pChoosedSkin[playerid] = 142;
+                }else{
+                    pChoosedSkin[playerid] = 142;
                 }
                 SetPlayerSkin(playerid, pChoosedSkin[playerid]);
             }
             else if(Spieler[playerid][pFraktion] == 20)
             {
-                if(skin == 47)
-                {
-                    pChoosedSkin[playerid] = 48;
-                }
-                else if(skin == 48)
-                {
-                    pChoosedSkin[playerid] = 184;
-                }
-                else if(skin == 184)
-                {
-                    pChoosedSkin[playerid] = 30;
-                }
-                else if(skin == 30)
-                {
-                    pChoosedSkin[playerid] = 234;
-                }
-                else if(skin==234)
-                {
-                    pChoosedSkin[playerid] = 237;
-                }
-                else if(skin==237)
-                {
-                    pChoosedSkin[playerid] = 47;
+                if(skin == 113){
+                    pChoosedSkin[playerid] = 124;
+                }else if(skin == 124){
+                    pChoosedSkin[playerid] = 125;
+                }else if(skin == 125){
+                    pChoosedSkin[playerid] = 126;
+                }else if(skin == 126){
+                    pChoosedSkin[playerid] = 263;
+                }else if(skin == 263){
+                    pChoosedSkin[playerid] = 272;
+                }else if(skin == 272){
+                    pChoosedSkin[playerid] = 113;
+                }else{
+                    pChoosedSkin[playerid] = 113;
                 }
                 SetPlayerSkin(playerid, pChoosedSkin[playerid]);
             }
             else if(Spieler[playerid][pFraktion] == 21)
             {
-                if(skin == 120)
-                {
-                    pChoosedSkin[playerid] = 111;
-                }
-                else if(skin == 111)
-                {
-                    pChoosedSkin[playerid] = 117;
-                }
-                else if(skin == 117)
-                {
-                    pChoosedSkin[playerid] = 208;
-                }
-                else if(skin == 208)
-                {
-                    pChoosedSkin[playerid] = 210;
-                }
-                else if(skin == 210)
-                {
+                if(skin == 117){
                     pChoosedSkin[playerid] = 118;
-                }
-                else if(skin == 118)
-                {
-                    pChoosedSkin[playerid] = 224;
-                }
-                else if(skin == 224)
-                {
-                    pChoosedSkin[playerid] = 294;
-                }
-                else if(skin == 294)
-                {
+                }else if(skin == 118){
                     pChoosedSkin[playerid] = 120;
+                }else if(skin == 120){
+                    pChoosedSkin[playerid] = 208;
+                }else if(skin == 208){
+                    pChoosedSkin[playerid] = 244;
+                }else if(skin == 244){
+                    pChoosedSkin[playerid] = 117;
+                }else{
+                    pChoosedSkin[playerid] = 117;
                 }
                 SetPlayerSkin(playerid, pChoosedSkin[playerid]);
             }
@@ -32843,6 +32080,136 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                 mysql_real_escape_string(inputtext,query,gSQL,sizeof(query));
                 format(query,sizeof(query),"SELECT `BankPin` FROM `accounts` WHERE `Name` = '%s' AND `SecureCode` = '%s'",GetName(playerid),query);
                 mysql_pquery(query,THREAD_PIN_VERGESSEN,playerid,gSQL,MySQLThreadOwner);
+            }
+        }
+        case DIALOG_MEMBERS: {
+            if(response) {
+                if(Spieler[playerid][pFraktion] < 1)return SendClientMessage(playerid, COLOR_RED, "Du bist in keiner Fraktion!");
+                new
+                    query[160];
+                pCurrentSite[playerid] = 0;
+
+                SetPVarInt(playerid, "MEMBERAUSWAHL", listitem+1);
+
+                format(query, sizeof(query), "SELECT `Name`, `Level`, `Rank`, `Fraktion`, `FrakLohn` FROM `accounts` WHERE `Fraktion` =%d ORDER BY `Rank` DESC LIMIT 0,30", Spieler[playerid][pFraktion]);
+                mysql_pquery(query,THREAD_MITGLIEDER_AUSWAHL,playerid,gSQL,MySQLThreadOwner);
+            }
+        }
+        case DIALOG_MEMBER_RESULT: {
+            if(response){
+                //format(str2, sizeof(str2), "{FFFFFF}Rang ändern\nLohn ändern\nMitglied entlassen");
+                new pName[24];
+                GetPVarString(playerid, "MITGLIEDERNAME", pName, sizeof(pName));
+
+                if(listitem == 0){
+                    new title[128];
+                    format(title, sizeof(title), "Mitgliederliste - Ranganpassung - %s", pName);
+
+                    new string[128];
+                    format(string, sizeof(string), "{FFFFFF}Gebe hier den neuen Rang des Mitgliedes %s ein:", pName);
+
+                    ShowPlayerDialog(playerid, DIALOG_MEMBER_RANK, DIALOG_STYLE_INPUT, title, string, "Ändern", "Abbrechen");
+                }
+
+                if(listitem == 1){
+                    new title[128];
+                    format(title, sizeof(title), "Mitgliederliste - Gehaltsanpssung - %s", pName);
+
+                    new string[128];
+                    format(string, sizeof(string), "{FFFFFF}Gebe hier das neue Gehalt des Mitgliedes %s ein:", pName);
+
+                    ShowPlayerDialog(playerid, DIALOG_MEMBER_LOHN, DIALOG_STYLE_INPUT, title, string, "Ändern", "Abbrechen");
+                }
+
+                if(listitem == 2){
+                    new giveid, string[128];
+                    sscanf(pName, "k<playername>", giveid);
+                    if (giveid != INVALID_PLAYER_ID){
+                        format(string, sizeof(string), "Du wurdest von %s aus der Fraktion gefeuert. Du bist nun wieder Zivilist.", GetName(playerid));
+                        SendClientMessage(giveid, COLOR_YELLOW, string);
+                        format(string, sizeof(string), "Du hast %s aus der Fraktion gefeuert.", GetName(giveid));
+                        SendClientMessage(playerid, COLOR_YELLOW, string);
+                        RemovePlayerFromFaction(giveid);
+                    }else{
+                        new query[128];
+                        format(string, sizeof(string), "Du hast %s aus der Fraktion gefeuert.", pName);
+                        SendClientMessage(playerid, COLOR_YELLOW, string);
+                        format(query,sizeof(query),"UPDATE `accounts` SET `Fraktion` = 0,`Rank` = 0,`Skin` = 2 WHERE `Name` = '%s'",pName);
+                        mysql_pquery(query,THREAD_OAFKICK,playerid,gSQL,MySQLThreadOwner);
+                    }
+                }
+                /*
+                sscanf(pName, "k<playername>", giveid);
+            if (giveid != INVALID_PLAYER_ID)
+            */
+            }else{
+                cmd_mitglieder(playerid);
+            }
+        }
+        case DIALOG_MEMBER_RANK: {
+            if(response){
+                new pName[24];
+                GetPVarString(playerid, "MITGLIEDERNAME", pName, sizeof(pName));
+                new giveid, string[128];
+                sscanf(pName, "k<playername>", giveid);
+
+                new iValue = strval(inputtext);
+
+                if(iValue < 0 || iValue > 5){
+                    SendClientMessage(playerid, COLOR_RED, "Ungültiger Rang!");
+                    cmd_mitglieder(playerid);
+                    return 1;
+                }
+
+                if (giveid != INVALID_PLAYER_ID){
+                    Spieler[giveid][pRank] = iValue;
+                    new rankname[35];
+                    ReturnPlayerRank(giveid, rankname);
+                    format(string, sizeof(string), "[FRAKTIONS-NEWS] Der Rank von %s wurde von %s geändert. Er ist nun %s.", GetName(giveid), GetName(playerid), rankname);
+                    SendFraktionMessage(Spieler[playerid][pFraktion], COLOR_YELLOW, string);
+                    format(string, sizeof(string), "Du wurdest von %s auf den Rank %s gestuft.", GetName(playerid), rankname);
+                    SendClientMessage(giveid, COLOR_LIGHTBLUE, string);
+                }else{
+                    new query[256];
+                    SetPVarString(playerid, "OFFSETRANK.NAME", pName);
+                    SetPVarInt(playerid, "OFFSETRANK.AMOUNT", iValue);
+                    format(query, sizeof(query), "SELECT `Name`, `Fraktion`, `Rank` FROM `accounts` WHERE `Name` = '%s' LIMIT 1", pName);
+                    mysql_pquery(query, THREAD_OFFSETRANK_CHECK, playerid, gSQL, MySQLThreadOwner);
+                }
+
+            }else{
+                cmd_mitglieder(playerid);
+            }
+        }
+        case DIALOG_MEMBER_LOHN: {
+            if(response){
+                new pName[24];
+                GetPVarString(playerid, "MITGLIEDERNAME", pName, sizeof(pName));
+                new giveid, string[128];
+                sscanf(pName, "k<playername>", giveid);
+
+                new iValue = strval(inputtext);
+                if(iValue < 0 || iValue > 40000){
+                    SendClientMessage(playerid, COLOR_RED, "Ungültige Eingabe!!");
+                    cmd_mitglieder(playerid);
+                    return 1;
+                }
+
+                if (giveid != INVALID_PLAYER_ID){
+                    Spieler[giveid][pFrakLohn] = iValue;
+                    format(string, sizeof(string), "Dein Lohn wurde von Leader %s auf $%s gesetzt.", GetName(playerid), AddDelimiters(iValue));
+                    SendClientMessage(giveid, COLOR_LIGHTBLUE, string);
+                    format(string, sizeof(string), "Du hast den Lohn von %s auf $%s gesetzt.", GetName(giveid), AddDelimiters(iValue));
+                    SendClientMessage(playerid, COLOR_LIGHTBLUE, string);
+                }else{
+                    new query[256];
+                    SetPVarString(playerid, "OFFSETLOHN.NAME", pName);
+                    SetPVarInt(playerid, "OFFSETLOHN.AMOUNT", iValue);
+                    format(query, sizeof(query), "SELECT `Name`, `Fraktion`, `FrakLohn` FROM `accounts` WHERE `Name` = '%s' LIMIT 1", pName);
+                    mysql_pquery(query, THREAD_OFFSETLOHN_CHECK, playerid, gSQL, MySQLThreadOwner);
+                }
+            }else{
+                cmd_mitglieder(playerid);
             }
         }
         case DIALOG_BANK: {
@@ -46663,7 +46030,7 @@ CMD:offsetlohn(playerid, params[]) {
     if (!isnull(sSpieler)) return SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}Du gibst gerade noch jemandem offline einen Lohn.");
     if (sscanf(params, "s[24]i", sSpieler, amount) || !amount) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING "/Offsetlohn [Spielername] [Lohn]");
     if (!sscanf(sSpieler, "u", pID) && IsPlayerConnected(pID)) return SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}Der Spieler ist zurzeit online. Benutze /Setlohn.");
-    if (amount < 0 || amount > 50000) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Nein, das geht nicht!");
+    if (amount < 0 || amount > 40000) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Nein, das geht nicht!");
     new query[256];
     mysql_real_escape_string(sSpieler, sSpieler);
     SetPVarString(playerid, "OFFSETLOHN.NAME", sSpieler);
@@ -51294,7 +50661,7 @@ COMMAND:robninedemons(playerid,params[]) {
 	return 1;
 }
 
-COMMAND:tresoraufbrechen(playerid,params[]) {
+/*COMMAND:tresoraufbrechen(playerid,params[]) {
     if( (!IsPlayerInRangeOfPoint(playerid,2.0, BANKINTERIORLV_ROB_POINT) ) || (GetPlayerInterior(playerid) != 3) || (GetPlayerVirtualWorld(playerid) != VW_BANKINTERIORLV) ) {
         SendClientMessage(playerid, COLOR_RED, "Du bist nicht in der Las Venturas Zentralbank.");
         return 1;
@@ -51354,7 +50721,7 @@ COMMAND:tresoraufbrechen(playerid,params[]) {
     SendFraktionMessage(18, COLOR_LIGHTRED, breakingNewsMessage);
 
     return 1;
-}
+}*/
 
 forward ResetEvidenceRoomHeist();
 public ResetEvidenceRoomHeist() {
@@ -52002,7 +51369,7 @@ enum e_FraktionsSkins {
 
 new const g_FraktionsSkins[][e_FraktionsSkins] = {
 	// X    Y       Z     Frak  { Skin 1-7 }
-	{LSPD_INTERIOR_FSKIN_POINT,	    1, { 300 , 301 , 281 , 283 , 267 , 265 , 266 , 265 , 306 , 285 , 284 , 303 , 304 , 192 , 59 , 60 , 72 ,188 , 229 , 93 , 233 , 226 } },
+	{LSPD_INTERIOR_FSKIN_POINT,	    1, { 265 , 266 , 267 , 280 , 284 , 285 , 300 , 303 , 304 , 306 , 12 , 93 , 170 , 188} },
 	{SAMD_INTERIOR_FSKIN_POINT,	3, { 70 , 274, 275, 276, 277, 278, 279, 308, 59, 60, 29, 72, 188, 229, 93, 233, 226} },
 	{POO_INTERIOR_FSKIN_POINT,	    5, { 71, 150, 303, 59 , 60 , 72 , 188 , 93 , 233 , 226 } },
 	{FBI_INTERIOR_FSKIN_POINT,	2, { 286 , 285 , 309 , 166, 165,59 , 21 , 60 , 72 ,188 , 229 , 93 , 233 , 226 } },
@@ -53649,13 +53016,14 @@ stock SaveFraktionsSafeBox() {
     new
         query[200];
     for(new i = 0; i < sizeof(g_FraktionsSafeBox) ; i++) {
-        format(query,sizeof(query),"UPDATE `frakbox` SET `drogen` = %d, `waffenteile` = %d, `wantedcodes` = %d, `spice` = %d, `krauter` = %d, `gangsamen` = %d WHERE `fraktionsid` = %d",
+        format(query,sizeof(query),"UPDATE `frakbox` SET `drogen` = %d, `waffenteile` = %d, `wantedcodes` = %d, `spice` = %d, `krauter` = %d, `gangsamen` = %d, `sprit` = %d WHERE `fraktionsid` = %d",
             g_FraktionsSafeBox[i][FSB_iDrogen],
             g_FraktionsSafeBox[i][FSB_iWaffenteile],
             g_FraktionsSafeBox[i][FSB_iWantedcodes],
             g_FraktionsSafeBox[i][FSB_iSpice],
             g_FraktionsSafeBox[i][FSB_iKrauter],
             g_FraktionsSafeBox[i][FSB_iGSamen],
+            g_FraktionsSafeBox[i][FSB_iSprit],
             i
         );
         mysql_oquery(query,THREAD_SAVEFRAKTIONSSAFEBOX,INVALID_PLAYER_ID,gSQL);
@@ -53680,7 +53048,8 @@ new g_FraktionsSafeBoxLocation[][e_FraktionsSafeBoxLocation] = {
     {12, LCN_INTERIOR_SAFEBOX_POINT},
     {21, TRIADS_INTERIOR_SAFEBOX_POINT},
     {20,-2170.3828,635.3927,1052.3750},
-    {13,2811.7188,-1165.9420,1025.5703}
+    {13,2811.7188,-1165.9420,1025.5703},
+    {19,TERRORBASE_FSAFEBOX}
 };
 
 stock FSafeboxSoreGebiet(fsafeboxfrakid, itemid, amount) {
@@ -55306,6 +54675,27 @@ COMMAND:startbonus(playerid,params[]) {
     ShowPlayerDialog(playerid,DIALOG_STARTBONUS,DIALOG_STYLE_LIST,"Startbonus","+3 Respektpunkte\n+15.000$\nZufallsgeschenk","Annehmen","Abbruch");
     return 1;
 }
+
+CMD:starterpack(playerid){
+    if(Spieler[playerid][pLevel] > 3) return SendClientMessage(playerid, COLOR_RED, "[STARTERPACK] {FFFFFF}Du bist leider nicht für den Starterpack qualifiziert!");
+    if(!IsPlayerInRangeOfPoint(playerid, 3.0, 808.8542,-1347.3077,13.5416)) return SendClientMessage(playerid, COLOR_RED, "[STARTERPACK] {FFFFFF}Du bist nicht am Starterpack Punkt!");
+    new jahr, monat, tag;
+    getdate(jahr, monat, tag);
+    if(jahr == 2019 && monat >= 11 && tag >= 15) return SendClientMessage(playerid, COLOR_RED, "[STARTERPACK] {FFFFFF}Die Aktion ist leider abgelaufen!");
+    Spieler[playerid][pLevel] = 8;
+    Spieler[playerid][pBank] = 2500000;
+    Spieler[playerid][pHours] = 70;
+    Spieler[playerid][pCarLic] = 1;
+	Spieler[playerid][pMotoLic] = 1;
+	Spieler[playerid][pFlyLic] = 1;
+	Spieler[playerid][pBoatLic] = 1;
+	Spieler[playerid][pGunLic] = 1;
+	Spieler[playerid][pGunLicB] = 1;
+	Spieler[playerid][pLKWLic] = 1;
+    SendClientMessage(playerid, COLOR_GREEN, "[STARTERPACK] {FFFFFF}Du hast folgende Dinge erhalten: Level 8, $2.500.000, 70 Spielstunden und alle Führerscheine.");
+    return 1;
+}
+
 
 COMMAND:waffenspind(playerid,params[]) {
 
@@ -58563,6 +57953,21 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
                 else if(rk == 6){rank = "Zollamt Leader";}
             }
 
+            new auswahl = GetPVarInt(extraid, "MEMBERAUSWAHL");
+            DeletePVar(extraid, "MEMBERAUSWAHL");
+
+            if(auswahl != 0){
+                if(i == auswahl-1){
+                    new titel[40];
+                    new frakname[50];
+                    ReturnPlayerFraktion(extraid, frakname);
+                    format(titel, sizeof(titel), "%s - %s", frakname, pName);
+                    format(str2, sizeof(str2), "Rang\nLohn\nEntlassen");
+                    ShowPlayerDialog(extraid, DIALOG_NO_RESPONSE, DIALOG_STYLE_TABLIST_HEADERS, titel, str2, "Schließen", "");
+                    return 1;
+                }
+            }
+
             sscanf(pName, "k<playername>", giveid);
             if (giveid != INVALID_PLAYER_ID) format(string, sizeof(string), "{228B22}Online (ID: %i)\t%s%s\t%d\t%d - %s ($%s)\n", giveid, Spieler[giveid][pDuty] ? "{87CEFA}" : "", pName, lv, rk, rank, AddDelimiters(salary));
             else format(string, sizeof(string), "{FF0000}Offline\t%s\t%d\t%d - %s ($%s)\n", pName, lv, rk, rank, AddDelimiters(salary));
@@ -58576,8 +57981,266 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
         new frakname[50];
         ReturnPlayerFraktion(extraid, frakname);
         format(titel, sizeof(titel), "%s - Mitgliederliste", frakname);
-        ShowPlayerDialog(extraid, DIALOG_MEMBERS, DIALOG_STYLE_TABLIST_HEADERS, titel, str2, "Schließen", "");
+        if(Spieler[extraid][pRank] < 5) { ShowPlayerDialog(extraid, DIALOG_NO_RESPONSE, DIALOG_STYLE_TABLIST_HEADERS, titel, str2, "Schließen", ""); } 
+        if(Spieler[extraid][pRank] >= 5) { ShowPlayerDialog(extraid, DIALOG_MEMBERS, DIALOG_STYLE_TABLIST_HEADERS, titel, str2, "Bearbeiten", "Schließen"); }
     }
+
+    else if( resultid == THREAD_MITGLIEDER_AUSWAHL ) {
+        new pName[24], /*lv,*/ str2[2500], /*string[128],*/ count, rk,fID, rank[35]/*, salary*/;
+        str2 = "Status\tName\tLevel\tRank\n";
+        // new queryex[128];
+        //print(query);
+        new i, /*giveid,*/ rows = cache_get_row_count(connectionHandle);
+        while( i < rows ) {
+            //sscanf(queryex,"p<|>s[24]ddd",pName,lv,rk,fID);
+
+            cache_get_field_content(i,"Name",pName, connectionHandle);
+            //lv = cache_get_field_content_int(i,"Level", connectionHandle);
+            rk = cache_get_field_content_int(i,"Rank", connectionHandle);
+            fID = cache_get_field_content_int(i,"Fraktion", connectionHandle);
+            //salary = cache_get_field_content_int(i,"FrakLohn", connectionHandle);
+
+            if(fID == 1)//LSPD
+            {
+                if(rk == 0){rank="LSPD Anwärter";}
+                else if(rk == 1){rank="LSPD Polizeimeister";}
+                else if(rk == 2){rank="LSPD Polizeiobermeister";}
+                else if(rk == 3){rank="LSPD Polizeikommissar";}
+                else if(rk == 4){rank="LSPD Polizeioberkommissar";}
+                else if(rk == 5){rank="LSPD Stellv. Direktor";}
+                else if(rk == 6){rank="LSPD Direktor";}
+            }
+            else if(fID == 2)//FBI
+            {
+                if(rk == 0){rank ="FBI Anwärter";}
+                else if(rk == 1){rank ="FBI Agent";}
+                else if(rk == 2){rank ="FBI Spezialagent";}
+                else if(rk == 3){rank ="FBI Sturmtupp";}
+                else if(rk == 4){rank ="FBI Einsatzleitung";}
+                else if(rk == 5){rank ="FBI Stellv. Direktor";}
+                else if(rk == 6){rank ="FBI Direktor";}
+            }
+            else if(fID == 3)//SAMD
+            {
+                if(rk == 0){rank="Praktikant";}
+                else if(rk == 1){rank="Arzthelfer";}
+                else if(rk == 2){rank="Arzt";}
+                else if(rk == 3){rank="Oberarzt";}
+                else if(rk == 4){rank="Hauptarzt";}
+                else if(rk == 5){rank="Einsatzleitung";}
+                else if(rk == 6){rank="Direktor";}
+            }
+            else if(fID == 4)//SA-NA
+            {
+                if(rk == 0){rank ="Praktikant";}
+                else if(rk == 1){rank="Zeitungsjunge";}
+                else if(rk == 2){rank ="Lokalreporter";}
+                else if(rk == 3){rank ="Lokalredakteur";}
+                else if(rk == 4){rank ="Netzwerk-Kontrolleur";}
+                else if(rk == 5){rank ="Netzwerk-Redakteur";}
+                else if(rk == 6){rank ="News Agentur Chef";}
+            }
+            else if(fID == 5)//O-Amt
+            {
+                if(rk == 0){rank ="Praktikant";}
+                else if(rk == 1){rank ="Abschlepper";}
+                else if(rk ==2){rank ="Kontrolleur";}
+                else if(rk == 3){rank ="Ordnungshüter";}
+                else if(rk == 4){rank ="Abteilungsleiter";}
+                else if(rk == 5){rank ="Stellv. Leiter";}
+                else if(rk == 6){rank ="Leiter";}
+            }
+            else if(fID == 6)//Grove Street
+            {
+                if(rk == 0){rank ="Bengel";}
+                else if(rk == 1){rank ="Knecht";}
+                else if(rk == 2){rank ="Associate";}
+                else if(rk == 3){rank ="Solidier";}
+                else if(rk == 4){rank ="Capo";}
+                else if(rk == 5){rank ="Underboss";}
+                else if(rk == 6){rank ="BigBoss";}
+            }
+            else if(fID == 7)//Ballas
+            {
+                if(rk == 0){rank ="Anfänger";}
+                else if(rk == 1){rank ="Drogenjunkie";}
+                else if(rk == 2){rank ="Homie";}
+                else if(rk == 3){rank ="Gangster";}
+                else if(rk == 4){rank ="Elite";}
+                else if(rk == 5){rank ="Zweite Hand";}
+                else if(rk == 6){rank ="Leiter";}
+            }
+            else if(fID == 8)
+            {
+                if(rk == 0){rank ="Fahrlehrer in Ausbildung";}
+                else if(rk == 1){rank ="Fahrlehrer";}
+                else if(rk == 2){rank ="Erfahrener Fahrlehrer";}
+                else if(rk == 3){rank ="Treuer Fahrlehrer";}
+                else if(rk == 4){rank ="Fahrschulausbilder";}
+                else if(rk == 5){rank ="Stellv. Leiter der Fahrschule";}
+                else if(rk == 6){rank ="Leiter der Fahrschule";}
+            }
+            else if(fID == 9)
+            {
+                if(rk == 0){rank ="Praktikant";}
+                else if(rk == 1){rank ="Bodyguard";}
+                else if(rk == 2){rank ="Secret Service";}
+                else if(rk == 3){rank ="Secret Service Chief";}
+                else if(rk == 4){rank ="Bürgermeister";}
+                else if(rk == 5){rank ="Minister";}
+                else if(rk == 6){rank ="Präsident";}
+            }
+            else if(fID == 10)
+            {
+                if(rk == 0){rank ="Anoisai";}
+                else if(rk == 1){rank ="Menba";}
+                else if(rk == 2){rank ="Shatei";}
+                else if(rk == 3){rank ="Kaikei";}
+                else if(rk == 4){rank ="Saiko-Komon";}
+                else if(rk == 5){rank = "Kobun";}
+                else if(rk == 6){rank = "Oyabun";}
+            }
+            else if(fID == 11)
+            {
+                if(rk == 0){rank ="Novel";}
+                else if(rk == 1){rank ="Nuevo Amigo";}
+                else if(rk == 2){rank ="Compareno";}
+                else if(rk == 3){rank ="Soldato";}
+                else if(rk == 4){rank ="El Consejero";}
+                else if(rk == 5){rank = "La Vice Jefe";}
+                else if(rk == 6){rank = "El Jefe";}
+            }
+            else if(fID == 12)
+            {
+                if(rk == 0){rank ="Schuhputzer";}
+                else if(rk == 1){rank ="Soldato";}
+                else if(rk == 2){rank ="Picciotti";}
+                else if(rk == 3){rank ="Membro della Famiglia";}
+                else if(rk == 4){rank ="Addestratore";}
+                else if(rk == 5){rank = "Consigliere";}
+                else if(rk == 6){rank = "Don";}
+            }
+            else if(fID == 13)
+            {
+                if(rk == 0){rank ="Lacayo";}
+                else if(rk == 1){rank ="Miembro";}
+                else if(rk == 2){rank ="Hermano";}
+                else if(rk == 3){rank ="Compañero";}
+                else if(rk == 4){rank ="El Consejero";}
+                else if(rk == 5){rank = "El Vice Jefe";}
+                else if(rk == 6){rank = "El Jefe";}
+            }
+            else if(fID == 14)
+            {
+                if(rk == 0){rank ="Vollstrecker";}
+                else if(rk == 1){rank ="Mörder";}
+                else if(rk == 2){rank ="Serienmörder";}
+                else if(rk == 3){rank ="Attentäter";}
+                else if(rk == 4){rank ="Spezialagent";}
+                else if(rk == 5){rank = "Vorstandsmitglied";}
+                else if(rk == 6){rank = "Direktor";}
+            }
+            else if(fID == 15)
+            {
+                if(rk == 0){rank ="Prospect";}
+                else if(rk == 1){rank ="Patched Member";}
+                else if(rk == 2){rank ="Biker";}
+                else if(rk == 3){rank ="The Enforcer";}
+                else if(rk == 4){rank ="Captain";}
+                else if(rk == 5){rank = "Vice-President";}
+                else if(rk == 6){rank = "President";}
+            }
+            else if(fID == 16)
+            {
+                if(rk == 0){rank="LVPD Anwärter";}
+                else if(rk == 1){rank="LVPD Polizeimeister";}
+                else if(rk == 2){rank="LVPD Polizeiobermeister";}
+                else if(rk == 3){rank="LVPD Polizeikommisar";}
+                else if(rk == 4){rank="LVPD Polizeioberkommisar";}
+                else if(rk == 5){rank="LVPD Stellv. Direktor";}
+                else if(rk == 6){rank="LVPD Direktor";}
+            }
+            else if(fID == 17)
+            {
+                if(rk == 0){rank =" Wheelman R0";}
+                else if(rk == 1){rank ="Wheelman R1";}
+                else if(rk == 2){rank ="Wheelman R2";}
+                else if(rk == 3){rank ="Wheelman R3";}
+                else if(rk == 4){rank ="Wheelman R4";}
+                else if(rk == 5){rank = "Wheelman Co.Leader";}
+                else if(rk == 6){rank = "Wheelman Leader";}
+            }
+            else if(fID == 18)
+            {
+                if(rk == 0){rank ="Army Praktikant";}
+                else if(rk == 1){rank ="Rekrut";}
+                else if(rk == 2){rank ="Azubi-SC";}
+                else if(rk == 3){rank ="Privat-AF";}
+                else if(rk == 4){rank ="Privat-BT";}
+                else if(rk == 5){rank = "General-SC";}
+                else if(rk == 6){rank = "General";}
+            }
+            else if(fID == 19)
+            {
+                if(rk == 0){rank ="Terrorist";}
+                else if(rk == 1){rank ="Terrorist";}
+                else if(rk == 2){rank ="Terrorist";}
+                else if(rk == 3){rank ="Terrorist";}
+                else if(rk == 4){rank ="Terrorist";}
+                else if(rk == 5){rank = "Terrorist Co. Leader";}
+                else if(rk == 6){rank = "Terrorist Leader";}
+            }
+            else if(fID == 20)
+            {
+                if(rk == 0){rank ="Novo";}
+                else if(rk == 1){rank ="Reclutador";}
+                else if(rk == 2){rank ="Principiante";}
+                else if(rk == 3){rank ="Avasando";}
+                else if(rk == 4){rank ="Familiar";}
+                else if(rk == 5){rank = "Hermano";}
+                else if(rk == 6){rank = "Dirigente";}
+            }
+            else if(fID == 21)
+            {
+                if(rk == 0){rank ="Shangwang";}
+                else if(rk == 1){rank ="Tugong";}
+                else if(rk == 2){rank ="Shusheng";}
+                else if(rk == 3){rank ="Chengyuan";}
+                else if(rk == 4){rank ="Shengyu Jiashu";}
+                else if(rk == 5){rank = "Youshou De Jiazu";}
+                else if(rk == 6){rank = "Shangsi";}
+            }
+            else if(fID == 22)
+            {
+                if(rk == 0){rank ="Zollanwärter";}
+                else if(rk == 1){rank ="Zollbeamter";}
+                else if(rk == 2){rank ="Zolloberwachtmeister";}
+                else if(rk == 3){rank ="Zollhauptwachtmeister";}
+                else if(rk == 4){rank ="Zollamt Ausbilder";}
+                else if(rk == 5){rank = "Zollamt Co. Leader";}
+                else if(rk == 6){rank = "Zollamt Leader";}
+            }
+
+            new auswahl = GetPVarInt(extraid, "MEMBERAUSWAHL");
+
+            if(auswahl != 0){
+                if(i == auswahl-1){
+                    DeletePVar(extraid, "MEMBERAUSWAHL");
+                    SetPVarString(extraid, "MITGLIEDERNAME", pName);
+                    new titel[40];
+                    new frakname[50];
+                    ReturnPlayerFraktion(extraid, frakname);
+                    format(titel, sizeof(titel), "%s - %s", frakname, pName);
+                    format(str2, sizeof(str2), "{FFFFFF}Rang ändern\nLohn ändern\nMitglied entlassen");
+                    ShowPlayerDialog(extraid, DIALOG_MEMBER_RESULT, DIALOG_STYLE_TABLIST, titel, str2, "Auswählen", "Schließen");
+                    return 1;
+                }
+            }
+            count++;
+            i++;
+        }
+    }
+
     else if( resultid == THREAD_ACCEPTMARRIAGE ) {
 
     }
@@ -59801,7 +59464,7 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
         }
     }
     else if( resultid == THREAD_LOADFRAKTIONSSAFEBOX ) {
-        new rows, row, i, id, spice, drugs, wcodes, waffenteile, krauter, gdsamen;
+        new rows, row, i, id, spice, drugs, wcodes, waffenteile, krauter, gdsamen, spritl;
         rows = cache_get_row_count(connectionHandle);
         while( row < rows ) {
             id = cache_get_field_content_int(row,"fraktionsid",connectionHandle);
@@ -59811,6 +59474,7 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
             spice = cache_get_field_content_int(row, "spice",connectionHandle);
             krauter = cache_get_field_content_int(row, "krauter",connectionHandle);
             gdsamen = cache_get_field_content_int(row, "gangsamen",connectionHandle);
+            spritl = cache_get_field_content_int(row, "sprit",connectionHandle);
             row++;
             /*
             if(sscanf(resultline,"p<|>dddd",id,drugs,waffenteile,spice)) {
@@ -59826,6 +59490,7 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
             g_FraktionsSafeBox[id][FSB_iSpice] = spice;
             g_FraktionsSafeBox[id][FSB_iKrauter] = krauter;
             g_FraktionsSafeBox[id][FSB_iGSamen] = gdsamen;
+            g_FraktionsSafeBox[id][FSB_iSprit] = spritl;
             i++;
         }
         return 1;
@@ -60472,7 +60137,7 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
         new frakname[50];
         ReturnPlayerFraktion(extraid, frakname);
         format(titel, sizeof(titel), "Leaderliste");
-        ShowPlayerDialog(extraid, DIALOG_MEMBERS, DIALOG_STYLE_TABLIST_HEADERS, titel, str2, "Schließen", "");
+        ShowPlayerDialog(extraid, DIALOG_NO_RESPONSE, DIALOG_STYLE_TABLIST_HEADERS, titel, str2, "Schließen", "");
 	}
 	else if(resultid == THREAD_COINS) {
 	    new coinanzahl;
@@ -61263,7 +60928,7 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
         new frakname[50];
         ReturnPlayerFraktion(extraid, frakname);
         format(titel, sizeof(titel), "Adminliste");
-        ShowPlayerDialog(extraid, DIALOG_MEMBERS, DIALOG_STYLE_TABLIST_HEADERS, titel, str2, "Schließen", "");
+        ShowPlayerDialog(extraid, DIALOG_NO_RESPONSE, DIALOG_STYLE_TABLIST_HEADERS, titel, str2, "Schließen", "");
 	}
     return 1;
 }
@@ -63797,6 +63462,14 @@ COMMAND:hmenu(playerid,params[]) {
     return 1;
 }
 
+CMD:spritlager(playerid){
+    if(Spieler[playerid][pFraktion] != 19) return SendClientMessage(playerid, COLOR_RED, "[SPRITLAGER] {FFFFFF}Deine Fraktion besitzt kein Spritlager!");
+    if(!IsPlayerInRangeOfPoint(playerid, 3.0, 952.1439,2083.6968,10.8203)) return SendClientMessage(playerid, COLOR_RED, "[SPRITLAGER] {FFFFFF}Du bist nicht am Spritlager!");
+    SCMFormatted(playerid, COLOR_YELLOW, "[SPRITLAGER] {FFFFFF}In Spritlager befinden sich aktuell %i Liter.", g_FraktionsSafeBox[19][FSB_iSprit]);
+    return 1;
+    //FSB_iSprit
+}
+
 CMD:spritklauen(playerid, params[]) {
     new veh = GetPlayerVehicleID(playerid), vehiclemodel = GetVehicleModel(veh), string[128], menge;
  	if (!gPlayerLogged[playerid]) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du bist nicht eingeloggt.");
@@ -63804,12 +63477,12 @@ CMD:spritklauen(playerid, params[]) {
 	if(Spieler[playerid][pRank] < 1) return SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}Du musst mindestens Rank 1 sein.");
 	if(!GetPVarInt(playerid, "STARTSPRIT")) return SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}Beginne erst mit der Mission (/Startsprit)");
 	if(GetPVarInt(playerid, "SPRITROB")) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du führst bereits die Mission durch!");
-	if(vehiclemodel != 403) return SendClientMessage(playerid, COLOR_RED,"[INFO] {FFFFFF}Du bist in keinem Linerunner!");
-	if(FrakCarInfo[veh][f_frak] != 19)return SendClientMessage(playerid, COLOR_RED,"[FEHLER] {FFFFFF}Der Linerunner gehört nicht zu deiner Fraktion.");
- 	if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER) return SendClientMessage(playerid,COLOR_RED,"[INFO] {FFFFFF}Du musst der Fahrer des Linerunners sein!");
+	if(vehiclemodel != 499) return SendClientMessage(playerid, COLOR_RED,"[INFO] {FFFFFF}Du bist in keinem Benson!");
+	if(FrakCarInfo[veh][f_frak] != 19)return SendClientMessage(playerid, COLOR_RED,"[FEHLER] {FFFFFF}Der Benson gehört nicht zu deiner Fraktion.");
+ 	if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER) return SendClientMessage(playerid,COLOR_RED,"[INFO] {FFFFFF}Du musst der Fahrer des Bensons sein!");
  	if(!IsPlayerInRangeOfPoint(playerid, 3.0, 268.9609,1384.2981,10.1610)) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du bist nicht an der Öl-Raffinerie.");
  	if(sscanf(params, "d", menge))return SendClientMessage(playerid,COLOR_BLUE, INFO_STRING"/Spritklauen [Liter]");
- 	if(menge < 0 || menge > 8000)return SendClientMessage(playerid, COLOR_RED,"[FEHLER] {FFFFFF}Die Menge muss mind. 1 Liter betragen oder max. 8.000 Liter");
+ 	if(menge < 0 || menge > 400)return SendClientMessage(playerid, COLOR_RED,"[FEHLER] {FFFFFF}Die Menge muss mind. 1 Liter betragen oder max. 400 Liter");
  	
  	SCMFormatted(playerid, COLOR_GREEN, "[INFO] {FFFFFF}Du fängst an %d Liter Sprit zu klauen! Halte es 5 Minuten aus.", menge);
  	SpritTimer[playerid] = SetTimerEx("RobSprit", 300000, false, "d", playerid); // <== 5 Minuten
@@ -63854,9 +63527,9 @@ public RobSpritCheck(playerid) {
 
 forward RobSprit(playerid);
 public RobSprit(playerid) {
-	SCMFormatted(playerid, COLOR_GREEN,"[INFO] {FFFFFF}Du konntest %d Liter Sprit klauen! Fahre nun zur Schwarzmarkt-Safebox!", GetPVarInt(playerid, "SPRITMENGE"));
+	SCMFormatted(playerid, COLOR_GREEN,"[INFO] {FFFFFF}Du konntest %d Liter Sprit klauen! Fahre nun zum Spritlager!", GetPVarInt(playerid, "SPRITMENGE"));
 	KillTimer(SpritCheckTimer[playerid]);
-	SetPlayerCheckpointEx(playerid, TERRORBASE_SPAWN_POINT, 6.0, CP_ROBSPRIT);
+	SetPlayerCheckpointEx(playerid, 952.1439,2083.6968,10.8203, 6.0, CP_ROBSPRIT);
 	return 1;
 }
 
@@ -63867,8 +63540,8 @@ CMD:startsprit(playerid) {
 	if(Spieler[playerid][pRank] < 1) return SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}Du musst mindestens Rank 1 sein.");
 	if(GetPVarInt(playerid, "STARTSPRIT"))return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast bereits mit der Mission begonnen. Tippe /Stopsprit");
 	if(GetPVarInt(playerid, "SPRITROB")) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du führst bereits die Mission durch!");
-	if(vehiclemodel != 403) return SendClientMessage(playerid, COLOR_RED,"[INFO] {FFFFFF}Du bist in keinem Linerunner!");
-	if(FrakCarInfo[veh][f_frak] != 19)return SendClientMessage(playerid, COLOR_RED,"[FEHLER] {FFFFFF}Der Linerunner gehört nicht zu deiner Fraktion.");
+	if(vehiclemodel != 499) return SendClientMessage(playerid, COLOR_RED,"[INFO] {FFFFFF}Du bist in keinem Benson!");
+	if(FrakCarInfo[veh][f_frak] != 19)return SendClientMessage(playerid, COLOR_RED,"[FEHLER] {FFFFFF}Der Benson gehört nicht zu deiner Fraktion.");
  	if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER) return SendClientMessage(playerid,COLOR_RED,"[INFO] {FFFFFF}Du musst der Fahrer des Linerunners sein!");
 	if(IsPlayerInRangeOfPoint(playerid, 3.0, 268.9609,1384.2981,10.1610))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Spritklauen [Liter]");
 	
