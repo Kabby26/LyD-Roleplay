@@ -236,7 +236,7 @@ hook OnGameModeInit() {
 	stadthalle_Obj[23] = CreateDynamicObject(18980, 1524.0985, -1693.0941, 12.6603, 0.0000, 90.0000, 90.0, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //Concrete1mx1mx25m
 	SetDynamicObjectMaterial(stadthalle_Obj[23], 0, 4835, "airoads_las", "concretenewb256", 0xFF808080);
 	stadthalle_Obj[24] = CreateDynamicObject(18981, 1446.8927, -1715.4415, 11.8730, 0.0000, 90.0000, 0.0, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //Concrete1mx25mx25m
-	SetDynamicObjectMaterial(stadthalle_Obj[24], 0, 4835, "airoads_las", "concretenewb256", 0xFFFFFFFF);
+	SetDynamicObjectMaterial(stadthalle_Obj[24], 0, 6312, "beacliff_law2", "concretebigblu4256128", 0xFFFFFFFF);//< DESCH OBJEKT
 	stadthalle_Obj[25] = CreateDynamicObject(10183, 1491.7060, -1722.1097, 12.3886, 0.0000, 0.0000, 225.0, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //ferspaces
 	stadthalle_Obj[26] = CreateDynamicObject(3660, 1480.0882, -1703.7054, 14.0417, 0.0000, 0.0000, 0.0, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //lasairfbed_LAS
 	stadthalle_Obj[27] = CreateDynamicObject(18980, 1524.0985, -1653.1025, 12.6603, 0.0000, 90.0000, 90.0, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //Concrete1mx1mx25m

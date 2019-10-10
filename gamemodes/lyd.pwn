@@ -924,12 +924,15 @@ enum {
     //THREAD_SETUP_POST
 }
 
+//#include <weapon-config>
 #include <a_samp>
 //#include <timerfix>
 #include <pause>
 #include <YSI\y_timers>
 #include <YSI\y_hooks>
 #include <YSI\y_bit>
+#include <weapon-config>
+#include <modeldialog>
 
 #if defined MAX_PLAYERS
     #undef MAX_PLAYERS
@@ -2401,6 +2404,8 @@ stock bool:IsTUVNeeded(distance) {
 
 #define     DIALOG_ATMHACK 1457
 
+#define     DIALOG_SKINS 1458
+
 #define     KEIN_KENNZEICHEN    "KEINE PLAKETTE"
 
 enum {
@@ -3730,6 +3735,93 @@ new const g_HausMoebel[][e_HausMoebel] = {
         {103,19173,11,200,"Poster - große Brücke in SF"},
         {104,19172,11,200,"Stadtposter"},
         {105,1736,11,850,"Hirschkopf"}
+};
+
+new skins_array[] =
+{
+	1,2,3,4,5,6,7,8,9,10,11,12,14,15,16,18,19,20,21,22,23,24,25,26,27,28,29,30,31,33,34,35,36,37,38,39,40,41,42,43,44,45,48,49,
+    50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,66,67,68,69,72,73,75,76,77,78,79,80,81,82,83,84,85,87,88,89,90,91,93,94,95,96,
+    97,98,101,111,112,119,121,127,128,129,130,131,
+    132,133,134,135,136,137,138,139,140,141,145,146,151,152,153,154,155,156,157,159,160,161,162,
+    167,168,170,171,172,176,177,178,179,180,181,182,183,188,189,190,191,192,193,194,196,197,198,199,200,201,
+    202,205,206,207,209,210,211,212,213,214,215,216,217,218,225,226,227,229,230,231,232,233,234,235,236,
+    237,238,239,240,241,242,243,244,245,246,249,250,251,252,253,255,256,257,258,259,260,261,262,264,268,
+    289,290,291,296,297,298,299
+};
+
+new skins_pd_array[] =
+{
+	265, 266, 267, 280, 284, 285, 300, 303, 304, 306, 12, 93, 93, 170, 188
+};
+
+new skins_samd_array[] =
+{
+    70, 274, 275, 276, 277, 278, 279, 308, 12, 93, 93, 170, 188
+};
+
+new skins_oamt_array[] =
+{
+    71, 305, 12, 93, 93, 170, 188
+};
+
+new skins_regierung_array[] =
+{
+    163, 164, 165, 166, 295
+};
+
+new skins_terrorist_array[] =
+{
+    142, 143, 144, 220, 221, 222
+};
+
+new skins_nd_array[] =
+{
+    32, 100, 158, 247, 248, 254
+};
+
+new skins_news_array[] =
+{
+    17, 147, 148, 150, 187, 219
+};
+
+new skins_yakuza_array[] =
+{
+    122, 123, 169, 186, 203, 228
+};
+
+new skins_gsf_array[] =
+{
+    65, 105, 106, 107, 269, 270, 271
+};
+
+new skins_ballas_array[] =
+{
+    13, 102, 103, 104, 293
+};
+
+new skins_vagos_array[] =
+{
+    47, 108, 109, 110, 292
+};
+
+new skins_aztecas_array[] =
+{
+    114, 115, 116, 173, 174, 175
+};
+
+new skins_triaden_array[] =
+{
+    117, 118, 120, 208, 224
+};
+
+new skins_cali_array[] =
+{
+    46, 184, 185, 223, 273
+};
+
+new skins_lcn_array[] =
+{
+    113, 124, 125, 126, 263, 272
 };
 
 #define MAX_TELEFONZELLEN 150
@@ -5399,6 +5491,11 @@ public OnGameModeInit() {
 	Connect_To_Database();
 	Streamer_SetVisibleItems(STREAMER_TYPE_OBJECT, STREAMER_MAX_OBJECTS, -1); // Object fix
     CallLocalFunction("OnGameModeInit2", ""); // y_hooks
+    /*HITBOX NEU ODER SO*/
+    SetDisableSyncBugs(true);
+    SetDamageSounds(0, 0);
+    SetDamageFeed(false);
+    //---------------------
 }
 
 forward OnGameModeInit2();
@@ -9921,7 +10018,94 @@ CMD:kleidung(playerid)
 	new tempCurBiz = pVW;
 	if(tempCurBiz == 36 || tempCurBiz == 37  || tempCurBiz == 38 ) {
 		pCurrentBiz[playerid] = tempCurBiz;
-		StartPlayerSkinSelection(playerid);
+
+        if(Biz[tempCurBiz][bWaren] < 1){
+            SendClientMessage(playerid, COLOR_RED, "Das Geschäft hat nicht mehr genügend Waren.");
+            return 1;
+		}
+
+		//StartPlayerSkinSelection(playerid);
+        GivePlayerCash(playerid, -500);
+        Biz[tempCurBiz][bKasse] += 500;
+        Biz[tempCurBiz][bWaren] -= 2;
+
+        SendClientMessage(playerid, COLOR_DARKGREEN, "[SKIN] {FFFFFF}Du zahlst $500 Servicepauschale für die Benutzung der Umkleide.");
+
+        new dialogstr[2056];
+        if(Spieler[playerid][pFraktion] == 0){
+            for (new i = 0, j = sizeof(skins_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_array[i]);
+            }
+        }else if(Spieler[playerid][pFraktion] == 1){
+            for (new i = 0, j = sizeof(skins_pd_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_pd_array[i]);
+            }
+        }else if(Spieler[playerid][pFraktion] == 3){
+            for (new i = 0, j = sizeof(skins_samd_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_samd_array[i]);
+            }
+        }else if(Spieler[playerid][pFraktion] == 4){
+            for (new i = 0, j = sizeof(skins_news_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_news_array[i]);
+            }
+        }else if(Spieler[playerid][pFraktion] == 5){
+            for (new i = 0, j = sizeof(skins_oamt_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_oamt_array[i]);
+            }
+        }else if(Spieler[playerid][pFraktion] == 6){
+            for (new i = 0, j = sizeof(skins_gsf_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_gsf_array[i]);
+            }
+        }else if(Spieler[playerid][pFraktion] == 7){
+            for (new i = 0, j = sizeof(skins_ballas_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_ballas_array[i]);
+            }
+        }else if(Spieler[playerid][pFraktion] == 9){
+            for (new i = 0, j = sizeof(skins_regierung_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_regierung_array[i]);
+            }
+        }else if(Spieler[playerid][pFraktion] == 10){
+            for (new i = 0, j = sizeof(skins_yakuza_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_yakuza_array[i]);
+            }
+        }else if(Spieler[playerid][pFraktion] == 11){
+            for (new i = 0, j = sizeof(skins_aztecas_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_aztecas_array[i]);
+            }
+        }else if(Spieler[playerid][pFraktion] == 12){
+            for (new i = 0, j = sizeof(skins_cali_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_cali_array[i]);
+            }
+        }else if(Spieler[playerid][pFraktion] == 13){
+            for (new i = 0, j = sizeof(skins_vagos_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_vagos_array[i]);
+            }
+        }else if(Spieler[playerid][pFraktion] == 14){
+            for (new i = 0, j = sizeof(skins_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_array[i]);
+            }
+        }else if(Spieler[playerid][pFraktion] == 15){
+            for (new i = 0, j = sizeof(skins_nd_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_nd_array[i]);
+            }
+        }else if(Spieler[playerid][pFraktion] == 19){
+            for (new i = 0, j = sizeof(skins_terrorist_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_terrorist_array[i]);
+            }
+        }else if(Spieler[playerid][pFraktion] == 20){
+            for (new i = 0, j = sizeof(skins_lcn_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_lcn_array[i]);
+            }
+        }else if(Spieler[playerid][pFraktion] == 21){
+            for (new i = 0, j = sizeof(skins_triaden_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_triaden_array[i]);
+            }
+        }else{
+            for (new i = 0, j = sizeof(skins_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_array[i]);
+            }
+        }
+        ShowPlayerDialog(playerid, DIALOG_SKINS, DIALOG_STYLE_PREVMODEL, "LyD - Kleidungsladen", dialogstr, "Ok", "Abbrechen");
    	}
     return 1;
 }
@@ -17938,8 +18122,82 @@ CMD:makeleader(playerid, params[])
         format(string, sizeof(string), "Du bist nun Leader von \"%s\". Bitte gebe gut Acht auf deinen Leaderposten.", fname);
         SendClientMessage(pID, COLOR_LIGHTBLUE, string);
         SetPVarInt(pID, "SELECT.FRAK.SKIN", 1);
-        StartPlayerSkinSelection(pID);
+        //StartPlayerSkinSelection(pID);
         SendClientMessage(pID, COLOR_GREEN, "Wähle nun deinen Fraktionsskin!");
+        new dialogstr[2056];
+        if(Spieler[playerid][pFraktion] == 0){
+            for (new i = 0, j = sizeof(skins_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_array[i]);
+            }
+        }else if(Spieler[playerid][pFraktion] == 1){
+            for (new i = 0, j = sizeof(skins_pd_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_pd_array[i]);
+            }
+        }else if(Spieler[playerid][pFraktion] == 3){
+            for (new i = 0, j = sizeof(skins_samd_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_samd_array[i]);
+            }
+        }else if(Spieler[playerid][pFraktion] == 4){
+            for (new i = 0, j = sizeof(skins_news_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_news_array[i]);
+            }
+        }else if(Spieler[playerid][pFraktion] == 5){
+            for (new i = 0, j = sizeof(skins_oamt_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_oamt_array[i]);
+            }
+        }else if(Spieler[playerid][pFraktion] == 6){
+            for (new i = 0, j = sizeof(skins_gsf_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_gsf_array[i]);
+            }
+        }else if(Spieler[playerid][pFraktion] == 7){
+            for (new i = 0, j = sizeof(skins_ballas_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_ballas_array[i]);
+            }
+        }else if(Spieler[playerid][pFraktion] == 9){
+            for (new i = 0, j = sizeof(skins_regierung_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_regierung_array[i]);
+            }
+        }else if(Spieler[playerid][pFraktion] == 10){
+            for (new i = 0, j = sizeof(skins_yakuza_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_yakuza_array[i]);
+            }
+        }else if(Spieler[playerid][pFraktion] == 11){
+            for (new i = 0, j = sizeof(skins_aztecas_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_aztecas_array[i]);
+            }
+        }else if(Spieler[playerid][pFraktion] == 12){
+            for (new i = 0, j = sizeof(skins_cali_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_cali_array[i]);
+            }
+        }else if(Spieler[playerid][pFraktion] == 13){
+            for (new i = 0, j = sizeof(skins_vagos_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_vagos_array[i]);
+            }
+        }else if(Spieler[playerid][pFraktion] == 14){
+            for (new i = 0, j = sizeof(skins_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_array[i]);
+            }
+        }else if(Spieler[playerid][pFraktion] == 15){
+            for (new i = 0, j = sizeof(skins_nd_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_nd_array[i]);
+            }
+        }else if(Spieler[playerid][pFraktion] == 19){
+            for (new i = 0, j = sizeof(skins_terrorist_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_terrorist_array[i]);
+            }
+        }else if(Spieler[playerid][pFraktion] == 20){
+            for (new i = 0, j = sizeof(skins_lcn_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_lcn_array[i]);
+            }
+        }else if(Spieler[playerid][pFraktion] == 21){
+            for (new i = 0, j = sizeof(skins_triaden_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_triaden_array[i]);
+            }
+        }else{
+            for (new i = 0, j = sizeof(skins_array); i < j; i++) {
+                format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_array[i]);
+            }
+        }
         SaveAccount(pID);
     }
     else
@@ -22403,7 +22661,81 @@ CMD:accept(playerid, params[])
             Spieler[playerid][pRank] = 0;
             Spieler[playerid][pfrakwarn] = 0;
             SetPVarInt(playerid, "SELECT.FRAK.SKIN", 1);
-            StartPlayerSkinSelection(playerid);
+            //StartPlayerSkinSelection(playerid);
+            new dialogstr[2056];
+            if(Spieler[playerid][pFraktion] == 0){
+                for (new i = 0, j = sizeof(skins_array); i < j; i++) {
+                    format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_array[i]);
+                }
+            }else if(Spieler[playerid][pFraktion] == 1){
+                for (new i = 0, j = sizeof(skins_pd_array); i < j; i++) {
+                    format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_pd_array[i]);
+                }
+            }else if(Spieler[playerid][pFraktion] == 3){
+                for (new i = 0, j = sizeof(skins_samd_array); i < j; i++) {
+                    format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_samd_array[i]);
+                }
+            }else if(Spieler[playerid][pFraktion] == 4){
+                for (new i = 0, j = sizeof(skins_news_array); i < j; i++) {
+                    format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_news_array[i]);
+                }
+            }else if(Spieler[playerid][pFraktion] == 5){
+                for (new i = 0, j = sizeof(skins_oamt_array); i < j; i++) {
+                    format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_oamt_array[i]);
+                }
+            }else if(Spieler[playerid][pFraktion] == 6){
+                for (new i = 0, j = sizeof(skins_gsf_array); i < j; i++) {
+                    format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_gsf_array[i]);
+                }
+            }else if(Spieler[playerid][pFraktion] == 7){
+                for (new i = 0, j = sizeof(skins_ballas_array); i < j; i++) {
+                    format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_ballas_array[i]);
+                }
+            }else if(Spieler[playerid][pFraktion] == 9){
+                for (new i = 0, j = sizeof(skins_regierung_array); i < j; i++) {
+                    format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_regierung_array[i]);
+                }
+            }else if(Spieler[playerid][pFraktion] == 10){
+                for (new i = 0, j = sizeof(skins_yakuza_array); i < j; i++) {
+                    format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_yakuza_array[i]);
+                }
+            }else if(Spieler[playerid][pFraktion] == 11){
+                for (new i = 0, j = sizeof(skins_aztecas_array); i < j; i++) {
+                    format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_aztecas_array[i]);
+                }
+            }else if(Spieler[playerid][pFraktion] == 12){
+                for (new i = 0, j = sizeof(skins_cali_array); i < j; i++) {
+                    format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_cali_array[i]);
+                }
+            }else if(Spieler[playerid][pFraktion] == 13){
+                for (new i = 0, j = sizeof(skins_vagos_array); i < j; i++) {
+                    format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_vagos_array[i]);
+                }
+            }else if(Spieler[playerid][pFraktion] == 14){
+                for (new i = 0, j = sizeof(skins_array); i < j; i++) {
+                    format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_array[i]);
+                }
+            }else if(Spieler[playerid][pFraktion] == 15){
+                for (new i = 0, j = sizeof(skins_nd_array); i < j; i++) {
+                    format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_nd_array[i]);
+                }
+            }else if(Spieler[playerid][pFraktion] == 19){
+                for (new i = 0, j = sizeof(skins_terrorist_array); i < j; i++) {
+                    format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_terrorist_array[i]);
+                }
+            }else if(Spieler[playerid][pFraktion] == 20){
+                for (new i = 0, j = sizeof(skins_lcn_array); i < j; i++) {
+                    format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_lcn_array[i]);
+                }
+            }else if(Spieler[playerid][pFraktion] == 21){
+                for (new i = 0, j = sizeof(skins_triaden_array); i < j; i++) {
+                    format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_triaden_array[i]);
+                }
+            }else{
+                for (new i = 0, j = sizeof(skins_array); i < j; i++) {
+                    format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_array[i]);
+                }
+            }
             SendClientMessage(playerid, COLOR_GREEN, "Wähle nun deinen Fraktionsskin!");
             if (frakid == 15) AddPlayerToPlantArrayData(playerid);
             if( IsAFightFaction( Spieler[playerid][pFraktion] ) ) AddPlayerToPlantArrayDataGang(playerid);
@@ -43231,7 +43563,11 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                     ClearAnimations(playerid);
                 }
                 else if(listitem == 4){
-                    if(Spieler[playerid][pWantedCodes] < 10) return SendClientMessage(playerid, COLOR_RED, "Du benötigst mindestens 10 Hackercodes!");
+                    if(Spieler[playerid][pWantedCodes] < 10){
+                        ClearAnimations(playerid);
+                        SendClientMessage(playerid, COLOR_RED, "Du benötigst mindestens 10 Hackercodes!");
+                        return 1;
+                    }
                     SendClientMessage(playerid, COLOR_DARKRED, "[HACKEN]{FFFFFF} Du bist dabei, den Bankautomaten zu hacken!");
                     SendClientMessage(playerid, COLOR_DARKRED, "[HACKEN]{FFFFFF} Wähle einen Code aus.");
                     new String[128];
@@ -43335,6 +43671,66 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
             ClearAnimations(playerid);
             cmd_automat(playerid,"");
             return 1;
+        }
+        case DIALOG_SKINS:
+        {
+            if(response){
+                if(Spieler[playerid][pFraktion] == 0){   
+                    SetPlayerSkin(playerid, skins_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_array[listitem];
+                }else if(Spieler[playerid][pFraktion] == 1){   
+                    SetPlayerSkin(playerid, skins_pd_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_pd_array[listitem];
+                }else if(Spieler[playerid][pFraktion] == 3){   
+                    SetPlayerSkin(playerid, skins_samd_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_samd_array[listitem];
+                }else if(Spieler[playerid][pFraktion] == 4){   
+                    SetPlayerSkin(playerid, skins_news_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_news_array[listitem];
+                }else if(Spieler[playerid][pFraktion] == 5){   
+                    SetPlayerSkin(playerid, skins_oamt_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_oamt_array[listitem];
+                }else if(Spieler[playerid][pFraktion] == 6){   
+                    SetPlayerSkin(playerid, skins_gsf_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_gsf_array[listitem];
+                }else if(Spieler[playerid][pFraktion] == 7){   
+                    SetPlayerSkin(playerid, skins_ballas_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_ballas_array[listitem];
+                }else if(Spieler[playerid][pFraktion] == 9){   
+                    SetPlayerSkin(playerid, skins_regierung_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_regierung_array[listitem];
+                }else if(Spieler[playerid][pFraktion] == 10){   
+                    SetPlayerSkin(playerid, skins_yakuza_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_yakuza_array[listitem];
+                }else if(Spieler[playerid][pFraktion] == 11){   
+                    SetPlayerSkin(playerid, skins_aztecas_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_aztecas_array[listitem];
+                }else if(Spieler[playerid][pFraktion] == 12){   
+                    SetPlayerSkin(playerid, skins_cali_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_cali_array[listitem];
+                }else if(Spieler[playerid][pFraktion] == 13){   
+                    SetPlayerSkin(playerid, skins_vagos_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_vagos_array[listitem];
+                }else if(Spieler[playerid][pFraktion] == 14){   
+                    SetPlayerSkin(playerid, skins_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_array[listitem];
+                }else if(Spieler[playerid][pFraktion] == 15){   
+                    SetPlayerSkin(playerid, skins_nd_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_nd_array[listitem];
+                }else if(Spieler[playerid][pFraktion] == 19){   
+                    SetPlayerSkin(playerid, skins_terrorist_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_terrorist_array[listitem];
+                }else if(Spieler[playerid][pFraktion] == 20){   
+                    SetPlayerSkin(playerid, skins_lcn_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_lcn_array[listitem];
+                }else if(Spieler[playerid][pFraktion] == 21){   
+                    SetPlayerSkin(playerid, skins_triaden_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_triaden_array[listitem];
+                }else{
+                    SetPlayerSkin(playerid, skins_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_array[listitem];
+                }
+            }
         }
         case DIALOG_HANDYAUFLADEN:
         {
@@ -47849,9 +48245,38 @@ public split(const strsrc[], strdest[][], delimiter)
     return 1;
 }
 
-public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
+//public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
+public OnPlayerDamage(&playerid, &Float:amount, &issuerid, &weapon, &bodypart)
 {
     damagesperre[playerid] = 5;
+    g_aiLastDamagedByPlayer[playerid] = issuerid;
+    if( issuerid != INVALID_PLAYER_ID) {
+        SetPVarString(playerid, "DAMAGE.NAME", GetName(issuerid));
+        SetPVarFloat(playerid, "DAMAGE.AMOUNT", amount);
+        SetPVarInt(playerid, "DAMAGE.WEAPON", weapon);
+        SetPVarInt(playerid, "DAMAGE.TIME", gettime());
+        PlayerPlaySound(issuerid,17802,0.0,0.0,0.0);
+        if( 1 <= Spieler[playerid][pTot] <= 2 ) {
+            SetPlayerHealth(playerid,100.0); // Kann man es irgendwie verhindern, dass man kein Leben verliert wenn man Tod ist?
+            return 1;
+        }
+        // Headshot Script von dir, soll NUR für Hitmans eingestellt werden und nur bei der Zielperson funktionieren.
+        if( Spieler[issuerid][pFraktion] == 14 && !Spieler[playerid][pAdminDienst]) {
+            if(weapon == 34 ) {
+                if(bodypart == 9) {
+                    new
+                        auftraggeber = Spieler[issuerid][pHitmenAuftragID];
+                    if( auftraggeber != INVALID_PLAYER_ID && IsPlayerConnected(auftraggeber) ) {
+                        if( Spieler[auftraggeber][pKopfgeldID] == playerid ) {
+                            SetPlayerHealth(playerid, 0.0);
+                            GameTextForPlayer(playerid, "~r~HEADSHOT", 2000, 1);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    /*damagesperre[playerid] = 5;
     g_aiLastDamagedByPlayer[playerid] = issuerid;
     if( issuerid != INVALID_PLAYER_ID) {
         SetPVarString(playerid, "DAMAGE.NAME", GetName(issuerid));
@@ -47878,11 +48303,19 @@ public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
                 }
             }
         }
-    }
+    }*/
+    /*
+    if(1 <= Spieler[playerid][pJailed] <= 3)
+    {
+        FreezePlayer(playerid);
+        KillTimer(knastunfreezetimer[playerid]);
+        SendClientMessage(playerid, COLOR_ORANGE, "Du wurdest für eine Minute gefreezed wegen Knast-DM.");
+        knastunfreezetimer[playerid] = SetTimerEx("KnastUnfreeze", 60000*1, 0, "i", playerid);
+    }*/
     return 1;
 }
 
-public OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid)
+/*public OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid)
 {
     if(1 <= Spieler[playerid][pJailed] <= 3)
     {
@@ -47892,7 +48325,7 @@ public OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid)
         knastunfreezetimer[playerid] = SetTimerEx("KnastUnfreeze", 60000*1, 0, "i", playerid);
     }
     return 1;
-}
+}*/
 
 public OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 {
@@ -51822,17 +52255,41 @@ new const g_FraktionsSkins[][e_FraktionsSkins] = {
 
 COMMAND:fskin(playerid,params[]) {
     #pragma unused params
-    new String[128], frak = Spieler[playerid][pFraktion];
+    new /*String[128],*/ frak = Spieler[playerid][pFraktion];
 
     if(frak) {
         for(new i; i < sizeof(g_FraktionsSkins); i++) {
             if(frak == g_FraktionsSkins[i][FS_iFraktion]) {
                 if(IsPlayerInRangeOfPoint(playerid, 5.0, g_FraktionsSkins[i][FS_fX], g_FraktionsSkins[i][FS_fY], g_FraktionsSkins[i][FS_fZ])) {
-                    for (new j; j < MAX_FRAKTIONSSKINS; j++)
+                    /*for (new j; j < MAX_FRAKTIONSSKINS; j++)
                         if (g_FraktionsSkins[i][FS_aiSkins][j] > 0)
                             format(String, sizeof(String), "%s%d\n", String, g_FraktionsSkins[i][FS_aiSkins][j]);
 
-                    ShowPlayerDialog(playerid, DIALOG_FSKIN, DIALOG_STYLE_LIST, "FSKIN", String, "Auswählen", "Abbruch");
+                    ShowPlayerDialog(playerid, DIALOG_FSKIN, DIALOG_STYLE_LIST, "FSKIN", String, "Auswählen", "Abbruch");*/
+
+                    new dialogstr[2056];
+                    if(Spieler[playerid][pFraktion] == 1){
+                        for (new e = 0, j = sizeof(skins_pd_array); e < j; e++) {
+                            format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_pd_array[e]);
+                        }
+                    }else if(Spieler[playerid][pFraktion] == 3){
+                        for (new e = 0, j = sizeof(skins_samd_array); e < j; e++) {
+                            format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_samd_array[e]);
+                        }
+                    }else if(Spieler[playerid][pFraktion] == 5){
+                        for (new e = 0, j = sizeof(skins_oamt_array); e < j; e++) {
+                            format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_oamt_array[e]);
+                        }
+                    }else if(Spieler[playerid][pFraktion] == 14){
+                        for (new e = 0, j = sizeof(skins_array); e < j; e++) {
+                            format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_array[e]);
+                        }
+                    }else{
+                        for (new e = 0, j = sizeof(skins_array); e < j; e++) {
+                            format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_array[e]);
+                        }
+                    }
+                    ShowPlayerDialog(playerid, DIALOG_SKINS, DIALOG_STYLE_PREVMODEL, "LyD - FSKIN", dialogstr, "Ok", "Abbrechen");
                 }
                 else
                     SendClientMessage(playerid, COLOR_RED, "Du bist nicht am FSKIN-Punkt deiner Fraktion");
@@ -65105,11 +65562,11 @@ COMMAND:koffereinziehen(playerid,params[]) {
     return 1;
 }
 
-stock IsPlayerSpawned(playerid){
+/*stock IsPlayerSpawned(playerid){
     new statex = GetPlayerState(playerid);
     if(statex != PLAYER_STATE_NONE && statex != PLAYER_STATE_WASTED && statex != PLAYER_STATE_SPAWNED) return true;
     return false;
-}
+}*/
 
 forward LoadPremiumWeaponData(playerid);
 public LoadPremiumWeaponData(playerid) {
@@ -73420,12 +73877,12 @@ stock GetWeaponNameEx(weaponid, weapon[], len = sizeof(weapon))
     return false;
 }
 
-stock ReturnWeaponName(weaponid) {
+/*stock ReturnWeaponName(weaponid) {
     new string[64];
     GetWeaponNameEx(weaponid, string, sizeof(string));
 
     return string;
-}
+}*/
 
 COMMAND:delallgvehs(playerid,params[]) {
     #pragma unused params
