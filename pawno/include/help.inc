@@ -2,7 +2,7 @@
 
 // - - - - - - -  - - - - - - -  <-- HELP SYSTEM
 
-new const StandartHelp[36][] = {
+new const StandartHelp[37][] = {
 	{"sup"},
     {"admin"},
     {"admin"},
@@ -38,7 +38,8 @@ new const StandartHelp[36][] = {
     {"showjob"},
     {"jobkleidung"},
     {"skill"},
-    {"upgradeinfo"}
+    {"upgradeinfo"},
+    {"oldname"}
 };
 
 new const MoneyHelp[6][]= {
@@ -567,7 +568,7 @@ new Frak19Help[15][]= {
     {"stopwt"}
 };
 
-new const StandartHelpText[36][] = {
+new const StandartHelpText[37][] = {
 	{"Supportticket erstellen"},
     {"Nachricht an Admins versenden"},
     {"Nachricht an Admins versenden"},
@@ -603,7 +604,8 @@ new const StandartHelpText[36][] = {
     {"Jobpunkt anzeigen"},
     {"Jobkleidung anziehen"},
     {"Skillliste öffnen"},
-    {"Skillupgrade bzw. Skillup einsehen"}
+    {"Skillupgrade bzw. Skillup einsehen"},
+    {"Alten Namen eines Spieler einsehen"}
 };
 
 new const MoneyHelpText[6][]= {

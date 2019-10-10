@@ -34295,6 +34295,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                 Schwarzmarkt_Waffenteile -= iValue;
                 Spieler[playerid][pWaffenteile] += iValue;
                 GivePlayerCash(playerid, -iValue*Schwarzmarkt_Waffenteile_Preis);
+                Kasse[TerrorK] += iValue*Schwarzmarkt_Waffenteile_Preis;
                 SCMFormatted(playerid, COLOR_GREEN, "* Du hast %i Waffenteile für $%i erworben.", iValue, iValue*Schwarzmarkt_Waffenteile_Preis);
             }
         }
@@ -34358,6 +34359,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                 if(GetPlayerMoney(playerid) < iValue*Schwarzmarkt_Drogen_Preis) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast nicht soviel Geld dabei!");
                 Schwarzmarkt_Drogen -= iValue;
                 Spieler[playerid][pDrugs] += iValue;
+                Kasse[TerrorK] += iValue*Schwarzmarkt_Drogen_Preis;
                 GivePlayerCash(playerid, -iValue*Schwarzmarkt_Drogen_Preis);
                 SCMFormatted(playerid, COLOR_GREEN, "* Du hast %i Drogen für $%i erworben.", iValue, iValue*Schwarzmarkt_Drogen_Preis);
             }
@@ -34422,6 +34424,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                 if(GetPlayerMoney(playerid) < iValue*Schwarzmarkt_Spice_Preis) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast nicht soviel Geld dabei!");
                 Schwarzmarkt_Spice -= iValue;
                 Spieler[playerid][pSpice] += iValue;
+                Kasse[TerrorK] += iValue*Schwarzmarkt_Spice_Preis;
                 GivePlayerCash(playerid, -iValue*Schwarzmarkt_Spice_Preis);
                 SCMFormatted(playerid, COLOR_GREEN, "* Du hast %i Spice für $%i erworben.", iValue, iValue*Schwarzmarkt_Spice_Preis);
             }
@@ -34486,6 +34489,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                 if(GetPlayerMoney(playerid) < iValue*Schwarzmarkt_Wantedcodes_Preis) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast nicht soviel Geld dabei!");
                 Schwarzmarkt_Wantedcodes -= iValue;
                 Spieler[playerid][pWantedCodes] += iValue;
+                Kasse[TerrorK] += iValue*Schwarzmarkt_Wantedcodes_Preis;
                 GivePlayerCash(playerid, -iValue*Schwarzmarkt_Wantedcodes_Preis);
                 SCMFormatted(playerid, COLOR_GREEN, "* Du hast %i Wantedcodes für $%i erworben.", iValue, iValue*Schwarzmarkt_Wantedcodes_Preis);
             }
@@ -34566,9 +34570,9 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                     needWaffenteile = 150;
                     giveWeapon = 8;
                 }else if(listitem == 4){//Granate
-                    Price = 10000000;
+                    Price = 2000000;
                     Schuss = 1;
-                    needWaffenteile = 750;
+                    needWaffenteile = 1000;
                     giveWeapon = 16;
                 }
                 if(Schwarzmarkt_Waffenteile < needWaffenteile) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Es befinden sich nicht genug Waffenteile im Schwarzmarkt, um diese Waffe bauen zu können!");
@@ -34588,7 +34592,19 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                     if(GetPlayerMoney(playerid) < price) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast zu wenig Geld dabei!");
                     GivePlayerCash(playerid, -price);
                     Spieler[playerid][pC4] += 1;
+                    Schwarzmarkt_Waffenteile -= needWaffenteile;
+                    Kasse[TerrorK] += price;
                     SendClientMessage(playerid, COLOR_GREEN, "* Du hast C4 gekauft. Sei vorsichtig damit!");
+                }else if(listitem == 1){
+                    new needWaffenteile = 80;
+                    new price = 10000;
+                    if(Schwarzmarkt_Waffenteile < needWaffenteile) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Es befinden sich nicht genug Waffenteile im Schwarzmarkt, um diese Waffe bauen zu können!");
+                    if(GetPlayerMoney(playerid) < price) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast zu wenig Geld dabei!");
+                    GivePlayerCash(playerid, -price);
+                    Spieler[playerid][pBrecheisen] += 1;
+                    Schwarzmarkt_Waffenteile -= needWaffenteile;
+                    Kasse[TerrorK] += price;
+                    SendClientMessage(playerid, COLOR_GREEN, "* Du hast ein Brecheisen gekauft. Sei vorsichtig damit!");
                 }
             }
         }
@@ -34608,6 +34624,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                 format(String,sizeof(String),"Das Fahrzeug %s hat nun das Kennzeichen %s erhalten!", CarName[modelid-400],inputtext);
                 SendClientMessage(playerid, COLOR_GREEN, String);
                 GivePlayerCash(playerid,-1000000);
+                Kasse[TerrorK] += price;
                 format(PlayerCar[playerid][slot][CarNumberplate],32,"%s",inputtext);
                 SetVehicleNumberPlate( vehicleid , inputtext );
                 SavePlayerCar(playerid,slot);
@@ -59030,7 +59047,7 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
 
             AddPlayerToPlantArrayDataGang(playerid);
             
-            ShowPlayerDialog(playerid, DIALOG_SPAWNMELDUNG, DIALOG_STYLE_MSGBOX, "LyD - Roleplay", "LyD ist ZURÜCK und im Forum findest du einen Eventplan!\nWas für Events, zu welcher Uhrzeit stattfinden, steht im Forum: www.LyD-SAMP.de\n\nProjektdaten:\n\nServer IP: Server.LyD-SAMP.de\nTeamspeak IP: TS.LyD-SAMP.de\nForum Adresse: www.LyD-SAMP.de\n\nSchau täglich auf unserem Forum vorbei, um über Neuigkeiten informiert zu sein!", "OK", "");
+            ShowPlayerDialog(playerid, DIALOG_SPAWNMELDUNG, DIALOG_STYLE_MSGBOX, "LyD - Roleplay", "LyD ist ZURÜCK! Im Forum findest du einen Eventplan!\n\nAm Spawn können sich neue Spieler bis zum 15.11.2019 ein Starterpack abholen.\nEs lohnt sich!\n\nProjektdaten:\n\nServer IP: Server.LyD-SAMP.de\nTeamspeak IP: TS.LyD-SAMP.de\nForum Adresse: www.LyD-SAMP.de\n\nSchau täglich auf unserem Forum vorbei, um über Neuigkeiten informiert zu sein!", "OK", "");
             /*
             if(Spieler[playerid][pLevel] < 99)
             {
@@ -60606,6 +60623,7 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
 			i++;
 		}
         new neueNummer = GetPVarInt(extraid, "NEWHANDYNR");
+        Kasse[TerrorK] += 25000;
         if(nummer == neueNummer) return SendClientMessage(extraid, COLOR_RED, "[FEHLER] {FFFFFF}Diese Handynummer wird bereits von einem anderen Spieler verwendet!");
         Spieler[extraid][pHandyNr] = neueNummer;
         SCMFormatted(extraid, COLOR_GREEN, "* Du bist nun unter folgender Nummer zu erreichen: %i", neueNummer);
@@ -64203,10 +64221,10 @@ CMD:schwarzmarkt(playerid, params[]){
         }
     }
     else if(IsPlayerInRangeOfPoint(playerid, 1, -1098.1770,-2855.7100,61.1270)){//Waffen
-        ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_WEAPONS, DIALOG_STYLE_TABLIST_HEADERS, "Schwarzmarkt: Waffen", "{FFFFFF}Waffe\t{FFFFFF}Preis\t{FFFFFF}Stückanzahl\nSniper Rifle\t$30.000\t30 Schuss\nUzi\t$50.000\t200 Schuss\nTec-9\t$50.000\t200 Schuss\nKatana\t$10.000\t1 Stück\nGranate\t$10.000.000\t1 Stück", "Kaufen", "Abbrechen");
+        ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_WEAPONS, DIALOG_STYLE_TABLIST_HEADERS, "Schwarzmarkt: Waffen", "{FFFFFF}Waffe\t{FFFFFF}Preis\t{FFFFFF}Stückanzahl\nSniper Rifle\t$30.000\t30 Schuss\nUzi\t$50.000\t200 Schuss\nTec-9\t$50.000\t200 Schuss\nKatana\t$10.000\t1 Stück\nGranate\t$2.000.000\t1 Stück", "Kaufen", "Abbrechen");
     }
     else if(IsPlayerInRangeOfPoint(playerid, 1, -1098.7355,-2854.2180,61.1343)){//Illegale Gegenstände
-        ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_ILLEGALE_GEGENSTAENDE, DIALOG_STYLE_TABLIST_HEADERS, "Schwarzmarkt: Illegale Gegenstände", "{FFFFFF}Gegenstand\t{FFFFFF}Preis\nC4\t$50.000\nMaske\t$500.000\nBrecheisen\t$10.000", "Kaufen", "Abbrechen");
+        ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_ILLEGALE_GEGENSTAENDE, DIALOG_STYLE_TABLIST_HEADERS, "Schwarzmarkt: Illegale Gegenstände", "{FFFFFF}Gegenstand\t{FFFFFF}Preis\nC4\t$50.000\nBrecheisen\t$10.000", "Kaufen", "Abbrechen");
     }
     else if(IsPlayerInRangeOfPoint(playerid, 1, -1101.9292,-2854.2185,61.1343)){//Kennzeichen
         if( !PlayerHaveCar[playerid][PlayerKey[playerid]] ) return SendClientMessage(playerid, COLOR_RED, "Du hast gerade kein Fahrzeug gewählt ( /Carkey ).");
