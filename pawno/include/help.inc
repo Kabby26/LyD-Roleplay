@@ -549,7 +549,7 @@ new Frak15Help[20][]= {
     {"findfcars"}
 };
 
-new Frak19Help[13][]= {
+new Frak19Help[15][]= {
     {"fc"},
     {"kasse"},
     {"kassenstand"},
@@ -562,7 +562,9 @@ new Frak19Help[13][]= {
     {"kidnap"},
     {"terrorgate"},
     {"findfcars"},
-    {"makespice"}
+    {"makespice"},
+    {"startwt"},
+    {"stopwt"}
 };
 
 new const StandartHelpText[36][] = {

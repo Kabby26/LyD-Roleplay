@@ -919,7 +919,8 @@ enum {
     THREAD_MAKEFV_CHECK,
     THREAD_MAKEFV,
     THREAD_GDrogenSamen,
-    THREAD_KrauterMische
+    THREAD_KrauterMische,
+    THREAD_OLDNAME
     //THREAD_SETUP_POST
 }
 
@@ -2398,6 +2399,8 @@ stock bool:IsTUVNeeded(distance) {
 #define     DIALOG_MEMBER_RANK 1455
 #define     DIALOG_MEMBER_LOHN 1456
 
+#define     DIALOG_ATMHACK 1457
+
 #define     KEIN_KENNZEICHEN    "KEINE PLAKETTE"
 
 enum {
@@ -2722,7 +2725,23 @@ enum {
 
     CP_SPRITKLAUEN,
     CP_ROBSPRIT,
-    CP_FINDFCAR
+    CP_FINDFCAR,
+
+    CP_WT_VEH,
+    CP_WT_EINLADE,
+    CP_WT_FAHRZEUGHINTEN,
+    CP_WT_STEG,
+    CP_WT_FAHRZEUGHINTEN2,
+    CP_WT_BOOTEINLADE,
+    CP_WT_BOOTPLATFORM,
+    CP_WT_BOOTPLATFORM_ENTLADEN,
+    CP_WT_BOOTPLATFORM_VERARBEITER,
+    CP_WT_BOOTPLATFORM_EINLADEN,
+    CP_WT_BOOTPLATFORM_VERARABHOLEN,
+    CP_WT_GOBACK_STEGBOOT,
+    CP_WT_GOBACK_ENTLADEN,
+    CP_WT_GOBACK_EINLADEN,
+    CP_WT_GOBACK_BASE
 }
 
 #define TEST
@@ -4524,7 +4543,8 @@ enum SpielerDaten {
     pC4,
     pFV,
     pGangDrogenSamen,
-    pKrauterMische
+    pKrauterMische,
+    pOldname[50]
 }
 
 enum e_FahrPruefung {
@@ -4681,6 +4701,13 @@ new PlayerText:Gesucht[MAX_PLAYERS];
 new PlayerText:Spectate[4][MAX_PLAYERS];
 new PlayerText:BusMessage[MAX_PLAYERS];
 new Text:tdOffeneTickets;
+
+new Text3D:terrorVehLabel;
+new Text3D:terrorBootLabel;
+new speederID;
+new terrorVerarbeiter;
+new bool:wtstatus = false;
+new wtid = -1;
 
 new knastunfreezetimer[MAX_PLAYERS];
 
@@ -4950,6 +4977,7 @@ new alcatrazGateHackTimestamp = 0;
 #include <maps\derby1>
 #include <maps\derby2>
 #include <maps\terror>
+#include <maps\weaponfabrikinsel>
 
 // Systems
 #include <paintball>
@@ -8868,6 +8896,18 @@ CMD:eventitem(playerid)
     return SendClientMessage(playerid, COLOR_YELLOW, "[INFO] {FFFFFF}Du hast die Eventitems erhalten.");
 }
 
+CMD:oldname(playerid, params[]){
+    new pID;
+    if(sscanf(params,"u",pID)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING "/Oldname [Name]");
+    if (pID == INVALID_PLAYER_ID || !gPlayerLogged[pID]) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Der Spieler ist nicht online.");
+    if(!strcmp(Spieler[pID][pOldname], "NULL")){
+        SendClientMessage(playerid, COLOR_YELLOW, "[OLDNAME] Der Spieler hat keinen Oldname.");
+        return 1;
+    }
+    SCMFormatted(playerid, COLOR_YELLOW, "[OLDNAME] {FFFFFF}Der Oldname von %s lautet %s.", GetName(pID), Spieler[pID][pOldname]);
+    return 1;
+}
+
 CMD:namechange(playerid, params[])
 {
     new oldName[MAX_PLAYER_NAME], newName[MAX_PLAYER_NAME];//, pID = INVALID_PLAYER_ID;
@@ -10945,6 +10985,25 @@ public OnPlayerDeath(playerid, killerid, reason)
     	Spieler[playerid][pTotTime] = IsMedicOnDuty() ? 120 : 60;
 	}
 
+    if(wtid == playerid){
+        new String[128];
+        format(String, sizeof(String), "[WT] Die Waffenteilmission ist gescheitert! Mitglied %s ist gestorben!", GetName(playerid));
+        SendFraktionMessage(19, COLOR_RED, String);
+        for(new i; i < MAX_VEHICLES; i++){
+            new vehiclemodel = GetVehicleModel(i);
+            if(vehiclemodel == 499 && FrakCarInfo[i][f_frak] == 19){
+                bestand[i] = 0;
+            }
+        }
+        Delete3DTextLabel(terrorVehLabel);
+        Delete3DTextLabel(terrorBootLabel);
+        bestand[speederID] = 0;
+        DestroyVehicle(speederID);
+        DisablePlayerCheckpointEx(playerid);
+        wtstatus = false;
+        wtid = -1;
+    }
+
     Robbing_OnPlayerDeath(playerid);
     GetPlayerPos(playerid, x, y, z);
     Spieler[playerid][pTot] = 1;
@@ -11571,6 +11630,41 @@ public OnVehicleDeath(vehicleid, killerid) {
             }
         }
     }
+
+
+    
+    new vehiclemodel = GetVehicleModel(vehicleid);
+    if(vehiclemodel == 499 && FrakCarInfo[vehicleid][f_frak] == 19){
+        if(wtstatus == true){
+            bestand[vehicleid] = 0;
+            Delete3DTextLabel(terrorVehLabel);
+            Delete3DTextLabel(terrorBootLabel);
+            bestand[speederID] = 0;
+            DestroyVehicle(speederID);
+            new String[128];
+            format(String, sizeof(String), "[WT] Die Waffenteilmission wurde gestoppt, weil der Benson zerstört wurde!");
+            SendFraktionMessage(19, COLOR_RED, String);
+            wtstatus = false;
+            DisablePlayerCheckpointEx(wtid);
+            wtid = -1;
+        }
+    }
+    if(vehicleid == speederID){
+        if(wtstatus == true){
+            bestand[vehicleid] = 0;
+            Delete3DTextLabel(terrorVehLabel);
+            Delete3DTextLabel(terrorBootLabel);
+            bestand[speederID] = 0;
+            DestroyVehicle(speederID);
+            new String[128];
+            format(String, sizeof(String), "[WT] Die Waffenteilmission wurde gestoppt, weil der Speeder zerstört wurde!");
+            SendFraktionMessage(19, COLOR_RED, String);
+            wtstatus = false;
+            DisablePlayerCheckpointEx(wtid);
+            wtid = -1;
+        }
+    }
+
     return 1;
 }
 
@@ -16753,7 +16847,7 @@ CMD:automat(playerid,params[])
         return 1;
     }
     // ShowPlayerDialog(playerid, DIALOG_ATM, DIALOG_STYLE_LIST, COLOR_HEX_ORANGE"Bankautomat", COLOR_HEX_WHITE"Geld abheben\nGeld anlegen\nKontostand\nBankpin\nGeldcheck einlösen", "Ausführen", "Abbrechen");
-    ShowPlayerDialog(playerid, DIALOG_ATM, DIALOG_STYLE_LIST, COLOR_HEX_ORANGE"Bankautomat", COLOR_HEX_WHITE"Geld abheben\nGeld anlegen\nKontostand\nOnlineBanking", "Ausführen", "Abbrechen");
+    ShowPlayerDialog(playerid, DIALOG_ATM, DIALOG_STYLE_LIST, COLOR_HEX_ORANGE"Bankautomat", COLOR_HEX_WHITE"Geld abheben\nGeld anlegen\nKontostand\nOnlineBanking\nAutomat hacken", "Ausführen", "Abbrechen");
     return 1;
 }
 
@@ -25514,6 +25608,267 @@ public OnPlayerEnterCheckpoint(playerid)
         SendFraktionMessage(2, COLOR_ORANGE, String);
         SendFraktionMessage(16, COLOR_ORANGE, String);
         SendFraktionMessage(18, COLOR_ORANGE, String);
+    }
+    else if(pCheckpoint[playerid] == CP_WT_VEH) {
+        DisablePlayerCheckpointEx(playerid);
+        SendClientMessage(playerid, COLOR_YELLOW, "[WT] Steige nun aus dem Fahrzeug und hole dir eine Kiste ab!");
+
+        SetPlayerCheckpointEx(playerid, 2846.3262,983.5958,10.7500,3.0, CP_WT_EINLADE);
+    }
+    else if(pCheckpoint[playerid] == CP_WT_EINLADE) {
+        DisablePlayerCheckpointEx(playerid);
+        SendClientMessage(playerid, COLOR_YELLOW, "[WT] Laufe nun zum Fahrzeug und belade es mit der Kiste!");
+
+        SetPlayerSpecialAction(playerid,SPECIAL_ACTION_CARRY);
+        SetPlayerAttachedObject( playerid, 0, 1271, 6, 0.150000, 0.219999, -0.200000, 0.000000, 0.000000, 0.000000, 1.000000, 1.000000, 1.000000 );
+
+        for(new i; i < MAX_VEHICLES; i++){
+            new vehiclemodel = GetVehicleModel(i);
+            if(vehiclemodel == 499 && FrakCarInfo[i][f_frak] == 19){
+                new Float:X, Float:Y;
+                new Float:PX, Float:PY, Float:PZ;
+                GetPlayerPos(playerid, PX, PY, PZ); // To get Z Coordinate only. 
+                GetXYBehindOfVehicle(i, X, Y, 4);
+                SetPlayerCheckpointEx(playerid, X, Y, PZ, 2.0, CP_WT_FAHRZEUGHINTEN);
+            }
+        }
+    }
+    else if(pCheckpoint[playerid] == CP_WT_FAHRZEUGHINTEN){
+        for(new i; i < MAX_VEHICLES; i++){
+            new vehiclemodel = GetVehicleModel(i);
+            if(vehiclemodel == 499 && FrakCarInfo[i][f_frak] == 19){
+                DisablePlayerCheckpointEx(playerid);
+
+                SetPlayerSpecialAction(playerid,SPECIAL_ACTION_NONE);
+                RemovePlayerAttachedObject(playerid,0);
+
+                bestand[i] += 1;
+                new string[128];
+                format(string, sizeof(string), "{B18904}[TRANSPORTER]\n\n{FFFFFF}Beladene Kisten: %i von 15", bestand[i]);
+                Update3DTextLabelText(terrorVehLabel, 0xFFFFFFFF, string);
+                if(bestand[i] >= 15){
+                    SendClientMessage(playerid, COLOR_GREEN, "[WT] Fahre von zum Steg und belade das Boot mit den Kisten!");
+                    SetPlayerCheckpointEx(playerid, 266.2877,2904.2700,7.8635,3.0, CP_WT_STEG);
+                    new String[128];
+                    new zoneText[MAX_ZONE_NAME];
+                    GetPlayer2DZone(playerid, zoneText, sizeof(zoneText));
+                    format(String, sizeof(String), "[WT] {FFFFFF}Ein Bürger meldet einen verdächtigen Transporter in %s in Richtung Toter Flughafen!", zoneText);
+                    SendFraktionMessage(1, COLOR_DARKYELLOW, String);
+                    SendFraktionMessage(2, COLOR_DARKYELLOW, String);
+                    SendFraktionMessage(16, COLOR_DARKYELLOW, String);
+                    SendFraktionMessage(18, COLOR_DARKYELLOW, String);
+                }else{
+                    SendClientMessage(playerid, COLOR_YELLOW, "[WT] Hole eine neue Kiste und verstaue sie in das Fahrzeug!");
+                    SetPlayerCheckpointEx(playerid, 2846.3262,983.5958,10.7500,3.0, CP_WT_EINLADE);
+                }
+            }
+        }
+    }
+    else if(pCheckpoint[playerid] == CP_WT_STEG){
+        DisablePlayerCheckpointEx(playerid);
+        speederID = CreateVehicle(452, 255.1756,2933.8511,-1.0131,3.5351, -1, -1, 0);
+
+        Delete3DTextLabel(terrorBootLabel);
+        bestand[speederID] = 0;
+        new string[128];
+        format(string, sizeof(string), "{B18904}[BOOT]\n\n{FFFFFF}Beladene Kisten: %i von 15", bestand[speederID]);
+        terrorBootLabel = Create3DTextLabel(string, 0xFF0000AA, 0.0, 0.0, 0.0, 50.0, 0, 1 );
+        Attach3DTextLabelToVehicle(terrorBootLabel, speederID, 0.0, 0.0, 2.0);
+
+        /*for(new i; i < MAX_VEHICLES; i++){
+            new vehiclemodel = GetVehicleModel(i);
+            if(vehiclemodel == 499 && FrakCarInfo[i][f_frak] == 19){
+                new Float:X, Float:Y;
+                new Float:PX, Float:PY, Float:PZ;
+                GetPlayerPos(playerid, PX, PY, PZ); // To get Z Coordinate only. 
+                GetXYBehindOfVehicle(i, X, Y, 4);
+                SetPlayerCheckpointEx(playerid, X, Y, PZ, 2.0, CP_WT_FAHRZEUGHINTEN2);
+                SendClientMessage(playerid, COLOR_YELLOW, "[WT] Belade nun das Boot den den Paketen!");
+            }
+        }*/
+        SetPlayerCheckpointEx(playerid, 266.2877,2904.2700,7.8635, 2.0, CP_WT_FAHRZEUGHINTEN2);
+        SendClientMessage(playerid, COLOR_YELLOW, "[WT] Belade nun das Boot den den Paketen!");
+    }
+    else if(pCheckpoint[playerid] == CP_WT_FAHRZEUGHINTEN2){
+        DisablePlayerCheckpointEx(playerid);
+
+        SetPlayerSpecialAction(playerid,SPECIAL_ACTION_CARRY);
+        SetPlayerAttachedObject( playerid, 0, 1271, 6, 0.150000, 0.219999, -0.200000, 0.000000, 0.000000, 0.000000, 1.000000, 1.000000, 1.000000 );
+
+        for(new i; i < MAX_VEHICLES; i++){
+            new vehiclemodel = GetVehicleModel(i);
+            if(vehiclemodel == 499 && FrakCarInfo[i][f_frak] == 19){
+                bestand[i] -= 1;
+                new string[128];
+                format(string, sizeof(string), "{B18904}[TRANSPORTER]\n\n{FFFFFF}Beladene Kisten: %i von 15", bestand[i]);
+                Update3DTextLabelText(terrorVehLabel, 0xFFFFFFFF, string);
+                Attach3DTextLabelToVehicle(terrorVehLabel, i, 0.0, 0.0, 2.0);
+                SetPlayerCheckpointEx(playerid, 258.4050,2933.7964,1.7734, 3.0, CP_WT_BOOTEINLADE);
+                SendClientMessage(playerid, COLOR_YELLOW, "[WT] Gehe nun zum Boot und belade es mit der Kiste!");
+            }
+        }
+    }
+    else if(pCheckpoint[playerid] == CP_WT_BOOTEINLADE){
+        DisablePlayerCheckpointEx(playerid);
+        bestand[speederID] += 1;
+        new string[128];
+        format(string, sizeof(string), "{B18904}[BOOT]\n\n{FFFFFF}Beladene Kisten: %i von 15", bestand[speederID]);
+        Update3DTextLabelText(terrorBootLabel, 0xFFFFFFFF, string);
+        Attach3DTextLabelToVehicle(terrorBootLabel, speederID, 0.0, 0.0, 2.0);
+
+        SetPlayerSpecialAction(playerid,SPECIAL_ACTION_NONE);
+        RemovePlayerAttachedObject(playerid,0);
+
+        if(bestand[speederID] >= 15){
+            SendClientMessage(playerid, COLOR_GREEN, "[WT] Das Boot ist nun vollständig beladen! Fahre nun zur Waffenfabrik.");
+            SetPlayerCheckpointEx(playerid, 251.3709,3277.9836,0.2690, 3.0, CP_WT_BOOTPLATFORM);
+        }else{
+            SendClientMessage(playerid, COLOR_YELLOW, "[WT] Gehe zum Transporter und hole eine neue Kiste!");
+            /*for(new i; i < MAX_VEHICLES; i++){
+                new vehiclemodel = GetVehicleModel(i);
+                if(vehiclemodel == 499 && FrakCarInfo[i][f_frak] == 19){
+                    new Float:X, Float:Y;
+                    new Float:PX, Float:PY, Float:PZ;
+                    GetPlayerPos(playerid, PX, PY, PZ); // To get Z Coordinate only. 
+                    GetXYBehindOfVehicle(i, X, Y, 4);
+                    SetPlayerCheckpointEx(playerid, X, Y, PZ, 2.0, CP_WT_FAHRZEUGHINTEN2);
+                }
+            }*/
+            SetPlayerCheckpointEx(playerid, 266.2877,2904.2700,7.8635, 3.0, CP_WT_FAHRZEUGHINTEN2);
+        }
+    }
+    else if(pCheckpoint[playerid] == CP_WT_BOOTPLATFORM){
+        DisablePlayerCheckpointEx(playerid);
+        SendClientMessage(playerid, COLOR_GREEN, "[WT] Steige aus dem Boot aus und bringe die Kisten zum Verarbeiter, damit er daraus Waffenteile herstellen kann!");
+        SetPlayerCheckpointEx(playerid, 248.9509,3282.2927,2.8503, 3.0, CP_WT_BOOTPLATFORM_ENTLADEN);
+    }
+    else if(pCheckpoint[playerid] == CP_WT_BOOTPLATFORM_ENTLADEN){
+        DisablePlayerCheckpointEx(playerid);
+        bestand[speederID] -= 1;
+        new string[128];
+        format(string, sizeof(string), "{B18904}[BOOT]\n\n{FFFFFF}Beladene Kisten: %i von 15", bestand[speederID]);
+        Update3DTextLabelText(terrorBootLabel, 0xFFFFFFFF, string);
+
+        SendClientMessage(playerid, COLOR_YELLOW, "[WT] Bringe die Kiste hoch zum Verarbeiter!");
+        SetPlayerCheckpointEx(playerid, 252.2882,3295.4624,10.4789, 3.0, CP_WT_BOOTPLATFORM_VERARBEITER);
+
+        SetPlayerSpecialAction(playerid,SPECIAL_ACTION_CARRY);
+        SetPlayerAttachedObject( playerid, 0, 1271, 6, 0.150000, 0.219999, -0.200000, 0.000000, 0.000000, 0.000000, 1.000000, 1.000000, 1.000000 );
+        //terrorVerarbeiter
+    }
+    else if(pCheckpoint[playerid] == CP_WT_BOOTPLATFORM_VERARBEITER){
+        DisablePlayerCheckpointEx(playerid);
+        terrorVerarbeiter += 1;
+
+        SetPlayerSpecialAction(playerid,SPECIAL_ACTION_NONE);
+        RemovePlayerAttachedObject(playerid,0);
+
+        if(terrorVerarbeiter >= 15){
+            SendClientMessage(playerid, COLOR_GREEN, "[WT] Bringe nun die Kisten mit Waffenteilen zurück zum Boot!");
+            //CP_WT_BOOTPLATFORM_EINLADEN
+            terrorVerarbeiter -= 1;
+            SetPlayerCheckpointEx(playerid, 248.9509,3282.2927,2.8503, 3.0, CP_WT_BOOTPLATFORM_EINLADEN);
+            SetPlayerSpecialAction(playerid,SPECIAL_ACTION_CARRY);
+            SetPlayerAttachedObject( playerid, 0, 1271, 6, 0.150000, 0.219999, -0.200000, 0.000000, 0.000000, 0.000000, 1.000000, 1.000000, 1.000000 );
+        }else{
+            SendClientMessage(playerid, COLOR_YELLOW, "[WT] Hole weitere Kisten und bringe diese nach Oben!");
+            SetPlayerCheckpointEx(playerid, 248.9509,3282.2927,2.8503, 3.0, CP_WT_BOOTPLATFORM_ENTLADEN);
+        }
+    }
+    else if(pCheckpoint[playerid] == CP_WT_BOOTPLATFORM_EINLADEN){
+        DisablePlayerCheckpointEx(playerid);
+
+        bestand[speederID] += 1;
+        new string[128];
+        format(string, sizeof(string), "{B18904}[BOOT]\n\n{FFFFFF}Beladene Kisten: %i von 15", bestand[speederID]);
+        Update3DTextLabelText(terrorBootLabel, 0xFFFFFFFF, string);
+
+        SetPlayerSpecialAction(playerid,SPECIAL_ACTION_NONE);
+        RemovePlayerAttachedObject(playerid,0);
+
+        if(bestand[speederID] >= 15){
+            //HIER WEITER MACHEN
+            //255.1756,2933.8511,-1.0131
+            SendClientMessage(playerid, COLOR_GREEN, "[WT] Fahre wieder zurück zum Steg um den Benson zu beladen!");
+            SetPlayerCheckpointEx(playerid, 255.1756,2933.8511,-1.0131, 3.0, CP_WT_GOBACK_STEGBOOT);
+        }else{
+            SendClientMessage(playerid, COLOR_YELLOW, "[WT] Gehe wieder hoch und hole eine neue Kiste mit Waffenteilen!");
+            SetPlayerCheckpointEx(playerid, 252.2882,3295.4624,10.4789, 3.0, CP_WT_BOOTPLATFORM_VERARABHOLEN);
+        }
+    }
+    else if(pCheckpoint[playerid] == CP_WT_BOOTPLATFORM_VERARABHOLEN){
+        DisablePlayerCheckpointEx(playerid);
+        SendClientMessage(playerid, COLOR_GREEN, "[WT] Bringe nun die Kisten mit Waffenteilen zurück zum Boot!");
+        //CP_WT_BOOTPLATFORM_EINLADEN
+        terrorVerarbeiter -= 1;
+        SetPlayerSpecialAction(playerid,SPECIAL_ACTION_CARRY);
+        SetPlayerAttachedObject( playerid, 0, 1271, 6, 0.150000, 0.219999, -0.200000, 0.000000, 0.000000, 0.000000, 1.000000, 1.000000, 1.000000 );
+        SetPlayerCheckpointEx(playerid, 248.9509,3282.2927,2.8503, 3.0, CP_WT_BOOTPLATFORM_EINLADEN);
+    }
+    else if(pCheckpoint[playerid] == CP_WT_GOBACK_STEGBOOT){
+        DisablePlayerCheckpointEx(playerid);
+        SendClientMessage(playerid, COLOR_GREEN, "[WT] Entnimm die Kisten aus dem Boot und belade den Benson!");
+        SetPlayerCheckpointEx(playerid, 258.4050,2933.7964,1.7734, 3.0, CP_WT_GOBACK_ENTLADEN);
+        SetPlayerSpecialAction(playerid,SPECIAL_ACTION_NONE);
+        RemovePlayerAttachedObject(playerid,0);
+    }
+    else if(pCheckpoint[playerid] == CP_WT_GOBACK_ENTLADEN){
+        DisablePlayerCheckpointEx(playerid);
+        bestand[speederID] -= 1;
+        new string[128];
+        format(string, sizeof(string), "{B18904}[BOOT]\n\n{FFFFFF}Beladene Kisten: %i von 15", bestand[speederID]);
+        Update3DTextLabelText(terrorBootLabel, 0xFFFFFFFF, string);
+        SendClientMessage(playerid, COLOR_GREEN, "[WT] Bringe die Kiste zum Benson und hole dann eine neue Kiste ab!");
+        SetPlayerCheckpointEx(playerid, 266.2877,2904.2700,7.8635, 3.0, CP_WT_GOBACK_EINLADEN);
+        SetPlayerAttachedObject( playerid, 0, 1271, 6, 0.150000, 0.219999, -0.200000, 0.000000, 0.000000, 0.000000, 1.000000, 1.000000, 1.000000 );
+        //SetPlayerCheckpointEx(playerid, 248.9509,3282.2927,2.8503, 3.0, CP_WT_BOOTPLATFORM_EINLADEN);
+    }
+    else if(pCheckpoint[playerid] == CP_WT_GOBACK_EINLADEN){
+        DisablePlayerCheckpointEx(playerid);
+        SetPlayerSpecialAction(playerid,SPECIAL_ACTION_NONE);
+        RemovePlayerAttachedObject(playerid,0);
+        for(new i; i < MAX_VEHICLES; i++){
+            new vehiclemodel = GetVehicleModel(i);
+            if(vehiclemodel == 499 && FrakCarInfo[i][f_frak] == 19){
+                bestand[i] += 1;
+                new string[128];
+                format(string, sizeof(string), "{B18904}[TRANSPORTER]\n\n{FFFFFF}Beladene Kisten: %i von 15", bestand[i]);
+                Update3DTextLabelText(terrorVehLabel, 0xFFFFFFFF, string);
+                if(bestand[i] >= 15){
+                    bestand[speederID] = 0;
+                    Delete3DTextLabel(terrorBootLabel);
+                    DestroyVehicle(speederID);
+                    //CP_WT_GOBACK_BASE
+                    SendClientMessage(playerid, COLOR_GREEN, "[WT] Das Fahrzeug ist voll beladen! Fahre zurück zu deiner Base, um die Pakete abzuliefern!");
+                    SetPlayerCheckpointEx(playerid, 966.6749,2071.1108,10.8203, 3.0, CP_WT_GOBACK_BASE);
+                    new String[128];
+                    new zoneText[MAX_ZONE_NAME];
+                    GetPlayer2DZone(playerid, zoneText, sizeof(zoneText));
+                    format(String, sizeof(String), "[WT] {FFFFFF}Ein Bürger meldet einen verdächtigen Transporter in %s in Richtung Las Venturas Norden!", zoneText);
+                    SendFraktionMessage(1, COLOR_DARKYELLOW, String);
+                    SendFraktionMessage(2, COLOR_DARKYELLOW, String);
+                    SendFraktionMessage(16, COLOR_DARKYELLOW, String);
+                    SendFraktionMessage(18, COLOR_DARKYELLOW, String);
+                }else{
+                    SendClientMessage(playerid, COLOR_YELLOW, "[WT] Hole nun eine neue Kiste aus dem Boot!");
+                    SetPlayerCheckpointEx(playerid, 258.4050,2933.7964,1.7734, 3.0, CP_WT_GOBACK_ENTLADEN);
+                }
+            }
+        }
+    }else if(pCheckpoint[playerid] == CP_WT_GOBACK_BASE){
+        DisablePlayerCheckpointEx(playerid);
+        for(new i; i < MAX_VEHICLES; i++){
+            new vehiclemodel = GetVehicleModel(i);
+            if(vehiclemodel == 499 && FrakCarInfo[i][f_frak] == 19){
+                bestand[i] = 0;
+                Delete3DTextLabel(terrorVehLabel);
+                new randombelohnung = RandomEx(25000, 50000);
+                g_FraktionsSafeBox[19][FSB_iWaffenteile] += randombelohnung;
+                new String[128];
+                format(String, sizeof(String), "{3ADF00}[WT] Das Mitglied %s hat die Waffenteilmission abgeschlossen. (+ %i Waffenteile)", GetName(playerid), randombelohnung);
+                SendFraktionMessage(19, COLOR_YELLOW, String);
+            }
+        }
     }
     else if(CP_NAVI1 <= pCheckpoint[playerid] <= CP_NAVI83)
     {
@@ -42858,6 +43213,20 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                     ShowPlayerDialog(playerid, DIALOG_UEBERWEISEN, DIALOG_STYLE_MSGBOX, "ONLINEBANKING", "Eine Überweisung kann nur über das OnlineBanking unter www.Bank.LyD-SAMP.de durchgeführt werden!\nIhr Geld wird mit einem SICHEREN Transfer an den gewünschen Empfänger sofort überwiesen.\nSie haben auch eine Übersicht all Ihrer getätigten Überweisungen und können Ihre Bankpin beliebig ändern.\n\nDas ist unser Service für Sie!\n-Ihre Bank", "OK", "");
                     ClearAnimations(playerid);
                 }
+                else if(listitem == 4){
+                    if(Spieler[playerid][pWantedCodes] < 10) return SendClientMessage(playerid, COLOR_RED, "Du benötigst mindestens 10 Hackercodes!");
+                    SendClientMessage(playerid, COLOR_DARKRED, "[HACKEN]{FFFFFF} Du bist dabei, den Bankautomaten zu hacken!");
+                    SendClientMessage(playerid, COLOR_DARKRED, "[HACKEN]{FFFFFF} Wähle einen Code aus.");
+                    new String[128];
+                    new zoneText[MAX_ZONE_NAME];
+                    GetPlayer2DZone(playerid, zoneText, sizeof(zoneText));
+                    format(String, sizeof(String), "[ATM] {FFFFFF}Ein Bankautomat in %s meldet verdächtige Aktivitäten!", zoneText);
+                    SendFraktionMessage(1, COLOR_DARKYELLOW, String);
+                    SendFraktionMessage(2, COLOR_DARKYELLOW, String);
+                    SendFraktionMessage(16, COLOR_DARKYELLOW, String);
+                    SendFraktionMessage(18, COLOR_DARKYELLOW, String);
+                    ShowPlayerDialog(playerid, DIALOG_ATMHACK, DIALOG_STYLE_LIST, "Bankautomaten hacken", "{209F0E}1245-8585-8552-0011\n{0E9F85}5775-2995-0002-4512\n{1261AA}3852-5858-4045-1221\n{6012AA}4755-2222-9987-1200\n{AA1263}9352-0000-8012-0001\n{AA1212}1428-6588-1557-1220\n{AA8A12}3666-5412-1566-9900\n{8EAA12}3522-6588-1990-1455\n{6AAA12}3211-7701-6688-4551\n{65A3A3}7771-0012-7459-4541", "Hacken", "Abbrechen");
+                }
                 /*
                 else if(listitem==3) {
                     ShowPlayerDialog(playerid, DIALOG_PIN_AENDERN_PIN, DIALOG_STYLE_INPUT, COLOR_HEX_ORANGE"BankPin", COLOR_HEX_WHITE"Bestätige zunächst mit deinem PIN"  , "Fertig", "");
@@ -42889,6 +43258,35 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
             {
                 ClearAnimations(playerid);
                 return 1;
+            }
+        }
+        case DIALOG_ATMHACK: {
+            ClearAnimations(playerid);
+            if(response) {
+                new breakingNewsMessage[145];
+                Spieler[playerid][pWanteds] += 3;
+                SendClientMessage(playerid, COLOR_DARKRED, "Du hast ein Verbrechen begangen! (Hacken eines Bankautomaten) Reporter: Polizeizentrale");
+                format(breakingNewsMessage, sizeof(breakingNewsMessage), "Dein Aktuelles Wanted Level: %d", Spieler[playerid][pWanteds]);
+                SendClientMessage(playerid, COLOR_YELLOW, breakingNewsMessage);
+                format(breakingNewsMessage, sizeof(breakingNewsMessage), "HQ: %s (ID: %d) hat ein Verbrechen begangen: Hacken eines Bankautomaten, over.", GetName(playerid), playerid);
+                SendFraktionMessage(1, COLOR_LIGHTRED, breakingNewsMessage);
+                SendFraktionMessage(2, COLOR_LIGHTRED, breakingNewsMessage);
+                SendFraktionMessage(16, COLOR_LIGHTRED, breakingNewsMessage);
+                SendFraktionMessage(18, COLOR_LIGHTRED, breakingNewsMessage);
+                format(breakingNewsMessage, sizeof(breakingNewsMessage), "HQ: Reporter: Polizeizentrale, Aktuelles Wantedlevel: %d, over", Spieler[playerid][pWanteds]);
+                SendFraktionMessage(1, COLOR_LIGHTRED, breakingNewsMessage);
+                SendFraktionMessage(2, COLOR_LIGHTRED, breakingNewsMessage);
+                SendFraktionMessage(16, COLOR_LIGHTRED, breakingNewsMessage);
+                SendFraktionMessage(18, COLOR_LIGHTRED, breakingNewsMessage);
+                Spieler[playerid][pWantedCodes] -= 10;
+                new randomz = RandomEx(0, 9);
+                if(listitem == randomz){
+                    new randombelohnung = RandomEx(50000, 125000);
+                    GivePlayerCash(playerid, randombelohnung);
+                    SCMFormatted(playerid, COLOR_DARKRED, "[HACKEN] {FFFFFF}Das Hacken war erfolgreich! Belohnung: %i", randombelohnung);
+                }else{
+                    SendClientMessage(playerid, COLOR_DARKRED, "[HACKEN] {FFFFFF}Das Hacken ist fehlgeschlagen!");
+                }
             }
         }
         case DIALOG_CHECKAUSWAHL: {
@@ -58530,6 +58928,10 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
 			mysql_format(connectionHandle, queryKrauterMische, sizeof(queryKrauterMische), "SELECT `KrauterMische` FROM `accounts` WHERE `Name` = '%s' ", NameCoins);
 			mysql_pquery(queryKrauterMische,THREAD_KrauterMische,playerid,gSQL,MySQLThreadOwner);
 
+            new queryOldname[128];
+			mysql_format(connectionHandle, queryOldname, sizeof(queryOldname), "SELECT `Oldname` FROM `accounts` WHERE `Name` = '%s' ", NameCoins);
+			mysql_pquery(queryOldname,THREAD_OLDNAME,playerid,gSQL,MySQLThreadOwner);
+
             //THREAD_KrauterMische
 
             cache_get_row(0, 137, Spieler[playerid][pMarriageName], connectionHandle);
@@ -58977,6 +59379,8 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
             GetPVarString(extraid, "NAMECHANGE.NEWNAME", newName, sizeof(newName));
             if (isnull(newName)) return 1;
             format(string, sizeof(string), "UPDATE `accounts` SET `Name` = '%s' WHERE `Name` = '%s'", newName, oldName, newName, oldName);
+            mysql_tquery(gSQL, string);
+            format(string, sizeof(string), "UPDATE `accounts` SET `Oldname` = '%s' WHERE `Name` = '%s'", oldName, newName);
             mysql_tquery(gSQL, string);
             format(string,sizeof(string), "UPDATE `playercar` SET `owner` = '%s' WHERE `owner` = '%s'", newName, oldName);
             mysql_tquery(gSQL, string);
@@ -60241,6 +60645,15 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
 	    while( i < rows) {
 	        fv = cache_get_field_content_int(i,"KrauterMische", connectionHandle);
 	        Spieler[extraid][pKrauterMische] = fv;
+	        i++;
+	    }
+    }
+    else if(resultid == THREAD_OLDNAME){
+        new fv[50];
+	    new i, rows = cache_get_row_count(connectionHandle);
+	    while( i < rows) {
+	        cache_get_field_content(i,"Oldname", fv, connectionHandle, sizeof(fv));
+	        Spieler[extraid][pOldname] = fv;
 	        i++;
 	    }
     }
@@ -63590,6 +64003,53 @@ CMD:stopsprit(playerid) {
 	format(string,sizeof(string), "Fraktionsmitglied %s hat die Sprit-Mission abgebrochen.", GetName(playerid));
 	SendFraktionMessage(19, COLOR_YELLOW, string);
 	return 1;
+}
+
+CMD:startwt(playerid){
+    new veh = GetPlayerVehicleID(playerid), vehiclemodel = GetVehicleModel(veh), string[128];
+    if (!gPlayerLogged[playerid]) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du bist nicht eingeloggt.");
+	if(Spieler[playerid][pFraktion] != 19) return SendClientMessage(playerid,COLOR_RED,"[FEHLER] {FFFFFF}Du bist kein Terrorist.");
+	if(Spieler[playerid][pRank] < 1) return SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}Du musst mindestens Rank 1 sein.");
+    if(vehiclemodel != 499) return SendClientMessage(playerid, COLOR_RED,"[INFO] {FFFFFF}Du bist in keinem Benson!");
+	if(FrakCarInfo[veh][f_frak] != 19)return SendClientMessage(playerid, COLOR_RED,"[FEHLER] {FFFFFF}Der Benson gehört nicht zu deiner Fraktion.");
+    if(wtstatus == true) return SendClientMessage(playerid, COLOR_RED,"[FEHLER] {FFFFFF}Die Mission läuft gerade! Benutze /Stopwt zum Beenden!");
+
+    format(string,sizeof(string), "Fraktionsmitglied %s hat mit der Waffenteile-Mission begonnen.", GetName(playerid));
+	SendFraktionMessage(19, COLOR_YELLOW, string);
+    
+    SetPlayerCheckpointEx(playerid, 2839.3120,994.9202,10.7467, 3.0, CP_WT_VEH);
+	SendClientMessage(playerid, COLOR_YELLOW, "[INFO] {FFFFFF}Dir wurde ein Checkpoint bei einem Lager gesetzt.");
+
+    Delete3DTextLabel(terrorVehLabel);
+    bestand[veh] = 0;
+    format(string, sizeof(string), "{B18904}[TRANSPORTER]\n\n{FFFFFF}Beladene Kisten: %i von 15", bestand[veh]);
+    terrorVehLabel = Create3DTextLabel(string, 0xFF0000AA, 0.0, 0.0, 0.0, 50.0, 0, 1 );
+	Attach3DTextLabelToVehicle(terrorVehLabel, veh, 0.0, 0.0, 2.0);
+
+    wtstatus = true;
+    wtid = playerid;
+    return 1;
+}
+
+CMD:stopwt(playerid){
+    if(wtstatus != true) return SendClientMessage(playerid, COLOR_RED, "[WT] Die Mission läuft gerade nicht!");
+    for(new i; i < MAX_VEHICLES; i++){
+        new vehiclemodel = GetVehicleModel(i);
+        if(vehiclemodel == 499 && FrakCarInfo[i][f_frak] == 19){
+            bestand[i] = 0;
+        }
+    }
+    Delete3DTextLabel(terrorVehLabel);
+    Delete3DTextLabel(terrorBootLabel);
+    bestand[speederID] = 0;
+    DestroyVehicle(speederID);
+    new String[128];
+    format(String, sizeof(String), "[WT] Das Mitglied %s hat die Waffenteilmission gestoppt!");
+    SendFraktionMessage(19, COLOR_RED, String);
+    DisablePlayerCheckpointEx(playerid);
+    wtstatus = false;
+    wtid = -1;
+    return 1;
 }
 
 CMD:selbstmord(playerid) {
@@ -74630,4 +75090,14 @@ stock DeleteClosestRoadblock(playerid)
         }
     }
     return 0;
+}
+
+stock GetXYBehindOfVehicle(vehicleid, &Float:x, &Float:y, Float:distance)
+{
+    new
+        Float:a;
+    GetVehiclePos( vehicleid, x, y, a );
+    GetVehicleZAngle( vehicleid, a );
+    x += ( distance * floatsin( -a+180, degrees ));
+    y += ( distance * floatcos( -a+180, degrees ));
 }
