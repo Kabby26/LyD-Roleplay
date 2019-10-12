@@ -2749,7 +2749,7 @@ enum {
     CP_WT_GOBACK_BASE
 }
 
-#define TEST
+//#define TEST
 
 #if defined TEST // Testserver
 	#define     SQL_HOST            "51.68.175.95"
@@ -48245,6 +48245,7 @@ public split(const strsrc[], strdest[][], delimiter)
     return 1;
 }
 
+//Bei neuer Hitbox anpassen
 //public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 public OnPlayerDamage(&playerid, &Float:amount, &issuerid, &weapon, &bodypart)
 {
@@ -56016,7 +56017,7 @@ stock SendFahrgeschaeftMessage(fahrgeschaeft,color,msg[]) {
 }
 stock IsPlayerExecutive(playerid) {
     if( IsPlayerConnected(playerid)) {
-        return ( Spieler[playerid][pFraktion] == 1 || Spieler[playerid][pFraktion] == 2 || Spieler[playerid][pFraktion] == 9 || Spieler[playerid][pFraktion] == 16 || Spieler[playerid][pFraktion] == 18 || Spieler[playerid][pFraktion] == 22);
+        return ( Spieler[playerid][pFraktion] == 1 || Spieler[playerid][pFraktion] == 2 || Spieler[playerid][pFraktion] == 5 || Spieler[playerid][pFraktion] == 9 || Spieler[playerid][pFraktion] == 16 || Spieler[playerid][pFraktion] == 18 || Spieler[playerid][pFraktion] == 22);
     }
     return 0;
 }
@@ -61084,6 +61085,7 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
         if(nummer == neueNummer) return SendClientMessage(extraid, COLOR_RED, "[FEHLER] {FFFFFF}Diese Handynummer wird bereits von einem anderen Spieler verwendet!");
         Spieler[extraid][pHandyNr] = neueNummer;
         SCMFormatted(extraid, COLOR_GREEN, "* Du bist nun unter folgender Nummer zu erreichen: %i", neueNummer);
+        GivePlayerCash(extraid,-500000);
         SaveAll();
         mysql_pquery("SELECT NOW()",THREAD_SAVEALL,extraid,gSQL,MySQLThreadOwner);
 	}
@@ -69806,10 +69808,11 @@ CMD:gangfight(playerid, params[]) {
     // Das System funktioniert jeden Tag von 19 Uhr bis 21 Uhr
     // Vor & Nach der Zeit ist ein Gangfight ab 2 Gegnern startbar.
 
-    new day = GetWeekDayNumber(),
+    new /*day = GetWeekDayNumber(),
         minimumPlayers = (day == WEEKDAY_MONDAY && WEEKDAY_TUESDAY && WEEKDAY_WEDNESDAY && hour >= 19 && hour < 21) ||
                          (day == WEEKDAY_THURSDAY && WEEKDAY_FRIDAY && WEEKDAY_SATURDAY && hour >= 19 && hour < 21) ||
-                         (day == WEEKDAY_SUNDAY && hour >= 19 && hour < 21) ? 0 : GANG_FIGHT_PLAYERS;
+                         (day == WEEKDAY_SUNDAY && hour >= 19 && hour < 21) ? 0 : GANG_FIGHT_PLAYERS;*/
+        minimumPlayers = (hour >= 19 && hour < 21) ? 0 : GANG_FIGHT_PLAYERS;
 
     if (GetFactionOnlinePlayers(frak) < minimumPlayers)
         return SCMFormatted(playerid, COLOR_RED, "Es müssen mindestens %d Gangmitglieder deiner Fraktion online sein.", minimumPlayers);
@@ -73877,6 +73880,7 @@ stock GetWeaponNameEx(weaponid, weapon[], len = sizeof(weapon))
     return false;
 }
 
+//Für neue Hitbox ausklammern
 /*stock ReturnWeaponName(weaponid) {
     new string[64];
     GetWeaponNameEx(weaponid, string, sizeof(string));
