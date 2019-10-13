@@ -12,7 +12,7 @@
 #define TERRORBASE_WAFFENLAGER          976.3067,2058.1931,10.8203
 #define TERRORBASE_SPRITLAGER           952.1439,2083.6968,10.8203
 
-new terror_Object[120];
+new terror_Object[122];
 new terror_Actor[4];
 
 
@@ -197,7 +197,9 @@ hook OnGameModeInit() {
     terror_Object[116] = CreateDynamicObject(335, 977.6394, 2058.4316, 10.5926, -1.8000, 0.0000, 74.5999); //knifecur
     terror_Object[117] = CreateDynamicObject(335, 977.6099, 2058.3269, 10.5926, -2.8999, 13.0000, 74.5999); //knifecur
     terror_Object[118] = CreateDynamicObject(355, 977.7009, 2057.9873, 11.2812, 0.0000, -10.9000, 84.3998); //ak47
-    terror_Object[119] = CreateObject(335, 977.5900, 2058.5073, 10.6069, 2.9000, 14.8000, 52.3999); //knifecur
+    terror_Object[119] = CreateDynamicObject(335, 977.5900, 2058.5073, 10.6069, 2.9000, 14.8000, 52.3999); //knifecur
+    terror_Object[120] = CreateDynamicObject(3399, 940.25641, 2091.37720, 16.45920,   0.00000, 0.00000, 180.00000); //Treppe
+    terror_Object[121] = CreateDynamicObject(3399, 951.96851, 2091.37720, 11.75520,   0.00000, 0.00000, 180.00000); //Treppe
     terror_Actor[0] = CreateActor(297, 960.8994, 2062.0764, 10.8203, -104.3998); //Madd Dogg
     ApplyActorAnimation(terror_Actor[0], "RIOT", "RIOT_ANGRY_B", 4.0900, 1, 0, 0, 0, 0);
     terror_Actor[1] = CreateActor(142, 962.0300, 2060.1640, 10.8102, -87.6999); //Taxi Driver

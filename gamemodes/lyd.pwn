@@ -18581,21 +18581,23 @@ stock Gang_OnPlayerLeaveDynamicArea(playerid,areaid)
             {
                 if( g_GangZone[i][GZ_iStatus] == 1 )
                 {
-                    SetTimerEx("gpermissionleave",5000,false,"ii",playerid,areaid);
-                    permissionleavegz[playerid]=2;
-                    new gfrakname[20];
-                    if(Spieler[playerid][pFraktion]==g_GangZone[i][GZ_iOwner])
-                    {
-                        format(gfrakname,20,"%s",GetFactionNameOfFaction(g_GangZone[i][GZ_iAttacker]));
+                    if(Spieler[playerid][pTotTime] <= 0){
+                        SetTimerEx("gpermissionleave",5000,false,"ii",playerid,areaid);
+                        permissionleavegz[playerid]=2;
+                        new gfrakname[20];
+                        if(Spieler[playerid][pFraktion]==g_GangZone[i][GZ_iOwner])
+                        {
+                            format(gfrakname,20,"%s",GetFactionNameOfFaction(g_GangZone[i][GZ_iAttacker]));
+                        }
+                        else if(Spieler[playerid][pFraktion]==g_GangZone[i][GZ_iAttacker])
+                        {
+                            format(gfrakname,20,"%s",GetFactionNameOfFaction(g_GangZone[i][GZ_iOwner]));
+                        }
+                        new string[250];
+                        GameTextForPlayer(playerid,"~r~GANGFIGHT-FLUCHT",3000,3);
+                        format(string,250,"Solltest du dich länger als 5 Sekunden außerhalb des Gebiets befinden, gehen 5 Punkte an die %s.",gfrakname);
+                        SendClientMessage(playerid,COLOR_RED,string);
                     }
-                    else if(Spieler[playerid][pFraktion]==g_GangZone[i][GZ_iAttacker])
-                    {
-                        format(gfrakname,20,"%s",GetFactionNameOfFaction(g_GangZone[i][GZ_iOwner]));
-                    }
-                    new string[250];
-                    GameTextForPlayer(playerid,"~r~GANGFIGHT-FLUCHT",3000,3);
-                    format(string,250,"Solltest du dich länger als 5 Sekunden außerhalb des Gebiets befinden, gehen 5 Punkte an die %s.",gfrakname);
-                    SendClientMessage(playerid,COLOR_RED,string);
                 }
             }
             break;
@@ -26194,11 +26196,18 @@ public OnPlayerEnterCheckpoint(playerid)
             if(vehiclemodel == 499 && FrakCarInfo[i][f_frak] == 19){
                 bestand[i] = 0;
                 Delete3DTextLabel(terrorVehLabel);
-                new randombelohnung = RandomEx(25000, 50000);
+                new randombelohnung = RandomEx(50000, 100000);
                 g_FraktionsSafeBox[19][FSB_iWaffenteile] += randombelohnung;
                 new String[128];
                 format(String, sizeof(String), "{3ADF00}[WT] Das Mitglied %s hat die Waffenteilmission abgeschlossen. (+ %i Waffenteile)", GetName(playerid), randombelohnung);
                 SendFraktionMessage(19, COLOR_YELLOW, String);
+                Delete3DTextLabel(terrorVehLabel);
+                Delete3DTextLabel(terrorBootLabel);
+                bestand[speederID] = 0;
+                DestroyVehicle(speederID);
+                DisablePlayerCheckpointEx(playerid);
+                wtstatus = false;
+                wtid = -1;
             }
         }
     }
@@ -34641,7 +34650,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                     format(String, sizeof(String), "{FFFFFF}Wie viele Waffenteile möchtest du in den Schwarzmarkt auslagern?\n\nWaffenteile im Schwarzmarkt: %i", Schwarzmarkt_Waffenteile);
                     ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_WAFFENTEILE_AUSLAGERN, DIALOG_STYLE_INPUT, "Schwarzmarkt: Waffenteile - Auslagern", String, "Einlagern", "Abbrechen");
                 }else if(listitem == 2){
-                    format(String, sizeof(String), "{FFFFFF}Hier kannst du den Preis der Waffenteile anpassen.\n\nWaffenteile im Schwarzmarkt: %i", Schwarzmarkt_Waffenteile);
+                    format(String, sizeof(String), "{FFFFFF}Hier kannst du den Preis der Waffenteile anpassen.\n\nWaffenteile im Schwarzmarkt: %i\nStückpreis: %i", Schwarzmarkt_Waffenteile, Schwarzmarkt_Waffenteile_Preis);
                     ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_WAFFENTEILE_PREIS, DIALOG_STYLE_INPUT, "Schwarzmarkt: Waffenteile - Auslagern", String, "Einlagern", "Abbrechen");
                 }
             }
@@ -34706,7 +34715,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                     format(String, sizeof(String), "{FFFFFF}Wie viele Drogen möchtest du in den Schwarzmarkt auslagern?\n\nDrogen im Schwarzmarkt: %i", Schwarzmarkt_Drogen);
                     ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_DROGEN_AUSLAGERN, DIALOG_STYLE_INPUT, "Schwarzmarkt: Drogen - Auslagern", String, "Einlagern", "Abbrechen");
                 }else if(listitem == 2){
-                    format(String, sizeof(String), "{FFFFFF}Hier kannst du den Preis der Drogen anpassen.\n\nDrogen im Schwarzmarkt: %i", Schwarzmarkt_Drogen);
+                    format(String, sizeof(String), "{FFFFFF}Hier kannst du den Preis der Drogen anpassen.\n\nDrogen im Schwarzmarkt: %i\nStückpreis: %i", Schwarzmarkt_Drogen, Schwarzmarkt_Drogen_Preis);
                     ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_DROGEN_PREIS, DIALOG_STYLE_INPUT, "Schwarzmarkt: Drogen - Auslagern", String, "Einlagern", "Abbrechen");
                 }
             }
@@ -34771,7 +34780,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                     format(String, sizeof(String), "{FFFFFF}Wie viele Spice möchtest du in den Schwarzmarkt auslagern?\n\nSpice im Schwarzmarkt: %i", Schwarzmarkt_Spice);
                     ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_SPICE_AUSLAGERN, DIALOG_STYLE_INPUT, "Schwarzmarkt: Spice - Auslagern", String, "Einlagern", "Abbrechen");
                 }else if(listitem == 2){
-                    format(String, sizeof(String), "{FFFFFF}Hier kannst du den Preis der Spice anpassen.\n\nSpice im Schwarzmarkt: %i", Schwarzmarkt_Spice);
+                    format(String, sizeof(String), "{FFFFFF}Hier kannst du den Preis der Spice anpassen.\n\nSpice im Schwarzmarkt: %i\nStückpreis: %i", Schwarzmarkt_Spice, Schwarzmarkt_Spice_Preis);
                     ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_SPICE_PREIS, DIALOG_STYLE_INPUT, "Schwarzmarkt: Spice - Auslagern", String, "Einlagern", "Abbrechen");
                 }
             }
