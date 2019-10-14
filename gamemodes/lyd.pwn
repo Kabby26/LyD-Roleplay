@@ -3771,7 +3771,7 @@ new skins_regierung_array[] =
 
 new skins_terrorist_array[] =
 {
-    142, 143, 144, 220, 221, 222
+    14, 136, 137, 142, 144, 200, 220, 221, 222
 };
 
 new skins_nd_array[] =
@@ -5525,7 +5525,8 @@ public OnGameModeInit2() {
     SetTimer("Haustier_Follow",631,true);
     SetTimer("Pulse_Tickets",5227,true);
     SetTimer("Pulse_SInfo",757,true);
-    SetTimer("gwarentimer",60000*60*3,true);
+    //SetTimer("gwarentimer",60000*60*3,true);
+    SetTimer("gwarentimer",60000,true);
     SetTimer("PayDay",60000,true);
     SetTimer("NagelBand_Timer",NAGELBAND_TIMER_INTERVALL,true);
     SetTimer("SaveAll", ( 10*60*1000 ) + 2161 ,true); // Alle ~10 Minuten
@@ -8461,28 +8462,28 @@ public gwarentimer()
             if(g_GangZone[index][GZ_igupgrade] == 3){ // Geld
                 //g_GangZone[index][GZ_igbestand] += 60000;
                 if(g_GangZone[index][GZ_iOwner] == 6){
-            		Kasse[Grove] += 60000;
+            		Kasse[Grove] += 10000;
      			}else if(g_GangZone[index][GZ_iOwner] == 7){
-            		Kasse[Ballas] += 60000;
+            		Kasse[Ballas] += 10000;
         		}else if(g_GangZone[index][GZ_iOwner] == 10){
-            		Kasse[Yakuza] += 60000;
+            		Kasse[Yakuza] += 10000;
        			}else if(g_GangZone[index][GZ_iOwner] == 11){
-            		Kasse[Aztecas] += 60000;
+            		Kasse[Aztecas] += 10000;
         		}else if(g_GangZone[index][GZ_iOwner] == 12){
-            		Kasse[LCN] += 60000;
+            		Kasse[LCN] += 10000;
         		}else if(g_GangZone[index][GZ_iOwner] == 13){
-            		Kasse[Vagos] += 60000;
+            		Kasse[Vagos] += 10000;
         		}else if(g_GangZone[index][GZ_iOwner] == 20){
-            		Kasse[OutlawzK] += 60000;
+            		Kasse[OutlawzK] += 10000;
         		}else if(g_GangZone[index][GZ_iOwner] == 21){
-            		Kasse[ndgradethaK] += 60000;
+            		Kasse[ndgradethaK] += 10000;
         		}
             }else if (g_GangZone[index][GZ_igupgrade] == 2){ // Drogen
                 //g_GangZone[index][GZ_igbestand] += 180;
-                FSafeboxSoreGebiet(g_GangZone[index][GZ_iOwner], SAFEBOX_DRUGS, 180);
+                FSafeboxSoreGebiet(g_GangZone[index][GZ_iOwner], SAFEBOX_DRUGS, 20);
             }else if (g_GangZone[index][GZ_igupgrade] == 1){ // WTeile
                 //g_GangZone[index][GZ_igbestand] += 2800;
-                FSafeboxSoreGebiet(g_GangZone[index][GZ_iOwner], SAFEBOX_MATS, 2800);
+                FSafeboxSoreGebiet(g_GangZone[index][GZ_iOwner], SAFEBOX_MATS, 2000);
 			}
             SaveGangZones();
         }
@@ -11613,6 +11614,27 @@ public OnPlayerDeath(playerid, killerid, reason)
 
         SetPlayerCameraLookAt(playerid, 1463.9080,-1063.1261,23.8477);                
     }
+
+    if (Spieler[playerid][pFraktion] == Spieler[killerid][pFraktion] || g_Faction[Spieler[killerid][pFraktion]][F_iPartner] == Spieler[playerid][pFraktion]) return 1;
+    if (PlayerIsPaintballing[playerid] || PlayerIsPaintballing[killerid]) return 1;
+    if (IsAFightFaction(Spieler[playerid][pFraktion]) && IsAFightFaction(Spieler[killerid][pFraktion])) {
+        new fightid = GetGangFight(Spieler[playerid][pFraktion]);
+        if (fightid != GetGangFight(Spieler[killerid][pFraktion]) || fightid == -1) {
+            new message[128], rk[35];
+            
+            ReturnPlayerRank(killerid, rk);
+            format(message, sizeof(message), "[Streetwar] {FFFFFF}%s %s hat %s (%s) getötet.", rk, GetName(killerid), GetName(playerid), factionNames[Spieler[playerid][pFraktion]]);
+            GameTextForPlayer(killerid, "+1 Streetwarkill", 3000, 4);
+            SendFraktionMessage(Spieler[killerid][pFraktion], COLOR_DARKGREEN, message);
+            ReturnPlayerRank(playerid, rk);
+            format(message, sizeof(message), "[Streetwar] {FFFFFF}%s %s wurde von %s (%s) getötet.", rk, GetName(playerid), GetName(killerid), factionNames[Spieler[killerid][pFraktion]]);
+            SendFraktionMessage(Spieler[playerid][pFraktion], COLOR_RED, message);
+            SW_score[Spieler[killerid][pFraktion]]++;
+            Spieler[killerid][pKillsStreetwar]++;
+            GivePlayerCash(killerid, 450);
+        }
+    }
+    
     return 1;
 }
 
@@ -64745,7 +64767,7 @@ CMD:makespice(playerid, params[]){
 
 CMD:schwarzmarkt(playerid, params[]){
     if(IsPlayerInRangeOfPoint(playerid, 1, -1101.9084,-2861.1260,61.1270)){//Waffenteile
-        if(Spieler[playerid][pFraktion] == 19){
+        if(Spieler[playerid][pFraktion] == 19 && Spieler[playerid][pRank] == 6){
             ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_WAFFENTEILE_ADMIN, DIALOG_STYLE_LIST, "Schwarzmarkt: Waffenteile", "{1EA240}Waffenteile einlagern\n{C82619}Waffenteile auslagern\n{DFE213}Preis anpassen", "Auswählen", "Abbrechen"); //ADMIN SCHWARTMARKT
         }else{
             new String[256];
@@ -64754,7 +64776,7 @@ CMD:schwarzmarkt(playerid, params[]){
             ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_WAFFENTEILE, DIALOG_STYLE_INPUT, "Schwarzmarkt: Waffenteile", String, "Kaufen", "Abbrechen");
         }
     }else if(IsPlayerInRangeOfPoint(playerid, 1, -1104.9402,-2861.1267,61.1270)){//Drogen
-        if(Spieler[playerid][pFraktion] == 19){
+        if(Spieler[playerid][pFraktion] == 19 && Spieler[playerid][pRank] == 6){
             ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_DROGEN_ADMIN, DIALOG_STYLE_LIST, "Schwarzmarkt: Drogen", "{1EA240}Drogen einlagern\n{C82619}Drogen auslagern\n{DFE213}Preis anpassen", "Auswählen", "Abbrechen"); //ADMIN SCHWARTMARKT
         }else{
             new String[256];
@@ -64763,7 +64785,7 @@ CMD:schwarzmarkt(playerid, params[]){
             ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_DROGEN, DIALOG_STYLE_INPUT, "Schwarzmarkt: Drogen", String, "Kaufen", "Abbrechen");
         }
     }else if(IsPlayerInRangeOfPoint(playerid, 1, -1098.8091,-2861.1267,61.1270)){//Spice
-        if(Spieler[playerid][pFraktion] == 19){
+        if(Spieler[playerid][pFraktion] == 19 && Spieler[playerid][pRank] == 6){
             ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_SPICE_ADMIN, DIALOG_STYLE_LIST, "Schwarzmarkt: Spice", "{1EA240}Spice einlagern\n{C82619}Spice auslagern\n{DFE213}Preis anpassen", "Auswählen", "Abbrechen"); //ADMIN SCHWARTMARKT
         }else{
             new String[256];
@@ -64773,7 +64795,7 @@ CMD:schwarzmarkt(playerid, params[]){
         }
     }
     else if(IsPlayerInRangeOfPoint(playerid, 1, -1098.1770,-2858.3450,61.1270)){//Wantedcodes
-        if(Spieler[playerid][pFraktion] == 19){
+        if(Spieler[playerid][pFraktion] == 19 && Spieler[playerid][pRank] == 6){
             ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_WANTEDCODES_ADMIN, DIALOG_STYLE_LIST, "Schwarzmarkt: Wantedcodes", "{1EA240}Wantedcodes einlagern\n{C82619}Wantedcodes auslagern\n{DFE213}Wantedcodes anpassen", "Auswählen", "Abbrechen"); //ADMIN SCHWARTMARKT
         }else{
             new String[256];

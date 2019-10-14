@@ -1,6 +1,7 @@
 #include <YSI\y_hooks>
 
-static SW_score[MAX_FACTIONS];
+//static SW_score[MAX_FACTIONS];
+new SW_score[MAX_FACTIONS];
 
 #define SW_STREETWAREND 22
 
@@ -94,7 +95,7 @@ hook OnGameModeExit() {
     return 1;
 }
 
-hook OnPlayerDeath(playerid, killerid, reason) {
+/*hook OnPlayerDeath(playerid, killerid, reason) {
     if (killerid == INVALID_PLAYER_ID) return 1;
     if (Spieler[playerid][pFraktion] == Spieler[killerid][pFraktion] || g_Faction[Spieler[killerid][pFraktion]][F_iPartner] == Spieler[playerid][pFraktion]) return 1;
     if (PlayerIsPaintballing[playerid] || PlayerIsPaintballing[killerid]) return 1;
@@ -117,7 +118,7 @@ hook OnPlayerDeath(playerid, killerid, reason) {
     }
     
     return 1;
-}
+}*/
 
 stock saveStreetwar() {
     new query[128];

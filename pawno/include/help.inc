@@ -114,11 +114,12 @@ new VehicleHelp[26][]= {
     {"fahrpruefung"}
 };
 
-new HouseHelp[15][]= {
+new HouseHelp[16][]= {
     {"hauskaufen"},
     {"zuhause"},
     {"hausupgrade"},
     {"hausmieten"},
+    {"hausentmieten"},
     {"haustuer"},
     {"hausmenu"},
     {"hausverkaufen"},
