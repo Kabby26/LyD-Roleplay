@@ -7938,6 +7938,11 @@ public OnPlayerDisconnect(playerid, reason)
         Spieler[playerid][pTaxiKundenStart][i] = 0;
         Spieler[playerid][pTaxiKunden][i] = INVALID_PLAYER_ID;
     }
+
+    for(new o; o < MAX_PLAYERS; o++){
+        RemovePlayerMapIcon(o, 10+playerid);//FRadar Punkt entfernen
+    }
+
     return 1;
 }
 
