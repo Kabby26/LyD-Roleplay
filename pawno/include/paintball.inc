@@ -65,8 +65,8 @@ stock _ShowPlayerDialog(playerid, dialogid, style, caption[], info[], button1[],
             paintballInfo[pID] = temp;
 
             ClosePlayerDialog(pID);
-            SCMFormatted(playerid, COLOR_RED, "[Paintball] {FFFFFF}Du hast die Anfrage zu einem 1v1-Match mit %s zurÃ¼ckgezogen.", GetName(pID));
-            SCMFormatted(pID, COLOR_RED, "[Paintball] {FFFFFF}%s hat die Anfrage zu einem 1v1-Match zurÃ¼ckgezogen.", GetName(playerid));
+            SCMFormatted(playerid, COLOR_RED, "[Paintball] {FFFFFF}Du hast die Anfrage zu einem 1v1-Match mit %s zurückgezogen.", GetName(pID));
+            SCMFormatted(pID, COLOR_RED, "[Paintball] {FFFFFF}%s hat die Anfrage zu einem 1v1-Match zurückgezogen.", GetName(playerid));
         }
     }
 
@@ -196,16 +196,16 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
             return Show1v1MenuDialog(playerid);
         }
 
-        return SendClientMessage(playerid, COLOR_GREEN, "[Paintball] {FFFFFF}Es werden in KÃ¼rze weitere Paintball-Modi folgen :)");
+        return SendClientMessage(playerid, COLOR_GREEN, "[Paintball] {FFFFFF}Es werden in Kürze weitere Paintball-Modi folgen :)");
     }
     if (dialogid == DIALOG_PAINTBALL_1V1MENU) {
         if (!response) return 1;
         if (listitem < 0 || listitem > 7) {
-            SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast keine gÃ¼ltige Auswahl getroffen.");
+            SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast keine gültige Auswahl getroffen.");
             return Show1v1MenuDialog(playerid);
         }
         if (listitem == 7) return ShowPlayerDialog(playerid, DIALOG_PAINTBALL_SEND1V1INV, DIALOG_STYLE_INPUT, "{47A1AE}Paintball - 1v1 - Einladen", "{FFFFFF}Gebe \
-            eine Spieler ID oder den Namen eines Spielers ein:", "Einladen", "ZurÃ¼ck");
+            eine Spieler ID oder den Namen eines Spielers ein:", "Einladen", "Zurück");
 
         paintballInfo[playerid][E_PB_INFO_SETTINGS][listitem] = !paintballInfo[playerid][E_PB_INFO_SETTINGS][listitem];
         return Show1v1MenuDialog(playerid);
@@ -215,7 +215,7 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 
         new pID;
         if (sscanf(inputtext, "u", pID) || pID == INVALID_PLAYER_ID) {
-            SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}Du hast keinen gÃ¼ltigen Spieler angegeben.");
+            SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}Du hast keinen gültigen Spieler angegeben.");
             return Show1v1MenuDialog(playerid);
         }
 
@@ -273,7 +273,7 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 
         ShowPlayerDialog(pID, DIALOG_PAINTBALL_ACCEPT1V1INV, DIALOG_STYLE_MSGBOX, "{47A1AE}Paintball - 1v1 - Einladung", dialogText, "Annehmen", "Ablehnen");
         format(dialogText, sizeof(dialogText), "{FFFFFF}Du hast {FFFF00}%s {FFFFFF}zu einem 1v1-Match eingeladen.\n\n{FF9900}Einstellungen:\n{FFFFFF}Desert Eagle\
-         - %s\n{FFFFFF}Schutzweste - %s\n{FFFFFF}MP5 - %s\n{FFFFFF}M4 - %s\n{FFFFFF}Sniper Rifle - %s\n{FFFFFF}Shotgun - %s\n{FFFFFF}Rifle - %s\n\n{FFFFFF}WÃ¤hle 'Abbrechen' um die Anfrage zurÃ¼ckzunehmen.", GetName(pID), set[0] ? "{00FF00}Ja" : "{FF0000}Nein", 
+         - %s\n{FFFFFF}Schutzweste - %s\n{FFFFFF}MP5 - %s\n{FFFFFF}M4 - %s\n{FFFFFF}Sniper Rifle - %s\n{FFFFFF}Shotgun - %s\n{FFFFFF}Rifle - %s\n\n{FFFFFF}WÃ¤hle 'Abbrechen' um die Anfrage zurückzunehmen.", GetName(pID), set[0] ? "{00FF00}Ja" : "{FF0000}Nein", 
             set[1] ? "{00FF00}Ja" : "{FF0000}Nein", set[2] ? "{00FF00}Ja" : "{FF0000}Nein", set[3] ? "{00FF00}Ja" : "{FF0000}Nein", set[4] ? "{00FF00}Ja" : "{FF0000}Nein",
             set[5] ? "{00FF00}Ja" : "{FF0000}Nein", set[6] ? "{00FF00}Ja" : "{FF0000}Nein");
 
@@ -357,6 +357,10 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
         PlayerTextDrawShow(playerid, paintballInfo[playerid][E_PB_INFO_TEXTDRAW]);
         PlayerTextDrawShow(pID, paintballInfo[pID][E_PB_INFO_TEXTDRAW]);
 
+        /*PlayerIsPaintballing[pID] = 1;
+
+        PlayerIsPaintballing[playerid] = 1;*/
+
         SCMFormatted(playerid, COLOR_ORANGE, "[Paintball] {FFFFFF}Das 1v1-Match gegen {FFFF00}%s {FFFFFF}beginnt!", GetName(pID));
         SendClientMessage(playerid, COLOR_ORANGE, "[Paintball] {FFFFFF}Du kannst das Match jederzeit mit '/Leave' verlassen.");
 
@@ -373,15 +377,15 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 
         ClosePlayerDialog(playerid);
         ClosePlayerDialog(pID);
-        SCMFormatted(playerid, COLOR_RED, "[Paintball] {FFFFFF}Du hast die Anfrage zu einem 1v1-Match mit %s zurÃ¼ckgezogen.", GetName(pID));
-        SCMFormatted(pID, COLOR_RED, "[Paintball] {FFFFFF}%s hat die Anfrage zu einem 1v1-Match zurÃ¼ckgezogen.", GetName(playerid));
+        SCMFormatted(playerid, COLOR_RED, "[Paintball] {FFFFFF}Du hast die Anfrage zu einem 1v1-Match mit %s zurückgezogen.", GetName(pID));
+        SCMFormatted(pID, COLOR_RED, "[Paintball] {FFFFFF}%s hat die Anfrage zu einem 1v1-Match zurückgezogen.", GetName(playerid));
         return -1;
     }
 
     return 1;
 }
 
-hook OnPlayerSpawn(playerid) {
+/*hook OnPlayerSpawn(playerid) {
     new pID = paintballInfo[playerid][E_PB_INFO_PARTNER];
     switch (paintballInfo[playerid][E_PB_INFO_STATUS]) {
         case PAINTBALL_STATUS_NONE: return 1;
@@ -396,7 +400,7 @@ hook OnPlayerSpawn(playerid) {
             SetPlayerHealth(playerid, 10000.0);
             Spieler[playerid][pAntiSpawnKillOn] = true;
             SetTimerEx("ASKTimer", 2000, 0, "i", playerid);
-            return -1;
+            //return -1;
         }
         case PAINTBALL_STATUS_INVITE: {
             new temp[E_PB_INFO];
@@ -404,7 +408,7 @@ hook OnPlayerSpawn(playerid) {
             paintballInfo[pID] = temp;
             ShowPlayerDialog(playerid, -1, 0, " ", " ", " ", " ");
             ShowPlayerDialog(pID, -1, 0, " ", " ", " ", " ");
-            SCMFormatted(pID, COLOR_RED, "[Paintball] {FFFFFF}%s hat die Anfrage zu einem 1v1-Match zurÃ¼ckgezogen.", GetName(playerid));
+            SCMFormatted(pID, COLOR_RED, "[Paintball] {FFFFFF}%s hat die Anfrage zu einem 1v1-Match zurückgezogen.", GetName(playerid));
         }
         case PAINTBALL_STATUS_INVITED: {
             new temp[E_PB_INFO];
@@ -417,7 +421,7 @@ hook OnPlayerSpawn(playerid) {
     }
 
     return 1;
-}
+}*/
 
 hook OnPlayerDisconnect(playerid, reason) {
     switch (paintballInfo[playerid][E_PB_INFO_STATUS]) {
@@ -436,7 +440,7 @@ hook OnPlayerDisconnect(playerid, reason) {
             paintballInfo[playerid] = temp;
             paintballInfo[pID] = temp;
             ClosePlayerDialog(pID);
-            SCMFormatted(pID, COLOR_RED, "[Paintball] {FFFFFF}%s hat die Anfrage zu einem 1v1-Match zurÃ¼ckgezogen.", GetName(playerid));
+            SCMFormatted(pID, COLOR_RED, "[Paintball] {FFFFFF}%s hat die Anfrage zu einem 1v1-Match zurückgezogen.", GetName(playerid));
         }
         case PAINTBALL_STATUS_INVITED: {
             new pID = paintballInfo[playerid][E_PB_INFO_PARTNER];
@@ -451,7 +455,7 @@ hook OnPlayerDisconnect(playerid, reason) {
     return 1;
 }
 
-hook OnPlayerDeath(playerid, killerid, reason) {
+/*hook OnPlayerDeath(playerid, killerid, reason) {
     new pID = paintballInfo[playerid][E_PB_INFO_PARTNER];
     switch (paintballInfo[playerid][E_PB_INFO_STATUS]) {
         case PAINTBALL_STATUS_NONE: return 1;
@@ -461,7 +465,9 @@ hook OnPlayerDeath(playerid, killerid, reason) {
             ClosePlayerDialog(playerid);
         }
         case PAINTBALL_STATUS_1V1: {
-            if (killerid == INVALID_PLAYER_ID) return -1;
+            //if (killerid == INVALID_PLAYER_ID) return -1;
+
+            //bPaintball = true;
 
             paintballInfo[playerid][E_PB_INFO_DEATHS]++;
             paintballInfo[pID][E_PB_INFO_KILLS]++;
@@ -478,7 +484,7 @@ hook OnPlayerDeath(playerid, killerid, reason) {
             format(tdString, sizeof(tdString), "~g~~h~%s ~w~~h~%i : %i ~r~~h~%s", GetName(playerid), paintballInfo[playerid][E_PB_INFO_KILLS], 
                 paintballInfo[playerid][E_PB_INFO_DEATHS], GetName(pID));
             PlayerTextDrawSetString(playerid, paintballInfo[playerid][E_PB_INFO_TEXTDRAW], tdString);
-            return -1;
+            //return -1;
         }
         case PAINTBALL_STATUS_INVITE: {
             new temp[E_PB_INFO];
@@ -486,7 +492,7 @@ hook OnPlayerDeath(playerid, killerid, reason) {
             paintballInfo[pID] = temp;
             ClosePlayerDialog(playerid);
             ClosePlayerDialog(pID);
-            SCMFormatted(pID, COLOR_RED, "[Paintball] {FFFFFF}%s hat die Anfrage zu einem 1v1-Match zurÃ¼ckgezogen.", GetName(playerid));
+            SCMFormatted(pID, COLOR_RED, "[Paintball] {FFFFFF}%s hat die Anfrage zu einem 1v1-Match zurückgezogen.", GetName(playerid));
         }
         case PAINTBALL_STATUS_INVITED: {
             new temp[E_PB_INFO];
@@ -499,7 +505,7 @@ hook OnPlayerDeath(playerid, killerid, reason) {
     }
 
     return 1;
-}
+}*/
 
 // Commands
 
@@ -515,13 +521,13 @@ CMD:leave(playerid) {
 CMD:paintball(playerid, params[]) {
     if (!gPlayerLogged[playerid]) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du bist nicht eingeloggt.");
     if (!IsPlayerInRangeOfPoint(playerid, 5.0, PAINTBALLLOBBYINTERIOR_INFO_POINT)) return SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}Du bist nicht an der Paintballarena.");
-    if (Spieler[playerid][pLevel] < 3) return SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}Du musst dafÃ¼r mindestens Level 3 sein.");
+    if (Spieler[playerid][pLevel] < 3) return SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}Du musst dafür mindestens Level 3 sein.");
     if (HasWeaponBlock(playerid)) {
         SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}Du hast eine Waffensperre.");
         return SendWeaponBlockInfo(playerid);
     }
 
-    if (IsPlayerInAnyVehicle(playerid)) return SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}Du darfst dafÃ¼r nicht im Fahrzeug sitzen.");
+    if (IsPlayerInAnyVehicle(playerid)) return SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}Du darfst dafür nicht im Fahrzeug sitzen.");
     paintballInfo[playerid][E_PB_INFO_STATUS] = PAINTBALL_STATUS_MENU;
 
     new playerCount;

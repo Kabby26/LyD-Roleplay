@@ -2749,7 +2749,7 @@ enum {
     CP_WT_GOBACK_BASE
 }
 
-//#define TEST
+#define TEST
 
 #if defined TEST // Testserver
 	#define     SQL_HOST            "51.68.175.95"
@@ -5073,6 +5073,7 @@ new alcatrazGateHackTimestamp = 0;
 
 // Systems
 #include <paintball>
+//#include <paintballfix>
 //#include <halloween>
 #include <core\anticheat>
 #include <core\airdrop_system>
@@ -10596,6 +10597,43 @@ public OnPlayerSpawn(playerid)
     //SetPlayerWeather(playerid,18);
     UpdatePayDayTextdraw(playerid);
     PlayerTextDrawShow(playerid,Spieler[playerid][ptPayDay]);
+
+    //PB START
+    new pID = paintballInfo[playerid][E_PB_INFO_PARTNER];
+    switch (paintballInfo[playerid][E_PB_INFO_STATUS]) {
+        case PAINTBALL_STATUS_NONE: return 1;
+        case PAINTBALL_STATUS_MENU: {
+            new temp[E_PB_INFO];
+            paintballInfo[playerid] = temp;
+            ClosePlayerDialog(playerid);
+        }
+        case PAINTBALL_STATUS_1V1: {
+            SetPlayerPaintballPos(playerid);
+            SetPlayerSkin(playerid, Spieler[playerid][pSkin]);
+            SetPlayerHealth(playerid, 10000.0);
+            Spieler[playerid][pAntiSpawnKillOn] = true;
+            SetTimerEx("ASKTimer", 2000, 0, "i", playerid);
+            return -1;
+        }
+        case PAINTBALL_STATUS_INVITE: {
+            new temp[E_PB_INFO];
+            paintballInfo[playerid] = temp;
+            paintballInfo[pID] = temp;
+            ShowPlayerDialog(playerid, -1, 0, " ", " ", " ", " ");
+            ShowPlayerDialog(pID, -1, 0, " ", " ", " ", " ");
+            SCMFormatted(pID, COLOR_RED, "[Paintball] {FFFFFF}%s hat die Anfrage zu einem 1v1-Match zurückgezogen.", GetName(playerid));
+        }
+        case PAINTBALL_STATUS_INVITED: {
+            new temp[E_PB_INFO];
+            paintballInfo[playerid] = temp;
+            paintballInfo[pID] = temp;
+            ClosePlayerDialog(playerid);
+            ClosePlayerDialog(pID);
+            SCMFormatted(pID, COLOR_RED, "[Paintball] {FFFFFF}%s hat die Anfrage zu einem 1v1-Match abgelehnt.", GetName(playerid));
+        }
+    }
+    //PB ENDE
+
     return 1;
 }
 
@@ -11158,6 +11196,57 @@ public OnPlayerDeath(playerid, killerid, reason)
     if (!PlayerIsPaintballing[playerid]) ClearPlayerChat(playerid);
     //RemovePlayerFromVehicle(playerid);
     if (reason == 255) return 0;
+
+    //PB START
+    new pID = paintballInfo[playerid][E_PB_INFO_PARTNER];
+    switch (paintballInfo[playerid][E_PB_INFO_STATUS]) {
+        case PAINTBALL_STATUS_NONE: return 1;
+        case PAINTBALL_STATUS_MENU: {
+            new temp[E_PB_INFO];
+            paintballInfo[playerid] = temp;
+            ClosePlayerDialog(playerid);
+        }
+        case PAINTBALL_STATUS_1V1: {
+            if (killerid == INVALID_PLAYER_ID) return -1;
+
+            //bPaintball = true;
+
+            paintballInfo[playerid][E_PB_INFO_DEATHS]++;
+            paintballInfo[pID][E_PB_INFO_KILLS]++;
+            SpawnPlayer(playerid);
+            GivePlayerPaintballWeapons(pID);
+            SendDeathMessageToPlayer(pID, pID, playerid, reason);
+            SendDeathMessageToPlayer(playerid, pID, playerid, reason);
+
+            new tdString[128];
+            format(tdString, sizeof(tdString), "~g~~h~%s ~w~~h~%i : %i ~r~~h~%s", GetName(pID), paintballInfo[pID][E_PB_INFO_KILLS], 
+                paintballInfo[pID][E_PB_INFO_DEATHS], GetName(playerid));
+            PlayerTextDrawSetString(pID, paintballInfo[pID][E_PB_INFO_TEXTDRAW], tdString);
+
+            format(tdString, sizeof(tdString), "~g~~h~%s ~w~~h~%i : %i ~r~~h~%s", GetName(playerid), paintballInfo[playerid][E_PB_INFO_KILLS], 
+                paintballInfo[playerid][E_PB_INFO_DEATHS], GetName(pID));
+            PlayerTextDrawSetString(playerid, paintballInfo[playerid][E_PB_INFO_TEXTDRAW], tdString);
+            return -1;
+        }
+        case PAINTBALL_STATUS_INVITE: {
+            new temp[E_PB_INFO];
+            paintballInfo[playerid] = temp;
+            paintballInfo[pID] = temp;
+            ClosePlayerDialog(playerid);
+            ClosePlayerDialog(pID);
+            SCMFormatted(pID, COLOR_RED, "[Paintball] {FFFFFF}%s hat die Anfrage zu einem 1v1-Match zurückgezogen.", GetName(playerid));
+        }
+        case PAINTBALL_STATUS_INVITED: {
+            new temp[E_PB_INFO];
+            paintballInfo[playerid] = temp;
+            paintballInfo[pID] = temp;
+            ClosePlayerDialog(playerid);
+            ClosePlayerDialog(pID);
+            SCMFormatted(pID, COLOR_RED, "[Paintball] {FFFFFF}%s hat die Anfrage zu einem 1v1-Match abgelehnt.", GetName(playerid));
+        }
+    }
+
+    //PB ENDE
 
     new bGangfight = 0, bGangOnGangKill = 0, bWantedKillZone = 0, bool:bPaintball = false;
     new string[128], Float:x, Float:y, Float:z, caller;
