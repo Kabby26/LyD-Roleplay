@@ -921,7 +921,9 @@ enum {
     THREAD_GDrogenSamen,
     THREAD_KrauterMische,
     THREAD_OLDNAME,
-    THREAD_SWSPICE
+    THREAD_SWSPICE,
+    THREAD_DMGTOG,
+    THREAD_FRADAR
     //THREAD_SETUP_POST
 }
 
@@ -939,7 +941,44 @@ enum {
     #undef MAX_PLAYERS
     #define MAX_PLAYERS 200
 #endif
+//Paintball Start
+/*enum {
+    LEAVE_REASON_COMMAND,
+    LEAVE_REASON_DISCONNECT,
+    LEAVE_REASON_PARTNER_COMMAND,
+    LEAVE_REASON_PARTNER_DISCONNECT
+}
 
+enum {
+    PAINTBALL_STATUS_NONE,
+    PAINTBALL_STATUS_MENU,
+    PAINTBALL_STATUS_1V1,
+    PAINTBALL_STATUS_NORMAL,
+    PAINTBALL_STATUS_INVITE,
+    PAINTBALL_STATUS_INVITED
+}
+
+enum E_PB_INFO {
+    E_PB_INFO_STATUS,
+    E_PB_INFO_SETTINGS[7],
+    E_PB_INFO_KILLS,
+    E_PB_INFO_DEATHS,
+    E_PB_INFO_PARTNER,
+    bool:E_PB_INFO_SESSION_OWNER,
+    PlayerText:E_PB_INFO_TEXTDRAW
+}
+
+enum {
+    DIALOG_PAINTBALL_MODE = 2000,
+    DIALOG_PAINTBALL_1V1MENU,
+    DIALOG_PAINTBALL_SEND1V1INV,
+    DIALOG_PAINTBALL_WAIT1V1,
+    DIALOG_PAINTBALL_ACCEPT1V1INV
+}
+
+new paintballInfo[MAX_PLAYERS][E_PB_INFO];
+*/
+//Paintball ende
 enum e_Faction {
     F_iPartner,
     F_iPartnerRequest
@@ -2407,6 +2446,8 @@ stock bool:IsTUVNeeded(distance) {
 
 #define     DIALOG_SKINS 1458
 
+#define     DIALOG_SETTINGS 1459
+
 #define     KEIN_KENNZEICHEN    "KEINE PLAKETTE"
 
 enum {
@@ -3746,7 +3787,7 @@ new skins_array[] =
     132,133,134,135,136,137,138,139,140,141,145,146,151,152,153,154,155,156,157,159,160,161,162,
     167,168,170,171,172,176,177,178,179,180,181,182,183,188,189,190,191,192,193,194,196,197,198,199,200,201,
     202,205,206,207,209,210,211,212,213,214,215,216,217,218,225,226,227,229,230,231,232,233,234,235,236,
-    237,238,239,240,241,242,243,244,245,246,249,250,251,252,253,255,256,257,258,259,260,261,262,264,268,
+    237,238,239,240,241,242,243,244,245,246,249,250,251,253,255,256,257,258,259,260,261,262,264,268,
     289,290,291,296,297,298,299
 };
 
@@ -4638,7 +4679,8 @@ enum SpielerDaten {
     pGangDrogenSamen,
     pKrauterMische,
     pOldname[50],
-    swSpice
+    swSpice,
+    DmgTog
 }
 
 enum e_FahrPruefung {
@@ -5384,9 +5426,38 @@ public flammentimer(brandid){
 
 //new FRadar[MAX_PLAYERS];
 
+CMD:einstellungen(playerid){
+    new String[1024];
+    format(String, sizeof(String), "{FFFFFF}");
+    if(Spieler[playerid][pSpawnChange] == 0){
+        format(String, sizeof(String), "%sSpawn: Neulingsspawn\n", String);
+    }else if(Spieler[playerid][pSpawnChange] == 1){
+        format(String, sizeof(String), "%sSpawn: Haus\n", String);
+    }else if(Spieler[playerid][pSpawnChange] == 2){
+        format(String, sizeof(String), "%sSpawn: Fraktionsspawn\n", String);
+    }else if(Spieler[playerid][pSpawnChange] == 3){
+        format(String, sizeof(String), "%sSpawn: Alternativer Fraktionsspawn\n", String);
+    }
+
+    if(Spieler[playerid][pFRadarStatus] == 0){
+        format(String, sizeof(String), "%sFRadar: Ausgeschaltet\n", String);
+    }else if(Spieler[playerid][pFRadarStatus] == 1){
+        format(String, sizeof(String), "%sFRadar: Eingeschaltet\n", String);
+    }
+
+    if(Spieler[playerid][DmgTog] == 0){
+        format(String, sizeof(String), "%sDamage Sound: Ausgeschaltet\n", String);
+    }else if(Spieler[playerid][DmgTog] == 1){
+        format(String, sizeof(String), "%sDamage Sound: Eingeschaltet\n", String);
+    }
+
+    ShowPlayerDialog(playerid, DIALOG_SETTINGS, DIALOG_STYLE_LIST, "Einstellungen", String, "Ändern", "Schließen");
+    return 1;
+}
+
 CMD:fradar(playerid, params[]) {
-	if(Spieler[playerid][pFraktion] == 0) return SendClientMessage(playerid, COLOR_RED, "Du kannst diesen Befehl nicht nutzen!");
 	if(Spieler[playerid][pFRadarStatus] == 0){
+        if(Spieler[playerid][pFraktion] == 0) return SendClientMessage(playerid, COLOR_RED, "Du kannst diesen Befehl nicht nutzen!");
 	    SendClientMessage(playerid, COLOR_GREEN, "[FRADAR] Du hast das FRadar eingeschaltet!");
   		//FRadar[playerid] = SetTimerEx("FRadarTimer", 150, true, "i", playerid);
   		Spieler[playerid][pFRadarStatus] = 1;
@@ -6770,6 +6841,8 @@ public OnPlayerConnect(playerid)
     //Spieler[playerid][pMarkerStatus] = 0;
     Spieler[playerid][pFRadarStatus] = 0;
 
+    Spieler[playerid][DmgTog] = 0;
+
     Spieler[playerid][tDrink] = INVALID_TIMER_ID;
     Spieler[playerid][tSpawnView] = INVALID_TIMER_ID;
     Spieler[playerid][pTutTimer] = INVALID_TIMER_ID;
@@ -7319,7 +7392,6 @@ public OnPlayerDisconnect(playerid, reason)
     Spieler[playerid][pTankeAngebot][0] = INVALID_PLAYER_ID;
     Spieler[playerid][pTankeAngebot][1] = 0;
     Spieler[playerid][pKillsGangFightSession] = 0;
-    Spieler[playerid][pFRadarStatus] = 0;
     gangfightwettenpp[playerid] = 0;
     gangfightwettenppp[playerid] = 0;
     ReleasePlayerKeys(playerid,false);
@@ -10844,7 +10916,13 @@ public SetPlayerSpawn(playerid)
 		    ResetPlayerSpawn(playerid);
 		    return 1;
 		}*/
-		if(Spieler[playerid][pSpawnChange] == 0)
+        if(Spieler[playerid][pSpawnChange] == 0){
+            SetPlayerPos(playerid, 798.4492,-1345.5676,-0.5078);
+            SetPlayerInterior(playerid, 0);
+            SetPlayerVirtualWorld(playerid, 0);
+            Streamer_UpdateEx(playerid,798.4492,-1345.5676,-0.5078);
+        }
+		else if(Spieler[playerid][pSpawnChange] == 2)
 		{
 			if(Spieler[playerid][pFraktion] == 0)
 			{
@@ -10852,6 +10930,7 @@ public SetPlayerSpawn(playerid)
 				SetPlayerInterior(playerid, 0);
 				SetPlayerVirtualWorld(playerid, 0);
 				Streamer_UpdateEx(playerid,798.4492,-1345.5676,-0.5078);
+                Spieler[playerid][pSpawnChange] = 0;
 			}
 			else if(Spieler[playerid][pFraktion] == 1)
 			{
@@ -11043,6 +11122,20 @@ public SetPlayerSpawn(playerid)
                 SetPlayerPos(playerid, g_HouseInterior[index][HI_fExitX], g_HouseInterior[index][HI_fExitY], g_HouseInterior[index][HI_fExitZ]);
             }
         }
+        else if(Spieler[playerid][pSpawnChange] == 3){
+            if(Spieler[playerid][pFraktion] != 14) {
+                Spieler[playerid][pSpawnChange] = 0;
+                SetPlayerPos(playerid, 798.4492,-1345.5676,-0.5078);
+				SetPlayerInterior(playerid, 0);
+				SetPlayerVirtualWorld(playerid, 0);
+				Streamer_UpdateEx(playerid,798.4492,-1345.5676,-0.5078);
+            }else{
+                SetPlayerPos(playerid, 1515.711791, -1457.327270, 9.5);
+                SetPlayerInterior(playerid, 0);
+				SetPlayerVirtualWorld(playerid, 0);
+				Streamer_UpdateEx(playerid,1515.711791, -1457.327270, 9.5);
+            }
+        }
         if( Spieler[playerid][pHours] < 2 ) {
             SetPlayerAttachedObject( playerid, 2, 1210, 5, 0.293532, 0.103431, 0.007843, 340.256103, 257.806579, 0.000000, 1.000000, 1.000000, 1.000000 );
         }
@@ -11229,14 +11322,14 @@ public OnPlayerDeath(playerid, killerid, reason)
     //PB START
     new pID = paintballInfo[playerid][E_PB_INFO_PARTNER];
     switch (paintballInfo[playerid][E_PB_INFO_STATUS]) {
-        case PAINTBALL_STATUS_NONE: return 1;
+        //case PAINTBALL_STATUS_NONE: return 1;
         case PAINTBALL_STATUS_MENU: {
             new temp[E_PB_INFO];
             paintballInfo[playerid] = temp;
             ClosePlayerDialog(playerid);
         }
         case PAINTBALL_STATUS_1V1: {
-            if (killerid == INVALID_PLAYER_ID) return -1;
+            //if (killerid == INVALID_PLAYER_ID) return -1;
 
             //bPaintball = true;
 
@@ -11590,6 +11683,13 @@ public OnPlayerDeath(playerid, killerid, reason)
 	                    SendClientMessage(killerid, COLOR_YELLOW, string);
 	                    format(string, sizeof(string), "HQ: %s (ID: %d) hat ein Verbrechen begangen: Mord an einem Gangmitglied in %s - Tatwaffe: %s, over.", GetName(killerid), killerid,sOrt,sWeapon);
 	                }
+                    else if( Spieler[killerid][bMaske] == true){
+                        Spieler[killerid][pWanteds] += 1;
+                        SendClientMessage(killerid, COLOR_DARKRED,"Du hast ein Verbrechen begangen! (Beamten/Zivilisten Mord) Reporter: Polizeizentrale");
+                        format(string, sizeof(string), "Dein Aktuelles Wanted Level: %d", Spieler[killerid][pWanteds]);
+                        SendClientMessage(killerid, COLOR_YELLOW, string);
+                        format(string, sizeof(string), "HQ: Unbekannt hat ein Verbrechen begangen: Beamten-/Zivilisten Mord in %s - Tatwaffe: %s, over.", killerid,sOrt,sWeapon);
+                    }
 	                else {
 	                    Spieler[killerid][pWanteds] += 3;
 	                    SendClientMessage(killerid, COLOR_DARKRED,"Du hast ein Verbrechen begangen! (Beamten/Zivilisten Mord) Reporter: Polizeizentrale");
@@ -13699,7 +13799,7 @@ CMD:maxwaren(playerid, params[])
     return 1;
 }*/
 
-CMD:spawnchange(playerid)
+/*CMD:spawnchange(playerid)
 {
     if(Spieler[playerid][pSpawnChange]== 0)
     {
@@ -13718,6 +13818,10 @@ CMD:spawnchange(playerid)
         SendClientMessage(playerid, COLOR_GREEN, "Du hast deinen Spawn auf den Fraktions bzw. Zivi-Spawn geändert.");
     }
     return 1;
+}*/
+
+CMD:spawnchange(playerid){
+    cmd_einstellungen(playerid);
 }
 
 CMD:configtanke(playerid)
@@ -30307,6 +30411,51 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
         if( inputtext[i] == '%' ) inputtext[i] = ' ';
     }
     if(Werbebanner_OnDialogResponse(playerid, dialogid, response, listitem, inputtext)) return 1;
+    if (dialogid == DIALOG_SETTINGS) {
+        if (response){
+            if(listitem == 0){
+                new spawnid = Spieler[playerid][pSpawnChange];
+                if(spawnid == 0){
+                    spawnid = 1;
+                    SendClientMessage(playerid, COLOR_YELLOW, "[EINSTELLUNGEN] {FFFFFF}Du hast deinen Spawn auf dein Haus verlegt!");
+                }else if(spawnid == 1){
+                    spawnid = 2;
+                    SendClientMessage(playerid, COLOR_YELLOW, "[EINSTELLUNGEN] {FFFFFF}Du hast deinen Spawn auf deine Fraktion gelegt!");
+                }else if(spawnid == 2){
+                    if(Spieler[playerid][pFraktion] == 14){
+                        spawnid = 3;
+                        SendClientMessage(playerid, COLOR_YELLOW, "[EINSTELLUNGEN] {FFFFFF}Du hast deinen Spawn auf deine Fraktion (2. Base) gelegt!");
+                    }else{
+                        spawnid = 0;
+                        SendClientMessage(playerid, COLOR_YELLOW, "[EINSTELLUNGEN] {FFFFFF}Du hast deinen Spawn auf den Neulingsspawn gelegt!");
+                    }
+                }else if(spawnid == 3){
+                    spawnid = 0;
+                    SendClientMessage(playerid, COLOR_YELLOW, "[EINSTELLUNGEN] {FFFFFF}Du hast deinen Spawn auf den Neulingsspawn gelegt!");
+                }else{
+                    spawnid = 0;
+                    SendClientMessage(playerid, COLOR_YELLOW, "[EINSTELLUNGEN] {FFFFFF}Du hast deinen Spawn auf den Neulingsspawn gelegt!");
+                }
+                Spieler[playerid][pSpawnChange] = spawnid;
+            }
+            else if(listitem == 1){
+                cmd_fradar(playerid, "");
+            }
+            else if(listitem == 2){
+                if(Spieler[playerid][DmgTog] == 0){
+                    Spieler[playerid][DmgTog] = 1;
+                    SendClientMessage(playerid, COLOR_YELLOW, "[EINTELLUNGEN] {FFFFFF}Du hast den Damage-Sound eingeschaltet!");
+                }else if(Spieler[playerid][DmgTog] == 1){
+                    Spieler[playerid][DmgTog] = 0;
+                    SendClientMessage(playerid, COLOR_YELLOW, "[EINTELLUNGEN] {FFFFFF}Du hast den Damage-Sound ausgeschaltet!");
+                }else{
+                    Spieler[playerid][DmgTog] = 0;
+                    SendClientMessage(playerid, COLOR_YELLOW, "[EINTELLUNGEN] {FFFFFF}Du hast den Damage-Sound ausgeschaltet!");
+                }
+            }
+            cmd_einstellungen(playerid);
+        }
+    }
     if (dialogid == DIALOG_ASETTINGS) {
         if (!response) return 1;
         if (listitem < 0 || listitem >= sizeof(g_aSettings)) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Ungültige Auswahl.");
@@ -44327,6 +44476,7 @@ wrgaergrg r/subsifellfor
 */
 new
     saveaccount[2300]; // Nicht ändern
+    //saveaccount[2500];
 
 stock SaveAccount(playerid)
 {
@@ -44651,6 +44801,8 @@ stock SaveAccount(playerid)
                 `cb_AAPL` = %f, \
                 `cb_SSUNF` = %f, \
                 `KillsStreetwar` = %d, \
+                `DmgTogl` = %d, \
+                `FradarStat` = %d, \
                 `ChatSettings` = %d",
                     saveaccount,
                     Spieler[playerid][pPrisonRunCount],
@@ -44687,6 +44839,8 @@ stock SaveAccount(playerid)
                     Spieler[playerid][pAAPL],
                     Spieler[playerid][pSSUNF],
                     Spieler[playerid][pKillsStreetwar],
+                    Spieler[playerid][DmgTog],
+                    Spieler[playerid][pFRadarStatus],
                     chatBit);
         format(saveaccount,sizeof(saveaccount),"%s \
                 WHERE `Name` = '%s'",
@@ -48432,11 +48586,19 @@ public split(const strsrc[], strdest[][], delimiter)
     return 1;
 }
 
+ stock IsPlayerAFK(playerid){
+    new messages = NetStats_MessagesRecvPerSecond(playerid);
+    if(messages < 3)return 1;
+    return 0;
+}
+
 //Bei neuer Hitbox anpassen
 //public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 public OnPlayerDamage(&playerid, &Float:amount, &issuerid, &weapon, &bodypart)
 {
-    PlayerPlaySound(issuerid, 4202, 0.0, 0.0, 0.0);
+    if(IsPlayerAFK(playerid) || IsAFK[playerid] == 1){
+        return 0;
+    }
     damagesperre[playerid] = 5;
     g_aiLastDamagedByPlayer[playerid] = issuerid;
     if( issuerid != INVALID_PLAYER_ID) {
@@ -48515,6 +48677,16 @@ public OnPlayerDamage(&playerid, &Float:amount, &issuerid, &weapon, &bodypart)
     }
     return 1;
 }*/
+
+public OnPlayerDamageDone(playerid, Float:amount, issuerid, weapon, bodypart){
+    if(issuerid != INVALID_PLAYER_ID){
+        //TOGGLE MAAAAN IN SETTINGS
+        if(Spieler[playerid][DmgTog] == 1){
+            PlayerPlaySound(playerid, 1190, 0.0, 0.0, 0.0);
+        }
+    }
+    return 1;
+}
 
 public OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 {
@@ -59599,6 +59771,14 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
 			mysql_format(connectionHandle, querySWSPICE, sizeof(querySWSPICE), "SELECT `swSpiceSp` FROM `accounts` WHERE `Name` = '%s' ", NameCoins);
 			mysql_pquery(querySWSPICE,THREAD_SWSPICE,playerid,gSQL,MySQLThreadOwner);
 
+            new queryDmgTog[128];
+			mysql_format(connectionHandle, queryDmgTog, sizeof(queryDmgTog), "SELECT `DmgTogl` FROM `accounts` WHERE `Name` = '%s' ", NameCoins);
+			mysql_pquery(queryDmgTog,THREAD_DMGTOG,playerid,gSQL,MySQLThreadOwner);
+
+            new queryFradar[128];
+			mysql_format(connectionHandle, queryFradar, sizeof(queryFradar), "SELECT `FradarStat` FROM `accounts` WHERE `Name` = '%s' ", NameCoins);
+			mysql_pquery(queryFradar,THREAD_FRADAR,playerid,gSQL,MySQLThreadOwner);
+
             //THREAD_KrauterMische
 
             cache_get_row(0, 137, Spieler[playerid][pMarriageName], connectionHandle);
@@ -61332,6 +61512,24 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
 	    while( i < rows) {
 	        fv = cache_get_field_content_int(i,"swSpiceSp", connectionHandle);
             Spieler[extraid][swSpice] = fv;
+	        i++;
+	    }
+    }
+    else if(resultid == THREAD_DMGTOG) {
+        new fv;
+	    new i, rows = cache_get_row_count(connectionHandle);
+	    while( i < rows) {
+	        fv = cache_get_field_content_int(i,"DmgTogl", connectionHandle);
+            Spieler[extraid][DmgTog] = fv;
+	        i++;
+	    }
+    }
+    else if(resultid == THREAD_FRADAR) {
+        new fv;
+	    new i, rows = cache_get_row_count(connectionHandle);
+	    while( i < rows) {
+	        fv = cache_get_field_content_int(i,"FradarStat", connectionHandle);
+            Spieler[extraid][pFRadarStatus] = fv;
 	        i++;
 	    }
     }

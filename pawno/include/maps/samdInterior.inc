@@ -19,7 +19,7 @@ static Float:DRAWDISTANCE   = 350.0;
 
 // Map variables
 new object_samdInterior[284];
-new pickup_samdInterior[4];
+new pickup_samdInterior[6];
 new text3D_samdInterior[3];
 new actor_samdInterior[3];
 
@@ -54,13 +54,18 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys) {
         }else if(IsPlayerInRangeOfPoint(playerid, 2.0, -2594.053955, 642.388671, 14.453125)){
             if(Spieler[playerid][pFraktion] != 3) return SendClientMessage(playerid, COLOR_RED, "[WC] {FFFFFF}Diese Toilette ist nur für Mitarbeiter des Rettungsdienstes betretbar!");
             SetCameraBehindPlayer(playerid);
-			SetPlayerPosEx(playerid, 1454.161621, -991.399658, 675.603271, MAPS_SAMDINTERIOR_INTERIOR, VW_SAMDINTERIOR1);
+			SetPlayerPosEx(playerid, 1454.161621, -991.399658, 675.603271, MAPS_SAMDINTERIOR_INTERIOR, VW_SAMDINTERIOR);
         }
-
-        if(IsPlayerInRangeOfPoint(playerid, 2.0, 1456.968505 -991.179138 675.603271)){
+        //Teleport LV und zurück
+        if(IsPlayerInRangeOfPoint(playerid, 2.0, 1456.968505, -991.179138, 675.603271)){
             if(Spieler[playerid][pFraktion] != 3) return SendClientMessage(playerid, COLOR_RED, "[WC] {FFFFFF}Diese Toilette ist nur für Mitarbeiter des Rettungsdienstes betretbar!");
             SetCameraBehindPlayer(playerid);
-            SetPlayerPosEx(playerid, 0, 0, 0, MAPS_SAMDEXTERIOR_INTERIOR, VW_MAIN);
+            SetPlayerPosEx(playerid, 1607.292602, 1815.987426, 10.820312, MAPS_SAMDEXTERIOR_INTERIOR, VW_MAIN);
+        }else if(IsPlayerInRangeOfPoint(playerid, 2.0, 1607.292602, 1815.987426, 10.820312)){
+            if(Spieler[playerid][pFraktion] != 3) return SendClientMessage(playerid, COLOR_RED, "[WC] {FFFFFF}Diese Toilette ist nur für Mitarbeiter des Rettungsdienstes betretbar!");
+            SetCameraBehindPlayer(playerid);
+            SetPlayerPosEx(playerid, 1456.968505, -991.179138, 675.603271, MAPS_SAMDINTERIOR_INTERIOR, VW_SAMDINTERIOR);
+        }
     }
 
     return 1;
@@ -72,6 +77,9 @@ hook OnGameModeInit() {
     // pickup_samdInterior[1] = CreateDynamicPickup(19197, 1, SAMD_INTERIOR_ELEVATOR_1_DOWN_COORDS, VW_SAMDINTERIOR, MAPS_SAMDINTERIOR_INTERIOR); // Elevator 1
     pickup_samdInterior[2] = CreateDynamicPickup(19197, 1, SAMD_INTERIOR_ELEVATOR_2_DOWN_COORDS, VW_SAMDINTERIOR, MAPS_SAMDINTERIOR_INTERIOR); // Elevator 2
     pickup_samdInterior[3] = CreateDynamicPickup(19197, 1, SAMD_INTERIOR_EXIT_COORDS, VW_SAMDINTERIOR, MAPS_SAMDINTERIOR_INTERIOR); // Exit point
+
+    //pickup_samdInterior[4] = CreateDynamicPickup(19197, 1, 1454.161621, -991.399658, 675.603271, VW_SAMDINTERIOR, MAPS_SAMDINTERIOR_INTERIOR);
+    //pickup_samdInterior[5] = CreateDynamicPickup(19197, 1, 1456.968505, -991.179138, 675.603271, VW_SAMDINTERIOR, MAPS_SAMDINTERIOR_INTERIOR);
 
 	// 3DTextLabels
 	text3D_samdInterior[0] = _:CreateDynamic3DTextLabel(COLOR_HEX_BLUE "Krankenversicherung\n" COLOR_HEX_WHITE "Keine Behandlungskosten für 7 Tage! Preis: $50.000\nTippe /Krankenversicherung", COLOR_WHITE, SAMD_INTERIOR_HEALTH_INSURANCE_COORDS, 25.0, .testlos = 1, .worldid = VW_SAMDINTERIOR, .interiorid = MAPS_SAMDINTERIOR_INTERIOR); // Health insurance
