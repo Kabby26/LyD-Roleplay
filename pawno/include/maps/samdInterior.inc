@@ -45,6 +45,22 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys) {
             SetPlayerPosEx(playerid, SAMD_INTERIOR_ELEVATOR_2_UP_COORDS, MAPS_SAMDINTERIOR_INTERIOR, VW_SAMDINTERIOR2);
             return 1;
         }
+
+        //Teleport SF und zurück
+        if(IsPlayerInRangeOfPoint(playerid, 2.0, 1454.161621, -991.399658, 675.603271)){
+            if(Spieler[playerid][pFraktion] != 3) return SendClientMessage(playerid, COLOR_RED, "[WC] {FFFFFF}Diese Toilette ist nur für Mitarbeiter des Rettungsdienstes betretbar!");
+            SetCameraBehindPlayer(playerid);
+			SetPlayerPosEx(playerid, -2594.053955, 642.388671, 14.453125, MAPS_SAMDEXTERIOR_INTERIOR, VW_MAIN);
+        }else if(IsPlayerInRangeOfPoint(playerid, 2.0, -2594.053955, 642.388671, 14.453125)){
+            if(Spieler[playerid][pFraktion] != 3) return SendClientMessage(playerid, COLOR_RED, "[WC] {FFFFFF}Diese Toilette ist nur für Mitarbeiter des Rettungsdienstes betretbar!");
+            SetCameraBehindPlayer(playerid);
+			SetPlayerPosEx(playerid, 1454.161621, -991.399658, 675.603271, MAPS_SAMDINTERIOR_INTERIOR, VW_SAMDINTERIOR1);
+        }
+
+        if(IsPlayerInRangeOfPoint(playerid, 2.0, 1456.968505 -991.179138 675.603271)){
+            if(Spieler[playerid][pFraktion] != 3) return SendClientMessage(playerid, COLOR_RED, "[WC] {FFFFFF}Diese Toilette ist nur für Mitarbeiter des Rettungsdienstes betretbar!");
+            SetCameraBehindPlayer(playerid);
+            SetPlayerPosEx(playerid, 0, 0, 0, MAPS_SAMDEXTERIOR_INTERIOR, VW_MAIN);
     }
 
     return 1;

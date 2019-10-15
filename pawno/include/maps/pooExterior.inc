@@ -31,8 +31,8 @@ new text3D_pooExterior[1];
 new object_pooExterior_barrier;
 
 CMD:ogate(playerid, params[]) {
-    if (Spieler[playerid][pFraktion] != 5)
-        return SendClientMessage(playerid, COLOR_RED, "Du bist kein Ordnungsbeamter.");
+    if (!(Spieler[playerid][pFraktion] == 1 || Spieler[playerid][pFraktion] == 2 || Spieler[playerid][pFraktion] == 3 || Spieler[playerid][pFraktion] == 5 || Spieler[playerid][pFraktion] == 9 || Spieler[playerid][pFraktion] == 18))
+        return SendClientMessage(playerid, COLOR_RED, "Du bist kein Staatsbeamter.");
 
     if (IsPlayerInRangeOfPoint(playerid, 10.0, POO_BARRIER_FOR_RANGE_COORDS)) {
         new Float:fX, Float:fY, Float:fZ, Float:fRX, Float:fRY, Float:fRZ;

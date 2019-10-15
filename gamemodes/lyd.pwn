@@ -920,7 +920,8 @@ enum {
     THREAD_MAKEFV,
     THREAD_GDrogenSamen,
     THREAD_KrauterMische,
-    THREAD_OLDNAME
+    THREAD_OLDNAME,
+    THREAD_SWSPICE
     //THREAD_SETUP_POST
 }
 
@@ -4636,7 +4637,8 @@ enum SpielerDaten {
     pFV,
     pGangDrogenSamen,
     pKrauterMische,
-    pOldname[50]
+    pOldname[50],
+    swSpice
 }
 
 enum e_FahrPruefung {
@@ -4801,6 +4803,11 @@ new terrorVerarbeiter;
 new bool:wtstatus = false;
 new wtid = -1;
 
+new bool:spritstatus = false;
+
+new schwarzmarktMaxSpice = 50;
+new newSchwarzmarktMaxSpice = 50;
+
 new knastunfreezetimer[MAX_PLAYERS];
 
 new vSirene[MAX_VEHICLES];
@@ -4834,6 +4841,7 @@ new g_waiNoDM[2];
 new g_iWantedHackerZone;
 new g_iAlcatraz;
 new g_iAlhambra;
+new g_NDanbauSperre;
 
 new feuer[MAX_HOUSES][7];
 new brandtimer[MAX_HOUSES];
@@ -5316,6 +5324,18 @@ public MinuteTimer(playerid) {
 			}
 		}
 	}
+
+    new weekday = GetWeekDayNumber();
+    if(weekday == WEEKDAY_MONDAY && minute == 1){
+        schwarzmarktMaxSpice = newSchwarzmarktMaxSpice;
+        for(new e; e < MAX_PLAYERS; e++){
+           Spieler[e][swSpice] = 0;//SpiceSperre von allen Spielern die Online sind reseten
+        }
+        //Über Datenbank reseten;
+        new string[128];
+        format(string,sizeof(string),"UPDATE `accounts` SET `swSpiceSp` = 0");
+        mysql_oquery(string,THREAD_DUMMY,playerid,gSQL);
+    }
     return 1;
 }
 
@@ -5614,6 +5634,7 @@ public OnGameModeInit2() {
     g_iAlcatraz = CreateDynamicRectangle(2794.0, 2000.0, 2929.0, 1763.0, .interiorid = 0, .worldid = 0);
     g_iWantedHackerZone = CreateDynamicRectangle(940.0, -1640.0, 978.0, -1611.0, .interiorid = 0 ,.worldid = 0);
     g_iAlhambra = CreateDynamicCube(470.0,-27.0,998.0,510.0,5.0,1010.0,.interiorid = 17);
+    g_NDanbauSperre = CreateDynamicRectangle(354.321533, -198.249023, 1204.696533, 563.750976, .interiorid = 0, .worldid = 0);
 
     // Robbing Zones:
     g_iBankLS = GangZoneCreate(1388.0, -1053.0, 1516.0, -1008.0);
@@ -6948,6 +6969,7 @@ public OnPlayerConnect(playerid)
     Spieler[playerid][pAMarkX] = 0;
     Spieler[playerid][pAMarkX] = 0;
     Spieler[playerid][pAMarkZ] = 0;
+    Spieler[playerid][swSpice] = 0;
 
     //Player 3DText's
     Spieler[playerid][pWantedLabel] = CreateDynamic3DTextLabel(" ", COLOR_RED, 0.0, 0.0, 0.0, 35.0, .attachedplayer = playerid, .testlos = true);
@@ -7629,6 +7651,7 @@ public OnPlayerDisconnect(playerid, reason)
     Spieler[playerid][LoadedPremiumWeapons] = 0;
     Spieler[playerid][pPfand] = 0;
     Spieler[playerid][pLevel] = 1;
+    Spieler[playerid][swSpice] = 0;
     Spieler[playerid][pHeiratsantragID] = INVALID_PLAYER_ID;
     Spieler[playerid][pMarriage] = INVALID_MARRIAGE;
     format(Spieler[playerid][pMarriageName],32,"Niemand");
@@ -11346,6 +11369,8 @@ public OnPlayerDeath(playerid, killerid, reason)
         SendFraktionMessage(2, COLOR_GREEN, string);
         SendFraktionMessage(16, COLOR_GREEN, string);
         SendFraktionMessage(18, COLOR_GREEN, string);
+
+        spritstatus = false;
     }
     
     if(GetPVarInt(playerid, "OPEN.AIRDROP")) {
@@ -11947,6 +11972,26 @@ public OnVehicleDeath(vehicleid, killerid) {
             wtstatus = false;
             DisablePlayerCheckpointEx(wtid);
             wtid = -1;
+        }
+        if(spritstatus == true){
+            spritstatus = false;
+            for(new i; i < MAX_PLAYERS; i++){
+                if(GetPVarInt(i, "SPRITROB")){
+                    new String[128];
+                    //SendClientMessage(i, COLOR_RED, "Der Spritraub ist fehlgeschlagen! Das benötigte Fahrzeug wurde zerstört!");
+                    SendFraktionMessage(19, COLOR_RED, "[SPRIT] {FFFFFF} Der Spritraub ist fehlgeschlagen! Das benötigte Fahrzeug wurde zerstört!");
+                    format(String, sizeof(String), "[EILMELDUNG] Räuber %s hat den Sprit-Raub abgebrochen!", GetName(i), i);
+                    SendFraktionMessage(1, COLOR_GREEN, String);
+                    SendFraktionMessage(2, COLOR_GREEN, String);
+                    SendFraktionMessage(16, COLOR_GREEN, String);
+                    SendFraktionMessage(18, COLOR_GREEN, String);
+                    KillTimer(SpritTimer[i]);
+                    KillTimer(SpritCheckTimer[i]);
+                    DeletePVar(i, "SPRITROB");
+                    DeletePVar(i, "STARTSPRIT");
+                    DeletePVar(i, "SPRITMENGE");
+                }
+            }
         }
     }
     if(vehicleid == speederID){
@@ -26058,6 +26103,8 @@ public OnPlayerEnterCheckpoint(playerid)
         SendFraktionMessage(2, COLOR_ORANGE, String);
         SendFraktionMessage(16, COLOR_ORANGE, String);
         SendFraktionMessage(18, COLOR_ORANGE, String);
+
+        spritstatus = false;
     }
     else if(pCheckpoint[playerid] == CP_WT_VEH) {
         DisablePlayerCheckpointEx(playerid);
@@ -34879,10 +34926,23 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                 new iValue = strval(inputtext);
                 if(Schwarzmarkt_Spice < iValue) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Soviele Spice sind im Schwarzmarkt nicht vorhanden!");
                 if(GetPlayerMoney(playerid) < iValue*Schwarzmarkt_Spice_Preis) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast nicht soviel Geld dabei!");
+
+                //Check Player Spice
+                new hausSpice = Spieler[playerid][pHausSafeboxSpice],
+                    sSpice = Spieler[playerid][pSafeSpice],
+                    handSpice = Spieler[playerid][pSpice];
+
+                if(hausSpice+sSpice+handSpice+iValue > 1000) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du kannst nur maximal 1.000 Gramm Spice besitzen!");
+                if(hausSpice+sSpice+handSpice >= 1000) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du kannst nur maximal 1.000 Gramm Spice besitzen!");
+
+                if(Spieler[playerid][swSpice]+iValue >= schwarzmarktMaxSpice) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Mit dieser Menge würdest du das Einkaufslimit übersteigen.");
+                if(Spieler[playerid][swSpice] >= schwarzmarktMaxSpice) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast die wöchentliche Ankaufssperre erreicht. Komm am Montag wieder.");
+
                 Schwarzmarkt_Spice -= iValue;
                 Spieler[playerid][pSpice] += iValue;
                 Kasse[TerrorK] += iValue*Schwarzmarkt_Spice_Preis;
                 GivePlayerCash(playerid, -iValue*Schwarzmarkt_Spice_Preis);
+                Spieler[playerid][swSpice] += iValue;
                 SCMFormatted(playerid, COLOR_GREEN, "* Du hast %i Spice für $%i erworben.", iValue, iValue*Schwarzmarkt_Spice_Preis);
             }
         }
@@ -44487,6 +44547,7 @@ stock SaveAccount(playerid)
                 `Lobe` = %d, \
                 `BMOD` = %d, \
                 `FV` = %d, \
+                `swSpiceSp` = %d, \
                 `Kreditwert` = %d, \
                 `KreditGezahlt` = %d, \
                 `MP3Player` = %d, \
@@ -44503,6 +44564,7 @@ stock SaveAccount(playerid)
                     Spieler[playerid][pLobe],
                     Spieler[playerid][pBMOD],
                     Spieler[playerid][pFV],
+                    Spieler[playerid][swSpice],
                     Spieler[playerid][pKreditwert],
                     Spieler[playerid][pKreditGezahlt],
                     Spieler[playerid][pMP3Player],
@@ -48374,6 +48436,7 @@ public split(const strsrc[], strdest[][], delimiter)
 //public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 public OnPlayerDamage(&playerid, &Float:amount, &issuerid, &weapon, &bodypart)
 {
+    PlayerPlaySound(issuerid, 4202, 0.0, 0.0, 0.0);
     damagesperre[playerid] = 5;
     g_aiLastDamagedByPlayer[playerid] = issuerid;
     if( issuerid != INVALID_PLAYER_ID) {
@@ -59532,6 +59595,10 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
 			mysql_format(connectionHandle, queryOldname, sizeof(queryOldname), "SELECT `Oldname` FROM `accounts` WHERE `Name` = '%s' ", NameCoins);
 			mysql_pquery(queryOldname,THREAD_OLDNAME,playerid,gSQL,MySQLThreadOwner);
 
+            new querySWSPICE[128];
+			mysql_format(connectionHandle, querySWSPICE, sizeof(querySWSPICE), "SELECT `swSpiceSp` FROM `accounts` WHERE `Name` = '%s' ", NameCoins);
+			mysql_pquery(querySWSPICE,THREAD_SWSPICE,playerid,gSQL,MySQLThreadOwner);
+
             //THREAD_KrauterMische
 
             cache_get_row(0, 137, Spieler[playerid][pMarriageName], connectionHandle);
@@ -61256,6 +61323,15 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
 	    while( i < rows) {
 	        cache_get_field_content(i,"Oldname", fv, connectionHandle, sizeof(fv));
 	        Spieler[extraid][pOldname] = fv;
+	        i++;
+	    }
+    }
+    else if(resultid == THREAD_SWSPICE) {
+        new fv;
+	    new i, rows = cache_get_row_count(connectionHandle);
+	    while( i < rows) {
+	        fv = cache_get_field_content_int(i,"swSpiceSp", connectionHandle);
+            Spieler[extraid][swSpice] = fv;
 	        i++;
 	    }
     }
@@ -64504,7 +64580,6 @@ CMD:spritlager(playerid){
     if(!IsPlayerInRangeOfPoint(playerid, 3.0, 952.1439,2083.6968,10.8203)) return SendClientMessage(playerid, COLOR_RED, "[SPRITLAGER] {FFFFFF}Du bist nicht am Spritlager!");
     SCMFormatted(playerid, COLOR_YELLOW, "[SPRITLAGER] {FFFFFF}In Spritlager befinden sich aktuell %i Liter.", g_FraktionsSafeBox[19][FSB_iSprit]);
     return 1;
-    //FSB_iSprit
 }
 
 CMD:spritklauen(playerid, params[]) {
@@ -64539,7 +64614,7 @@ CMD:spritklauen(playerid, params[]) {
     SendFraktionMessage(1, COLOR_RED, string);
 	SendFraktionMessage(2, COLOR_RED, string);
 	SendFraktionMessage(16, COLOR_RED, string);
-	SendFraktionMessage(18, COLOR_RED, string);
+	SendFraktionMessage(18, COLOR_RED, string);    
 	return 1;
 }
 
@@ -64558,6 +64633,8 @@ public RobSpritCheck(playerid) {
         DeletePVar(playerid, "SPRITROB");
 		DeletePVar(playerid, "STARTSPRIT");
 		DeletePVar(playerid, "SPRITMENGE");
+
+        spritstatus = false;
     }
     return 1;
 }
@@ -64588,6 +64665,8 @@ CMD:startsprit(playerid) {
 	SetPVarInt(playerid, "STARTSPRIT", 1);
 	format(string,sizeof(string), "Fraktionsmitglied %s hat mit der Sprit-Mission begonnen.", GetName(playerid));
 	SendFraktionMessage(19, COLOR_YELLOW, string);
+
+    spritstatus = true;
 	return 1;
 }
 
@@ -64604,6 +64683,8 @@ CMD:stopsprit(playerid) {
 	
 	format(string,sizeof(string), "Fraktionsmitglied %s hat die Sprit-Mission abgebrochen.", GetName(playerid));
 	SendFraktionMessage(19, COLOR_YELLOW, string);
+
+    spritstatus = false;
 	return 1;
 }
 
@@ -64765,6 +64846,22 @@ CMD:makespice(playerid, params[]){
     return 1;
 }
 
+CMD:spicesperre(playerid, params[]){
+    if(Spieler[playerid][pFraktion] != 19) return SendClientMessage(playerid, COLOR_RED, "[SSPERRE] {FFFFFF}Du bist kein Terrorist!");
+    if(Spieler[playerid][pRank] != 6) return SendClientMessage(playerid, COLOR_RED, "[SSPERRE] {FFFFFF}Du bist kein Leader!");
+
+    new String[128], Anzahl;
+    format(String, sizeof(String), INFO_STRING"/Spicesperre [Anzahl] | Aktuelle Sperre: %i | Neue Sperre: %i", schwarzmarktMaxSpice, newSchwarzmarktMaxSpice);
+    if(sscanf(params, "i", Anzahl)) return SendClientMessage(playerid,COLOR_BLUE, String);
+
+    if(Anzahl == newSchwarzmarktMaxSpice) return SendClientMessage(playerid, COLOR_YELLOW, "[SSPERRE] {FFFFFF}Die Anzahl entspricht bereits der neuen Spice Sperre!");
+
+    newSchwarzmarktMaxSpice = Anzahl;
+    SCMFormatted(playerid, COLOR_GREEN, "[SSPERRE] {FFFFFF}Du hast die wöchentliche Spicesperre auf %i geändert. Diese wird am Montag übernommen!", newSchwarzmarktMaxSpice);
+
+    return 1;
+}
+
 CMD:schwarzmarkt(playerid, params[]){
     if(IsPlayerInRangeOfPoint(playerid, 1, -1101.9084,-2861.1260,61.1270)){//Waffenteile
         if(Spieler[playerid][pFraktion] == 19 && Spieler[playerid][pRank] == 6){
@@ -64790,7 +64887,7 @@ CMD:schwarzmarkt(playerid, params[]){
         }else{
             new String[256];
             format(String, sizeof(String),
-            "{FFFFFF}Willkommen am Schwarzmarkt.\n\nHier hast du die Möglichkeit Spice zu erwerben.\nAktueller Lagerbestand: %i Stück\nAktueller Stückpreis: $%i\n\nSpice erwerben:", Schwarzmarkt_Spice, Schwarzmarkt_Spice_Preis);
+            "{FFFFFF}Willkommen am Schwarzmarkt.\n\nHier hast du die Möglichkeit Spice zu erwerben.\nAktueller Lagerbestand: %i Stück\nAktueller Stückpreis: $%i\nWöchentliches Kauflimit: %i von %i\n\nSpice erwerben:", Schwarzmarkt_Spice, Schwarzmarkt_Spice_Preis, Spieler[playerid][swSpice], schwarzmarktMaxSpice);
             ShowPlayerDialog(playerid, DIALOG_SCHWARZMARKT_SPICE, DIALOG_STYLE_INPUT, "Schwarzmarkt: Spice", String, "Kaufen", "Abbrechen");
         }
     }
@@ -69930,14 +70027,19 @@ CMD:gangfight(playerid, params[]) {
         return SCMFormatted(playerid, COLOR_RED, "Dieses Ganggebiet hat noch %i Stunden %i Minuten lang eine Zeitsperre.", h, m);
     }
 
-    // Das System funktioniert jeden Tag von 19 Uhr bis 21 Uhr
-    // Vor & Nach der Zeit ist ein Gangfight ab 2 Gegnern startbar.
+    new day = GetWeekDayNumber(),
+        minimumPlayers = (day == WEEKDAY_MONDAY && hour >= 19 && hour < 21) ||
+                         (day == WEEKDAY_WEDNESDAY && hour >= 19 && hour < 21) ||
+                         (day == WEEKDAY_FRIDAY && hour >= 19 && hour < 21) ||
+                         (day == WEEKDAY_SATURDAY && hour >= 19 && hour < 21) ||
+                         (day == WEEKDAY_SUNDAY && hour >= 19 && hour < 21) ? 0 : GANG_FIGHT_PLAYERS;
+    
+    if(day == WEEKDAY_TUESDAY || day == WEEKDAY_THURSDAY) return SendClientMessage(playerid, COLOR_RED, "[GF] {FFFFFF}Heute kann kein Gangfight gestartet werden!");
 
-    new /*day = GetWeekDayNumber(),
-        minimumPlayers = (day == WEEKDAY_MONDAY && WEEKDAY_TUESDAY && WEEKDAY_WEDNESDAY && hour >= 19 && hour < 21) ||
+        /*minimumPlayers = (day == WEEKDAY_MONDAY && WEEKDAY_TUESDAY && WEEKDAY_WEDNESDAY && hour >= 19 && hour < 21) ||
                          (day == WEEKDAY_THURSDAY && WEEKDAY_FRIDAY && WEEKDAY_SATURDAY && hour >= 19 && hour < 21) ||
                          (day == WEEKDAY_SUNDAY && hour >= 19 && hour < 21) ? 0 : GANG_FIGHT_PLAYERS;*/
-        minimumPlayers = (hour >= 19 && hour < 21) ? 0 : GANG_FIGHT_PLAYERS;
+        //minimumPlayers = (hour >= 19 && hour < 21) ? 0 : GANG_FIGHT_PLAYERS;
 
     if (GetFactionOnlinePlayers(frak) < minimumPlayers)
         return SCMFormatted(playerid, COLOR_RED, "Es müssen mindestens %d Gangmitglieder deiner Fraktion online sein.", minimumPlayers);

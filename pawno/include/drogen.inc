@@ -147,7 +147,7 @@ stock SetDrogenPflanzenOnFire(index) {
     g_DrogenPflanzen[index][DP_bDestroyed] = true;
     UpdateDynamic3DTextLabelText(g_DrogenPflanzen[index][DP_text3D], COLOR_WHITE, "[ {009D00}Kräuterpflanze {FFFFFF}]\n{FF9900}> Die Pflanze wurde verbrannt <");
     //SetTimerEx("DestroyDrogenPflanze",10*1000,false,"d",index);
-	BrenennTimer[index] = SetTimerEx("DestroyDrogenPflanze",60*10000,false,"d",index);
+	BrenennTimer[index] = SetTimerEx("DestroyDrogenPflanze",60*5000,false,"d",index);
     return 1;
 }
 
@@ -303,6 +303,7 @@ COMMAND:pflanzen(playerid, params[]) {
         new pflanze = GetClosestDrogenPflanze(playerid); 
         if (pflanze != -1) return SendClientMessage(playerid, COLOR_RED, "Hier ist bereits eine Kräuterpflanze.");
         if (Spieler[playerid][pDrogenSamen] < 1) return SendClientMessage(playerid, COLOR_RED, "Du besitzt keine Samen, um eine Kräuterpflanze anzubauen.");
+        if (IsPlayerInDynamicArea(playerid, g_NDanbauSperre)) return SendClientMessage(playerid,COLOR_RED,"Du kannst hier keine Pflanzen anbauen.");
 
         new Float:x, Float:y, Float:z;
         GetPlayerPos(playerid, x, y, z);
