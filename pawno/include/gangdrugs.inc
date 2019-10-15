@@ -330,6 +330,7 @@ COMMAND:gangpflanzen(playerid, params[]) {
         if (gang_pflanze == -1) return SendClientMessage(playerid, COLOR_RED, "Es ist keine Drogenpflanze in deiner Nähe.");
         if (g_Drogengang_pflanzen[gang_pflanze][DP_iFortschritt] < DROGENgang_pflaNZE_REIF) return SendClientMessage(playerid, COLOR_RED, "Die Drogenpflanze ist noch nicht reif.");
         new randomAmount = RandomEx(10, 15), message[145];
+        if(g_Drogengang_pflanzen[gang_pflanze][DP_bDestroyed] == true) return SendClientMessage(playerid, COLOR_RED, "Die Pflanze wurde bereits geerntet!");
         g_Drogengang_pflanzen[gang_pflanze][DP_bDestroyed] = true;
         UpdateDynamic3DTextLabelText(g_Drogengang_pflanzen[gang_pflanze][DP_text3D], COLOR_WHITE, "[ {009D00}Drogenpflanze {FFFFFF}]\n{FFFF00}> Die Drogenpflanze wurde geerntet <");
         SetTimerEx("DestroyDrogengang_pflanze", 2 * 1000, false, "d", gang_pflanze);

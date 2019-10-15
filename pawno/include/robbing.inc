@@ -10,7 +10,7 @@ enum {
 #define ROBBING_ROBBING_TIME (100) // Anzahl an Sekunden bis die Überfall durchgeführt ist
 #define ROBBING_COOL_DOWN_TIME (15*60) // alle 15 Minuten kann ein Biz ausgeraubt werden
 //#define ROBBING_COOL_DOWN_TIME (1*60) // alle 15 Minuten kann ein Biz ausgeraubt werden
-#define ROBBING_POLICE_MEN_ONLINE (4) // Anzahl an Polizisten (2,4,16,22) Online damit Überfall gestartet werden kann
+#define ROBBING_POLICE_MEN_ONLINE (2) // Anzahl an Polizisten (2,4,16,22) Online damit Überfall gestartet werden kann
 new biz_index;
 new
 	g_iRobbingNotice[MAX_PLAYERS char];
