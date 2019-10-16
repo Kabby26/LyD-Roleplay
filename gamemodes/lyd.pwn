@@ -8153,7 +8153,7 @@ CMD:removealllabels(playerid, params[]){
 	return 1;
 }
 
-new objects;
+/*new objects;
 new objectmodel[5000];
 
 CMD:objectlist(playerid, params[]){
@@ -8217,7 +8217,7 @@ CMD:gotoobject(playerid, params[]){
 	SetPlayerPos(playerid,xo+1,yo+1,zo+1);
 	SCMFormatted(playerid,COLOR_YELLOW,"[INFO] {FFFFFF}Du hast dich zur Objekt-ID: %d teleportiert.",oid);
 	return 1;
-}
+}*/
 
 
 
@@ -35627,9 +35627,9 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
         case DIALOG_CONFIRM_DRUGS: {
             if(response){
                 new string[128];
-                format(string, sizeof(string), "Du hast %i Drogen für $%i an den Server verkauft!", Spieler[playerid][pDrugs], Spieler[playerid][pDrugs] * 252);
+                format(string, sizeof(string), "Du hast %i Drogen für $%i an den Server verkauft!", Spieler[playerid][pDrugs], Spieler[playerid][pDrugs] * 300);
                 SendClientMessage(playerid, COLOR_GREEN, string);
-                GivePlayerCash(playerid, Spieler[playerid][pDrugs] * 252);
+                GivePlayerCash(playerid, Spieler[playerid][pDrugs] * 300);
                 Spieler[playerid][pDrugs] = 0;
             }
         }
@@ -35654,9 +35654,9 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
         case DIALOG_CONFIRM_SPICE: {
             if(response){
                 new string[128];
-                format(string, sizeof(string), "Du hast %i Spice für $%i an den Server verkauft!", Spieler[playerid][pSpice], Spieler[playerid][pSpice] * 502);
+                format(string, sizeof(string), "Du hast %i Spice für $%i an den Server verkauft!", Spieler[playerid][pSpice], Spieler[playerid][pSpice] * 700);
                 SendClientMessage(playerid, COLOR_GREEN, string);
-                GivePlayerCash(playerid, Spieler[playerid][pSpice] * 502);
+                GivePlayerCash(playerid, Spieler[playerid][pSpice] * 700);
                 Spieler[playerid][pSpice] = 0;
             }
         }
@@ -46371,7 +46371,7 @@ CMD:abgeben(playerid, params[]){
     if(sscanf(params, "s[24]", eingabe))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Abgeben [Drogen/Waffenteile/WCodes/Spice]");
     if(IsPlayerInRangeOfPoint(playerid, 4.0, 1754.412963, -1592.894897, 13.532833)){
         if(strcmp(eingabe, "drogen", true) == 0){
-            format(string, sizeof(string), "Bestätige bitte den Verkauf von %i Drogen für $%i.", Spieler[playerid][pDrugs], Spieler[playerid][pDrugs] * 252);
+            format(string, sizeof(string), "Bestätige bitte den Verkauf von %i Drogen für $%i.", Spieler[playerid][pDrugs], Spieler[playerid][pDrugs] * 300);
             ShowPlayerDialog(playerid, DIALOG_CONFIRM_DRUGS, DIALOG_STYLE_MSGBOX, "Verkauf von Drogen an den Server", string, "Bestätigen", "Abbrechen");
         }else if(strcmp(eingabe, "waffenteile", true) == 0){
             format(string, sizeof(string), "Bestätige bitte den Verkauf von %i Waffenteilen für $%i.", Spieler[playerid][pWaffenteile], Spieler[playerid][pWaffenteile] * 22);
@@ -46380,7 +46380,7 @@ CMD:abgeben(playerid, params[]){
             format(string, sizeof(string), "Bestätige bitte den Verkauf von %i Wantedcodes für $%i.", Spieler[playerid][pWantedCodes], Spieler[playerid][pWantedCodes] * 1502);
             ShowPlayerDialog(playerid, DIALOG_CONFIRM_WCODES, DIALOG_STYLE_MSGBOX, "Verkauf von Wantedcodes an den Server", string, "Bestätigen", "Abbrechen");
         }else if(strcmp(eingabe, "spice", true) == 0){
-            format(string, sizeof(string), "Bestätige bitte den Verkauf von %i Spice für $%i.", Spieler[playerid][pSpice], Spieler[playerid][pSpice] * 502);
+            format(string, sizeof(string), "Bestätige bitte den Verkauf von %i Spice für $%i.", Spieler[playerid][pSpice], Spieler[playerid][pSpice] * 700);
             ShowPlayerDialog(playerid, DIALOG_CONFIRM_SPICE, DIALOG_STYLE_MSGBOX, "Verkauf von Spice an den Server", string, "Bestätigen", "Abbrechen");
         }else{
             SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Fehlerhafte Eingabe!");
