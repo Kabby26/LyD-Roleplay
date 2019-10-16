@@ -26294,8 +26294,14 @@ public OnPlayerEnterCheckpoint(playerid)
                 format(string, sizeof(string), "{B18904}[TRANSPORTER]\n\n{FFFFFF}Beladene Kisten: %i von 15", bestand[i]);
                 Update3DTextLabelText(terrorVehLabel, 0xFFFFFFFF, string);
                 if(bestand[i] >= 15){
-                    SendClientMessage(playerid, COLOR_GREEN, "[WT] Fahre von zum Steg und belade das Boot mit den Kisten!");
-                    SetPlayerCheckpointEx(playerid, 266.2877,2904.2700,7.8635,3.0, CP_WT_STEG);
+                    for(new e; e < MAX_PLAYERS; e++){
+                        if(Spieler[e][pFraktion] == 19 && Spieler[e][pRank] >= 2){
+                            SendClientMessage(e, COLOR_GREEN, "[WT] Fahre von zum Steg und belade das Boot mit den Kisten!");
+                            SetPlayerCheckpointEx(e, 266.2877,2904.2700,7.8635,3.0, CP_WT_STEG);
+                            SetPlayerSpecialAction(e,SPECIAL_ACTION_NONE);
+                            RemovePlayerAttachedObject(e,0);
+                        }
+                    }
                     new String[128];
                     new zoneText[MAX_ZONE_NAME];
                     GetPlayer2DZone(playerid, zoneText, sizeof(zoneText));
@@ -26313,14 +26319,17 @@ public OnPlayerEnterCheckpoint(playerid)
     }
     else if(pCheckpoint[playerid] == CP_WT_STEG){
         DisablePlayerCheckpointEx(playerid);
-        speederID = CreateVehicle(452, 255.1756,2933.8511,-1.0131,3.5351, -1, -1, 0);
 
-        Delete3DTextLabel(terrorBootLabel);
-        bestand[speederID] = 0;
-        new string[128];
-        format(string, sizeof(string), "{B18904}[BOOT]\n\n{FFFFFF}Beladene Kisten: %i von 15", bestand[speederID]);
-        terrorBootLabel = Create3DTextLabel(string, 0xFF0000AA, 0.0, 0.0, 0.0, 50.0, 0, 1 );
-        Attach3DTextLabelToVehicle(terrorBootLabel, speederID, 0.0, 0.0, 2.0);
+        if(!IsValidVehicle(speederID)){
+            speederID = CreateVehicle(452, 255.1756,2933.8511,-1.0131,3.5351, -1, -1, 0);
+
+            Delete3DTextLabel(terrorBootLabel);
+            bestand[speederID] = 0;
+            new string[128];
+            format(string, sizeof(string), "{B18904}[BOOT]\n\n{FFFFFF}Beladene Kisten: %i von 15", bestand[speederID]);
+            terrorBootLabel = Create3DTextLabel(string, 0xFF0000AA, 0.0, 0.0, 0.0, 50.0, 0, 1 );
+            Attach3DTextLabelToVehicle(terrorBootLabel, speederID, 0.0, 0.0, 2.0);
+        }
 
         /*for(new i; i < MAX_VEHICLES; i++){
             new vehiclemodel = GetVehicleModel(i);
@@ -26367,8 +26376,14 @@ public OnPlayerEnterCheckpoint(playerid)
         RemovePlayerAttachedObject(playerid,0);
 
         if(bestand[speederID] >= 15){
-            SendClientMessage(playerid, COLOR_GREEN, "[WT] Das Boot ist nun vollständig beladen! Fahre nun zur Waffenfabrik.");
-            SetPlayerCheckpointEx(playerid, 251.3709,3277.9836,0.2690, 3.0, CP_WT_BOOTPLATFORM);
+            for(new i; i < MAX_PLAYERS; i++){
+                if(Spieler[i][pFraktion] == 19 && Spieler[i][pRank] >= 2){
+                    SendClientMessage(i, COLOR_GREEN, "[WT] Das Boot ist nun vollständig beladen! Fahre nun zur Waffenfabrik.");
+                    SetPlayerCheckpointEx(i, 251.3709,3277.9836,0.2690, 3.0, CP_WT_BOOTPLATFORM);
+                    SetPlayerSpecialAction(i,SPECIAL_ACTION_NONE);
+                    RemovePlayerAttachedObject(i,0);
+                }
+            }
         }else{
             SendClientMessage(playerid, COLOR_YELLOW, "[WT] Gehe zum Transporter und hole eine neue Kiste!");
             /*for(new i; i < MAX_VEHICLES; i++){
@@ -26411,10 +26426,16 @@ public OnPlayerEnterCheckpoint(playerid)
         RemovePlayerAttachedObject(playerid,0);
 
         if(terrorVerarbeiter >= 15){
-            SendClientMessage(playerid, COLOR_GREEN, "[WT] Bringe nun die Kisten mit Waffenteilen zurück zum Boot!");
+            for(new i; i < MAX_PLAYERS; i++){
+                if(Spieler[i][pFraktion] == 19 && Spieler[i][pRank] >= 2){
+                    SetPlayerSpecialAction(i,SPECIAL_ACTION_NONE);
+                    RemovePlayerAttachedObject(i,0);
+                    SendClientMessage(i, COLOR_GREEN, "[WT] Bringe nun die Kisten mit Waffenteilen zurück zum Boot!");
+                    SetPlayerCheckpointEx(i, 248.9509,3282.2927,2.8503, 3.0, CP_WT_BOOTPLATFORM_EINLADEN);
+                }
+            }
             //CP_WT_BOOTPLATFORM_EINLADEN
             terrorVerarbeiter -= 1;
-            SetPlayerCheckpointEx(playerid, 248.9509,3282.2927,2.8503, 3.0, CP_WT_BOOTPLATFORM_EINLADEN);
             SetPlayerSpecialAction(playerid,SPECIAL_ACTION_CARRY);
             SetPlayerAttachedObject( playerid, 0, 1271, 6, 0.150000, 0.219999, -0.200000, 0.000000, 0.000000, 0.000000, 1.000000, 1.000000, 1.000000 );
         }else{
@@ -26434,10 +26455,14 @@ public OnPlayerEnterCheckpoint(playerid)
         RemovePlayerAttachedObject(playerid,0);
 
         if(bestand[speederID] >= 15){
-            //HIER WEITER MACHEN
-            //255.1756,2933.8511,-1.0131
-            SendClientMessage(playerid, COLOR_GREEN, "[WT] Fahre wieder zurück zum Steg um den Benson zu beladen!");
-            SetPlayerCheckpointEx(playerid, 255.1756,2933.8511,-1.0131, 3.0, CP_WT_GOBACK_STEGBOOT);
+            for(new i; i < MAX_PLAYERS; i++){
+                if(Spieler[i][pFraktion] == 19 && Spieler[i][pRank] >= 2){
+                    SendClientMessage(i, COLOR_GREEN, "[WT] Fahre wieder zurück zum Steg um den Benson zu beladen!");
+                    SetPlayerCheckpointEx(i, 255.1756,2933.8511,-1.0131, 3.0, CP_WT_GOBACK_STEGBOOT);
+                    SetPlayerSpecialAction(i,SPECIAL_ACTION_NONE);
+                    RemovePlayerAttachedObject(i,0);
+                }
+            }
         }else{
             SendClientMessage(playerid, COLOR_YELLOW, "[WT] Gehe wieder hoch und hole eine neue Kiste mit Waffenteilen!");
             SetPlayerCheckpointEx(playerid, 252.2882,3295.4624,10.4789, 3.0, CP_WT_BOOTPLATFORM_VERARABHOLEN);
@@ -26468,6 +26493,7 @@ public OnPlayerEnterCheckpoint(playerid)
         SendClientMessage(playerid, COLOR_GREEN, "[WT] Bringe die Kiste zum Benson und hole dann eine neue Kiste ab!");
         SetPlayerCheckpointEx(playerid, 266.2877,2904.2700,7.8635, 3.0, CP_WT_GOBACK_EINLADEN);
         SetPlayerAttachedObject( playerid, 0, 1271, 6, 0.150000, 0.219999, -0.200000, 0.000000, 0.000000, 0.000000, 1.000000, 1.000000, 1.000000 );
+        SetPlayerSpecialAction(playerid,SPECIAL_ACTION_NONE);
         //SetPlayerCheckpointEx(playerid, 248.9509,3282.2927,2.8503, 3.0, CP_WT_BOOTPLATFORM_EINLADEN);
     }
     else if(pCheckpoint[playerid] == CP_WT_GOBACK_EINLADEN){
@@ -26486,7 +26512,13 @@ public OnPlayerEnterCheckpoint(playerid)
                     Delete3DTextLabel(terrorBootLabel);
                     DestroyVehicle(speederID);
                     //CP_WT_GOBACK_BASE
-                    SendClientMessage(playerid, COLOR_GREEN, "[WT] Das Fahrzeug ist voll beladen! Fahre zurück zu deiner Base, um die Pakete abzuliefern!");
+                    for(new e; e < MAX_PLAYERS; e++){
+                        if(Spieler[e][pFraktion] == 19 && Spieler[e][pRank] >= 2){
+                            SetPlayerSpecialAction(e,SPECIAL_ACTION_NONE);
+                            RemovePlayerAttachedObject(e,0);
+                            SendClientMessage(e, COLOR_GREEN, "[WT] Das Fahrzeug ist voll beladen! Fahre zurück zu deiner Base, um die Pakete abzuliefern!");
+                        }
+                    }
                     SetPlayerCheckpointEx(playerid, 966.6749,2071.1108,10.8203, 3.0, CP_WT_GOBACK_BASE);
                     new String[128];
                     new zoneText[MAX_ZONE_NAME];
@@ -26507,9 +26539,14 @@ public OnPlayerEnterCheckpoint(playerid)
         for(new i; i < MAX_VEHICLES; i++){
             new vehiclemodel = GetVehicleModel(i);
             if(vehiclemodel == 499 && FrakCarInfo[i][f_frak] == 19){
+                for(new e; e < MAX_VEHICLES; e++){
+                    if(Spieler[e][pFraktion] == 19 && Spieler[e][pRank] >= 2){
+                        DisablePlayerCheckpointEx(e);
+                    }
+                }
                 bestand[i] = 0;
                 Delete3DTextLabel(terrorVehLabel);
-                new randombelohnung = RandomEx(50000, 100000);
+                new randombelohnung = RandomEx(40000, 90000);
                 g_FraktionsSafeBox[19][FSB_iWaffenteile] += randombelohnung;
                 new String[128];
                 format(String, sizeof(String), "{3ADF00}[WT] Das Mitglied %s hat die Waffenteilmission abgeschlossen. (+ %i Waffenteile)", GetName(playerid), randombelohnung);
@@ -26518,7 +26555,6 @@ public OnPlayerEnterCheckpoint(playerid)
                 Delete3DTextLabel(terrorBootLabel);
                 bestand[speederID] = 0;
                 DestroyVehicle(speederID);
-                DisablePlayerCheckpointEx(playerid);
                 wtstatus = false;
                 wtid = -1;
             }
@@ -64997,8 +65033,15 @@ CMD:startwt(playerid){
     format(string,sizeof(string), "Fraktionsmitglied %s hat mit der Waffenteile-Mission begonnen.", GetName(playerid));
 	SendFraktionMessage(19, COLOR_YELLOW, string);
     
-    SetPlayerCheckpointEx(playerid, 2839.3120,994.9202,10.7467, 3.0, CP_WT_VEH);
-	SendClientMessage(playerid, COLOR_YELLOW, "[INFO] {FFFFFF}Dir wurde ein Checkpoint bei einem Lager gesetzt.");
+    /*SetPlayerCheckpointEx(playerid, 2839.3120,994.9202,10.7467, 3.0, CP_WT_VEH);
+	SendClientMessage(playerid, COLOR_YELLOW, "[INFO] {FFFFFF}Dir wurde ein Checkpoint bei einem Lager gesetzt.");*/
+    
+    for(new i; i < MAX_PLAYERS; i++){
+        if(Spieler[i][pFraktion] == 19 && Spieler[i][pRank] >= 2){
+            SetPlayerCheckpointEx(i, 2839.3120,994.9202,10.7467, 3.0, CP_WT_VEH);
+	        SendClientMessage(i, COLOR_YELLOW, "[INFO] {FFFFFF}Dir wurde ein Checkpoint bei einem Lager gesetzt.");
+        }
+    }
 
     Delete3DTextLabel(terrorVehLabel);
     bestand[veh] = 0;
