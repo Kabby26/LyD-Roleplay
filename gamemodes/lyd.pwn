@@ -2446,10 +2446,15 @@ stock bool:IsTUVNeeded(distance) {
 #define     DIALOG_MEMBER_LOHN 1456
 
 #define     DIALOG_ATMHACK 1457
-
 #define     DIALOG_SKINS 1458
-
 #define     DIALOG_SETTINGS 1459
+#define     DIALOG_DURCHSUCHEN 1460
+
+#define     DIALOG_CONFIRM_DRUGS 1461
+#define     DIALOG_CONFIRM_WT 1462
+#define     DIALOG_CONFIRM_WCODES 1463
+#define     DIALOG_CONFIRM_SPICE 1464
+
 
 #define     KEIN_KENNZEICHEN    "KEINE PLAKETTE"
 
@@ -6117,6 +6122,12 @@ public OnGameModeInit2() {
 
     CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Starterpack\n"COLOR_HEX_WHITE"Tippe /Starterpack", COLOR_WHITE, 808.8542,-1347.3077,13.5416, 8.0);
     CreateDynamicPickup(1239, 1,  808.8542,-1347.3077,13.5416, 0);
+
+    CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Asservatenkammer - Illegale Gegenstände abgeben\n"COLOR_HEX_WHITE"Tippe /Abgeben [Waffenteile/Spice/Drogen/WCodes]", COLOR_WHITE, 1754.412963, -1592.894897, 13.532833, 8.0);
+    CreateDynamicPickup(1239, 1, 1754.412963, -1592.894897, 13.532833, 0);
+
+    CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Bankschalter\n"COLOR_HEX_WHITE"Tippe /Bank\nTippe /Kredit\nTippe /Ueberweisen", COLOR_WHITE, 1683.024658, -1022.939270, 1340.750854, 8.0, .worldid = VW_BANKINTERIORLS);
+    CreateDynamicPickup(1239, 1, 1683.024658, -1022.939270, 1340.750854, .worldid = VW_BANKINTERIORLS);
 
 	//Info Position
 
@@ -11458,6 +11469,10 @@ public OnPlayerDeath(playerid, killerid, reason)
 
         isTotInGF[playerid] = 1;
 
+        if(IsPlayerInAnyVehicle(playerid)){
+            RemovePlayerFromVehicle(playerid);
+        }
+
         SetPlayerPos(playerid, 1463.1527,-1016.0865,34.2356);
 
         SetPlayerCameraPos(playerid, 1469.7659,-1027.0270,35.7392);
@@ -11776,6 +11791,11 @@ public OnPlayerDeath(playerid, killerid, reason)
         SetPlayerCameraLookAt(playerid, Spieler[playerid][pTotX], Spieler[playerid][pTotY], Spieler[playerid][pTotZ]);
     }
     if(isTotInGF[playerid] == 1){
+
+        if(IsPlayerInAnyVehicle(playerid)){
+            RemovePlayerFromVehicle(playerid);
+        }
+
         SetPlayerPos(playerid, 1463.1527,-1016.0865,34.2356);
 
         SetPlayerCameraPos(playerid, 1469.7659,-1027.0270,35.7392);
@@ -30493,6 +30513,208 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
         if( inputtext[i] == '%' ) inputtext[i] = ' ';
     }
     if(Werbebanner_OnDialogResponse(playerid, dialogid, response, listitem, inputtext)) return 1;
+    if (dialogid == DIALOG_DURCHSUCHEN ){
+        /*format(string, sizeof(string), "%sDrogen: %i", string, Spieler[pID][pDrugs]);
+        format(string, sizeof(string), "%s\nSpice: %i", string, Spieler[pID][pSpice]);
+        format(string, sizeof(string), "%s\nKräutersamen: %i", string, Spieler[pID][pDrogenSamen]);
+        format(string, sizeof(string), "%s\nKräutermischung: %i", string, Spieler[pID][pKrauterMische]);
+        format(string, sizeof(string), "%s\nDrogensamen: %i", string, Spieler[pID][pGangDrogenSamen]);
+        format(string, sizeof(string), "%s\nWaffenteile: %i", string, Spieler[pID][pWaffenteile]);
+        format(string, sizeof(string), "%s\nWanted-Codes: %i", string, Spieler[pID][pWantedCodes]);
+        format(string, sizeof(string), "%s\nBrecheisen: %i", string, Spieler[pID][pBrecheisen]);
+        format(string, sizeof(string), "%s\nC4: %i", string, Spieler[pID][pC4]);
+        //Waffen anzeigen
+        format(string, sizeof(string), "%s\nWaffen-Slot 1: %s [%d]", string, wpName1, weapons[0][1]);
+        format(string, sizeof(string), "%s\nWaffen-Slot 2: %s [%d]", string, wpName2, weapons[1][1]);
+        format(string, sizeof(string), "%s\nWaffen-Slot 3: %s [%d]", string, wpName3, weapons[2][1]);
+        format(string, sizeof(string), "%s\nWaffen-Slot 4: %s [%d]", string, wpName4, weapons[3][1]);
+        format(string, sizeof(string), "%s\nWaffen-Slot 5: %s [%d]", string, wpName5, weapons[4][1]);
+        format(string, sizeof(string), "%s\nWaffen-Slot 6: %s [%d]", string, wpName6, weapons[5][1]);
+        format(string, sizeof(string), "%s\nWaffen-Slot 7: %s [%d]", string, wpName7, weapons[6][1]);
+        format(string, sizeof(string), "%s\nWaffen-Slot 8: %s [%d]", string, wpName8, weapons[7][1]);
+        format(string, sizeof(string), "%s\nWaffen-Slot 9: %s [%d]", string, wpName9, weapons[8][1]);
+        format(string, sizeof(string), "%s\nWaffen-Slot 10: %s [%d]", string, wpName10, weapons[9][1]);
+        format(string, sizeof(string), "%s\nWaffen-Slot 11: %s [%d]", string, wpName11, weapons[10][1]);
+        format(string, sizeof(string), "%s\nWaffen-Slot 12: %s [%d]", string, wpName12, weapons[11][1]);
+        format(string, sizeof(string), "%s\nWaffen-Slot 13: %s [%d]", string, wpName13, weapons[12][1]);*/
+        if(response){
+            new pID = GetPVarInt(playerid, "DURCHSUCHENID"), string[1024];
+            DeletePVar(playerid, "DURCHSUCHENID");
+            new Float:x, Float:y, Float:z;
+            GetPlayerPos(pID, x,y,z);
+            switch(listitem) {
+                case 0: {
+                    if(Spieler[pID][pDrugs] == 0) return SendClientMessage(playerid, COLOR_RED, "[DURCHSUCHEN] {FFFFFF}Der Spieler besitzt keine Drogen!");
+                    Spieler[pID][pDrugs] = 0;
+                    format(string, sizeof(string), "* %s nahm Drogen von %s ab.", GetName(playerid), GetName(pID));
+                    SendRoundMessage(x,y,z, COLOR_PURPLE, string);
+                }
+                case 1: {
+                    if(Spieler[pID][pSpice] == 0) return SendClientMessage(playerid, COLOR_RED, "[DURCHSUCHEN] {FFFFFF}Der Spieler besitzt kein Spice!");
+                    Spieler[pID][pSpice] = 0;
+                    format(string, sizeof(string), "* %s nahm Spice von %s ab.", GetName(playerid), GetName(pID));
+                    SendRoundMessage(x,y,z, COLOR_PURPLE, string);
+                }
+                case 2: {
+                    if(Spieler[pID][pDrogenSamen] == 0) return SendClientMessage(playerid, COLOR_RED, "[DURCHSUCHEN] {FFFFFF}Der Spieler besitzt keine Kräutersamen!");
+                    Spieler[pID][pDrogenSamen] = 0;
+                    format(string, sizeof(string), "* %s nahm Kräutersamen von %s ab.", GetName(playerid), GetName(pID));
+                    SendRoundMessage(x,y,z, COLOR_PURPLE, string);
+                }
+                case 3: {
+                    if(Spieler[pID][pKrauterMische] == 0) return SendClientMessage(playerid, COLOR_RED, "[DURCHSUCHEN] {FFFFFF}Der Spieler besitzt keine Kräuter!");
+                    Spieler[pID][pKrauterMische] = 0;
+                    format(string, sizeof(string), "* %s nahm Kräuter von %s ab.", GetName(playerid), GetName(pID));
+                    SendRoundMessage(x,y,z, COLOR_PURPLE, string);
+                }
+                case 4: {
+                    if(Spieler[pID][pGangDrogenSamen] == 0) return SendClientMessage(playerid, COLOR_RED, "[DURCHSUCHEN] {FFFFFF}Der Spieler besitzt keine Drogensamen!");
+                    Spieler[pID][pGangDrogenSamen] = 0;
+                    format(string, sizeof(string), "* %s nahm Drogensamen von %s ab.", GetName(playerid), GetName(pID));
+                    SendRoundMessage(x,y,z, COLOR_PURPLE, string);
+                }
+                case 5: {
+                    if(Spieler[pID][pWaffenteile] == 0) return SendClientMessage(playerid, COLOR_RED, "[DURCHSUCHEN] {FFFFFF}Der Spieler besitzt keine Waffenteile!");
+                    Spieler[pID][pWaffenteile] = 0;
+                    format(string, sizeof(string), "* %s nahm Waffenteile von %s ab.", GetName(playerid), GetName(pID));
+                    SendRoundMessage(x,y,z, COLOR_PURPLE, string);
+                }
+                case 6: {
+                    if(Spieler[pID][pWantedCodes] == 0) return SendClientMessage(playerid, COLOR_RED, "[DURCHSUCHEN] {FFFFFF}Der Spieler besitzt keine Wantedcodes!");
+                    Spieler[pID][pWantedCodes] = 0;
+                    format(string, sizeof(string), "* %s nahm Wantedcodes von %s ab.", GetName(playerid), GetName(pID));
+                    SendRoundMessage(x,y,z, COLOR_PURPLE, string);
+                }
+                case 7: {
+                    if(Spieler[pID][pBrecheisen] == 0) return SendClientMessage(playerid, COLOR_RED, "[DURCHSUCHEN] {FFFFFF}Der Spieler besitzt kein Brecheisen!");
+                    Spieler[pID][pBrecheisen] = 0;
+                    format(string, sizeof(string), "* %s nahm Brecheisen von %s ab.", GetName(playerid), GetName(pID));
+                    SendRoundMessage(x,y,z, COLOR_PURPLE, string);
+                }
+                case 8: {
+                    if(Spieler[pID][pC4] == 0) return SendClientMessage(playerid, COLOR_RED, "[DURCHSUCHEN] {FFFFFF}Der Spieler besitzt kein C4!");
+                    Spieler[pID][pC4] = 0;
+                    format(string, sizeof(string), "* %s nahm C4 von %s ab.", GetName(playerid), GetName(pID));
+                    SendRoundMessage(x,y,z, COLOR_PURPLE, string);
+                }
+                case 9: {
+                    ResetPlayerWeapons(pID);
+                    format(string, sizeof(string), "* %s nahm Waffen von %s ab.", GetName(playerid), GetName(pID));
+                    SendRoundMessage(x,y,z, COLOR_PURPLE, string);
+                }
+                case 10: {
+                    ResetPlayerWeapons(pID);
+                    format(string, sizeof(string), "* %s nahm Waffen von %s ab.", GetName(playerid), GetName(pID));
+                    SendRoundMessage(x,y,z, COLOR_PURPLE, string);
+                }
+                case 11: {
+                    ResetPlayerWeapons(pID);
+                    format(string, sizeof(string), "* %s nahm Waffen von %s ab.", GetName(playerid), GetName(pID));
+                    SendRoundMessage(x,y,z, COLOR_PURPLE, string);
+                }
+                case 12: {
+                    ResetPlayerWeapons(pID);
+                    format(string, sizeof(string), "* %s nahm Waffen von %s ab.", GetName(playerid), GetName(pID));
+                    SendRoundMessage(x,y,z, COLOR_PURPLE, string);
+                }
+                case 13: {
+                    ResetPlayerWeapons(pID);
+                    format(string, sizeof(string), "* %s nahm Waffen von %s ab.", GetName(playerid), GetName(pID));
+                    SendRoundMessage(x,y,z, COLOR_PURPLE, string);
+                }
+                case 14: {
+                    ResetPlayerWeapons(pID);
+                    format(string, sizeof(string), "* %s nahm Waffen von %s ab.", GetName(playerid), GetName(pID));
+                    SendRoundMessage(x,y,z, COLOR_PURPLE, string);
+                }
+                case 15: {
+                    ResetPlayerWeapons(pID);
+                    format(string, sizeof(string), "* %s nahm Waffen von %s ab.", GetName(playerid), GetName(pID));
+                    SendRoundMessage(x,y,z, COLOR_PURPLE, string);
+                }
+                case 16: {
+                    ResetPlayerWeapons(pID);
+                    format(string, sizeof(string), "* %s nahm Waffen von %s ab.", GetName(playerid), GetName(pID));
+                    SendRoundMessage(x,y,z, COLOR_PURPLE, string);
+                }
+                case 17: {
+                    ResetPlayerWeapons(pID);
+                    format(string, sizeof(string), "* %s nahm Waffen von %s ab.", GetName(playerid), GetName(pID));
+                    SendRoundMessage(x,y,z, COLOR_PURPLE, string);
+                }
+                case 18: {
+                    ResetPlayerWeapons(pID);
+                    format(string, sizeof(string), "* %s nahm Waffen von %s ab.", GetName(playerid), GetName(pID));
+                    SendRoundMessage(x,y,z, COLOR_PURPLE, string);
+                }
+                case 19: {
+                    ResetPlayerWeapons(pID);
+                    format(string, sizeof(string), "* %s nahm Waffen von %s ab.", GetName(playerid), GetName(pID));
+                    SendRoundMessage(x,y,z, COLOR_PURPLE, string);
+                }
+                case 20: {
+                    ResetPlayerWeapons(pID);
+                    format(string, sizeof(string), "* %s nahm Waffen von %s ab.", GetName(playerid), GetName(pID));
+                    SendRoundMessage(x,y,z, COLOR_PURPLE, string);
+                }
+                case 21: {
+                    ResetPlayerWeapons(pID);
+                    format(string, sizeof(string), "* %s nahm Waffen von %s ab.", GetName(playerid), GetName(pID));
+                    SendRoundMessage(x,y,z, COLOR_PURPLE, string);
+                }
+            }
+            new weapons[13][2];
+            new wpName1[32], wpName2[32], wpName3[32], wpName4[32], wpName5[32], wpName6[32], wpName7[32];
+            new wpName8[32], wpName9[32], wpName10[32], wpName11[32], wpName12[32], wpName13[32];
+            for(new i=0;i<13;i++){
+                GetPlayerWeaponData(pID, i, weapons[i][0], weapons[i][1]);
+            }
+            GetWeaponNameEx(weapons[0][0], wpName1, 32);
+            GetWeaponNameEx(weapons[1][0], wpName2, 32);
+            GetWeaponNameEx(weapons[2][0], wpName3, 32);
+            GetWeaponNameEx(weapons[3][0], wpName4, 32);
+            GetWeaponNameEx(weapons[4][0], wpName5, 32);
+            GetWeaponNameEx(weapons[5][0], wpName6, 32);
+            GetWeaponNameEx(weapons[6][0], wpName7, 32);
+            GetWeaponNameEx(weapons[7][0], wpName8, 32);
+            GetWeaponNameEx(weapons[8][0], wpName9, 32);
+            GetWeaponNameEx(weapons[9][0], wpName10, 32);
+            GetWeaponNameEx(weapons[10][0], wpName11, 32);
+            GetWeaponNameEx(weapons[11][0], wpName12, 32);
+            GetWeaponNameEx(weapons[12][0], wpName13, 32);
+            //Dialog erstellen
+            new /*string[256], */ueberschrift[128];
+            format(string, sizeof(string), "Drogen: %i", Spieler[pID][pDrugs]);
+            format(string, sizeof(string), "%s\nSpice: %i", string, Spieler[pID][pSpice]);
+            format(string, sizeof(string), "%s\nKräutersamen: %i", string, Spieler[pID][pDrogenSamen]);
+            format(string, sizeof(string), "%s\nKräutermischung: %i", string, Spieler[pID][pKrauterMische]);
+            format(string, sizeof(string), "%s\nDrogensamen: %i", string, Spieler[pID][pGangDrogenSamen]);
+            format(string, sizeof(string), "%s\nWaffenteile: %i", string, Spieler[pID][pWaffenteile]);
+            format(string, sizeof(string), "%s\nWanted-Codes: %i", string, Spieler[pID][pWantedCodes]);
+            format(string, sizeof(string), "%s\nBrecheisen: %i", string, Spieler[pID][pBrecheisen]);
+            format(string, sizeof(string), "%s\nC4: %i", string, Spieler[pID][pC4]);
+            //Waffen anzeigen
+            format(string, sizeof(string), "%s\nWaffen-Slot 1: %s [%d]", string, wpName1, weapons[0][1]);
+            format(string, sizeof(string), "%s\nWaffen-Slot 2: %s [%d]", string, wpName2, weapons[1][1]);
+            format(string, sizeof(string), "%s\nWaffen-Slot 3: %s [%d]", string, wpName3, weapons[2][1]);
+            format(string, sizeof(string), "%s\nWaffen-Slot 4: %s [%d]", string, wpName4, weapons[3][1]);
+            format(string, sizeof(string), "%s\nWaffen-Slot 5: %s [%d]", string, wpName5, weapons[4][1]);
+            format(string, sizeof(string), "%s\nWaffen-Slot 6: %s [%d]", string, wpName6, weapons[5][1]);
+            format(string, sizeof(string), "%s\nWaffen-Slot 7: %s [%d]", string, wpName7, weapons[6][1]);
+            format(string, sizeof(string), "%s\nWaffen-Slot 8: %s [%d]", string, wpName8, weapons[7][1]);
+            format(string, sizeof(string), "%s\nWaffen-Slot 9: %s [%d]", string, wpName9, weapons[8][1]);
+            format(string, sizeof(string), "%s\nWaffen-Slot 10: %s [%d]", string, wpName10, weapons[9][1]);
+            format(string, sizeof(string), "%s\nWaffen-Slot 11: %s [%d]", string, wpName11, weapons[10][1]);
+            format(string, sizeof(string), "%s\nWaffen-Slot 12: %s [%d]", string, wpName12, weapons[11][1]);
+            format(string, sizeof(string), "%s\nWaffen-Slot 13: %s [%d]", string, wpName13, weapons[12][1]);
+            format(ueberschrift, sizeof(ueberschrift), "Durchsuchung von: %s", GetName(pID));
+            SetPVarInt(playerid, "DURCHSUCHENID", pID);
+            ShowPlayerDialog(playerid, DIALOG_DURCHSUCHEN, DIALOG_STYLE_LIST, ueberschrift, string, "OK", "");
+            return 1;
+        }
+        DeletePVar(playerid, "DURCHSUCHENID");
+        return 1;
+    }
     if (dialogid == DIALOG_SETTINGS) {
         if (response){
             if(listitem == 0){
@@ -35400,6 +35622,42 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                 new queryCoins[128];
                 format(queryCoins, sizeof(queryCoins), "SELECT `HandyNr` FROM `accounts` WHERE `HandyNr` = '%i'", iValue);
                 mysql_pquery(queryCoins,THREAD_NEW_SIM,playerid,gSQL,MySQLThreadOwner);
+            }
+        }
+        case DIALOG_CONFIRM_DRUGS: {
+            if(response){
+                new string[128];
+                format(string, sizeof(string), "Du hast %i Drogen für $%i an den Server verkauft!", Spieler[playerid][pDrugs], Spieler[playerid][pDrugs] * 252);
+                SendClientMessage(playerid, COLOR_GREEN, string);
+                GivePlayerCash(playerid, Spieler[playerid][pDrugs] * 252);
+                Spieler[playerid][pDrugs] = 0;
+            }
+        }
+        case DIALOG_CONFIRM_WT: {
+            if(response){
+                new string[128];
+                format(string, sizeof(string), "Du hast %i Waffenteile für $%i an den Server verkauft!", Spieler[playerid][pWaffenteile], Spieler[playerid][pWaffenteile] * 22);
+                SendClientMessage(playerid, COLOR_GREEN, string);
+                GivePlayerCash(playerid, Spieler[playerid][pWaffenteile] * 22);
+                Spieler[playerid][pWaffenteile] = 0;
+            }
+        }
+        case DIALOG_CONFIRM_WCODES: {
+            if(response){
+                new string[128];
+                format(string, sizeof(string), "Du hast %i Wantedcodes für $%i an den Server verkauft!", Spieler[playerid][pWantedCodes], Spieler[playerid][pWantedCodes] * 1502);
+                SendClientMessage(playerid, COLOR_GREEN, string);
+                GivePlayerCash(playerid, Spieler[playerid][pWantedCodes] * 1502);
+                Spieler[playerid][pWantedCodes] = 0;
+            }
+        }
+        case DIALOG_CONFIRM_SPICE: {
+            if(response){
+                new string[128];
+                format(string, sizeof(string), "Du hast %i Spice für $%i an den Server verkauft!", Spieler[playerid][pSpice], Spieler[playerid][pSpice] * 502);
+                SendClientMessage(playerid, COLOR_GREEN, string);
+                GivePlayerCash(playerid, Spieler[playerid][pSpice] * 502);
+                Spieler[playerid][pSpice] = 0;
             }
         }
         case DIALOG_PIN_AENDERN_PIN: {
@@ -46108,7 +46366,30 @@ CMD:undercover(playerid)
     return 1;
 }
 
-CMD:entnehmen(playerid, params[])
+CMD:abgeben(playerid, params[]){
+    new string[128], eingabe[24];
+    if(sscanf(params, "s[24]", eingabe))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Abgeben [Drogen/Waffenteile/WCodes/Spice]");
+    if(IsPlayerInRangeOfPoint(playerid, 4.0, 1754.412963, -1592.894897, 13.532833)){
+        if(strcmp(eingabe, "drogen", true) == 0){
+            format(string, sizeof(string), "Bestätige bitte den Verkauf von %i Drogen für $%i.", Spieler[playerid][pDrugs], Spieler[playerid][pDrugs] * 252);
+            ShowPlayerDialog(playerid, DIALOG_CONFIRM_DRUGS, DIALOG_STYLE_MSGBOX, "Verkauf von Drogen an den Server", string, "Bestätigen", "Abbrechen");
+        }else if(strcmp(eingabe, "waffenteile", true) == 0){
+            format(string, sizeof(string), "Bestätige bitte den Verkauf von %i Waffenteilen für $%i.", Spieler[playerid][pWaffenteile], Spieler[playerid][pWaffenteile] * 22);
+            ShowPlayerDialog(playerid, DIALOG_CONFIRM_WT, DIALOG_STYLE_MSGBOX, "Verkauf von Waffenteilen an den Server", string, "Bestätigen", "Abbrechen");
+        }else if(strcmp(eingabe, "wcodes", true) == 0){
+            format(string, sizeof(string), "Bestätige bitte den Verkauf von %i Wantedcodes für $%i.", Spieler[playerid][pWantedCodes], Spieler[playerid][pWantedCodes] * 1502);
+            ShowPlayerDialog(playerid, DIALOG_CONFIRM_WCODES, DIALOG_STYLE_MSGBOX, "Verkauf von Wantedcodes an den Server", string, "Bestätigen", "Abbrechen");
+        }else if(strcmp(eingabe, "spice", true) == 0){
+            format(string, sizeof(string), "Bestätige bitte den Verkauf von %i Spice für $%i.", Spieler[playerid][pSpice], Spieler[playerid][pSpice] * 502);
+            ShowPlayerDialog(playerid, DIALOG_CONFIRM_SPICE, DIALOG_STYLE_MSGBOX, "Verkauf von Spice an den Server", string, "Bestätigen", "Abbrechen");
+        }else{
+            SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Fehlerhafte Eingabe!");
+        }
+    }
+    return 1;
+}
+
+/*CMD:entnehmen(playerid, params[])
 {
     new pID, string[128], eingabe[24];
     if(sscanf(params, "us[24]", pID, eingabe))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Entnehmen [SpielerID/Name] [Drogen/Waffenteile/Waffen/Codes/Spice/Samen/Krauter]");
@@ -46229,18 +46510,18 @@ CMD:entnehmen(playerid, params[])
         }
     }
     return 1;
-}
+}*/
 
 CMD:durchsuchen(playerid, params[])
 {
-    new pID, string[264];
+    new pID, string[1024];
     if(sscanf(params, "u", pID))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Durchsuche [SpielerID/Name]");
-    if(!(Spieler[playerid][pFraktion] == 1 || Spieler[playerid][pFraktion] == 2 || Spieler[playerid][pFraktion] == 16 || Spieler[playerid][pFraktion] == 5 || Spieler[playerid][pFraktion] == 18 || Spieler[playerid][pFraktion] == 22))return SendClientMessage(playerid, COLOR_RED, "Du bist kein Beamter.");
+    if(!(Spieler[playerid][pFraktion] == 1 || Spieler[playerid][pFraktion] == 2 || Spieler[playerid][pFraktion] == 16 || Spieler[playerid][pFraktion] == 5 || Spieler[playerid][pFraktion] == 18 || Spieler[playerid][pFraktion] == 22))
+        return SendClientMessage(playerid, COLOR_RED, "Du bist kein Beamter.");
     new Float:x, Float:y, Float:z;
     GetPlayerPos(pID, x,y,z);
-    if(IsPlayerInRangeOfPoint(playerid, 7.0, x,y,z))
-    {
-        format(string, sizeof(string), COLOR_HEX_BLUE"Drogen: "COLOR_HEX_WHITE"%i "COLOR_HEX_ORANGE"|"COLOR_HEX_BLUE"Drogensamen: "COLOR_HEX_WHITE"%i "COLOR_HEX_ORANGE"|"COLOR_HEX_BLUE" Waffenteile: "COLOR_HEX_WHITE"%i", Spieler[pID][pDrugs], Spieler[pID][pGangDrogenSamen], Spieler[pID][pWaffenteile]);
+    if(IsPlayerInRangeOfPoint(playerid, 7.0, x,y,z)){
+        /*format(string, sizeof(string), COLOR_HEX_BLUE"Drogen: "COLOR_HEX_WHITE"%i "COLOR_HEX_ORANGE"|"COLOR_HEX_BLUE"Drogensamen: "COLOR_HEX_WHITE"%i "COLOR_HEX_ORANGE"|"COLOR_HEX_BLUE" Waffenteile: "COLOR_HEX_WHITE"%i", Spieler[pID][pDrugs], Spieler[pID][pGangDrogenSamen], Spieler[pID][pWaffenteile]);
         SendClientMessage(playerid, COLOR_WHITE, string);
         format(string, sizeof(string), COLOR_HEX_BLUE"Hacker Codes: "COLOR_HEX_WHITE"%i "COLOR_HEX_ORANGE"|"COLOR_HEX_BLUE" Spice-Drogen: "COLOR_HEX_WHITE"%i"COLOR_HEX_ORANGE"|"COLOR_HEX_BLUE"Kräuter: "COLOR_HEX_WHITE"%i "COLOR_HEX_ORANGE"|"COLOR_HEX_BLUE" Kräutersamen: "COLOR_HEX_WHITE"%i", Spieler[pID][pWantedCodes] , Spieler[pID][pSpice], Spieler[pID][pKrauterMische], Spieler[pID][pDrogenSamen]);
         SendClientMessage(playerid, COLOR_WHITE, string);
@@ -46277,12 +46558,59 @@ CMD:durchsuchen(playerid, params[])
         format(string, sizeof(string), "Waffen-Slot 13: %s [%d]", wpName13,weapons[12][1]);
         SendClientMessage(playerid, COLOR_ORANGE, string);
         format(string, sizeof(string), "* Beamter %s hat %s nach Gegenständen durchsucht.", GetName(playerid), GetName(pID));
+        SendRoundMessage(x, y, z, COLOR_PURPLE, string);*/
+        //Waffen auslesen
+        new weapons[13][2];
+        new wpName1[32], wpName2[32], wpName3[32], wpName4[32], wpName5[32], wpName6[32], wpName7[32];
+        new wpName8[32], wpName9[32], wpName10[32], wpName11[32], wpName12[32], wpName13[32];
+        for(new i=0;i<13;i++){
+            GetPlayerWeaponData(pID, i, weapons[i][0], weapons[i][1]);
+        }
+        GetWeaponNameEx(weapons[0][0], wpName1, 32);
+        GetWeaponNameEx(weapons[1][0], wpName2, 32);
+        GetWeaponNameEx(weapons[2][0], wpName3, 32);
+        GetWeaponNameEx(weapons[3][0], wpName4, 32);
+        GetWeaponNameEx(weapons[4][0], wpName5, 32);
+        GetWeaponNameEx(weapons[5][0], wpName6, 32);
+        GetWeaponNameEx(weapons[6][0], wpName7, 32);
+        GetWeaponNameEx(weapons[7][0], wpName8, 32);
+        GetWeaponNameEx(weapons[8][0], wpName9, 32);
+        GetWeaponNameEx(weapons[9][0], wpName10, 32);
+        GetWeaponNameEx(weapons[10][0], wpName11, 32);
+        GetWeaponNameEx(weapons[11][0], wpName12, 32);
+        GetWeaponNameEx(weapons[12][0], wpName13, 32);
+        //Dialog erstellen
+        new /*string[256], */ueberschrift[128];
+        format(string, sizeof(string), "%sDrogen: %i", string, Spieler[pID][pDrugs]);
+        format(string, sizeof(string), "%s\nSpice: %i", string, Spieler[pID][pSpice]);
+        format(string, sizeof(string), "%s\nKräutersamen: %i", string, Spieler[pID][pDrogenSamen]);
+        format(string, sizeof(string), "%s\nKräutermischung: %i", string, Spieler[pID][pKrauterMische]);
+        format(string, sizeof(string), "%s\nDrogensamen: %i", string, Spieler[pID][pGangDrogenSamen]);
+        format(string, sizeof(string), "%s\nWaffenteile: %i", string, Spieler[pID][pWaffenteile]);
+        format(string, sizeof(string), "%s\nWanted-Codes: %i", string, Spieler[pID][pWantedCodes]);
+        format(string, sizeof(string), "%s\nBrecheisen: %i", string, Spieler[pID][pBrecheisen]);
+        format(string, sizeof(string), "%s\nC4: %i", string, Spieler[pID][pC4]);
+        //Waffen anzeigen
+        format(string, sizeof(string), "%s\nWaffen-Slot 1: %s [%d]", string, wpName1, weapons[0][1]);
+        format(string, sizeof(string), "%s\nWaffen-Slot 2: %s [%d]", string, wpName2, weapons[1][1]);
+        format(string, sizeof(string), "%s\nWaffen-Slot 3: %s [%d]", string, wpName3, weapons[2][1]);
+        format(string, sizeof(string), "%s\nWaffen-Slot 4: %s [%d]", string, wpName4, weapons[3][1]);
+        format(string, sizeof(string), "%s\nWaffen-Slot 5: %s [%d]", string, wpName5, weapons[4][1]);
+        format(string, sizeof(string), "%s\nWaffen-Slot 6: %s [%d]", string, wpName6, weapons[5][1]);
+        format(string, sizeof(string), "%s\nWaffen-Slot 7: %s [%d]", string, wpName7, weapons[6][1]);
+        format(string, sizeof(string), "%s\nWaffen-Slot 8: %s [%d]", string, wpName8, weapons[7][1]);
+        format(string, sizeof(string), "%s\nWaffen-Slot 9: %s [%d]", string, wpName9, weapons[8][1]);
+        format(string, sizeof(string), "%s\nWaffen-Slot 10: %s [%d]", string, wpName10, weapons[9][1]);
+        format(string, sizeof(string), "%s\nWaffen-Slot 11: %s [%d]", string, wpName11, weapons[10][1]);
+        format(string, sizeof(string), "%s\nWaffen-Slot 12: %s [%d]", string, wpName12, weapons[11][1]);
+        format(string, sizeof(string), "%s\nWaffen-Slot 13: %s [%d]", string, wpName13, weapons[12][1]);
+        format(ueberschrift, sizeof(ueberschrift), "Durchsuchung von: %s", GetName(pID));
+        SetPVarInt(playerid, "DURCHSUCHENID", pID);
+        ShowPlayerDialog(playerid, DIALOG_DURCHSUCHEN, DIALOG_STYLE_LIST, ueberschrift, string, "OK", "");
+        format(string, sizeof(string), "* Beamter %s hat %s nach Gegenständen durchsucht.", GetName(playerid), GetName(pID));
         SendRoundMessage(x, y, z, COLOR_PURPLE, string);
-    }
-    else
-    {
-        SendClientMessage(playerid, COLOR_RED, "Du bist nicht in der Nähe des Spielers.");
-        return 1;
+    }else{
+        SendClientMessage(playerid, COLOR_RED, "[DURCHSUCHEN] {FFFFFF}Du bist nicht in der Nähe des Spielers.");
     }
     return 1;
 }

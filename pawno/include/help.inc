@@ -319,7 +319,7 @@ new Job24Help[1][]= {
     {"hotdogverkaufen"}
 };
 
-new Frak1Help[68][]= {
+new Frak1Help[67][]= {
     {"clear"},
     {"pdclear"},
     {"dienst"},
@@ -334,7 +334,6 @@ new Frak1Help[68][]= {
     {"reinziehen"},
     {"freilassen"},
     {"verhaften"},
-    {"entnehmen"},
     {"koffereinziehen"},
     {"offlinearrest"},
     {"rufdetektiv"},
