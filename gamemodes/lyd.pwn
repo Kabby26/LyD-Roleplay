@@ -2799,7 +2799,7 @@ enum {
     CP_WT_GOBACK_BASE
 }
 
-#define TEST
+//#define TEST
 
 #if defined TEST // Testserver
 	#define     SQL_HOST            "51.68.175.95"
@@ -4844,6 +4844,10 @@ new Text:TazerBox;
 new Text:Leer;
 new Text:UhrMessage;
 new Text:DatumMessage;
+
+new Text:Logo1;
+new Text:Logo2;
+
 new PlayerText:Gesucht[MAX_PLAYERS];
 new PlayerText:Spectate[4][MAX_PLAYERS];
 new PlayerText:BusMessage[MAX_PLAYERS];
@@ -5659,7 +5663,7 @@ public OnGameModeInit2() {
     SetTimer("Pulse_Tickets",5227,true);
     SetTimer("Pulse_SInfo",757,true);
     //SetTimer("gwarentimer",60000*60*3,true);
-    SetTimer("gwarentimer",60000,true);
+    SetTimer("gwarentimer",60000*60,true);
     SetTimer("PayDay",60000,true);
     SetTimer("NagelBand_Timer",NAGELBAND_TIMER_INTERVALL,true);
     SetTimer("SaveAll", ( 10*60*1000 ) + 2161 ,true); // Alle ~10 Minuten
@@ -6024,23 +6028,24 @@ public OnGameModeInit2() {
     TextDrawColor(DatumMessage, -1);
     TextDrawSetOutline(DatumMessage, 1);
     TextDrawSetProportional(DatumMessage, 1);
-
-    /*Logo1 = TextDrawCreate(557.000000, 16.000000, "ROLEPLAY");
+//klammer start
+    /*Logo1 = TextDrawCreate(557.000000, 16.000000, "Dream");
     TextDrawBackgroundColor(Logo1, 255);
     TextDrawFont(Logo1, 3);
     TextDrawLetterSize(Logo1, 0.280000, 1.699998);
     TextDrawColor(Logo1, 869072895);
     TextDrawSetOutline(Logo1, 1);
-    TextDrawSetProportional(Logo1, 1);
+    TextDrawSetProportional(Logo1, 1);*/
 
-    Logo2 = TextDrawCreate(554.000000, 5.000000, "LYD");
+    //Logo2 = TextDrawCreate(554.000000, 5.000000, "Live Your Dream");
+    /*Logo2 = TextDrawCreate(514.000000, 125.000000, "Live Your Dream");
     TextDrawBackgroundColor(Logo2, 255);
     TextDrawFont(Logo2, 0);
     TextDrawLetterSize(Logo2, 0.479999, 1.699998);
     TextDrawColor(Logo2, -1);
     TextDrawSetOutline(Logo2, 1);
     TextDrawSetProportional(Logo2, 1);*/
-
+//klammer ende
     URL = TextDrawCreate(26.000000, 430.000000, "~g~Forum: ~w~www.LyD-SAMP.de");
     TextDrawBackgroundColor(URL, 255);
     TextDrawFont(URL, 2);
@@ -10663,6 +10668,10 @@ public OnPlayerSpawn(playerid)
     SpectatedPlayer[playerid]= INVALID_PLAYER_ID;
     TextDrawShowForPlayer(playerid, UhrMessage);
     TextDrawShowForPlayer(playerid, DatumMessage);
+
+    TextDrawShowForPlayer(playerid, Logo1);
+    TextDrawShowForPlayer(playerid, Logo2);
+
     SetPlayerSkin(playerid, Spieler[playerid][pSkin]);
     UnfreezePlayer(playerid);
     if (!Spieler[playerid][pTot]) SetPlayerInterior(playerid, 0);
@@ -11402,7 +11411,7 @@ public OnPlayerDeath(playerid, killerid, reason)
             format(tdString, sizeof(tdString), "~g~~h~%s ~w~~h~%i : %i ~r~~h~%s", GetName(playerid), paintballInfo[playerid][E_PB_INFO_KILLS], 
                 paintballInfo[playerid][E_PB_INFO_DEATHS], GetName(pID));
             PlayerTextDrawSetString(playerid, paintballInfo[playerid][E_PB_INFO_TEXTDRAW], tdString);
-            return -1;
+            //return -1;
         }
         case PAINTBALL_STATUS_INVITE: {
             new temp[E_PB_INFO];
@@ -14274,21 +14283,19 @@ CMD:sellkekse(playerid, params[])
 
 CMD:sellwaffenteile(playerid, params[])
 {
-    new pID, menge, preis, Float:x, Float:y, Float:z;
-    if(sscanf(params, "uii", pID, menge, preis))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Sellwaffenteile [SpielerID/Name] [Menge] [Preis]");
+    new pID, menge, Float:x, Float:y, Float:z;
+    if(sscanf(params, "ui", pID, menge))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Sellwaffenteile [SpielerID/Name] [Menge]");
     if (playerid == pID) return SendClientMessage(playerid, COLOR_RED, "Du kannst dir selber keine Waffenteile verkaufen.");
     if(Spieler[playerid][pJob] != 18)return SendClientMessage(playerid, COLOR_RED, "Du bist kein Waffendealer.");
     GetPlayerPos(pID, x,y,z);
-    if(preis < 1 || preis > 100000000)return SendClientMessage(playerid, COLOR_ORANGE, "Der Preis sollte zwischen $1 und $100.000.000 liegen.");
     if(!IsPlayerConnected(pID))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
     if(!IsPlayerInRangeOfPoint(playerid, 5.0, x,y,z))return SendClientMessage(playerid, COLOR_RED, "Du bist nicht in der Nähe des Spielers.");
     if(menge > Spieler[playerid][pWaffenteile])return SendClientMessage(playerid, COLOR_RED, "Soviele Waffenteile besitzt du nicht.");
     if( menge < 0 ) {
         return SendClientMessage(playerid,COLOR_RED,"Der Betrag kann nicht negativ sein!");
     }
-    if(preis/menge < 20||preis/menge > 25) {
-        return SendClientMessage(playerid,COLOR_RED,"Der aktuelle Stückpreis bei Waffenteilen liegt im Rahmen von 20$ bis 25$!");
-    }
+    if(Spieler[pID][pFraktion] != 19) return SendClientMessage(playerid, COLOR_RED, "Du kannst nur an Terroristen verkaufen!");
+
     // Goldkiller: WTF ist das ???? :
     // if(menge < 999999999999999 )return SendClientMessage(playerid, COLOR_RED, "Ungültige Anzahl");
 
@@ -14307,28 +14314,29 @@ CMD:sellwaffenteile(playerid, params[])
     SendClientMessage(playerid, COLOR_LIGHTBLUE, string);
     */
     ShowPlayerDialog(playerid,DIALOG_SELLWTEILE,DIALOG_STYLE_MSGBOX,"Handelsinformation","\
-        Der aktuelle Stückpreis bei Waffenteilen liegt zwischen 20$ bis 25$.\n\
-        Höhere oder niedrigere Beträge sind unzulässig und werden nach Server Regel §11(Geldwäsche) administrativ bestraft!\n\
-        Strafmaß: dauerhafte- oder zeitliche Sperrung, Admin-Verwarnung, Prison oder Inventar-/Geldentzug.\n\
-        Jeder Handel wird gespeichert und geprüft!","Einverstanden","Ablehnen");
+        Der aktuelle Stückpreis bei Waffenteilen liegt bei $20!","Einverstanden","Ablehnen");
     return 1;
 }
 
 CMD:selldrogen(playerid, params[])
 {
-    new pID, menge, preis, Float:x, Float:y, Float:z;
-    if(sscanf(params, "uii", pID, menge, preis))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Selldrogen [SpielerID/Name] [Menge] [Preis]");
+    new pID, menge, Float:x, Float:y, Float:z;
+    if(sscanf(params, "uii", pID, menge))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Selldrogen [SpielerID/Name] [Menge]");
+    if(!(Spieler[playerid][pFraktion] == 6 || Spieler[playerid][pFraktion] == 7 || Spieler[playerid][pFraktion] == 10 || Spieler[playerid][pFraktion] == 11 || Spieler[playerid][pFraktion] == 12 || Spieler[playerid][pFraktion] == 13
+    || Spieler[playerid][pFraktion] == 20 || Spieler[playerid][pFraktion] == 21)) return SendClientMessage(playerid,COLOR_RED,"Du bist kein Gang/Mafien Mitglied.");
     if (playerid == pID) return SendClientMessage(playerid, COLOR_RED, "Du kannst dir selber keine Drogen verkaufen.");
     if(Spieler[pID][pFraktion] != 19) return SendClientMessage(playerid, COLOR_RED, "Du kannst Drogen nur an Terroristen verkaufen!");
     //if(Spieler[playerid][pJob] != 17)return SendClientMessage(playerid, COLOR_RED, "Du bist kein Drogendealer.");
     GetPlayerPos(pID, x,y,z);
-    if(preis < 1 || preis > 100000000)return SendClientMessage(playerid, COLOR_ORANGE, "Der Preis muss zwischen $1 und $100.000.000 liegen.");
+    //if(preis < 1 || preis > 100000000)return SendClientMessage(playerid, COLOR_ORANGE, "Der Preis muss zwischen $1 und $100.000.000 liegen.");
     if(!IsPlayerConnected(pID))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
     if(!IsPlayerInRangeOfPoint(playerid, 5.0, x,y,z))return SendClientMessage(playerid, COLOR_RED, "Du bist nicht in der Nähe des Spielers.");
     if(menge > Spieler[playerid][pDrugs])return SendClientMessage(playerid, COLOR_RED, "Soviel Gramm hast du nicht.");
     if( menge < 0 ) {
         return SendClientMessage(playerid,COLOR_RED,"Der Betrag kann nicht negativ sein!");
     }
+    if(Spieler[pID][pFraktion] != 19) return SendClientMessage(playerid, COLOR_RED, "Du kannst nur an Terroristen verkaufen!");
+
     /*if(preis/menge < 240||preis/menge > 400) {
         return SendClientMessage(playerid,COLOR_RED,"Der aktuelle Stückpreis bei Drogen liegt im Rahmen von 240$ bis 400$!");
     }*/
@@ -14351,20 +14359,16 @@ CMD:selldrogen(playerid, params[])
     SendClientMessage(playerid, COLOR_LIGHTBLUE, string);
     */
     ShowPlayerDialog(playerid,DIALOG_SELLDRUGS,DIALOG_STYLE_MSGBOX,"Handelsinformation","\
-        Der aktuelle Verkaufspreis je Gramm liegt zwischen 240$ bis 400$.\n\
-        Höhere oder niedrigere Beträge sind unzulässig und werden nach Server Regel §11(Geldwäsche) administrativ bestraft!\n\
-        Strafmaß: dauerhafte- oder zeitliche Sperrung, Admin-Verwarnung, Prison oder Inventar-/Geldentzug.\n\
-        Jeder Drogenhandel wird gespeichert und geprüft!","Einverstanden","Ablehnen");
+        Der aktuelle Verkaufspreis je Gramm liegt bei $800.","Einverstanden","Ablehnen");
     return 1;
 }
 
 CMD:sellwantedcodes(playerid, params[])
 {
     if (Spieler[playerid][pJob] != 21) return SendClientMessage(playerid, COLOR_RED, "Du bist kein Wanted-Hacker.");
-    new pID, menge, preis, Float:x, Float:y, Float:z;
-    if (sscanf(params, "uii", pID, menge, preis)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING" /Sellwantedcodes [SpielerID/Name] [Menge] [Preis]");
+    new pID, menge, Float:x, Float:y, Float:z;
+    if (sscanf(params, "ui", pID, menge)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING" /Sellwantedcodes [SpielerID/Name] [Menge]");
     if (playerid == pID) return SendClientMessage(playerid, COLOR_RED, "Du kannst dir selber keine Wantedcodes verkaufen.");
-    if (preis < 1 || preis > 100000000) return SendClientMessage(playerid, COLOR_ORANGE, "Der Preis sollte zwischen $1 und $100.000.000 liegen.");
     if (!IsPlayerConnected(pID)) return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
 
     GetPlayerPos(pID, x, y, z);
@@ -14372,16 +14376,11 @@ CMD:sellwantedcodes(playerid, params[])
     if (menge < 0) return SendClientMessage(playerid,COLOR_RED,"Der Betrag kann nicht negativ sein!");
     if (menge > Spieler[playerid][pWantedCodes]) return SendClientMessage(playerid, COLOR_RED, "Soviele Wantedcodes hast du nicht.");
 
-    if (preis / menge < 2000 || preis / menge > 2500) {
-        return SendClientMessage(playerid, COLOR_RED, "Der aktuelle Stückpreis bei Wantedcodes liegt im Rahmen von 2.000$ bis 2.500$!");
-    }
+    if(Spieler[pID][pFraktion] != 19) return SendClientMessage(playerid, COLOR_RED, "Du kannst nur an Terroristen verkaufen!");
 
     SetPVarString(playerid, "SELL_WCODES", params);
     ShowPlayerDialog(playerid, DIALOG_SELLWCODES, DIALOG_STYLE_MSGBOX, "Handelsinformation","\
-        Der aktuelle Verkaufspreis je Code liegt zwischen 2.000$ bis 2.500$.\n\
-        Höhere oder niedrigere Beträge sind unzulässig und werden nach Server Regel §11 (Geldwäsche) administrativ bestraft!\n\
-        Strafmaß: dauerhafte- oder zeitliche Sperrung, Admin-Verwarnung, Prison oder Inventar-/Geldentzug.\n\
-        Jeder Wantedcodehandel wird gespeichert und geprüft!", "Einverstanden", "Ablehnen");
+        Der aktuelle Verkaufspreis je Code liegt bei $1.750!", "Einverstanden", "Ablehnen");
     return 1;
 }
 
@@ -14490,7 +14489,7 @@ CMD:samenpaketentladen(playerid){
     if(!IsPlayerInAnyVehicle(playerid)) return SendClientMessage(playerid, COLOR_RED, "Du bist in keinem Transporter.");
     if(bestand[vID] < 1)return SendClientMessage(playerid, COLOR_RED, "Du hast nichts beladen!");
 
-    new newdrugs = bestand[vID]*5;
+    new newdrugs = bestand[vID];
     Spieler[playerid][pGangDrogenSamen] += newdrugs;
     new string[128];
     format(string, sizeof(string), "Du hast %d Pakete abgeliefert und %d Drogensamen erhalten.", bestand[vID], newdrugs);
@@ -26559,24 +26558,21 @@ public OnPlayerEnterCheckpoint(playerid)
         for(new i; i < MAX_VEHICLES; i++){
             new vehiclemodel = GetVehicleModel(i);
             if(vehiclemodel == 499 && FrakCarInfo[i][f_frak] == 19){
-                for(new e; e < MAX_VEHICLES; e++){
-                    if(Spieler[e][pFraktion] == 19 && Spieler[e][pRank] >= 2){
-                        DisablePlayerCheckpointEx(e);
-                    }
+                if(wtid == playerid){
+                    bestand[i] = 0;
+                    Delete3DTextLabel(terrorVehLabel);
+                    new randombelohnung = RandomEx(30000, 50000);
+                    g_FraktionsSafeBox[19][FSB_iWaffenteile] += randombelohnung;
+                    new String[128];
+                    format(String, sizeof(String), "{3ADF00}[WT] Das Mitglied %s hat die Waffenteilmission abgeschlossen. (+ %i Waffenteile)", GetName(playerid), randombelohnung);
+                    SendFraktionMessage(19, COLOR_YELLOW, String);
+                    Delete3DTextLabel(terrorVehLabel);
+                    Delete3DTextLabel(terrorBootLabel);
+                    bestand[speederID] = 0;
+                    DestroyVehicle(speederID);
+                    wtstatus = false;
+                    wtid = -1;
                 }
-                bestand[i] = 0;
-                Delete3DTextLabel(terrorVehLabel);
-                new randombelohnung = RandomEx(40000, 90000);
-                g_FraktionsSafeBox[19][FSB_iWaffenteile] += randombelohnung;
-                new String[128];
-                format(String, sizeof(String), "{3ADF00}[WT] Das Mitglied %s hat die Waffenteilmission abgeschlossen. (+ %i Waffenteile)", GetName(playerid), randombelohnung);
-                SendFraktionMessage(19, COLOR_YELLOW, String);
-                Delete3DTextLabel(terrorVehLabel);
-                Delete3DTextLabel(terrorBootLabel);
-                bestand[speederID] = 0;
-                DestroyVehicle(speederID);
-                wtstatus = false;
-                wtid = -1;
             }
         }
     }
@@ -34038,8 +34034,9 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
             new pID, menge, preis;
             new string[128];
             GetPVarString(playerid,"SellSpice",string,sizeof(string));
-            sscanf(string,"udd",pID,menge,preis);
+            sscanf(string,"ud",pID,menge);
 
+            preis = menge * 1000;
             pSpiceID[pID] = playerid;
             pSpicePreis[pID] = preis;
             pSpiceMenge[pID] = menge;
@@ -34054,7 +34051,10 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
             new pID, menge, preis;
             new string[128];
             GetPVarString(playerid,"SellDrugs",string,sizeof(string));
-            sscanf(string, "uii", pID, menge, preis);
+            sscanf(string, "ui", pID, menge);
+
+            preis = menge * 800;
+
             pDrogenID[pID] = playerid;
             pDrogenPreis[pID] = preis;
             pDrogenMenge[pID] = menge;
@@ -34070,7 +34070,8 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
             new pID, menge, preis;
             new string[128];
             GetPVarString(playerid, "SELL_WCODES", string, sizeof(string));
-            sscanf(string, "uii", pID, menge, preis);
+            sscanf(string, "ui", pID, menge);
+            preis = menge * 1750;
             format(string, sizeof(string), "%i %i %i", playerid, menge, preis);
             SetPVarString(pID, "BUY_WCODES", string);
 
@@ -34085,7 +34086,8 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
             new pID, menge, preis;
             new string[128];
             GetPVarString(playerid,"SellWTeile",string,sizeof(string));
-            sscanf(string, "uii", pID, menge, preis);
+            sscanf(string, "ui", pID, menge);
+            preis = menge * 20;
             pWTeileID[pID] = playerid;
             pWTeilePreis[pID] = preis;
             pWTeileMenge[pID] = menge;
@@ -38378,7 +38380,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                     return 1;
                 }
                 new fische = strval(inputtext);
-                if(fische < 1 || fische > 20)return SendClientMessage(playerid,  COLOR_RED, "Der Wert sollte zwischen 1 und 20 liegen.");
+                //if(fische < 1 || fische > 20)return SendClientMessage(playerid,  COLOR_RED, "Der Wert sollte zwischen 1 und 20 liegen.");
                 if(fische > Spieler[playerid][pFische])return SendClientMessage(playerid, COLOR_RED, "Soviele Fische hast du nicht!");
                 new tempRechnung = fische*30;
                 GivePlayerCash(playerid, tempRechnung);
@@ -49044,6 +49046,7 @@ public OnPlayerDamage(&playerid, &Float:amount, &issuerid, &weapon, &bodypart)
                         auftraggeber = Spieler[issuerid][pHitmenAuftragID];
                     if( auftraggeber != INVALID_PLAYER_ID && IsPlayerConnected(auftraggeber) ) {
                         if( Spieler[auftraggeber][pKopfgeldID] == playerid ) {
+                            OnPlayerDeath(playerid, issuerid, 34);
                             SetPlayerHealth(playerid, 0.0);
                             GameTextForPlayer(playerid, "~r~HEADSHOT", 2000, 1);
                         }
@@ -56019,7 +56022,7 @@ COMMAND:wcodes(playerid,params[]) {
         return SendClientMessage(playerid,COLOR_RED,"Du musst noch warten bis du erneut Wantedcodes erhältst.");
     }
     new String[128], codes;
-    codes = 5 + random(15);
+    codes = 5 + random(5);
     Spieler[playerid][punixWantedCodes] = gettime() + 10*60;
     Spieler[playerid][pWantedCodes] += codes;
     format(String,sizeof(String),"Du hast %d Wantedcodes erhalten (Hand: %d).",codes,Spieler[playerid][pWantedCodes]);
@@ -65501,7 +65504,7 @@ stock GetBombDrahtColorString( string[] , size = sizeof(string) ) { // scheiss f
 
 CMD:makespice(playerid, params[]){
     if(Spieler[playerid][pFraktion] != 19) return SendClientMessage(playerid, COLOR_RED, "[MAKESPICE] {FFFFFF}Du bist kein Terrorist!");
-    new needDrogen = 4, needKrauter = 8, Anzahl;
+    new needDrogen = 2, needKrauter = 1, Anzahl;
     if(sscanf(params,"i",Anzahl)) return SendClientMessage(playerid,COLOR_BLUE, INFO_STRING"/Makespice [Anzahl]");
     if(Spieler[playerid][pDrugs] < needDrogen*Anzahl) return SendClientMessage(playerid, COLOR_RED, "[MAKESPICE] {FFFFFF}Du benötigst mehr Drogen!");
     if(Spieler[playerid][pKrauterMische] < needKrauter*Anzahl) return SendClientMessage(playerid, COLOR_RED, "[MAKESPICE] {FFFFFF}Du benötigst mehr Kräuter!");

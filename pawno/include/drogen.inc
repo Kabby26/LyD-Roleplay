@@ -345,7 +345,7 @@ COMMAND:pflanzen(playerid, params[]) {
         new pflanze = GetClosestDrogenPflanze(playerid, 3.0);
         if (pflanze == -1) return SendClientMessage(playerid, COLOR_RED, "Es ist keine Kräuterpflanze in deiner Nähe.");
         if (g_DrogenPflanzen[pflanze][DP_iFortschritt] < DROGENPFLANZE_REIF) return SendClientMessage(playerid, COLOR_RED, "Die Kräuterpflanze ist noch nicht reif.");
-        new randomAmount = RandomEx(10, 15), message[145];
+        new randomAmount = RandomEx(10, 14), message[145];
         if(g_DrogenPflanzen[pflanze][DP_bDestroyed] == true) return SendClientMessage(playerid, COLOR_RED, "Die Pflanze wurde bereits geerntet!");
         g_DrogenPflanzen[pflanze][DP_bDestroyed] = true;
         UpdateDynamic3DTextLabelText(g_DrogenPflanzen[pflanze][DP_text3D], COLOR_WHITE, "[ {009D00}Kräuterflanze {FFFFFF}]\n{FFFF00}> Die Pflanze wurde geerntet <");
@@ -448,8 +448,8 @@ COMMAND:nimmspice(playerid,params[]) {
 }
 
 COMMAND:sellkrauter(playerid,params[]) {
-    new pID, menge, preis, Float:x, Float:y, Float:z;
-    if(sscanf(params, "uii", pID, menge, preis))return SendClientMessage(playerid, COLOR_BLUE, "* Benutze: {00CC00}/Sellkrauter [SpielerID/Name] [Menge] [Preis]");
+    new pID, menge, Float:x, Float:y, Float:z;
+    if(sscanf(params, "ui", pID, menge))return SendClientMessage(playerid, COLOR_BLUE, "* Benutze: {00CC00}/Sellkrauter [SpielerID/Name] [Menge]");
     if(Spieler[playerid][pFraktion] != 15)return SendClientMessage(playerid, COLOR_RED, "Du bist kein Member der Nine Demons.");
     GetPlayerPos(pID, x,y,z);
     if(playerid==pID)return SendClientMessage(playerid, COLOR_RED, "Du kannst Kräuter nicht an dich selbst verkaufen.");
@@ -457,19 +457,12 @@ COMMAND:sellkrauter(playerid,params[]) {
     if(Spieler[pID][pFraktion] != 19) return SendClientMessage(playerid, COLOR_RED, "Kräuter können nur an Terroristen verkauft werden!");
     if(!IsPlayerInRangeOfPoint(playerid, 5.0, x,y,z))return SendClientMessage(playerid, COLOR_RED, "Du bist nicht in der Nähe des Spielers.");
     if(menge > Spieler[playerid][pKrauterMische]) return SendClientMessage(playerid, COLOR_RED, "Soviel Kräuter hast du nicht.");
-    if(menge < 1 || menge > 10000)return SendClientMessage(playerid, COLOR_RED, "Der Wert sollte zwischen 1 und 10.000 liegen.");
+    //if(menge < 1 || menge > 10000)return SendClientMessage(playerid, COLOR_RED, "Der Wert sollte zwischen 1 und 10.000 liegen.");
     SetPVarString(playerid,"SellSpice",params);
-    if(preis >= 1 && preis < 100000000)
-    {
-        ShowPlayerDialog(playerid,DIALOG_SELLSPICE,DIALOG_STYLE_MSGBOX,"Kräuter Verkauf Information","\
-        Der aktuelle Preis je Gramm Spice ist im Rahmen von 1.000$ bis 1.500$!\n\
-        Höhere Beträge werden laut Server Regel §6 als Geldwäsche gewertet und Administrativ bestraft!\n\
-        Die Strafe könnte sein: Perm-/Timeban, Admin-Verwarnung, Prison oder Drogen/Geld wird eingezogen!\n\
-        Jeder Drogenhandel wird gespeichert!","Einverstanden","Ablehnen");
-    }
-    else
-        SendClientMessage(playerid, COLOR_GREY, "Der Preis sollte zwischen $1 und $100.000.000 liegen.");
-    
+
+    ShowPlayerDialog(playerid,DIALOG_SELLSPICE,DIALOG_STYLE_MSGBOX,"Kräuter Verkauf Information","\
+    Der aktuelle Preis je Gramm Kräuter $1.000!","Einverstanden","Ablehnen");
+
     return 1;
 }
 
