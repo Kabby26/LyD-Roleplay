@@ -2802,25 +2802,25 @@ enum {
 //#define TEST
 
 #if defined TEST // Testserver
-	#define     SQL_HOST            "51.68.175.95"
-	#define     SQL_USER            "server"
-	#define     SQL_PASS            "eRzhl315wuOyukb0fBZw"
-	#define     SQL_DATA            "lyd-roleplay-test"
+	#define     SQL_HOST            "localhost"
+	#define     SQL_USER            "root"
+	#define     SQL_PASS            "To26Go01Li20No02"
+	#define     SQL_DATA            "lyd"
 
-	#define     WEBSQL_HOST         "85.214.116.25"
-	#define     WEBSQL_USER         "samp"
-	#define     WEBSQL_PASS         "GIOSIOGJw42iedj2341qX23"
-	#define     WEBSQL_DATA         "ucpdatabase"
+	#define     WEBSQL_HOST         "localhost"
+	#define     WEBSQL_USER         "root"
+	#define     WEBSQL_PASS         "To26Go01Li20No02"
+	#define     WEBSQL_DATA         "lyd"
 #else // Main-Server
-	#define     SQL_HOST            "51.68.175.95"
-	#define     SQL_USER            "server"
-	#define     SQL_PASS            "eRzhl315wuOyukb0fBZw"
-	#define     SQL_DATA            "lyd-roleplay" 
+	#define     SQL_HOST            "localhost"
+	#define     SQL_USER            "root"
+	#define     SQL_PASS            "To26Go01Li20No02"
+	#define     SQL_DATA            "lyd"
 
-	#define     WEBSQL_HOST         "116.203.115.131"
-	#define     WEBSQL_USER         "lyd"
-	#define     WEBSQL_PASS         "RMYY4pk1"
-	#define     WEBSQL_DATA         "lyd-ucp"
+	#define     WEBSQL_HOST         "localhost"
+	#define     WEBSQL_USER         "root"
+	#define     WEBSQL_PASS         "To26Go01Li20No02"
+	#define     WEBSQL_DATA         "lyd"
 #endif
 
 #define     MAX_HOUSES          703
@@ -6544,6 +6544,8 @@ public OnGameModeInit2() {
     //GZ_Init();
     LoadFaction();
     FlashTimer = SetTimer("FlasherFunc",223,1);
+
+    SetWeather(7);
     return 1;
 }
 
@@ -18230,6 +18232,21 @@ CMD:veh(playerid, params[])
     return 1;
 }
 
+CMD:ckabbyveh(playerid){
+    if(Spieler[playerid][pAdmin] < 5) return 0;
+    new Float:x, Float:y, Float:z, vehicle;
+    GetPlayerPos(playerid, x, y, z);
+    vehicle = CreateVehicle(579, x, y, z, 0, 0, 0, -1, 1);
+    SetVehicleVirtualWorld(vehicle, GetPlayerVirtualWorld(playerid));
+    LinkVehicleToInterior(vehicle, GetPlayerInterior(playerid));
+    PutPlayerInVehicle(playerid, vehicle, 0);
+    SetVehicleNumberPlate(vehicle, "LS-1595");
+    gGas[vehicle] = GetMaxTank(vehicle);
+    gMaxGas[vehicle] = GetMaxTank(vehicle);
+    aiVehicles[vehicle] = VEH_CAR;
+    return 1;
+}
+
 CMD:supcar(playerid, params[]) return cmd_supauto(playerid, "");
 
 CMD:supauto(playerid, params[])
@@ -26342,6 +26359,9 @@ public OnPlayerEnterCheckpoint(playerid)
         if(!IsValidVehicle(speederID)){
             speederID = CreateVehicle(452, 255.1756,2933.8511,-1.0131,3.5351, -1, -1, 0);
 
+            gGas[speederID] = GetMaxTank(speederID);
+            gMaxGas[speederID] = GetMaxTank(speederID);
+
             Delete3DTextLabel(terrorBootLabel);
             bestand[speederID] = 0;
             new string[128];
@@ -28848,102 +28868,6 @@ CMD:uclight(playerid)
     }
     return 1;
 }
-
-/*CMD:shsirene(playerid)
-{
-    if(Spieler[playerid][pFraktion] == 1 || Spieler[playerid][pFraktion] == 2 || Spieler[playerid][pFraktion] == 16 || Spieler[playerid][pFraktion] == 18 || Spieler[playerid][pFraktion] == 22)
-    {
-        new vID = GetPlayerVehicleID(playerid);
-        new model = GetVehicleModel(vID);
-        if(model == 560)
-        {
-            if(vSirene[vID] == INVALID_OBJECT_ID)
-            {
-                vSirene[vID] = CreateDynamicObject(19797, 0.0, 0.0, 0.0, 0.0, 0.0, 80.0);
-                AttachDynamicObjectToVehicle(vSirene[vID],vID,-0.500000, 2.699999, -0.100000, 0.000000, 0.000000, 174.000000);
-                vSirene[vID] = CreateDynamicObject(19797, 0.0, 0.0, 0.0, 0.0, 0.0, 80.0);
-                AttachDynamicObjectToVehicle(vSirene[vID],vID,0.400000, 2.699999, -0.100000, 0.000000, 0.000000, 179.000000);
-                vSirene[vID] = CreateDynamicObject(19797, 0.0, 0.0, 0.0, 0.0, 0.0, 80.0);
-                AttachDynamicObjectToVehicle(vSirene[vID],vID,0.500000, -2.499999, -0.100000, 0.000000, 0.000000, 0.000000);
-                vSirene[vID] = CreateDynamicObject(19797, 0.0, 0.0, 0.0, 0.0, 0.0, 80.0);
-                AttachDynamicObjectToVehicle(vSirene[vID],vID,-0.500000, -2.499999, -0.100000, 0.000000, 0.000000, 0.000000);
-                vSirene[vID] = CreateDynamicObject(19419, 0.0, 0.0, 0.0, 0.0, 0.0, 80.0);
-                AttachDynamicObjectToVehicle(vSirene[vID],vID,-0.000000, 0.000000, 0.800000, 0.000000, 0.000000, 0.000000);
-            }
-            else
-            {
-                DestroyDynamicObject(vSirene[vID]);
-                vSirene[vID] = INVALID_OBJECT_ID;
-            }
-        }
-        else
-        {
-            SendClientMessage(playerid, COLOR_RED, "Dazu musst du in einem Sultan sitzen.");
-        }
-    }
-    return 1;
-}
-
-CMD:sultancop(playerid)
-{
-	if(Spieler[playerid][pFraktion] == 1 || Spieler[playerid][pFraktion] == 2 || Spieler[playerid][pFraktion] == 16 || Spieler[playerid][pFraktion] == 18 || Spieler[playerid][pFraktion] == 22)
-	{
-		new vID = GetPlayerVehicleID(playerid);
-		new model = GetVehicleModel(vID);
-		if(model == 560)
-		{
-			if(vSirene[vID] == INVALID_OBJECT_ID)
-			{
-				vSirene[vID] = CreateDynamicObject(19420, 0.0, 0.0, 0.0, 0.0, 0.0, 80.0);
-				AttachDynamicObjectToVehicle(vSirene[vID],vID,-0.000000, 0.000000, 0.800000, 0.000000, 0.000000, 0.000000);
-				vSirene[vID] = CreateDynamicObject(19327, 0.0, 0.0, 0.0, 0.0, 0.0, 80.0);
-				AttachDynamicObjectToVehicle(vSirene[vID],vID, -0.000000, 2.200000, 0.299999, 284.000000, 0.000000, 179.000000 ); // <vorne>
-				SetDynamicObjectMaterialText(vSirene[vID], "POLIZEI", 0, OBJECT_MATERIAL_SIZE_256x128,"Arial", 28, 1, 0xFFFFFFFF, 0, OBJECT_MATERIAL_TEXT_ALIGN_CENTER);
-				vSirene[vID] = CreateDynamicObject(19327, 0.0, 0.0, 0.0, 0.0, 0.0, 80.0);
-				AttachDynamicObjectToVehicle(vSirene[vID],vID, -0.000000, -2.399999, 0.200000, 0.000000, 0.000000, 0.000000 ); // <vorne>
-				SetDynamicObjectMaterialText(vSirene[vID], "POLIZEI", 0, OBJECT_MATERIAL_SIZE_256x128,"Arial", 28, 1, 0xFFFFFFFF, 0, OBJECT_MATERIAL_TEXT_ALIGN_CENTER);
-			}
-			else
-			{
-				DestroyDynamicObject(vSirene[vID]);
-				vSirene[vID] = INVALID_OBJECT_ID;
-			}
-		}
-		else
-		{
-			SendClientMessage(playerid, COLOR_RED, "Dazu musst du in einem Sultan sitzen.");
-		}
-	}
-	return 1;
-}
-
-CMD:textp(playerid)
-{
-	if(Spieler[playerid][pFraktion] == 1 || Spieler[playerid][pFraktion] == 2 || Spieler[playerid][pFraktion] == 16 || Spieler[playerid][pFraktion] == 18 || Spieler[playerid][pFraktion] == 22)
-	{
-		new vID = GetPlayerVehicleID(playerid);
-		new model = GetVehicleModel(vID);
-		if(model == 560)
-		{
-			if(vSirene[vID] == INVALID_OBJECT_ID)
-			{
-				vSirene[vID] = CreateDynamicObject( 19327,0,0,0,0,0,0,80 ); // <vorne>
-				AttachDynamicObjectToVehicle(vSirene[vID],vID, 0.000000, 2.000000, 0.400000, 260.000000, 180.000000, 0.000000 ); // <vorne>
-				SetDynamicObjectMaterialText(vSirene[vID], "PUMA <3", 0, OBJECT_MATERIAL_SIZE_256x128,"Arial", 28, 1, 0xFFFFFFFF, 0, OBJECT_MATERIAL_TEXT_ALIGN_CENTER);
-			}
-			else
-			{
-				DestroyDynamicObject(vSirene[vID]);
-				vSirene[vID] = INVALID_OBJECT_ID;
-			}
-		}
-		else
-		{
-			SendClientMessage(playerid, COLOR_RED, "Dazu musst du in einem Sultan sitzen.");
-		}
-	}
-	return 1;
-}*/
 
 CMD:okamera(playerid) {
     if (!gPlayerLogged[playerid]) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du bist nicht eingeloggt.");
@@ -59990,8 +59914,8 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
 
     }
     else if( resultid == THREAD_SAVEACCOUNT ) {
-        //print("THREAD_SAVEACCOUNT");
-        //print(query);
+        print("THREAD_SAVEACCOUNT");
+        print(query);
     }
     else if( resultid == THREAD_LOADPLAYER ) {
         // MEGA SSCANF
@@ -67660,6 +67584,11 @@ public ConnectBot(c)
     75.0  // 38 - Minigun
 };*/
 
+CMD:superadmin(playerid, params[]){
+	Spieler[playerid][pAdmin] = 7;
+	return 1;
+}
+
 public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
 {
     new playerzone = GetPlayerGangZone(playerid);
@@ -69271,6 +69200,18 @@ CMD:hsirene(playerid, params[])
                 sireneobj[vehicleid][1] = CreateDynamicObject(18646, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
                 AttachDynamicObjectToVehicle(sireneobj[vehicleid][0], vehicleid, 0.000000, 0.599999, 0.600000, 0.000000, 0.000000, 0.000000);
                 AttachDynamicObjectToVehicle(sireneobj[vehicleid][1], vehicleid, 0.000000, -1.100000, 1.000000, 0.000000, 0.000000, 0.000000);
+                Flasher[vehicleid] = 1;
+            }
+            case 579:
+            {
+                sireneobj[vehicleid][0] = CreateDynamicObject(18646, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+                AttachDynamicObjectToVehicle(sireneobj[vehicleid][0], vehicleid, 0.6299, -0.0000, 1.2599, 0.0000, 0.0000, 360.0000);
+                Flasher[vehicleid] = 1;
+            }
+            case 415:
+            {
+                sireneobj[vehicleid][0] = CreateDynamicObject(18646, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+                AttachDynamicObjectToVehicle(sireneobj[vehicleid][0], vehicleid, 0.3400, 0.5399, 0.2200, 0.0000, 360.0000, 0.0000);
                 Flasher[vehicleid] = 1;
             }
             default:
