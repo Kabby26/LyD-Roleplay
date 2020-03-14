@@ -20,8 +20,8 @@ hook OnPlayerConnect(playerid) {
 
 hook OnGameModeInit() {
     // 3DTextLabels
-    text3D_christmasCalendar[0] = _:CreateDynamic3DTextLabel("-> Adventskalender <-\n" COLOR_HEX_YELLOW "Benutze /Adventskalender um ein Türchen zu öffnen", COLOR_GREEN, CHRISTMASCALENDAR_COORDS, 30.0, .testlos = 1, .worldid = VW_MAIN, .interiorid = MAPS_CHRISTMASCALENDAR_INTERIOR); // Adventskalender
-    text3D_christmasCalendar[1] = _:CreateDynamic3DTextLabel("-> Weihnachtsmützen <-\n" COLOR_HEX_YELLOW "Benutze /Weihnachtsmuetze", 0xFF0000FF, 1265.3833, -1661.0238, 13.5663, 10.0, .testlos = 1, .worldid = VW_MAIN, .interiorid = MAPS_CHRISTMASCALENDAR_INTERIOR);
+    text3D_christmasCalendar[0] = _:CreateDynamic3DTextLabel("-> Adventskalender <-\n" COLOR_HEX_YELLOW "Benutze /Adventskalender um ein T?rchen zu ?ffnen", COLOR_GREEN, CHRISTMASCALENDAR_COORDS, 30.0, .testlos = 1, .worldid = VW_MAIN, .interiorid = MAPS_CHRISTMASCALENDAR_INTERIOR); // Adventskalender
+    text3D_christmasCalendar[1] = _:CreateDynamic3DTextLabel("-> Weihnachtsm?tzen <-\n" COLOR_HEX_YELLOW "Benutze /Weihnachtsmuetze", 0xFF0000FF, 1265.3833, -1661.0238, 13.5663, 10.0, .testlos = 1, .worldid = VW_MAIN, .interiorid = MAPS_CHRISTMASCALENDAR_INTERIOR);
 
 	// Objects
     object_christmasCalendar[0] = CreateDynamicObject(19056, 1240.4448, -1653.4665, 13.1127, 0.0000, 0.0000, -30.2000, VW_MAIN, MAPS_CHRISTMASCALENDAR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //XmasBox3
@@ -95,7 +95,7 @@ hook OnGameModeInit() {
     object_christmasCalendar[38] = CreateDynamicObject(19466, 1244.0262, -1662.1739, 15.6688, 0.0000, 0.0000, 90.0000, VW_MAIN, MAPS_CHRISTMASCALENDAR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //window001
     object_christmasCalendar[39] = CreateDynamicObject(1502, 1246.8944, -1666.8310, 12.5544, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_CHRISTMASCALENDAR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //Gen_doorINT04
     object_christmasCalendar[40] = CreateDynamicObject(19172, 1245.9724, -1662.0760, 16.3341, 0.0000, 0.0000, 180.0000, VW_MAIN, MAPS_CHRISTMASCALENDAR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1
-    SetDynamicObjectMaterialText(object_christmasCalendar[40], 0, "Glüh", 90, "Georgia", 55, 1, 0xFFFFFFFF, 0x0, 0);
+    SetDynamicObjectMaterialText(object_christmasCalendar[40], 0, "Gl?h", 90, "Georgia", 55, 1, 0xFFFFFFFF, 0x0, 0);
     SetDynamicObjectMaterial(object_christmasCalendar[40], 1, 1717, "cj_tv", "green_glass_64", 0xFFFFFFFF);
     object_christmasCalendar[41] = CreateDynamicObject(19172, 1244.7419, -1662.0760, 16.3341, 0.0000, 0.0000, 180.0000, VW_MAIN, MAPS_CHRISTMASCALENDAR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1
     SetDynamicObjectMaterialText(object_christmasCalendar[41], 0, "wein", 90, "Georgia", 55, 1, 0xFFFFFFFF, 0x0, 0);
@@ -298,7 +298,7 @@ hook OnGameModeInit() {
     object_christmasCalendar[149] = CreateDynamicObject(19365, 1257.7010, -1662.5312, 17.1681, 0.0000, 0.0000, 90.0000, VW_MAIN, MAPS_CHRISTMASCALENDAR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //wall013
     SetDynamicObjectMaterial(object_christmasCalendar[149], 0, 5520, "bdupshouse_lae", "sw_woodflloor", 0xFFFFFFFF);
     object_christmasCalendar[150] = CreateDynamicObject(19172, 1255.8520, -1662.4564, 16.3341, 0.0000, 0.0000, 180.0000, VW_MAIN, MAPS_CHRISTMASCALENDAR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1
-    SetDynamicObjectMaterialText(object_christmasCalendar[150], 0, "Süß", 90, "Georgia", 55, 1, 0xFFFFFFFF, 0x0, 0);
+    SetDynamicObjectMaterialText(object_christmasCalendar[150], 0, "S??", 90, "Georgia", 55, 1, 0xFFFFFFFF, 0x0, 0);
     SetDynamicObjectMaterial(object_christmasCalendar[150], 1, 1717, "cj_tv", "green_glass_64", 0xFFFFFFFF);
     object_christmasCalendar[151] = CreateDynamicObject(19172, 1254.8619, -1662.4364, 16.3341, 0.0000, 0.0000, 180.0000, VW_MAIN, MAPS_CHRISTMASCALENDAR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1
     SetDynamicObjectMaterialText(object_christmasCalendar[151], 0, "waren", 90, "Georgia", 55, 1, 0xFFFFFFFF, 0x0, 0);
@@ -427,7 +427,7 @@ hook OnGameModeInit() {
     object_christmasCalendar[231] = CreateDynamicObject(19124, 1263.6063, -1659.7436, 12.7797, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_CHRISTMASCALENDAR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //BollardLight4
     object_christmasCalendar[232] = CreateDynamicObject(19124, 1268.1474, -1659.7436, 12.7797, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_CHRISTMASCALENDAR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //BollardLight4
     object_christmasCalendar[233] = CreateDynamicObject(19173, 1279.3914, -1668.1391, 17.1639, -7.1999, 0.3000, -87.5999, VW_MAIN, MAPS_CHRISTMASCALENDAR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture2
-    SetDynamicObjectMaterialText(object_christmasCalendar[233], 0, "plätze", 90, "Tahoma", 90, 1, 0xFF000000, 0x0, 0);
+    SetDynamicObjectMaterialText(object_christmasCalendar[233], 0, "pl?tze", 90, "Tahoma", 90, 1, 0xFF000000, 0x0, 0);
     SetDynamicObjectMaterial(object_christmasCalendar[233], 1, 1717, "cj_tv", "green_glass_64", 0xFFFFFFFF);
     object_christmasCalendar[234] = CreateDynamicObject(19172, 1267.0831, -1662.4564, 16.3341, 0.0000, 0.0000, 180.0000, VW_MAIN, MAPS_CHRISTMASCALENDAR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1
     SetDynamicObjectMaterialText(object_christmasCalendar[234], 0, "Weihnach", 90, "Georgia", 55, 1, 0xFFFFFFFF, 0x0, 0);
@@ -439,10 +439,10 @@ hook OnGameModeInit() {
     SetDynamicObjectMaterialText(object_christmasCalendar[236], 0, "ts", 90, "Georgia", 55, 1, 0xFFFFFFFF, 0x0, 0);
     SetDynamicObjectMaterial(object_christmasCalendar[236], 1, 1717, "cj_tv", "green_glass_64", 0xFFFFFFFF);
     object_christmasCalendar[237] = CreateDynamicObject(19172, 1263.8041, -1662.4564, 16.3341, 0.0000, 0.0000, 180.0000, VW_MAIN, MAPS_CHRISTMASCALENDAR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1
-    SetDynamicObjectMaterialText(object_christmasCalendar[237], 0, "Mützen", 90, "Georgia", 55, 1, 0xFFFFFFFF, 0x0, 0);
+    SetDynamicObjectMaterialText(object_christmasCalendar[237], 0, "M?tzen", 90, "Georgia", 55, 1, 0xFFFFFFFF, 0x0, 0);
     SetDynamicObjectMaterial(object_christmasCalendar[237], 1, 1717, "cj_tv", "green_glass_64", 0xFFFFFFFF);
     object_christmasCalendar[238] = CreateDynamicObject(19173, 1280.1643, -1686.8729, 17.0666, -7.1999, 0.3000, -87.5999, VW_MAIN, MAPS_CHRISTMASCALENDAR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture2
-    SetDynamicObjectMaterialText(object_christmasCalendar[238], 0, "plätze", 90, "Tahoma", 90, 1, 0xFF000000, 0x0, 0);
+    SetDynamicObjectMaterialText(object_christmasCalendar[238], 0, "pl?tze", 90, "Tahoma", 90, 1, 0xFF000000, 0x0, 0);
     SetDynamicObjectMaterial(object_christmasCalendar[238], 1, 1717, "cj_tv", "green_glass_64", 0xFFFFFFFF);
     object_christmasCalendar[239] = CreateDynamicObject(19173, 1286.3974, -1660.7619, 14.2959, -0.0999, 0.0000, 90.1000, VW_MAIN, MAPS_CHRISTMASCALENDAR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture2
     SetDynamicObjectMaterialText(object_christmasCalendar[239], 0, "<--", 90, "Arial", 90, 1, 0xFF000000, 0x0, 0);
@@ -534,23 +534,23 @@ CMD:adventmin(playerid) {
     if (Spieler[playerid][pLevel] < 3) return SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}Du kannst erst ab Level 3 deine Adventminuten einsehen.");
     new wjahr, wmonat, wday;
     getdate(wjahr, wmonat, wday);
-    if (Spieler[playerid][pAdventDay] == wday) return SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}Du hast heute bereits ein Türchen geöffnet.");
+    if (Spieler[playerid][pAdventDay] == wday) return SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}Du hast heute bereits ein T?rchen ge?ffnet.");
     new adventmin = 90 - Spieler[playerid][pAdventMin];
-    if (adventmin < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "[INFO] {FFFFFF}Du kannst jetzt ein Adventstürchen öffnen (/Findekalender)");
-    return SCMFormatted(playerid, COLOR_LIGHTRED, "[INFO] {FFFFFF}Du musst noch %i/90 Minuten warten, bis du ein Türchen öffnen kannst.", adventmin);
+    if (adventmin < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "[INFO] {FFFFFF}Du kannst jetzt ein Adventst?rchen ?ffnen (/Findekalender)");
+    return SCMFormatted(playerid, COLOR_LIGHTRED, "[INFO] {FFFFFF}Du musst noch %i/90 Minuten warten, bis du ein T?rchen ?ffnen kannst.", adventmin);
 }
 
 CMD:adventskalender(playerid) {
     if (!gPlayerLogged[playerid]) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du bist nicht eingeloggt.");
-    if (Spieler[playerid][pLevel] < 3) return SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}Der Adventskalender ist erst ab Level 3 zugänglich.");
+    if (Spieler[playerid][pLevel] < 3) return SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}Der Adventskalender ist erst ab Level 3 zug?nglich.");
     new wjahr, wmonat, wday;
     getdate(wjahr, wmonat, wday);
-    if (wmonat != 12) return SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}Der Adventskalender wurde nur bis zum 31.12.2018 verlängert.");
+    if (wmonat != 12) return SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}Der Adventskalender wurde nur bis zum 31.12.2018 verl?ngert.");
     if (!IsPlayerInRangeOfPoint(playerid, 5, CHRISTMASCALENDAR_COORDS))
         return SendClientMessage(playerid, COLOR_RED, "Du befindest dich nicht am Adventskalender! Mit /Findekalender wird der Adventskalender auf der Karte markiert!");
     
-    if (Spieler[playerid][pAdventDay] == wday) return SendClientMessage(playerid, COLOR_RED, "Du hast heute bereits ein Adventstürchen geöffnet.");
-    if (Spieler[playerid][pAdventMin] < 90) return SendClientMessage(playerid, COLOR_RED, "Du kannst noch kein Adventstürchen öffnen. Benutze: /Adventmin.");
+    if (Spieler[playerid][pAdventDay] == wday) return SendClientMessage(playerid, COLOR_RED, "Du hast heute bereits ein Adventst?rchen ge?ffnet.");
+    if (Spieler[playerid][pAdventMin] < 90) return SendClientMessage(playerid, COLOR_RED, "Du kannst noch kein Adventst?rchen ?ffnen. Benutze: /Adventmin.");
 
     Spieler[playerid][pAdventDay] = wday;
     Spieler[playerid][pAdventMin] = 0;
@@ -567,7 +567,7 @@ stock GivePlayerGift(playerid, rValue = -1) {
             SetPlayerScore(playerid, ++Spieler[playerid][pLevel]);
             GameTextForPlayer(playerid, "~y~Level UP", 4000, 3);
             GivePlayerCash(playerid, 75000);
-            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Du hast ein Level-Up und $75.000 hinter dem Türchen gefunden!");
+            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Du hast ein Level-Up und $75.000 hinter dem T?rchen gefunden!");
             
             format(message, sizeof(message), "%s hat ein Level-Up und $75.000 im Adventskalender gefunden. (Automatisch erhalten)", GetName(playerid));
         }
@@ -576,7 +576,7 @@ stock GivePlayerGift(playerid, rValue = -1) {
             GivePlayerCash(playerid, 100000);
             GivePlayerRP(playerid, 5);
 
-            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Du hast {FF9900}+5 Respektpunkte und $100.000 {FFFFFF}hinter dem Türchen gefunden!");
+            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Du hast {FF9900}+5 Respektpunkte und $100.000 {FFFFFF}hinter dem T?rchen gefunden!");
             format(message, sizeof(message), "%s hat +5 Respektpunkte und $100.000 im Adventskalender gefunden. (Automatisch erhalten)", GetName(playerid));
         }
 
@@ -584,72 +584,72 @@ stock GivePlayerGift(playerid, rValue = -1) {
             GivePlayerCash(playerid, 150000);
             GivePlayerRP(playerid, 3);
 
-            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Du hast {FF9900}+3 Respektpunkte und $150.000 {FFFFFF}hinter dem Türchen gefunden!");
+            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Du hast {FF9900}+3 Respektpunkte und $150.000 {FFFFFF}hinter dem T?rchen gefunden!");
             format(message, sizeof(message), "%s hat +3 Respektpunkte und $150.000 im Adventskalender gefunden. (Automatisch erhalten)", GetName(playerid));
         }
 
         case 510..579: {
             GivePlayerCash(playerid, 300000);
-            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Du hast {FF9900}$300.000 {FFFFFF}hinter dem Türchen gefunden!");
+            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Du hast {FF9900}$300.000 {FFFFFF}hinter dem T?rchen gefunden!");
             format(message, sizeof(message), "%s hat $300.000 im Adventskalender gefunden. (Automatisch erhalten)", GetName(playerid));
         }
 
         case 580..629: {
             GivePlayerCash(playerid, 500000);
-            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Du hast {FF9900}$500.000 hinter dem Türchen gefunden!");
+            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Du hast {FF9900}$500.000 hinter dem T?rchen gefunden!");
             format(message, sizeof(message), "%s hat $500.000 im Adventskalender gefunden. (Automatisch erhalten)", GetName(playerid));
         }
 
         case 630..659: {
             GivePlayerCash(playerid, 750000);
-            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Du hast {FF9900}$750.000 hinter dem Türchen gefunden!");
+            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Du hast {FF9900}$750.000 hinter dem T?rchen gefunden!");
             format(message, sizeof(message), "%s hat $750.000 im Adventskalender gefunden. (Automatisch erhalten)", GetName(playerid));
         }
 
         case 660..754: {
-            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Du hast {FF9900}eine Forum Ranggrafik (Geschenkejäger) {FFFFFF}hinter dem Türchen gefunden.");
-            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Melde dich dafür im Forum-Thread: {FF9900}LyD | Adventstürchen (Antrag für die Belohnungen)");
+            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Du hast {FF9900}eine Forum Ranggrafik (Geschenkej?ger) {FFFFFF}hinter dem T?rchen gefunden.");
+            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Melde dich daf?r im Forum-Thread: {FF9900}LyD | Adventst?rchen (Antrag f?r die Belohnungen)");
 
             format(message, sizeof(message), "%s hat eine Forum Ranggrafik im Adventskalender gefunden.", GetName(playerid));
         }
 
         case 755..824: {
-            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Du hast {FF9900}einen freien Namechange {FFFFFF}hinter dem Türchen gefunden.");
-            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Melde dich dafür im Forum-Thread: {FF9900}LyD | Adventstürchen (Antrag für die Belohnungen)");
+            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Du hast {FF9900}einen freien Namechange {FFFFFF}hinter dem T?rchen gefunden.");
+            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Melde dich daf?r im Forum-Thread: {FF9900}LyD | Adventst?rchen (Antrag f?r die Belohnungen)");
 
             format(message, sizeof(message), "%s hat einen freien Namechange im Adventskalender gefunden.", GetName(playerid));
         }
 
         case 825..864: {
-            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Du hast {FF9900}einen Skill-Up deiner Wahl {FFFFFF}hinter dem Türchen gefunden.");
-            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Melde dich dafür im Forum-Thread: {FF9900}LyD | Adventstürchen (Antrag für die Belohnungen)");
+            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Du hast {FF9900}einen Skill-Up deiner Wahl {FFFFFF}hinter dem T?rchen gefunden.");
+            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Melde dich daf?r im Forum-Thread: {FF9900}LyD | Adventst?rchen (Antrag f?r die Belohnungen)");
 
             format(message, sizeof(message), "%s hat einen Skill-Up im Adventskalender gefunden.", GetName(playerid));
         }
 
         case 865..904: {
-            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Du hast {FF9900}Neon-Premium {FFFFFF}hinter dem Türchen gefunden.");
-            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Melde dich dafür im Forum-Thread: {FF9900}LyD | Adventstürchen (Antrag für die Belohnungen)");
+            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Du hast {FF9900}Neon-Premium {FFFFFF}hinter dem T?rchen gefunden.");
+            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Melde dich daf?r im Forum-Thread: {FF9900}LyD | Adventst?rchen (Antrag f?r die Belohnungen)");
 
             format(message, sizeof(message), "%s hat Neon-Premium im Adventskalender gefunden.", GetName(playerid));
         }
 
         case 905..934: {
-            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Du hast {FF9900}ein Wunschfahrzeug {FFFFFF}hinter dem Türchen gefunden.");
-            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Melde dich dafür im Forum-Thread: {FF9900}LyD | Adventstürchen (Antrag für die Belohnungen)");
+            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Du hast {FF9900}ein Wunschfahrzeug {FFFFFF}hinter dem T?rchen gefunden.");
+            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Melde dich daf?r im Forum-Thread: {FF9900}LyD | Adventst?rchen (Antrag f?r die Belohnungen)");
 
             format(message, sizeof(message), "%s hat ein Wunschfahrzeug im Adventskalender gefunden.", GetName(playerid));
         }
 
         case 935..949: {
-            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Du hast {FF9900}Bronze Premium (1 Monat) {FFFFFF}hinter dem Türchen gefunden.");
-            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Melde dich dafür im Forum-Thread: {FF9900}LyD | Adventstürchen (Antrag für die Belohnungen)");
+            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Du hast {FF9900}Bronze Premium (1 Monat) {FFFFFF}hinter dem T?rchen gefunden.");
+            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Melde dich daf?r im Forum-Thread: {FF9900}LyD | Adventst?rchen (Antrag f?r die Belohnungen)");
 
             format(message, sizeof(message), "%s hat Bronze Premium im Adventskalender gefunden.", GetName(playerid));
         }
 
         case 950..969: {
-            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Du hast {FF9900}75 LyD-Coins {FFFFFF}hinter dem Türchen gefunden.");
+            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Du hast {FF9900}75 LyD-Coins {FFFFFF}hinter dem T?rchen gefunden.");
             SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Die LyD-Coins wurden dir automatisch gutgeschrieben.");
             new Query[120];
             format(Query, sizeof(Query), "UPDATE `accounts` SET `userPremium` = `userPremium` + 75 WHERE `Name` = '%s'", GetName(playerid));
@@ -659,7 +659,7 @@ stock GivePlayerGift(playerid, rValue = -1) {
         }
 
         case 970..984: {
-            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Du hast {FF9900}100 LyD-Coins {FFFFFF}hinter dem Türchen gefunden.");
+            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Du hast {FF9900}100 LyD-Coins {FFFFFF}hinter dem T?rchen gefunden.");
             SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Die LyD-Coins wurden dir automatisch gutgeschrieben.");
             new Query[120];
             format(Query, sizeof(Query), "UPDATE `accounts` SET `userPremium` = `userPremium` + 100 WHERE `Name` = '%s'", GetName(playerid));
@@ -669,7 +669,7 @@ stock GivePlayerGift(playerid, rValue = -1) {
         }
 
         case 985..994: {
-            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Du hast {FF9900}150 LyD-Coins {FFFFFF}hinter dem Türchen gefunden.");
+            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Du hast {FF9900}150 LyD-Coins {FFFFFF}hinter dem T?rchen gefunden.");
             SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Die LyD-Coins wurden dir automatisch gutgeschrieben.");
             new Query[120];
             format(Query, sizeof(Query), "UPDATE `accounts` SET `userPremium` = `userPremium` + 150 WHERE `Name` = '%s'", GetName(playerid));
@@ -679,7 +679,7 @@ stock GivePlayerGift(playerid, rValue = -1) {
         }
 
         case 995..999: {
-            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Du hast {FF9900}210 LyD-Coins {FFFFFF}hinter dem Türchen gefunden.");
+            SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Du hast {FF9900}210 LyD-Coins {FFFFFF}hinter dem T?rchen gefunden.");
             SendClientMessage(playerid, COLOR_LIGHTRED, "[Adventskalender] {FFFFFF}Die LyD-Coins wurden dir automatisch gutgeschrieben.");
             new Query[120];
             format(Query, sizeof(Query), "UPDATE `accounts` SET `userPremium` = `userPremium` + 210 WHERE `Name` = '%s'", GetName(playerid));

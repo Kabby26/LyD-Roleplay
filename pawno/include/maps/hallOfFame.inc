@@ -24,7 +24,7 @@ hook OnPlayerConnect(playerid) {
 
 hook OnGameModeInit() {
     // 3DTextLabels
-    text3D_hallOfFame[0] = _:CreateDynamic3DTextLabel("LyD\n" COLOR_HEX_YELLOW "Hall Of Fame", COLOR_BLUE, HALL_OF_FAME_COORDS, 15.0, .testlos = 1, .worldid = VW_MAIN, .interiorid = MAPS_HALLOFFAME_INTERIOR);
+    text3D_hallOfFame[0] = _:CreateDynamic3DTextLabel("MRP\n" COLOR_HEX_YELLOW "Hall Of Fame", COLOR_BLUE, HALL_OF_FAME_COORDS, 15.0, .testlos = 1, .worldid = VW_MAIN, .interiorid = MAPS_HALLOFFAME_INTERIOR);
 
     // Objects
     object_hallOfFame[0] = CreateDynamicObject(19172, 2514.0441, 914.4962, 10.7986, 0.0000, -5.5000, 180.0000, VW_MAIN, MAPS_HALLOFFAME_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1
@@ -353,7 +353,7 @@ hook OnGameModeInit() {
     SetDynamicObjectMaterialText(object_hallOfFame[128], 0, "Isch", OBJECT_MATERIAL_SIZE_256x128, "Arial", 32, 1, 0xFF0000FF, 0x00000000, 0);
     SetDynamicObjectMaterial(object_hallOfFame[128], 1, 19297, "matlights", "invisible", 0x00000000);
     object_hallOfFame[129] = CreateDynamicObject(19172, 2489.3000, 919.4946, 10.7299, 0.0000, 0.0000, 90.0000, VW_MAIN, MAPS_HALLOFFAME_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1
-    SetDynamicObjectMaterialText(object_hallOfFame[129], 0, "LyD - Team", OBJECT_MATERIAL_SIZE_256x128, "Cambria", 24, 1, 0xFF000000, 0x00000000, 1);
+    SetDynamicObjectMaterialText(object_hallOfFame[129], 0, "MRP - Team", OBJECT_MATERIAL_SIZE_256x128, "Cambria", 24, 1, 0xFF000000, 0x00000000, 1);
     SetDynamicObjectMaterial(object_hallOfFame[129], 1, 19297, "matlights", "invisible", 0x00000000);
     object_hallOfFame[130] = CreateDynamicObject(1723, 2513.9072, 923.6259, 9.9863, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_HALLOFFAME_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //mrk_seating1
     object_hallOfFame[131] = CreateDynamicObject(2315, 2514.1269, 921.0765, 10.0171, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_HALLOFFAME_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //CJ_TV_TABLE4

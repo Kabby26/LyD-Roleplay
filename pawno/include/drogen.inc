@@ -27,11 +27,11 @@ new const PFLANZEN_HELP[][] = {
     "/Pflanzen help{FFFFFF}\t\tDiese Liste anzeigen",
     "/Pflanzen anzahl{FFFFFF}\tDie Anzahl der angebauten Pflanzen anzeigen",
     "/Pflanzen suchen{FFFFFF}\tEine Pflanze auf der Karte anzeigen",
-    //"/Pflanzen info{FFFFFF}\t\tInfo ÔøΩber nÔøΩchstgelegene Pflanze (Reifezeit, GieÔøΩzeit)",
+    //"/Pflanzen info{FFFFFF}\t\tInfo ùber nùchstgelegene Pflanze (Reifezeit, Gieùzeit)",
     "/Pflanzen anbauen{FFFFFF}\tEine Pflanze anbauen (maximal 200 Pflanzen gleichzeitig)",
-    "/Pflanzen giessen{FFFFFF}\tNÔøΩchstgelegene Pflanze giessen (Zeit zum GieÔøΩen: 600 Sekunden)",
-    "/Pflanzen verbrennen{FFFFFF}\tNÔøΩchstgelegene Pflanze wird verbrannt",
-    "/Pflanzen abbauen{FFFFFF}\tNÔøΩchstgelegene Pflanze wird geerntet",
+    "/Pflanzen giessen{FFFFFF}\tNùchstgelegene Pflanze giessen (Zeit zum Gieùen: 600 Sekunden)",
+    "/Pflanzen verbrennen{FFFFFF}\tNùchstgelegene Pflanze wird verbrannt",
+    "/Pflanzen abbauen{FFFFFF}\tNùchstgelegene Pflanze wird geerntet",
     "/Nimmspice{FFFFFF}\t\tEin Gramm Spice einnehmen (10 Sekunden Cooldown)",
     "/Sellspice{FFFFFF}\t\tSpice verkaufen",
     //"{00FF33}/Geben [ID] Spice [Menge]\tEinem Spieler Spice geben",
@@ -49,9 +49,9 @@ enum E_SEED_POINT {
 
 new const seedPoints[][E_SEED_POINT] = {
     {-85.5813, 2.2551, 3.1172, "Bauernhof in Blueberry Acres"},//Datenbank Infotab Samen1
-    {760.4857, 378.9007, 23.1683, "HÔøΩtte in Red County"},//Datenbank Infotab Samen2
+    {760.4857, 378.9007, 23.1683, "Hùtte in Red County"},//Datenbank Infotab Samen2
     {797.5535, -617.8438, 16.3358, "Garage in Dillimore"},//Datenbank Infotab Samen3
-    {-1669.6538, 2598.6924, 81.4453, "HÔøΩtte in LV"},//Datenbank Infotab Samen4
+    {-1669.6538, 2598.6924, 81.4453, "Hùtte in LV"},//Datenbank Infotab Samen4
     {-2533.2542, -21.5024, 25.6172, "Markt in SF"}//Datenbank Infotab Samen5
 };
 
@@ -69,7 +69,7 @@ hook OnPlayerDisconnect(playerid, reason) {
 hook OnGameModeInit() {
     for (new i = 0; i < sizeof(seedPoints); i++) {
         CreateDynamicPickup(1279, 1, seedPoints[i][SEED_POINT_fX], seedPoints[i][SEED_POINT_fY], seedPoints[i][SEED_POINT_fZ], 0);
-        CreateDynamic3DTextLabel("KrÔøΩuter Drogensamen\n" COLOR_HEX_WHITE "Tippe /Getsamen", COLOR_YELLOW, seedPoints[i][SEED_POINT_fX], seedPoints[i][SEED_POINT_fY], seedPoints[i][SEED_POINT_fZ], 15.0);
+        CreateDynamic3DTextLabel("Krùuter Drogensamen\n" COLOR_HEX_WHITE "Tippe /Getsamen", COLOR_YELLOW, seedPoints[i][SEED_POINT_fX], seedPoints[i][SEED_POINT_fY], seedPoints[i][SEED_POINT_fZ], 15.0);
     }
 }
 
@@ -84,7 +84,7 @@ stock InitDrogenPflanzen() {
 stock ShowPflanzenHelp(playerid) {
     new dialogText[1024];
     for (new i = 0; i < sizeof(PFLANZEN_HELP); i++) format(dialogText, sizeof(dialogText), "%s{B4C12E}%s\n", dialogText, PFLANZEN_HELP[i]);
-    return ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_LIST, "{FFFFFF}Pflanzen Hilfe", dialogText, "SchlieÔøΩen", "");
+    return ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_LIST, "{FFFFFF}Pflanzen Hilfe", dialogText, "Schlieùen", "");
 }
 
 stock RemovePlayerFromPlantArrayData(playerid) {
@@ -119,7 +119,7 @@ stock CreateDrogenPflanzen(playerid, Float:x, Float:y, Float:z) {
     g_DrogenPflanzen[index][DP_bDestroyed] = false;
     g_DrogenPflanzenCount++;
     g_DrogenPflanzen[index][DP_iObject] = CreateDynamicObject(808, x, y, z - 1.5, 0.0, 0.0, 0.0);
-    g_DrogenPflanzen[index][DP_text3D] = CreateDynamic3DTextLabel("[ {009D00}KrÔøΩuterpflanze {FFFFFF}]", COLOR_WHITE, x, y, z, 20.0, .testlos = 1, .streamdistance = 30.0);
+    g_DrogenPflanzen[index][DP_text3D] = CreateDynamic3DTextLabel("[ {009D00}Krùuterpflanze {FFFFFF}]", COLOR_WHITE, x, y, z, 20.0, .testlos = 1, .streamdistance = 30.0);
     new pArray[1];
     pArray[0] = playerid;
     Streamer_SetArrayData(STREAMER_TYPE_3D_TEXT_LABEL, g_DrogenPflanzen[index][DP_text3D], E_STREAMER_PLAYER_ID, pArray);
@@ -145,7 +145,7 @@ new BrenennTimer[MAX_DROGEN_PFLANZEN];
 stock SetDrogenPflanzenOnFire(index) {
     g_DrogenPflanzen[index][DP_iFireObject] = CreateDynamicObject( 18688 , g_DrogenPflanzen[index][DP_fX] , g_DrogenPflanzen[index][DP_fY], g_DrogenPflanzen[index][DP_fZ] - 2.0, 0.0,0.0,0.0 );
     g_DrogenPflanzen[index][DP_bDestroyed] = true;
-    UpdateDynamic3DTextLabelText(g_DrogenPflanzen[index][DP_text3D], COLOR_WHITE, "[ {009D00}KrÔøΩuterpflanze {FFFFFF}]\n{FF9900}> Die Pflanze wurde verbrannt <");
+    UpdateDynamic3DTextLabelText(g_DrogenPflanzen[index][DP_text3D], COLOR_WHITE, "[ {009D00}Krùuterpflanze {FFFFFF}]\n{FF9900}> Die Pflanze wurde verbrannt <");
     //SetTimerEx("DestroyDrogenPflanze",10*1000,false,"d",index);
 	BrenennTimer[index] = SetTimerEx("DestroyDrogenPflanze",60*5000,false,"d",index);
     return 1;
@@ -204,29 +204,29 @@ public Pulse_DrogenPflanzen() {
         if (g_DrogenPflanzen[i][DP_iFortschritt] >= (DROGENPFLANZE_REIF + DROGENPFLANZE_UEBERREIF)) {
             DestroyDrogenPflanze(i);
             g_DrogenPflanzenCount--;
-            SendFraktionMessage(15, COLOR_ORANGE, "Eine KrÔøΩuterpflanze ist eingegangen.");
+            SendFraktionMessage(15, COLOR_ORANGE, "Eine Krùuterpflanze ist eingegangen.");
         }
         else if (g_DrogenPflanzen[i][DP_iFortschritt] < DROGENPFLANZE_REIF) {
             g_DrogenPflanzen[i][DP_iWasser]--;
             if (g_DrogenPflanzen[i][DP_iWasser] <= 0) {
                 DestroyDrogenPflanze(i);
                 g_DrogenPflanzenCount--;
-                SendFraktionMessage(15, COLOR_ORANGE, "Eine KrÔøΩuterpflanze ist vertrocknet.");
+                SendFraktionMessage(15, COLOR_ORANGE, "Eine Krùuterpflanze ist vertrocknet.");
             }
         }
 
         if (!g_DrogenPflanzen[i][DP_bInUse] || g_DrogenPflanzen[i][DP_bDestroyed]) continue;
 
-        new labelText[256] = "[ {009D00}KrÔøΩuterpflanze {FFFFFF}]\n";
+        new labelText[256] = "[ {009D00}Krùuterpflanze {FFFFFF}]\n";
         if (g_DrogenPflanzen[i][DP_iFortschritt] >= DROGENPFLANZE_REIF)
             format(labelText, sizeof(labelText), "%s{FFFF00}> Die Pflanze ist reif <", labelText);
         else if (g_DrogenPflanzen[i][DP_iWasser] < DROGENPFLANZEN_WASSER_NOTICE) {
-            format(labelText, sizeof(labelText), "%s{FFFF00}Reif in: {FFFFFF}%i Minute(n)\n{FFFF00}Vertrocknet in: {FFFFFF}%i Minute(n)\n{FFFF00}> Jetzt gieÔøΩen <", labelText, 
+            format(labelText, sizeof(labelText), "%s{FFFF00}Reif in: {FFFFFF}%i Minute(n)\n{FFFF00}Vertrocknet in: {FFFFFF}%i Minute(n)\n{FFFF00}> Jetzt gieùen <", labelText, 
                 floatround(float(DROGENPFLANZE_REIF - g_DrogenPflanzen[i][DP_iFortschritt]) / 60.0, floatround_ceil), 
                 floatround(float(g_DrogenPflanzen[i][DP_iWasser]) / 60.0, floatround_ceil));
         }
         else
-            format(labelText, sizeof(labelText), "%s{FFFF00}Reif in: {FFFFFF}%i Minute(n)\n{FFFF00}GieÔøΩen in: {FFFFFF}%i Minute(n)\n{FFFF00}Vertrocknet in: {FFFFFF}%i Minute(n)", labelText, 
+            format(labelText, sizeof(labelText), "%s{FFFF00}Reif in: {FFFFFF}%i Minute(n)\n{FFFF00}Gieùen in: {FFFFFF}%i Minute(n)\n{FFFF00}Vertrocknet in: {FFFFFF}%i Minute(n)", labelText, 
                 floatround(float(DROGENPFLANZE_REIF - g_DrogenPflanzen[i][DP_iFortschritt]) / 60.0, floatround_ceil), floatround(float(g_DrogenPflanzen[i][DP_iWasser] - DROGENPFLANZEN_WASSER_NOTICE) / 60, floatround_ceil), 
                 floatround(float(g_DrogenPflanzen[i][DP_iWasser]) / 60.0, floatround_ceil));
 
@@ -241,10 +241,10 @@ public Pulse_DrogenPflanzen() {
 COMMAND:pflanzeverbrennen(playerid) {
     if (!IsPlayerExecutive(playerid)) return SendClientMessage(playerid, COLOR_RED, "Du bist kein Exekutivbeamter.");
     new pflanze = GetClosestDrogenPflanze(playerid, 3.0);
-    if (pflanze == -1) return SendClientMessage(playerid, COLOR_RED, "Es ist keine KrÔøΩuterpflanze in deiner NÔøΩhe.");
-    SendClientMessage(playerid, COLOR_YELLOW, "Die KrÔøΩuterpflanze wurde verbrannt.");
+    if (pflanze == -1) return SendClientMessage(playerid, COLOR_RED, "Es ist keine Krùuterpflanze in deiner Nùhe.");
+    SendClientMessage(playerid, COLOR_YELLOW, "Die Krùuterpflanze wurde verbrannt.");
     SetDrogenPflanzenOnFire(pflanze);
-    return SendFraktionMessage(15, COLOR_RED, "Ein Exekutivbeamter hat eine KrÔøΩuterpflanze verbrannt.");
+    return SendFraktionMessage(15, COLOR_RED, "Ein Exekutivbeamter hat eine Krùuterpflanze verbrannt.");
 }
 
 COMMAND:pflanzen(playerid, params[]) {
@@ -252,27 +252,27 @@ COMMAND:pflanzen(playerid, params[]) {
     if (isnull(params)) return ShowPflanzenHelp(playerid);
 
     new entry[32], value;
-    if (sscanf(params, "s[32]D(-1)", entry, value)) return SendClientMessage(playerid, COLOR_BLUE, "* Benutze: {00CC00}/Pflanzen fÔøΩr eine ÔøΩbersicht");
+    if (sscanf(params, "s[32]D(-1)", entry, value)) return SendClientMessage(playerid, COLOR_BLUE, "* Benutze: {00CC00}/Pflanzen fùr eine ùbersicht");
 	
 	if (!strcmp(entry, "loeschen", true)) {
         new pflanze = GetClosestDrogenPflanze(playerid, 3.0);
-        if (pflanze == -1) return SendClientMessage(playerid, COLOR_RED, "Es ist keine KrÔøΩuterpflanze in deiner NÔøΩhe.");
-		if(g_DrogenPflanzen[pflanze][DP_bDestroyed] != true) return SendClientMessage(playerid, COLOR_RED, "Diese KrÔøΩuterpflanze brennt nicht.");
-        SendClientMessage(playerid, COLOR_YELLOW, "Das Feuer wurde gelÔøΩscht.");
+        if (pflanze == -1) return SendClientMessage(playerid, COLOR_RED, "Es ist keine Krùuterpflanze in deiner Nùhe.");
+		if(g_DrogenPflanzen[pflanze][DP_bDestroyed] != true) return SendClientMessage(playerid, COLOR_RED, "Diese Krùuterpflanze brennt nicht.");
+        SendClientMessage(playerid, COLOR_YELLOW, "Das Feuer wurde gelùscht.");
 
         new message[145];
-        format(message, sizeof(message), "Member %s hat eine KrÔøΩuterpflanze gelÔøΩscht.", GetName(playerid));
+        format(message, sizeof(message), "Member %s hat eine Krùuterpflanze gelùscht.", GetName(playerid));
         DrogenPflanzenFeuerLoeschen(pflanze);
         return SendFraktionMessage(15, COLOR_YELLOW, message);
     }
 	
     if (!strcmp(entry, "zerstoeren", true)) {
         new pflanze = GetClosestDrogenPflanze(playerid, 3.0);
-        if (pflanze == -1) return SendClientMessage(playerid, COLOR_RED, "Es ist keine KrÔøΩuterpflanze in deiner NÔøΩhe.");
-        SendClientMessage(playerid, COLOR_YELLOW, "Die KrÔøΩuterpflanze wurde zerstoert.");
+        if (pflanze == -1) return SendClientMessage(playerid, COLOR_RED, "Es ist keine Krùuterpflanze in deiner Nùhe.");
+        SendClientMessage(playerid, COLOR_YELLOW, "Die Krùuterpflanze wurde zerstoert.");
 
         new message[145];
-        format(message, sizeof(message), "Member %s hat eine KrÔøΩuterpflanze zerstoert.", GetName(playerid));
+        format(message, sizeof(message), "Member %s hat eine Krùuterpflanze zerstoert.", GetName(playerid));
         DestroyDrogenPflanze(pflanze);
         return SendFraktionMessage(15, COLOR_YELLOW, message);
     }
@@ -289,20 +289,20 @@ COMMAND:pflanzen(playerid, params[]) {
     if (!strcmp(entry, "help", true)) return ShowPflanzenHelp(playerid);
 
     if (!strcmp(entry, "anzahl", true)) {
-        if (g_DrogenPflanzenCount == 0) return SendClientMessage(playerid, COLOR_GREEN, "Es sind momentan {7FFFD4}keine {009D00}KrÔøΩuterpflanzen angebaut.");
-        if (g_DrogenPflanzenCount == 1) return SendClientMessage(playerid, COLOR_GREEN, "Es ist momentan {7FFFD4}eine von 200 {009D00}KrÔøΩuterpflanzen angebaut.");
+        if (g_DrogenPflanzenCount == 0) return SendClientMessage(playerid, COLOR_GREEN, "Es sind momentan {7FFFD4}keine {009D00}Krùuterpflanzen angebaut.");
+        if (g_DrogenPflanzenCount == 1) return SendClientMessage(playerid, COLOR_GREEN, "Es ist momentan {7FFFD4}eine von 200 {009D00}Krùuterpflanzen angebaut.");
 
         new message[148];
-        format(message, sizeof(message), "Es sind momentan {7FFFD4}%i von 200 {009D00}KrÔøΩuterpflanzen angebaut.", g_DrogenPflanzenCount);
+        format(message, sizeof(message), "Es sind momentan {7FFFD4}%i von 200 {009D00}Krùuterpflanzen angebaut.", g_DrogenPflanzenCount);
         return SendClientMessage(playerid, COLOR_GREEN, message);
     }
 
     if (!strcmp(entry, "anbauen", true)) {
-        if (IsPlayerInAnyVehicle(playerid)) return SendClientMessage(playerid, COLOR_RED, "Du kannst in einem Fahrzeug keine KrÔøΩuterpflanzen anbauen.");
-        if (g_DrogenPflanzenCount >= 200) return SendClientMessage(playerid, COLOR_RED, "Es sind bereits 200 KrÔøΩuterpflanzen angebaut.");
+        if (IsPlayerInAnyVehicle(playerid)) return SendClientMessage(playerid, COLOR_RED, "Du kannst in einem Fahrzeug keine Krùuterpflanzen anbauen.");
+        if (g_DrogenPflanzenCount >= 200) return SendClientMessage(playerid, COLOR_RED, "Es sind bereits 200 Krùuterpflanzen angebaut.");
         new pflanze = GetClosestDrogenPflanze(playerid); 
-        if (pflanze != -1) return SendClientMessage(playerid, COLOR_RED, "Hier ist bereits eine KrÔøΩuterpflanze.");
-        if (Spieler[playerid][pDrogenSamen] < 1) return SendClientMessage(playerid, COLOR_RED, "Du besitzt keine Samen, um eine KrÔøΩuterpflanze anzubauen.");
+        if (pflanze != -1) return SendClientMessage(playerid, COLOR_RED, "Hier ist bereits eine Krùuterpflanze.");
+        if (Spieler[playerid][pDrogenSamen] < 1) return SendClientMessage(playerid, COLOR_RED, "Du besitzt keine Samen, um eine Krùuterpflanze anzubauen.");
         if (IsPlayerInDynamicArea(playerid, g_NDanbauSperre)) return SendClientMessage(playerid,COLOR_RED,"Du kannst hier keine Pflanzen anbauen.");
 
         new Float:x, Float:y, Float:z;
@@ -310,9 +310,9 @@ COMMAND:pflanzen(playerid, params[]) {
         if (!CreateDrogenPflanzen(playerid, x, y, z)) return SendClientMessage(playerid, COLOR_RED, "Du kannst gerade keine Pflanze anbauen.");
         Spieler[playerid][pDrogenSamen]--;
         new message[145];
-        if (Spieler[playerid][pDrogenSamen] == 0) message = "Eine KrÔøΩuterpflanze wird gezogen. Du hast {FFFFFF}keine {FFFF00}Samen mehr ÔøΩbrig.";
-        else if (Spieler[playerid][pDrogenSamen] == 1) message = "Eine KrÔøΩuterpflanze wird gezogen. Du hast noch {FFFFFF}einen {FFFF00}Samen ÔøΩbrig.";
-        else format(message, sizeof(message), "Eine KrÔøΩuterpflanze wird gezogen. Du hast noch {FFFFFF}%d {FFFF00}Samen ÔøΩbrig.", Spieler[playerid][pDrogenSamen]);
+        if (Spieler[playerid][pDrogenSamen] == 0) message = "Eine Krùuterpflanze wird gezogen. Du hast {FFFFFF}keine {FFFF00}Samen mehr ùbrig.";
+        else if (Spieler[playerid][pDrogenSamen] == 1) message = "Eine Krùuterpflanze wird gezogen. Du hast noch {FFFFFF}einen {FFFF00}Samen ùbrig.";
+        else format(message, sizeof(message), "Eine Krùuterpflanze wird gezogen. Du hast noch {FFFFFF}%d {FFFF00}Samen ùbrig.", Spieler[playerid][pDrogenSamen]);
         SendClientMessage(playerid, COLOR_YELLOW, message);
         SetTimerEx("TogglePlayerControllableEx", 1000, false, "dd", playerid, true);
         FreezePlayer(playerid);
@@ -322,33 +322,33 @@ COMMAND:pflanzen(playerid, params[]) {
     
     // if (!strcmp(params, "info", true)) {
     //     new pflanze = GetClosestDrogenPflanze(playerid, 3.0);
-    //     if (pflanze == -1) return SendClientMessage(playerid, COLOR_RED, "Es ist keine Spicepflanze in deiner NÔøΩhe.");
+    //     if (pflanze == -1) return SendClientMessage(playerid, COLOR_RED, "Es ist keine Spicepflanze in deiner Nùhe.");
     //     if (g_DrogenPflanzen[pflanze][DP_iFortschritt] > DROGENPFLANZE_REIF) return SendClientMessage(playerid,COLOR_YELLOW,"Diese Spicepflanze ist reif.");
 
     //     new message[145];
     //     format(message, sizeof(message), "Die Spicepflanze ist reif in: %d Sekunden.", DROGENPFLANZE_REIF - g_DrogenPflanzen[pflanze][DP_iFortschritt]);
     //     SendClientMessage(playerid, COLOR_WHITE, message);
-    //     format(message, sizeof(message), "Die Spicepflanze benÔøΩtigt Wasser in: %d bis %d Sekunden.", g_DrogenPflanzen[pflanze][DP_iWasser] - DROGENPFLANZEN_WASSER_NOTICE, g_DrogenPflanzen[pflanze][DP_iWasser]);
+    //     format(message, sizeof(message), "Die Spicepflanze benùtigt Wasser in: %d bis %d Sekunden.", g_DrogenPflanzen[pflanze][DP_iWasser] - DROGENPFLANZEN_WASSER_NOTICE, g_DrogenPflanzen[pflanze][DP_iWasser]);
     //     return SendClientMessage(playerid, COLOR_WHITE, message);
     // }
 
     if (!strcmp(entry,"giessen", true)) {
         new pflanze = GetClosestDrogenPflanze(playerid, 3.0);
-        if (pflanze == -1) return SendClientMessage(playerid, COLOR_RED, "Es ist keine KrÔøΩuterpflanze in deiner NÔøΩhe.");
-        if (g_DrogenPflanzen[pflanze][DP_iWasser] > DROGENPFLANZEN_WASSER_NOTICE ) return SendClientMessage(playerid, COLOR_RED, "Diese KrÔøΩuterpflanze benÔøΩtigt noch kein Wasser.");
+        if (pflanze == -1) return SendClientMessage(playerid, COLOR_RED, "Es ist keine Krùuterpflanze in deiner Nùhe.");
+        if (g_DrogenPflanzen[pflanze][DP_iWasser] > DROGENPFLANZEN_WASSER_NOTICE ) return SendClientMessage(playerid, COLOR_RED, "Diese Krùuterpflanze benùtigt noch kein Wasser.");
         g_DrogenPflanzen[pflanze][DP_iWasser] = DROGENPFLANZEN_WASSER_COOLDOWN;
-        return SendClientMessage(playerid, COLOR_YELLOW, "Du hast die KrÔøΩuterpflanze bewÔøΩssert.");
+        return SendClientMessage(playerid, COLOR_YELLOW, "Du hast die Krùuterpflanze bewùssert.");
     }
 
     if (!strcmp(entry,"abbauen", true)) {
-        if (IsPlayerInAnyVehicle(playerid)) return SendClientMessage(playerid, COLOR_RED, "Du kannst in einem Fahrzeug keine KrÔøΩuterpflanzen abbauen.");
+        if (IsPlayerInAnyVehicle(playerid)) return SendClientMessage(playerid, COLOR_RED, "Du kannst in einem Fahrzeug keine Krùuterpflanzen abbauen.");
         new pflanze = GetClosestDrogenPflanze(playerid, 3.0);
-        if (pflanze == -1) return SendClientMessage(playerid, COLOR_RED, "Es ist keine KrÔøΩuterpflanze in deiner NÔøΩhe.");
-        if (g_DrogenPflanzen[pflanze][DP_iFortschritt] < DROGENPFLANZE_REIF) return SendClientMessage(playerid, COLOR_RED, "Die KrÔøΩuterpflanze ist noch nicht reif.");
+        if (pflanze == -1) return SendClientMessage(playerid, COLOR_RED, "Es ist keine Krùuterpflanze in deiner Nùhe.");
+        if (g_DrogenPflanzen[pflanze][DP_iFortschritt] < DROGENPFLANZE_REIF) return SendClientMessage(playerid, COLOR_RED, "Die Krùuterpflanze ist noch nicht reif.");
         new randomAmount = RandomEx(10, 14), message[145];
         if(g_DrogenPflanzen[pflanze][DP_bDestroyed] == true) return SendClientMessage(playerid, COLOR_RED, "Die Pflanze wurde bereits geerntet!");
         g_DrogenPflanzen[pflanze][DP_bDestroyed] = true;
-        UpdateDynamic3DTextLabelText(g_DrogenPflanzen[pflanze][DP_text3D], COLOR_WHITE, "[ {009D00}KrÔøΩuterflanze {FFFFFF}]\n{FFFF00}> Die Pflanze wurde geerntet <");
+        UpdateDynamic3DTextLabelText(g_DrogenPflanzen[pflanze][DP_text3D], COLOR_WHITE, "[ {009D00}Krùuterflanze {FFFFFF}]\n{FFFF00}> Die Pflanze wurde geerntet <");
         SetTimerEx("DestroyDrogenPflanze", 2 * 1000, false, "d", pflanze);
         g_DrogenPflanzenCount--;
         MoveDynamicObject(g_DrogenPflanzen[pflanze][DP_iObject], g_DrogenPflanzen[pflanze][DP_fX], g_DrogenPflanzen[pflanze][DP_fY], g_DrogenPflanzen[pflanze][DP_fZ] - 2.0, 0.05);
@@ -357,12 +357,12 @@ COMMAND:pflanzen(playerid, params[]) {
         g_FraktionsSafeBox[15][FSB_iKrauter] += randomAmount;
         //Spieler[playerid][pKrauterMische] += randomAmount;
 		Spieler[playerid][pSpiceSamenPoints]++;
-        format(message, sizeof(message), "%s hat %d Gramm KrÔøΩuter abgebaut. KrÔøΩuter in der FSafebox: %i", GetName(playerid), randomAmount, g_FraktionsSafeBox[15][FSB_iKrauter]);
-        SendClientMessage(playerid, COLOR_YELLOW, "Die KrÔøΩuterpflanze wird von dir geerntet.");
+        format(message, sizeof(message), "%s hat %d Gramm Krùuter abgebaut. Krùuter in der FSafebox: %i", GetName(playerid), randomAmount, g_FraktionsSafeBox[15][FSB_iKrauter]);
+        SendClientMessage(playerid, COLOR_YELLOW, "Die Krùuterpflanze wird von dir geerntet.");
         return SendFraktionMessage(15, COLOR_LIME, message);
     }
 
-    return SendClientMessage(playerid, COLOR_BLUE, "* Benutze: {00CC00}/Pflanzen fÔøΩr eine ÔøΩbersicht");
+    return SendClientMessage(playerid, COLOR_BLUE, "* Benutze: {00CC00}/Pflanzen fùr eine ùbersicht");
 }
 
 COMMAND:usespice(playerid,params[]) {
@@ -370,7 +370,7 @@ COMMAND:usespice(playerid,params[]) {
 }
 
 COMMAND:nimmspice(playerid,params[]) {
-    if (Spieler[playerid][pSpice] < 3) return SendClientMessage(playerid, COLOR_GREY, "Du benÔøΩtigst mindestens 3g Spice.");
+    if (Spieler[playerid][pSpice] < 3) return SendClientMessage(playerid, COLOR_GREY, "Du benùtigst mindestens 3g Spice.");
     if ( gettime() < Spieler[playerid][unixSpiceCooldown] ) {
         SendClientMessage(playerid,COLOR_RED,"Du musst noch einen Moment warten, bis du wieder Spice nehmen kannst.");
         return 1;
@@ -452,16 +452,16 @@ COMMAND:sellkrauter(playerid,params[]) {
     if(sscanf(params, "ui", pID, menge))return SendClientMessage(playerid, COLOR_BLUE, "* Benutze: {00CC00}/Sellkrauter [SpielerID/Name] [Menge]");
     if(Spieler[playerid][pFraktion] != 15)return SendClientMessage(playerid, COLOR_RED, "Du bist kein Member der Nine Demons.");
     GetPlayerPos(pID, x,y,z);
-    if(playerid==pID)return SendClientMessage(playerid, COLOR_RED, "Du kannst KrÔøΩuter nicht an dich selbst verkaufen.");
+    if(playerid==pID)return SendClientMessage(playerid, COLOR_RED, "Du kannst Kr‰uter nicht an dich selbst verkaufen.");
     if(!IsPlayerConnected(pID))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
-    if(Spieler[pID][pFraktion] != 19) return SendClientMessage(playerid, COLOR_RED, "KrÔøΩuter kÔøΩnnen nur an Terroristen verkauft werden!");
-    if(!IsPlayerInRangeOfPoint(playerid, 5.0, x,y,z))return SendClientMessage(playerid, COLOR_RED, "Du bist nicht in der NÔøΩhe des Spielers.");
-    if(menge > Spieler[playerid][pKrauterMische]) return SendClientMessage(playerid, COLOR_RED, "Soviel KrÔøΩuter hast du nicht.");
+    if(Spieler[pID][pFraktion] != 19) return SendClientMessage(playerid, COLOR_RED, "Krùuter kùnnen nur an Terroristen verkauft werden!");
+    if(!IsPlayerInRangeOfPoint(playerid, 5.0, x,y,z))return SendClientMessage(playerid, COLOR_RED, "Du bist nicht in der Nùhe des Spielers.");
+    if(menge > Spieler[playerid][pKrauterMische]) return SendClientMessage(playerid, COLOR_RED, "Soviel Krùuter hast du nicht.");
     //if(menge < 1 || menge > 10000)return SendClientMessage(playerid, COLOR_RED, "Der Wert sollte zwischen 1 und 10.000 liegen.");
     SetPVarString(playerid,"SellSpice",params);
 
-    ShowPlayerDialog(playerid,DIALOG_SELLSPICE,DIALOG_STYLE_MSGBOX,"KrÔøΩuter Verkauf Information","\
-    Der aktuelle Preis je Gramm KrÔøΩuter $1.000!","Einverstanden","Ablehnen");
+    ShowPlayerDialog(playerid,DIALOG_SELLSPICE,DIALOG_STYLE_MSGBOX,"Krùuter Verkauf Information","\
+    Der aktuelle Preis je Gramm Krùuter $1.000!","Einverstanden","Ablehnen");
 
     return 1;
 }
@@ -493,11 +493,11 @@ COMMAND:getsamen(playerid, params[]) {
 	
 	if (Spieler[playerid][pDrogenSamen] >= GetPlayerSamenSkillLevelValue(playerid)) return SCMFormatted(playerid, COLOR_ORANGE, "[INFO] {FFFFFF}Du hast bereits %d Samen bei dir.", GetPlayerSamenSkillLevelValue(playerid));
 	
-	SCMFormatted(playerid, COLOR_YELLOW, "[INFO] {FFFFFF}Du hast nun %d Samen (+ %d StÔøΩck).", GetPlayerSamenSkillLevelValue(playerid), GetPlayerSamenSkillLevelValue(playerid) - Spieler[playerid][pDrogenSamen]);
+	SCMFormatted(playerid, COLOR_YELLOW, "[INFO] {FFFFFF}Du hast nun %d Samen (+ %d Stùck).", GetPlayerSamenSkillLevelValue(playerid), GetPlayerSamenSkillLevelValue(playerid) - Spieler[playerid][pDrogenSamen]);
 	
 	Spieler[playerid][pDrogenSamen] = GetPlayerSamenSkillLevelValue(playerid);
 	
-	//SCMFormatted(playerid, COLOR_YELLOW, "[INFO] {FFFFFF}Du hast nun %d Samen (+ %d StÔøΩck).", MAX_SAMEN, MAX_SAMEN - Spieler[playerid][pDrogenSamen]);
+	//SCMFormatted(playerid, COLOR_YELLOW, "[INFO] {FFFFFF}Du hast nun %d Samen (+ %d Stùck).", MAX_SAMEN, MAX_SAMEN - Spieler[playerid][pDrogenSamen]);
     //Spieler[playerid][pDrogenSamen] = MAX_SAMEN;
     return 1;
 }

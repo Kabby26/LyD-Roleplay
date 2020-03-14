@@ -122,9 +122,9 @@ Yakuza:
 // Threads
 
 #define PREIS_SCHEIDUNG 32000
-#define SOUND_ALHAMBRA "http://kabby.xyz/lyd/alhambra.mp3"
-#define URL_LOGINMUSIC "http://kabby.xyz/lyd/login.wav"
-#define SOUND_HOSPITAL "http://kabby.xyz/lyd/hospital.mp3"
+#define SOUND_ALHAMBRA "http://kabby.xyz/MRP/alhambra.mp3"
+#define URL_LOGINMUSIC "http://kabby.xyz/MRP/login.wav"
+#define SOUND_HOSPITAL "http://kabby.xyz/MRP/hospital.mp3"
 #define STREAMER_MAX_OBJECTS 900
 
 #define HAUSTIER_OFFSET 1.5
@@ -3094,7 +3094,7 @@ new bool:bPurgeEvent = false;
 
 // Frakcars-System
 
-#define SERVERFRAKCARS_DB   frakcars
+#define SERVERFRAKCARS_DB frakcars
 
 enum FrakCarInfos {
 	f_dbid,
@@ -3295,9 +3295,9 @@ new const g_Gutschein[][] = {
     {"2 LevelUp"},
     {"3 Respektpunkte"},
     {"6 Respektpunkte"},
-    {"100 LyD Coins"},
-    {"300 LyD Coins"},
-    {"500 LyD Coins"},
+    {"100 MRP Coins"},
+    {"300 MRP Coins"},
+    {"500 MRP Coins"},
     {"Neon-Premium"},
     {"Extra Fahrzeugschlüssel"}
 };
@@ -5204,7 +5204,7 @@ new const g_KampfStyle[][e_KampfStyle] = {
 
 main() {
     print("----------------------------------");
-    print("Live your Dream Roleplay");
+    print("Monkey Roleplay");
     printf("Compiled on %s %s", __date, __time);
     print("----------------------------------\n");
 }
@@ -5316,7 +5316,7 @@ public MinuteTimer(playerid) {
 
     if (minute == 10) {
         SendServerInfo(COLOR_BLUE,   "________________________________________________________________");
-        SendServerInfo(COLOR_YELLOW, "                                  LyD ~ Häufig gestellte Fragen");
+        SendServerInfo(COLOR_YELLOW, "                                  MRP ~ Häufig gestellte Fragen");
         SendServerInfo(COLOR_WHITE,  "Mit /Help werden Dir die wichtigsten Befehle auf dem Server aufgelistet.");
         SendServerInfo(COLOR_WHITE,  "Solltest Du einen Ort nicht finden, so leitet Dir /Navi den Weg!");
         SendServerInfo(COLOR_WHITE,  "Bei einem Anliegen kannst Du unseren Support mit /Sup erreichen.");
@@ -5324,27 +5324,27 @@ public MinuteTimer(playerid) {
     }
     else if (minute == 25) {
         SendServerInfo(COLOR_BLUE,   "___________________________________________________________________");
-        SendServerInfo(COLOR_YELLOW, "                                     LyD ~ Spenden für den Server");
-        SendServerInfo(COLOR_WHITE,  "Du möchtest LyD unterstützen?");
+        SendServerInfo(COLOR_YELLOW, "                                     MRP ~ Spenden für den Server");
+        SendServerInfo(COLOR_WHITE,  "Du möchtest MRP unterstützen?");
         SendServerInfo(COLOR_WHITE,  "Dann schau in unserem Shop vorbei, wo Du dir tolle Extras sichern kannst!");
-        SendServerInfo(COLOR_WHITE,  "Unseren Shop erreichst Du unter: LyD-SAMP.de/shop");
+        SendServerInfo(COLOR_WHITE,  "Unseren Shop erreichst Du unter: monkey-roleplay.de/shop");
         SendServerInfo(COLOR_BLUE,   "___________________________________________________________________");
     }
     else if (minute == 40) {
         SendServerInfo(COLOR_BLUE,   "________________________________________________________________");
-        SendServerInfo(COLOR_YELLOW, "                                      LyD ~ Informationen");
+        SendServerInfo(COLOR_YELLOW, "                                      MRP ~ Informationen");
         SendServerInfo(COLOR_WHITE,  "In unserem Forum findest Du wichtige Neuigkeiten,");
         SendServerInfo(COLOR_WHITE,  "bezüglich Updates und Neuerungen, welche Du nicht verpassen solltest!");
-        SendServerInfo(COLOR_WHITE,  "Unser Forum erreichst du unter: LyD-SAMP.de/forum");
-        SendServerInfo(COLOR_WHITE,  "Unsere Teamspeak-IP lautet: ts.LyD-SAMP.de");
+        SendServerInfo(COLOR_WHITE,  "Unser Forum erreichst du unter: monkey-roleplay.de/forum");
+        SendServerInfo(COLOR_WHITE,  "Unsere Teamspeak-IP lautet: ts.monkey-roleplay.de");
         SendServerInfo(COLOR_BLUE,   "________________________________________________________________");
     }
     else if (minute == 55) {
         SendServerInfo(COLOR_BLUE,   "______________________________________________________________");
-        SendServerInfo(COLOR_YELLOW, "                                  LyD ~ User Control Panel");
+        SendServerInfo(COLOR_YELLOW, "                                  MRP ~ User Control Panel");
         SendServerInfo(COLOR_WHITE,  "In unserem User Panel kannst Du jederzeit diverse Statistiken abrufen,");
         SendServerInfo(COLOR_WHITE,  "ein Support-Ticket erstellen oder einen Regelverstoß melden.");
-        SendServerInfo(COLOR_WHITE,  "Unser User-Panel erreichst Du unter: ucp.LyD-SAMP.de");
+        SendServerInfo(COLOR_WHITE,  "Unser User-Panel erreichst Du unter: ucp.monkey-roleplay.de");
         SendServerInfo(COLOR_BLUE,   "______________________________________________________________");
     }
     
@@ -6037,8 +6037,8 @@ public OnGameModeInit2() {
     TextDrawSetOutline(Logo1, 1);
     TextDrawSetProportional(Logo1, 1);*/
 
-    //Logo2 = TextDrawCreate(554.000000, 5.000000, "Live Your Dream");
-    /*Logo2 = TextDrawCreate(514.000000, 125.000000, "Live Your Dream");
+    //Logo2 = TextDrawCreate(554.000000, 5.000000, "Monkey");
+    /*Logo2 = TextDrawCreate(514.000000, 125.000000, "Monkey");
     TextDrawBackgroundColor(Logo2, 255);
     TextDrawFont(Logo2, 0);
     TextDrawLetterSize(Logo2, 0.479999, 1.699998);
@@ -6046,7 +6046,7 @@ public OnGameModeInit2() {
     TextDrawSetOutline(Logo2, 1);
     TextDrawSetProportional(Logo2, 1);*/
 //klammer ende
-    URL = TextDrawCreate(26.000000, 430.000000, "~g~Forum: ~w~www.LyD-SAMP.de");
+    URL = TextDrawCreate(26.000000, 430.000000, "~g~Forum: ~w~www.monkey-roleplay.de");
     TextDrawBackgroundColor(URL, 255);
     TextDrawFont(URL, 2);
     TextDrawLetterSize(URL, 0.280000, 1.000000);
@@ -6382,7 +6382,7 @@ public OnGameModeInit2() {
 
 	//3D Infotext
 	//CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"SERVER - EXPERTE\nFreischalten mit:"COLOR_HEX_WHITE"/Experte", COLOR_WHITE, 814.4642,-1345.7327,13.5320, 15.0);
-	//CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"OSTER-AKTION im LyD-Shop\n"COLOR_HEX_GREEN"Es erwarten dich tolle Preise!\n"COLOR_HEX_WHITE"Weitere Informationen im Forum!", COLOR_WHITE, 1480.9296,-1613.7988,14.0979, 25.0);
+	//CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"OSTER-AKTION im MRP-Shop\n"COLOR_HEX_GREEN"Es erwarten dich tolle Preise!\n"COLOR_HEX_WHITE"Weitere Informationen im Forum!", COLOR_WHITE, 1480.9296,-1613.7988,14.0979, 25.0);
 	CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"POSTHAUS - Eingang\n"COLOR_HEX_WHITE"Betreten mit 'Enter'", COLOR_WHITE, 914.3174,-1004.0942,37.9902, 25.0);
 	CreateDynamic3DTextLabel(COLOR_HEX_BLUE"POSTHAUS\n"COLOR_HEX_WHITE"Tippe /Post", COLOR_WHITE, 822.3183,1.8747,1004.1797, 15.0);
 	CreateDynamic3DTextLabel(COLOR_HEX_BLUE"Schmied (Befreit von Handschellen)\n"COLOR_HEX_WHITE"Tippe /Zerbrechen\n"COLOR_HEX_ORANGE"Preis: 500$", COLOR_WHITE, -382.0342,-1426.4521,26.0822, 25.0);
@@ -6702,7 +6702,7 @@ public OnPlayerConnect(playerid)
 		SendClientMessage(playerid, COLOR_RED, "Du wurdest gekickt, da dein Name nicht passend war!");
 		Kick(playerid);
 	}
-	format(string, sizeof(string), "* %s hat Live your Dream betreten.", sName);
+	format(string, sizeof(string), "* %s hat Monkey betreten.", sName);
     
 	for (new i = 0; i < MAX_PLAYERS; i++)
 	    if (IsPlayerConnected(i) && gPlayerLogged[i] == 1 && pChatSettings[i][CHAT_JL] == 1)
@@ -6756,7 +6756,7 @@ public OnPlayerConnect(playerid)
     SetPlayerColor(playerid, COLOR_WHITE);
     ClearPlayerChat(playerid);
     /*
-    format(string, sizeof(string), "Herzlich Willkommen auf Live your Dream - Reallife, %s", GetName(playerid));
+    format(string, sizeof(string), "Herzlich Willkommen auf Monkey - Reallife, %s", GetName(playerid));
     SendClientMessage(playerid, COLOR_GREEN, string);
     */
 
@@ -7666,15 +7666,15 @@ public OnPlayerDisconnect(playerid, reason)
     pUnderCover[playerid] = 0;
     if(reason==0)
     {
-        format(String, sizeof(String), "* %s hat Live your Dream verlassen. (Crash/Time-Out)", sName);
+        format(String, sizeof(String), "* %s hat Monkey verlassen. (Crash/Time-Out)", sName);
     }
     else if(reason==1)
     {
-        format(String, sizeof(String), "* %s hat Live your Dream verlassen.", sName);
+        format(String, sizeof(String), "* %s hat Monkey verlassen.", sName);
     }
     else if(reason==2)
     {
-        format(String, sizeof(String), "* %s hat Live your Dream verlassen. (Kick/Bann)", sName);
+        format(String, sizeof(String), "* %s hat Monkey verlassen. (Kick/Bann)", sName);
     }
     // SendAdminMessage(COLOR_GREY, str);
     for(new i = 0 ; i < MAX_PLAYERS ; i++)
@@ -9541,7 +9541,7 @@ CMD:dticket(playerid, params[])
         SendClientMessage(pID, COLOR_ORANGE, "[SUPPORT-TEAM]"COLOR_HEX_ORANGE" dieser Art nicht vom 'im Spiel'-Support beantwortet/geklärt werden oder");
         SendClientMessage(pID, COLOR_ORANGE, "[SUPPORT-TEAM]"COLOR_HEX_ORANGE" Sie haben Ihr Anliegen nicht direkt unter /SUP geschildert.");
         SendClientMessage(pID, COLOR_ORANGE, "[SUPPORT-TEAM]"COLOR_HEX_ORANGE" Wenden Sie sich bei einem Teammitglied im Teamspeak oder stellen Sie Ihre Anfrage im Forum.");
-        ShowPlayerDialog(pID, DIALOG_SPAWNMELDUNG, DIALOG_STYLE_MSGBOX, "Live your Dream", "Nachricht vom SUPPORT-TEAM:\n\nWir haben Ihre Nachricht erhalten! Leider können Support Nachrichten\ndieser Art nicht vom 'im Spiel'-Support beantwortet/geklärt werden!\nWenden Sie sich bei einem Teammitglied im Teamspeak oder stellen Sie Ihre Anfrage im Forum.\n\nForum Adresse: www.LyD-SAMP.de\nTeamspeak Adresse: TS.LyD-SAMP.de", "OK", "");
+        ShowPlayerDialog(pID, DIALOG_SPAWNMELDUNG, DIALOG_STYLE_MSGBOX, "Monkey", "Nachricht vom SUPPORT-TEAM:\n\nWir haben Ihre Nachricht erhalten! Leider können Support Nachrichten\ndieser Art nicht vom 'im Spiel'-Support beantwortet/geklärt werden!\nWenden Sie sich bei einem Teammitglied im Teamspeak oder stellen Sie Ihre Anfrage im Forum.\n\nForum Adresse: www.monkey-roleplay.de\nTeamspeak Adresse: TS.monkey-roleplay.de", "OK", "");
         format(string, sizeof(string), "> Ticket < - %s hat das Ticket von %s ermahnt und gelöscht.", GetName(playerid), GetName(pID));
         SendAdminMessage(COLOR_ORANGE, string);
     }
@@ -9573,9 +9573,9 @@ CMD:aticket(playerid, params[])
         format(string1, sizeof(string1), "Nachricht vom SUPPORT-TEAM:\n\nWir haben deine Nachricht erhalten!\nDeine Frage wurde schon einmal uns gestellt,");
         format(string2, sizeof(string2), " weshalb wir die Antwort zu\ndieser wichtigen Frage in unserer Hilfekonsole beantwortet haben. \nUns erreichen täglich eine Vielzahl von Anfragen");
         format(string3, sizeof(string3), " und Hilferufen,\nweshalb wir nicht auf jede Fragestellung reagieren können.\nUm den Support etwas zu entlasten, wurde eine Hilfekonsole eingerichtet,");
-        format(string4, sizeof(string4), "\nwo viele typische Fragen beantwortet sind.\n\nBefehl: /Hilfekonsole\n\nForum Adresse: www.LyD-SAMP.de\nTeamspeak Adresse: TS.LyD-SAMP.de\nUser Panel: www.UCP.LyD-SAMP.de");
+        format(string4, sizeof(string4), "\nwo viele typische Fragen beantwortet sind.\n\nBefehl: /Hilfekonsole\n\nForum Adresse: www.monkey-roleplay.de\nTeamspeak Adresse: TS.monkey-roleplay.de\nUser Panel: www.UCP.monkey-roleplay.de");
         format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-        ShowPlayerDialog(pID, DIALOG_SPAWNMELDUNG, DIALOG_STYLE_MSGBOX, "LIVE YOUR DREAM", string4, "OK", "");
+        ShowPlayerDialog(pID, DIALOG_SPAWNMELDUNG, DIALOG_STYLE_MSGBOX, "Monkey", string4, "OK", "");
         format(string, sizeof(string), "> Ticket < - %s hat das Ticket von %s gelöscht und H. auf Hilfekonsole.", GetName(playerid), GetName(pID));
         SendAdminMessage(COLOR_ORANGE, string);
     }
@@ -9719,9 +9719,9 @@ CMD:adminwarnung(playerid, params[])
         format(string1, sizeof(string1), "Nachricht vom MODERATOR:\n\nWir haben deine Meldung erhalten!\nBitte hab Verständnis dafür, dass der Befehl '/Admin' nur\n");
         format(string2, sizeof(string2), "für äußerst wichtige Notfälle dieser Art:\n\n- Cheatermeldung\n- Melden von Regelverstößen\n");
         format(string3, sizeof(string3), "- Melden von Spielfehlern\n\noder ähnlichem eingerichtet wurde.");
-        format(string4, sizeof(string4), "\n\nForum Adresse: www.LyD-SAMP.de\nTeamspeak Adresse: TS.LyD-SAMP.de\nUser Panel: www.UCP.LyD-SAMP.de");
+        format(string4, sizeof(string4), "\n\nForum Adresse: www.monkey-roleplay.de\nTeamspeak Adresse: TS.monkey-roleplay.de\nUser Panel: www.UCP.monkey-roleplay.de");
         format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-        ShowPlayerDialog(pID, DIALOG_SPAWNMELDUNG, DIALOG_STYLE_MSGBOX, "LIVE YOUR DREAM", string4, "OK", "");
+        ShowPlayerDialog(pID, DIALOG_SPAWNMELDUNG, DIALOG_STYLE_MSGBOX, "Monkey", string4, "OK", "");
         format(string, sizeof(string), "%s %s hat Spieler %s wegen seinem Admin-Notruf ermahnt.", GetPlayerAdminRang(playerid), GetName(playerid), GetName(pID));
         SendAdminMessage(COLOR_ORANGE, string);
     }
@@ -9746,9 +9746,9 @@ CMD:regelwarnung(playerid, params[])
         format(string1, sizeof(string1), "Nachricht vom MODERATOR:\n\nDeine Spielweise entspricht nicht den Regeln!\nDu stehst kurz davor wegen einem Regelverstoß bestraft zu werden.");
         format(string2, sizeof(string2), "\nWir fordern dich unverzüglich auf, deine Spielweise den Regeln anzupassen.\nAndernfalls musst du mit Sanktionen rechnen. Dies ist erstmals eine Ermahnung!");
         format(string3, sizeof(string3), "\nDie Spielregeln findest du in unserem Forum unter 'Regeln'.");
-        format(string4, sizeof(string4), "\n\nForum Adresse: www.LyD-SAMP.de\nTeamspeak Adresse: TS.LyD-SAMP.de\nUser Panel: www.UCP.LyD-SAMP.de");
+        format(string4, sizeof(string4), "\n\nForum Adresse: www.monkey-roleplay.de\nTeamspeak Adresse: TS.monkey-roleplay.de\nUser Panel: www.UCP.monkey-roleplay.de");
         format(string4, sizeof(string4), "%s%s%s%s", string1, string2, string3, string4);
-        ShowPlayerDialog(pID, DIALOG_SPAWNMELDUNG, DIALOG_STYLE_MSGBOX, "LIVE YOUR DREAM", string4, "OK", "");
+        ShowPlayerDialog(pID, DIALOG_SPAWNMELDUNG, DIALOG_STYLE_MSGBOX, "Monkey", string4, "OK", "");
         format(string, sizeof(string), "%s %s hat Spieler %s auf seine negative Spielweise hingewiesen.", GetPlayerAdminRang(playerid), GetName(playerid), GetName(pID));
         SendAdminMessage(COLOR_ORANGE, string);
     }
@@ -10020,7 +10020,7 @@ CMD:tban(playerid, params[])
     printf("User %s time banned - %s", GetName(pID), ConvertUnix(tBanTime));
     format(string, sizeof(string), "[BANNED]: Spieler %s wurde von %s für %d Minuten gebannt, Grund: %s", GetName(pID), GetName(playerid), time, grund);
     SendClientMessageToAll(COLOR_RED, string);
-    format(string1, sizeof(string1), "Sind Sie der Meinung das diese Sperre falsch war? Dann schreiben Sie auf wwww.LyD-SAMP.de ein Entbannantrag!");
+    format(string1, sizeof(string1), "Sind Sie der Meinung das diese Sperre falsch war? Dann schreiben Sie auf wwww.monkey-roleplay.de ein Entbannantrag!");
     SendClientMessage(pID, COLOR_RED, string1);
 
     format(query,sizeof(query),"UPDATE `accounts` SET `GebanntVon` = '%s' ,`BanGrund` = '%s' , `Banned` = 1,`TimeBan` = %d WHERE `Name` = '%s'",
@@ -10268,7 +10268,7 @@ CMD:kleidung(playerid)
                 format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_array[i]);
             }
         }
-        ShowPlayerDialog(playerid, DIALOG_SKINS, DIALOG_STYLE_PREVMODEL, "LyD - Kleidungsladen", dialogstr, "Ok", "Abbrechen");
+        ShowPlayerDialog(playerid, DIALOG_SKINS, DIALOG_STYLE_PREVMODEL, "MRP - Kleidungsladen", dialogstr, "Ok", "Abbrechen");
    	}
     return 1;
 }
@@ -10626,7 +10626,7 @@ public OnPlayerSpawn(playerid)
         EvidenceRoomHeistFinished();
     }
 
-    //ShowPlayerDialog(playerid, DIALOG_SPAWNMELDUNG, DIALOG_STYLE_MSGBOX, "Live your Dream - Roleplay", "LyD ist heute 2 JAHRE ALT geworden und das feiern wir mit tollen Events und Gewinnen!\nWas für Events, zu welcher Uhrzeit stattfinden, steht im Forum: www.LyD-SAMP.de\n\nProjektdaten:\n\nServer IP: Server.LyD-SAMP.de\nTeamspeak IP: TS.LyD-SAMP.de\nForum Adresse: www.LyD-SAMP.de\n\nSchau täglich auf unserem Forum vorbei, um über Neuigkeiten informiert zu sein!", "OK", "");
+    //ShowPlayerDialog(playerid, DIALOG_SPAWNMELDUNG, DIALOG_STYLE_MSGBOX, "Monkey - Roleplay", "MRP ist heute 2 JAHRE ALT geworden und das feiern wir mit tollen Events und Gewinnen!\nWas für Events, zu welcher Uhrzeit stattfinden, steht im Forum: www.monkey-roleplay.de\n\nProjektdaten:\n\nServer IP: Server.monkey-roleplay.de\nTeamspeak IP: TS.monkey-roleplay.de\nForum Adresse: www.monkey-roleplay.de\n\nSchau täglich auf unserem Forum vorbei, um über Neuigkeiten informiert zu sein!", "OK", "");
     GZ_OnPlayerSpawn(playerid);
     g_aiLastDamagedByPlayer[playerid] = INVALID_PLAYER_ID;
 
@@ -10881,7 +10881,7 @@ public SetPlayerSpawn(playerid)
             SendClientMessage(playerid, COLOR_WHITE, " ");
             SendClientMessage(playerid, COLOR_WHITE, "Zugfahrer sagt: Herzlich Willkommen beim Los Santos Hauptbahnhof!");
             SendClientMessage(playerid, COLOR_WHITE, "Zugfahrer sagt: Wir wünschen Ihnen eine Gute Weiterreise und viel Spaß!");
-            ShowPlayerDialog(playerid, DIALOG_SPAWNMELDUNG, DIALOG_STYLE_MSGBOX, "HERZLICH WILLKOMMEN", "Du hast als Startbonus 50.000$ und den Autoführerschein erhalten.\nAm Neulingsspawn kannst du dein zusätzlichen Startbonus annehmen.\n\nBis Level 2 kannst du den Neulingschat mit /NC nutzen.\nBenötigst du Hilfe? Wir helfen dir! Nutze: /Sup\n\n\nProjektdaten:\n\nServer IP: Server.LyD-SAMP.de\nTeamspeak IP: TS.LyD-SAMP.de\nForum Adresse: www.LyD-SAMP.de", "OK", "");
+            ShowPlayerDialog(playerid, DIALOG_SPAWNMELDUNG, DIALOG_STYLE_MSGBOX, "HERZLICH WILLKOMMEN", "Du hast als Startbonus 50.000$ und den Autoführerschein erhalten.\nAm Neulingsspawn kannst du dein zusätzlichen Startbonus annehmen.\n\nBis Level 2 kannst du den Neulingschat mit /NC nutzen.\nBenötigst du Hilfe? Wir helfen dir! Nutze: /Sup\n\n\nProjektdaten:\n\nServer IP: Server.monkey-roleplay.de\nTeamspeak IP: TS.monkey-roleplay.de\nForum Adresse: www.monkey-roleplay.de", "OK", "");
 
 		}
 		if(PlayerIsPaintballing[playerid] == 1)
@@ -11210,7 +11210,7 @@ public SetPlayerSpawn(playerid)
         if( gPlayerLogged[playerid] == 0 ) {
             // Nicht eingeloggt aber gespawnt ??
             if( Spieler[playerid][bAccountExists] ) {
-                ShowPlayerDialog(playerid, DIALOG_LOGIN, DIALOG_STYLE_PASSWORD, COLOR_HEX_LIGHTBLUE"Anmeldung:", COLOR_HEX_ORANGE"[LyD]\n\n"COLOR_HEX_WHITE"Willkommen auf "COLOR_HEX_GREEN"Live your Dream - Roleplay\n"COLOR_HEX_WHITE"Ein Account unter diesem Namen ist bei uns registriert!\nSollte es dein Account sein, dann Logge dich bitte nun ein.\n \n"COLOR_HEX_ORANGE"Behalte dein Passwort immer für dich!\n"COLOR_HEX_RED">Passwort vergessen?< - kontaktiere uns: Admin@LyD-SAMP.de", "OK", "Abbrechen");
+                ShowPlayerDialog(playerid, DIALOG_LOGIN, DIALOG_STYLE_PASSWORD, COLOR_HEX_LIGHTBLUE"Anmeldung:", COLOR_HEX_ORANGE"[MRP]\n\n"COLOR_HEX_WHITE"Willkommen auf "COLOR_HEX_GREEN"Monkey - Roleplay\n"COLOR_HEX_WHITE"Ein Account unter diesem Namen ist bei uns registriert!\nSollte es dein Account sein, dann Logge dich bitte nun ein.\n \n"COLOR_HEX_ORANGE"Behalte dein Passwort immer für dich!\n"COLOR_HEX_RED">Passwort vergessen?< - kontaktiere uns: Admin@monkey-roleplay.de", "OK", "Abbrechen");
 
                 Spieler[playerid][tLoginTimeout] = SetTimerEx("PlayerLoginTimeout",30011,false,"d",playerid);
                 Spieler[playerid][tSpawnView] = SetTimerEx("SetPlayerView",5003,false,"dd",playerid,1); // Muss,sonst klappt Spectate nicht
@@ -11218,14 +11218,14 @@ public SetPlayerSpawn(playerid)
             else {
                 if(g_aSettings[ASETTING_REGBLOCK][ASETTING_TOGGLE]) {
                     static String[] = "\
-                                    Wir begrüßen dich ganz Herzlich auf Live your Dream!\n\
+                                    Wir begrüßen dich ganz Herzlich auf Monkey!\n\
                                     Aus aktuellem Anlass ist eine Registrierung gerade nicht möglich.\n\
                                     Schau doch einfach später nochmal vorbei!\n\n\
                                     Wir bitten vielmals um Verständnis!\n\n\
-                                    Forum Adresse: www.LyD-SAMP.de\n\
-                                    Teamspeak: TS.LyD-SAMP.de\n\
-                                    User Panel: www.UCP.LyD-SAMP.de\n\
-                                    E-Mail: Admin@LyD-SAMP.de";
+                                    Forum Adresse: www.monkey-roleplay.de\n\
+                                    Teamspeak: TS.monkey-roleplay.de\n\
+                                    User Panel: www.UCP.monkey-roleplay.de\n\
+                                    E-Mail: Admin@monkey-roleplay.de";
                     ShowPlayerDialog(playerid, DIALOG_REGSPERRE, DIALOG_STYLE_MSGBOX, "{FF0000}Registrationssperre" , String, "Disconnect","");
                     Spieler[playerid][tLoginTimeout] = SetTimerEx("PlayerRegsperreKick",10011,false,"d",playerid);
                     for(new i;i<MAX_PLAYERS;i++)
@@ -11239,7 +11239,7 @@ public SetPlayerSpawn(playerid)
                 else {
                         new
                             String[512], header[128];
-                        strcat(String,COLOR_HEX_WHITE"Wir begrüßen dich ganz Herzlich auf Live your Dream!\n\n",sizeof(String));
+                        strcat(String,COLOR_HEX_WHITE"Wir begrüßen dich ganz Herzlich auf Monkey!\n\n",sizeof(String));
                         strcat(String,"Um dein virtuelles Traumleben näher zu kommen, musst du als erstes ein Spieleraccount anlegen.\n",sizeof(String));
                         strcat(String,"Bei deiner Registration wirst du Dir auch eine kurze Einführung von unserem Server anschauen\n",sizeof(String));
                         strcat(String,"dass nur ca. 2 Minuten dauern wird.\n",sizeof(String));
@@ -11247,12 +11247,12 @@ public SetPlayerSpawn(playerid)
                         strcat(String,"Um ein Spieleraccount anzulegen, drücke bitte auf 'Erstellen' ",sizeof(String));
                         format(header,sizeof(header),COLOR_HEX_LIGHTBLUE "Der Spielername %s ist noch frei!",GetName(playerid));
                         ShowPlayerDialog(playerid, DIALOG_REG_STEP_1, DIALOG_STYLE_MSGBOX, header , String, "Erstellen", "Ablehnen");
-                    /*strcat(String,COLOR_HEX_WHITE"Wir begrüßen dich ganz Herzlich auf Live your Dream!\n",sizeof(String));
+                    /*strcat(String,COLOR_HEX_WHITE"Wir begrüßen dich ganz Herzlich auf Monkey!\n",sizeof(String));
                     strcat(String,"\nAus aktuellem Anlass ist eine Registrierung am heutigen Tag nicht möglich.\n",sizeof(String));
                     strcat(String,"Schau doch einfach morgen nochmal vorbei!\n\nWir bitten vielmals um Verständnis!\n",sizeof(String));
-                    strcat(String,"\nForum Adresse: www.LyD-SAMP.de\nTeamspeak: TS.LyD-SAMP.de\n",sizeof(String));
-                    strcat(String,"User Panel: www.UCP.LyD-SAMP.de\nE-Mail: Admin@LyD-SAMP.de",sizeof(String));
-                    format(header,sizeof(header),COLOR_HEX_LIGHTBLUE "LYD - ROLEPLAY");
+                    strcat(String,"\nForum Adresse: www.monkey-roleplay.de\nTeamspeak: TS.monkey-roleplay.de\n",sizeof(String));
+                    strcat(String,"User Panel: www.UCP.monkey-roleplay.de\nE-Mail: Admin@monkey-roleplay.de",sizeof(String));
+                    format(header,sizeof(header),COLOR_HEX_LIGHTBLUE "MRP - ROLEPLAY");
                     ShowPlayerDialog(playerid, DIALOG_REG_STEP_1, DIALOG_STYLE_MSGBOX, header , String, "OK", "-");
                     KickDelay(playerid);*/
                 }
@@ -15171,7 +15171,7 @@ CMD:sms(playerid, params[])
                 {
                     if(pID != INVALID_PLAYER_ID)
                     {
-                        PlayAudioStreamForPlayer(pID, "http://LyD-SAMP.de/musik/sms.mp3");
+                        PlayAudioStreamForPlayer(pID, "http://monkey-roleplay.de/musik/sms.mp3");
                         format(string, sizeof(string), "[SMS]: %s, Von: %s (Nr. %d)", text, GetName(playerid), Spieler[playerid][pHandyNr]);
                         SendClientMessage(pID, COLOR_YELLOW, string);
                         format(string, sizeof(string), "[SMS] Nachricht versendet - %s, An: %s (Nr: %d)", text, GetName(pID), Spieler[pID][pHandyNr]);
@@ -15322,7 +15322,7 @@ CMD:anrufen(playerid, params[])
                         PlayerPlaySound(playerid, 3600, 0.0, 0.0, 0.0);
                         SendClientMessage(playerid, COLOR_WHITE, "Es klingelt...");
                         PlayerPlaySound(pID, 20600, 0.0, 0.0, 0.0);
-                        // PlayAudioStreamForPlayer(pID, "http://LyD-SAMP.de/musik/anruf.mp3");
+                        // PlayAudioStreamForPlayer(pID, "http://monkey-roleplay.de/musik/anruf.mp3");
                         format(string, sizeof(string), "Dein Handy klingelt. Anrufer: %s. Tippe '/Abnehmen' um den Anruf anzunehmen.", GetName(playerid));
                         SendClientMessage(pID, COLOR_YELLOW, string);
                         format(string, sizeof(string), "* %s's %s klingelt.", GetName(pID) , GetPlayerHandyName(pID) );
@@ -16235,7 +16235,7 @@ forward Servername();
 public Servername()
 {
     new sName[128];
-    format(sName, sizeof(sName), "hostname %sLive your Dream ~ Roleplay%s", (serverhost = !serverhost) ? "[LyD] " : "", GetWeekDayNumber() < 2 ? " - [DOUBLE-EXP]" : "");
+    format(sName, sizeof(sName), "hostname %sMonkey ~ Roleplay%s", (serverhost = !serverhost) ? "[MRP] " : "", GetWeekDayNumber() < 2 ? " - [DOUBLE-EXP]" : "");
     SendRconCommand(sName);
     return 1;
 }
@@ -16448,7 +16448,7 @@ CMD:radio(playerid)
         new vID = GetPlayerVehicleID(playerid);
         new mod = GetVehicleModel(vID);
         if(IsBicycle(mod))return SendClientMessage(playerid, COLOR_ORANGE, "Du kannst kein Radio auf einem Fahrrad hören.");
-        ShowPlayerDialog(playerid, DIALOG_RADIO, DIALOG_STYLE_LIST, COLOR_HEX_ORANGE"Radiosender", COLOR_HEX_WHITE"Radio ausschalten\n1-Live\nTechnoBase.FM\nHardBase.FM\nI Love Radio\nBreakz.us\nYouFM\nPlanet Radio\nThe Club\nNightWax\nI Love Mashup\nDas Hitradio\nI Love the Battle\nI Love 2Dance\nLogin-Musik\niTunes Hot 40\nLyD Webradio\nEigener Audiostream", "Auswählen", "Abbrechen");
+        ShowPlayerDialog(playerid, DIALOG_RADIO, DIALOG_STYLE_LIST, COLOR_HEX_ORANGE"Radiosender", COLOR_HEX_WHITE"Radio ausschalten\n1-Live\nTechnoBase.FM\nHardBase.FM\nI Love Radio\nBreakz.us\nYouFM\nPlanet Radio\nThe Club\nNightWax\nI Love Mashup\nDas Hitradio\nI Love the Battle\nI Love 2Dance\nLogin-Musik\niTunes Hot 40\nMRP Webradio\nEigener Audiostream", "Auswählen", "Abbrechen");
     }
     else
     {
@@ -18563,7 +18563,7 @@ CMD:sban(playerid, params[])
     SendAdminMessage(COLOR_RED, string);
     format(string, sizeof(string), "[BANNED] Sie wurden soeben von Server-System dauerhaft gebannt. Grund: %s", grund);
     SendClientMessage(pID, COLOR_RED, string);
-    format(string1, sizeof(string1), "Sind Sie der Meinung das diese Sperre falsch war? Dann schreiben Sie auf www.LyD-SAMP.de ein Entbannantrag!");
+    format(string1, sizeof(string1), "Sind Sie der Meinung das diese Sperre falsch war? Dann schreiben Sie auf www.monkey-roleplay.de ein Entbannantrag!");
     SendClientMessage(pID, COLOR_RED, string1);
     mysql_real_escape_string(grund,grund);
     new query[256];
@@ -18599,7 +18599,7 @@ CMD:ban(playerid, params[])
     SendAdminMessage(COLOR_RED, string);
     format(string, sizeof(string), "[BANNED] Du wurdest soeben von %s %s dauerhaft aus dem Server gebannt. Grund: %s", GetPlayerAdminRang(playerid), GetName(playerid), grund);
     SendClientMessage(pID, COLOR_RED, string);
-    format(string1, sizeof(string1), "Sind Sie der Meinung das diese Sperre falsch war? Dann schreiben Sie auf www.LyD-SAMP.de ein Entbannantrag!");
+    format(string1, sizeof(string1), "Sind Sie der Meinung das diese Sperre falsch war? Dann schreiben Sie auf www.monkey-roleplay.de ein Entbannantrag!");
     SendClientMessage(pID, COLOR_RED, string1);
     //Ban(pID);
     mysql_real_escape_string(grund,grund);
@@ -18636,7 +18636,7 @@ CMD:ipban(playerid, params[])
     SendAdminMessage(COLOR_RED, string);
     format(string, sizeof(string), "[BANNED] Du wurdest soeben von %s %s dauerhaft aus dem Server gebannt. Grund: %s", GetPlayerAdminRang(playerid), GetName(playerid), grund);
     SendClientMessage(pID, COLOR_RED, string);
-    format(string1, sizeof(string1), "Sind Sie der Meinung das diese Sperre falsch war? Dann schreiben Sie auf www.LyD-SAMP.de ein Entbannantrag!");
+    format(string1, sizeof(string1), "Sind Sie der Meinung das diese Sperre falsch war? Dann schreiben Sie auf www.monkey-roleplay.de ein Entbannantrag!");
     SendClientMessage(pID, COLOR_RED, string1);
     mysql_real_escape_string(grund,grund);
     new query[256];
@@ -20054,7 +20054,7 @@ CMD:info3(playerid)
         SendClientMessage(playerid, COLOR_WHITE, "Voraussetzungen und eine Bewerbungspflicht.");
         SendClientMessage(playerid, COLOR_WHITE, "Bei Gangfraktionen ist es dem Leader selbst überlassen wie er seine verlangten");
         SendClientMessage(playerid, COLOR_WHITE, "Voraussetzungen für den Beitritt aufstellt, ob nun Bewerbung oder Teamspeak-Gespräch usw.");
-        SendClientMessage(playerid, COLOR_WHITE, "Unter www.LyD-SAMP.de findest du weitere Informationen über alle Fraktionen!");
+        SendClientMessage(playerid, COLOR_WHITE, "Unter www.monkey-roleplay.de findest du weitere Informationen über alle Fraktionen!");
     }
     return 1;
 }
@@ -20064,7 +20064,7 @@ CMD:info4(playerid)
     {
         SendClientMessage(playerid, COLOR_BLUE, "================INFORMATIONEN ZUM SHOP================");
         SendClientMessage(playerid, COLOR_WHITE, "Du hast Lust dem Server etwas gutes zu tun?");
-        SendClientMessage(playerid, COLOR_WHITE, "Dann kannst du in unserem Shop unter www.LyD-SAMP.de für den Server spenden!");
+        SendClientMessage(playerid, COLOR_WHITE, "Dann kannst du in unserem Shop unter www.monkey-roleplay.de für den Server spenden!");
         SendClientMessage(playerid, COLOR_WHITE, "Im Shop kannst du entsprechende Pakete wie ein Clubstatus oder ein Wunschfahrzeug");
         SendClientMessage(playerid, COLOR_WHITE, "usw. bestellen. Als Clubmitglied erhält man tolle Sachen mit hinzu.");
         SendClientMessage(playerid, COLOR_WHITE, "Jede Zahlung wird als eine Spende an das Projekt gesehen, wofür wir ein Dankeschön geben.");
@@ -20123,12 +20123,12 @@ CMD:info(playerid)
         SendClientMessage(playerid, COLOR_BLUE, "================INFORMATIONEN================");
         SendClientMessage(playerid, COLOR_WHITE, "Dieser Server ist ein Roleplay Server!");
         SendClientMessage(playerid, COLOR_WHITE, "Mit /Navi und /Help findest du dich hier zurecht.");
-        SendClientMessage(playerid, COLOR_WHITE, "Unser Forum ist unter www.LyD-SAMP.de zu erreichen.");
+        SendClientMessage(playerid, COLOR_WHITE, "Unser Forum ist unter www.monkey-roleplay.de zu erreichen.");
         SendClientMessage(playerid, COLOR_WHITE, "In unserem Forum kannst du weitere Informationen nach lesen");
         SendClientMessage(playerid, COLOR_WHITE, "und dich eventuell bei einer Fraktion als Leader/Member vorstellen.");
-        SendClientMessage(playerid, COLOR_WHITE, "Unsere Teamspeak IP lautet TS.LyD-SAMP.de");
+        SendClientMessage(playerid, COLOR_WHITE, "Unsere Teamspeak IP lautet TS.monkey-roleplay.de");
         SendClientMessage(playerid, COLOR_WHITE, "Wir besitzen auch eine User Control Panel wo du deine Statistiken mitverfolgen kannst!");
-        SendClientMessage(playerid, COLOR_WHITE, "Die Internet-Adresse zur User Control Panel lautet: www.UCP.LyD-SAMP.de");
+        SendClientMessage(playerid, COLOR_WHITE, "Die Internet-Adresse zur User Control Panel lautet: www.UCP.monkey-roleplay.de");
     }
     return 1;
 }
@@ -20675,12 +20675,12 @@ CMD:zahlen(playerid, params[])
 
 CMD:serverinfo(playerid)
 {
-    SendClientMessage(playerid, COLOR_BLUE, "* SERVER IP *: {FFFFFF}Server.LyD-SAMP.de");
-    SendClientMessage(playerid, COLOR_BLUE, "* TEAMSPEAK IP *: {FFFFFF}TS.LyD-SAMP.de");
-    SendClientMessage(playerid, COLOR_BLUE, "* FORUM ADRESSE *: {FFFFFF}www.LyD-SAMP.de");
-    SendClientMessage(playerid, COLOR_BLUE, "* USER PANEL *: {FFFFFF}www.UCP.LyD-SAMP.de");
-    SendClientMessage(playerid, COLOR_BLUE, "* PROJEKTLEITER *: {FFFFFF}Benny42O & Haywire");
-    SendClientMessage(playerid, COLOR_BLUE, "* ENTWICKLER *: {FFFFFF}Maka & Kabby");
+    SendClientMessage(playerid, COLOR_BLUE, "* SERVER IP *: {FFFFFF}Server.monkey-roleplay.de");
+    SendClientMessage(playerid, COLOR_BLUE, "* TEAMSPEAK IP *: {FFFFFF}TS.monkey-roleplay.de");
+    SendClientMessage(playerid, COLOR_BLUE, "* FORUM ADRESSE *: {FFFFFF}www.monkey-roleplay.de");
+    SendClientMessage(playerid, COLOR_BLUE, "* USER PANEL *: {FFFFFF}www.UCP.monkey-roleplay.de");
+    SendClientMessage(playerid, COLOR_BLUE, "* PROJEKTLEITER *: {FFFFFF}Kabby & riyuko");
+    SendClientMessage(playerid, COLOR_BLUE, "* ENTWICKLER *: {FFFFFF}Kabby");
     return 1;
 }
 
@@ -21422,7 +21422,7 @@ CMD:respawncars(playerid)
 {
 	new string[128];
 	if(Spieler[playerid][pRank] < 4)return SendClientMessage(playerid, COLOR_RED, "Du bist nicht Rank 4 oder höher.");
-	for(new i=0;i<GetVehiclePoolSize();i++){
+	for(new i=0;i<GetVehiclePoolSize()+1;i++){
  		if(!IsValidVehicle(i)) continue;
  		if(FrakCarInfo[i][f_frak] != Spieler[playerid][pFraktion]) continue;
 		if(!IsVehicleOccupied(i)){
@@ -27264,7 +27264,7 @@ public OnPlayerEnterCheckpoint(playerid)
             SendClientMessage(playerid, COLOR_GREEN, "Herzlichen Glückwunsch, Du hast den Führerschein erfolgreich erhalten!");
             SendClientMessage(playerid, COLOR_GREEN, "Falls du Berufe wie Trucker oder Pilot ausführen möchtest, musst du die entsprechenden Scheine");
             SendClientMessage(playerid, COLOR_GREEN, "bei einem Fahrlehrer machen. Ob ein Fahrlehrer online ist, kannst du unter /Liste sehen.");
-            SendClientMessage(playerid, COLOR_GREEN, "Viel Spaß wünscht dir das Live your Dream - Roleplay Team!");
+            SendClientMessage(playerid, COLOR_GREEN, "Viel Spaß wünscht dir das Monkey - Roleplay Team!");
             DestroyVehicleEx(pFahrschulCar[playerid]);
             aiVehicles[ pFahrschulCar[playerid] ] = VEH_INVALID;
             pFahrschulCar[playerid] = INVALID_VEHICLE_ID;
@@ -35925,12 +35925,12 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
             if(response) {
                 if(listitem == 0 ) {
                     new String[128];
-                    format(String, sizeof(String), "%s{DEA81A}- | LyD ~ Hilfsdatenbank | -{FFFFFF}\n\nGebe hier dein Suchbegriff ein:", String);
+                    format(String, sizeof(String), "%s{DEA81A}- | MRP ~ Hilfsdatenbank | -{FFFFFF}\n\nGebe hier dein Suchbegriff ein:", String);
                     ShowPlayerDialog(playerid,DIALOG_ANTWORT,DIALOG_STYLE_INPUT, COLOR_HEX_LIGHTBLUE "Hilfsdatenbank", String, "Suchen", "Abbrechen");
                 }
                 if(listitem == 1 ) {//AllgemeinHelp
                     new maxcmdcount = 0, String[2048];
-                    format(String, sizeof(String), "%s\t\t\t\t{DEA81A}- | LyD ~ Übersicht der allgemeinen Befehle | -{FFFFFF}\n\n", String);
+                    format(String, sizeof(String), "%s\t\t\t\t{DEA81A}- | MRP ~ Übersicht der allgemeinen Befehle | -{FFFFFF}\n\n", String);
                     for(new i = 0; i < sizeof(StandartHelp); i++){
                         if(maxcmdcount == 8){
                             format(String, sizeof(String), "%s\n", String);
@@ -35944,11 +35944,11 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                         maxcmdcount++;
                     }
                     format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
-                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der allgemeinen Befehle | -", String, "OK", "");
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | MRP ~ Übersicht der allgemeinen Befehle | -", String, "OK", "");
                 }
                 else if(listitem == 2 ) {//MoneyHelp
                     new maxcmdcount = 0, String[2048];
-                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Übersicht der Finanz-Befehle | -{FFFFFF}\n\n", String);
+                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | MRP ~ Übersicht der Finanz-Befehle | -{FFFFFF}\n\n", String);
                     for(new i = 0; i < sizeof(MoneyHelp); i++){
                         if(maxcmdcount == 8){
                             format(String, sizeof(String), "%s\n", String);
@@ -35962,11 +35962,11 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                         maxcmdcount++;
                     }
                     format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
-                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Finanz-Befehle | -", String, "OK", "");
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | MRP ~ Übersicht der Finanz-Befehle | -", String, "OK", "");
                 }
                 else if(listitem == 3 ) {//DeathmatchHelp
                     new maxcmdcount = 0, String[2048];
-                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Übersicht der Deathmatch-Befehle | -{FFFFFF}\n\n", String);
+                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | MRP ~ Übersicht der Deathmatch-Befehle | -{FFFFFF}\n\n", String);
                     for(new i = 0; i < sizeof(DeathmatchHelp); i++){
                         if(maxcmdcount == 8){
                             format(String, sizeof(String), "%s\n", String);
@@ -35980,11 +35980,11 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                         maxcmdcount++;
                     }
                     format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
-                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Deathmatch-Befehle | -", String, "OK", "");
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | MRP ~ Übersicht der Deathmatch-Befehle | -", String, "OK", "");
                 }
                 else if(listitem == 4 ) {//SellHelp
                     new maxcmdcount = 0, String[2048];
-                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Übersicht der Verkaufen-Befehle | -{FFFFFF}\n\n", String);
+                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | MRP ~ Übersicht der Verkaufen-Befehle | -{FFFFFF}\n\n", String);
                     for(new i = 0; i < sizeof(SellHelp); i++){
                         if(maxcmdcount == 8){
                             format(String, sizeof(String), "%s\n", String);
@@ -35998,11 +35998,11 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                         maxcmdcount++;
                     }
                     format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
-                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Verkaufen-Befehle | -", String, "OK", "");
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | MRP ~ Übersicht der Verkaufen-Befehle | -", String, "OK", "");
                 }
                 else if(listitem == 5 ) {//CasinoHelp
                     new maxcmdcount = 0, String[2048];
-                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Übersicht der Casino-Befehle | -{FFFFFF}\n\n", String);
+                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | MRP ~ Übersicht der Casino-Befehle | -{FFFFFF}\n\n", String);
                     for(new i = 0; i < sizeof(CasinoHelp); i++){
                         if(maxcmdcount == 8){
                             format(String, sizeof(String), "%s\n", String);
@@ -36016,11 +36016,11 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                         maxcmdcount++;
                     }
                     format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
-                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Casino-Befehle | -", String, "OK", "");
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | MRP ~ Übersicht der Casino-Befehle | -", String, "OK", "");
                 }
                 else if(listitem == 6 ) {//VehicleHelp
                     new maxcmdcount = 0, String[2048];
-                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Übersicht der Fahrzeug-Befehle | -{FFFFFF}\n\n", String);
+                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | MRP ~ Übersicht der Fahrzeug-Befehle | -{FFFFFF}\n\n", String);
                     for(new i = 0; i < sizeof(VehicleHelp); i++){
                         if(maxcmdcount == 8){
                             format(String, sizeof(String), "%s\n", String);
@@ -36034,11 +36034,11 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                         maxcmdcount++;
                     }
                     format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
-                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Fahrzeug-Befehle | -", String, "OK", "");
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | MRP ~ Übersicht der Fahrzeug-Befehle | -", String, "OK", "");
                 }
                 else if(listitem == 7 ) {//HouseHelp
                     new maxcmdcount = 0, String[2048];
-                    format(String, sizeof(String), "%s\t\t\t\t{DEA81A}- | LyD ~ Übersicht der Haus-Befehle | -{FFFFFF}\n\n", String);
+                    format(String, sizeof(String), "%s\t\t\t\t{DEA81A}- | MRP ~ Übersicht der Haus-Befehle | -{FFFFFF}\n\n", String);
                     for(new i = 0; i < sizeof(HouseHelp); i++){
                         if(maxcmdcount == 8){
                             format(String, sizeof(String), "%s\n", String);
@@ -36052,11 +36052,11 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                         maxcmdcount++;
                     }
                     format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
-                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Haus-Befehle | -", String, "OK", "");
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | MRP ~ Übersicht der Haus-Befehle | -", String, "OK", "");
                 }
                 else if(listitem == 8 ) {//BizHelp
                     new maxcmdcount = 0, String[2048];
-                    format(String, sizeof(String), "%s\t\t\t\t{DEA81A}- | LyD ~ Übersicht der Business-Befehle | -{FFFFFF}\n\n", String);
+                    format(String, sizeof(String), "%s\t\t\t\t{DEA81A}- | MRP ~ Übersicht der Business-Befehle | -{FFFFFF}\n\n", String);
                     for(new i = 0; i < sizeof(BizHelp); i++){
                         if(maxcmdcount == 8){
                             format(String, sizeof(String), "%s\n", String);
@@ -36070,11 +36070,11 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                         maxcmdcount++;
                     }
                     format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
-                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Business-Befehle | -", String, "OK", "");
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | MRP ~ Übersicht der Business-Befehle | -", String, "OK", "");
                 }
                 else if(listitem == 9 ) {//TankstelleHelp
                     new maxcmdcount = 0, String[2048];
-                    format(String, sizeof(String), "%s\t\t\t\t\t{DEA81A}- | LyD ~ Übersicht der Tankstellen-Befehle | -{FFFFFF}\n\n", String);
+                    format(String, sizeof(String), "%s\t\t\t\t\t{DEA81A}- | MRP ~ Übersicht der Tankstellen-Befehle | -{FFFFFF}\n\n", String);
                     for(new i = 0; i < sizeof(TankstelleHelp); i++){
                         if(maxcmdcount == 8){
                             format(String, sizeof(String), "%s\n", String);
@@ -36088,11 +36088,11 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                         maxcmdcount++;
                     }
                     format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
-                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Tankstellen-Befehle | -", String, "OK", "");
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | MRP ~ Übersicht der Tankstellen-Befehle | -", String, "OK", "");
                 }
                 else if(listitem == 10 ) {//FirmenHelp
                     new maxcmdcount = 0, String[2048];
-                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Übersicht der Firmen-Befehle | -{FFFFFF}\n\n", String);
+                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | MRP ~ Übersicht der Firmen-Befehle | -{FFFFFF}\n\n", String);
                     for(new i = 0; i < sizeof(FirmenHelp); i++){
                         if(maxcmdcount == 8){
                             format(String, sizeof(String), "%s\n", String);
@@ -36106,11 +36106,11 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                         maxcmdcount++;
                     }
                     format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
-                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Firmen-Befehle | -", String, "OK", "");
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | MRP ~ Übersicht der Firmen-Befehle | -", String, "OK", "");
                 }
                 else if(listitem == 11){//ChatHelp
                     new maxcmdcount = 0, String[2048];
-                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Übersicht der Chat-Befehle | -{FFFFFF}\n\n", String);
+                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | MRP ~ Übersicht der Chat-Befehle | -{FFFFFF}\n\n", String);
                     for(new i = 0; i < sizeof(ChatHelp); i++){
                         if(maxcmdcount == 8){
                             format(String, sizeof(String), "%s\n", String);
@@ -36124,11 +36124,11 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                         maxcmdcount++;
                     }
                     format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
-                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Chat-Befehle | -", String, "OK", "");
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | MRP ~ Übersicht der Chat-Befehle | -", String, "OK", "");
                 }
                 else if(listitem == 12){//HaustierHelp
                     new maxcmdcount = 0, String[2048];
-                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Übersicht der Haustier-Befehle | -{FFFFFF}\n\n", String);
+                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | MRP ~ Übersicht der Haustier-Befehle | -{FFFFFF}\n\n", String);
                     for(new i = 0; i < sizeof(HaustierHelp); i++){
                         if(maxcmdcount == 8){
                             format(String, sizeof(String), "%s\n", String);
@@ -36142,11 +36142,11 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                         maxcmdcount++;
                     }
                     format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
-                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Haustier-Befehle | -", String, "OK", "");
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | MRP ~ Übersicht der Haustier-Befehle | -", String, "OK", "");
                 }
                 else if(listitem == 13){//LeaderHelp
                     new maxcmdcount = 0, String[2048];
-                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Übersicht der Leader-Befehle | -{FFFFFF}\n\n", String);
+                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | MRP ~ Übersicht der Leader-Befehle | -{FFFFFF}\n\n", String);
                     for(new i = 0; i < sizeof(LeaderHelp); i++){
                         if(maxcmdcount == 8){
                             format(String, sizeof(String), "%s\n", String);
@@ -36160,10 +36160,10 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                         maxcmdcount++;
                     }
                     format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
-                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Leader-Befehle | -", String, "OK", "");
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | MRP ~ Übersicht der Leader-Befehle | -", String, "OK", "");
                 }else if(listitem == 14){//Job1Help
                     new maxcmdcount = 0, String[4128];
-                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Übersicht der Job-Befehle | -{FFFFFF}\n\n", String);
+                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | MRP ~ Übersicht der Job-Befehle | -{FFFFFF}\n\n", String);
                     format(String, sizeof(String), "%s/showjob, /jobkleidung", String);
                     if(Spieler[playerid][pJob] == 1){
                         for(new i = 0; i < sizeof(Job1Help); i++){
@@ -36505,11 +36505,11 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                         format(String, sizeof(String), "%sDu hast keinen Job!", String);
                     }
                     format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
-                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Job-Befehle | -", String, "OK", "");
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | MRP ~ Übersicht der Job-Befehle | -", String, "OK", "");
                 }
                 else if(listitem == 15){//Frakhelp
                     new maxcmdcount = 0, String[2048];
-                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Übersicht der Fraktions-Befehle | -{FFFFFF}\n\n", String);
+                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | MRP ~ Übersicht der Fraktions-Befehle | -{FFFFFF}\n\n", String);
                     if(Spieler[playerid][pFraktion] == 1 || Spieler[playerid][pFraktion] == 2 || Spieler[playerid][pFraktion] == 16 || Spieler[playerid][pFraktion] == 18){
                         for(new i = 0; i < sizeof(Frak1Help); i++){
                             if(maxcmdcount == 8){
@@ -36620,7 +36620,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                         format(String, sizeof(String), "%sDu bist in keiner Fraktion!", String);
                     }
                     format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
-                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Fraktions-Befehle | -", String, "OK", "");
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | MRP ~ Übersicht der Fraktions-Befehle | -", String, "OK", "");
                 }else if(listitem == 16){
                     return cmd_adminhelp(playerid, "");
                 }
@@ -36633,7 +36633,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                 if(Spieler[playerid][pFV] == 1){//Frakverwalter
                     if(listitem == 0){
                         new maxcmdcount = 0, String[2048];
-                        format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Übersicht der Fraktionsverwalter-Befehle | -{FFFFFF}\n\n", String);
+                        format(String, sizeof(String), "%s\t\t\t{DEA81A}- | MRP ~ Übersicht der Fraktionsverwalter-Befehle | -{FFFFFF}\n\n", String);
                         for(new i = 0; i < sizeof(FraktionsverwalterHelp); i++){
                             if(maxcmdcount == 8){
                                 format(String, sizeof(String), "%s\n", String);
@@ -36647,10 +36647,10 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                             maxcmdcount++;
                         }
                         format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
-                        ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Fraktionsverwalter-Befehle | -", String, "OK", "");
+                        ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | MRP ~ Übersicht der Fraktionsverwalter-Befehle | -", String, "OK", "");
                     }else if(listitem == 1){//Supporter
                         new maxcmdcount = 0, String[2048];
-                        format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Übersicht der Supporter-Befehle | -{FFFFFF}\n\n", String);
+                        format(String, sizeof(String), "%s\t\t\t{DEA81A}- | MRP ~ Übersicht der Supporter-Befehle | -{FFFFFF}\n\n", String);
                         for(new i = 0; i < sizeof(SupporterHelp); i++){
                             if(maxcmdcount == 8){
                                 format(String, sizeof(String), "%s\n", String);
@@ -36664,10 +36664,10 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                             maxcmdcount++;
                         }
                         format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
-                        ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Supporter-Befehle | -", String, "OK", "");
+                        ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | MRP ~ Übersicht der Supporter-Befehle | -", String, "OK", "");
                     }else if(listitem == 2){//Event Supporter
                         new maxcmdcount = 0, String[2048];
-                        format(String, sizeof(String), "%s\t\t\t\t{DEA81A}- | LyD ~ Übersicht der Event-Supporter-Befehle | -{FFFFFF}\n\n", String);
+                        format(String, sizeof(String), "%s\t\t\t\t{DEA81A}- | MRP ~ Übersicht der Event-Supporter-Befehle | -{FFFFFF}\n\n", String);
                         for(new i = 0; i < sizeof(EventSupporterHelp); i++){
                             if(maxcmdcount == 8){
                                 format(String, sizeof(String), "%s\n", String);
@@ -36681,10 +36681,10 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                             maxcmdcount++;
                         }
                         format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
-                        ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Event-Supporter-Befehle | -", String, "OK", "");
+                        ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | MRP ~ Übersicht der Event-Supporter-Befehle | -", String, "OK", "");
                     }else if(listitem == 3){//Mod
                         new maxcmdcount = 0, String[2048];
-                        format(String, sizeof(String), "%s\t\t\t\t{DEA81A}- | LyD ~ Übersicht der Moderator-Befehle | -{FFFFFF}\n\n", String);
+                        format(String, sizeof(String), "%s\t\t\t\t{DEA81A}- | MRP ~ Übersicht der Moderator-Befehle | -{FFFFFF}\n\n", String);
                         for(new i = 0; i < sizeof(ModeratorHelp); i++){
                             if(maxcmdcount == 8){
                                 format(String, sizeof(String), "%s\n", String);
@@ -36698,10 +36698,10 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                             maxcmdcount++;
                         }
                         format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
-                        ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Moderator-Befehle | -", String, "OK", "");
+                        ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | MRP ~ Übersicht der Moderator-Befehle | -", String, "OK", "");
                     }else if(listitem == 4){//Admin
                         new maxcmdcount = 0, String[2048];
-                        format(String, sizeof(String), "%s\t\t\t\t{DEA81A}- | LyD ~ Übersicht der Administrator-Befehle | -{FFFFFF}\n\n", String);
+                        format(String, sizeof(String), "%s\t\t\t\t{DEA81A}- | MRP ~ Übersicht der Administrator-Befehle | -{FFFFFF}\n\n", String);
                         for(new i = 0; i < sizeof(AdministratorHelp); i++){
                             if(maxcmdcount == 8){
                                 format(String, sizeof(String), "%s\n", String);
@@ -36715,10 +36715,10 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                             maxcmdcount++;
                         }
                         format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
-                        ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Administrator-Befehle | -", String, "OK", "");
+                        ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | MRP ~ Übersicht der Administrator-Befehle | -", String, "OK", "");
                     }else if(listitem == 5){//Benny Vertretung
                         new maxcmdcount = 0, String[2048];
-                        format(String, sizeof(String), "%s\t\t{DEA81A}- | LyD ~ Übersicht der Benny Vertretung-Befehle | -{FFFFFF}\n\n", String);
+                        format(String, sizeof(String), "%s\t\t{DEA81A}- | MRP ~ Übersicht der Benny Vertretung-Befehle | -{FFFFFF}\n\n", String);
                         for(new i = 0; i < sizeof(VertretungBennyHelp); i++){
                             if(maxcmdcount == 8){
                                 format(String, sizeof(String), "%s\n", String);
@@ -36732,10 +36732,10 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                             maxcmdcount++;
                         }
                         format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
-                        ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Benny Vertretung-Befehle | -", String, "OK", "");
+                        ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | MRP ~ Übersicht der Benny Vertretung-Befehle | -", String, "OK", "");
                     }else if(listitem == 6){//Server Manager
                         new maxcmdcount = 0, String[2048];
-                        format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Übersicht der Server Manager-Befehle | -{FFFFFF}\n\n", String);
+                        format(String, sizeof(String), "%s\t\t\t{DEA81A}- | MRP ~ Übersicht der Server Manager-Befehle | -{FFFFFF}\n\n", String);
                         for(new i = 0; i < sizeof(ManagerHelp); i++){
                             if(maxcmdcount == 8){
                                 format(String, sizeof(String), "%s\n", String);
@@ -36749,10 +36749,10 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                             maxcmdcount++;
                         }
                         format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
-                        ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Server Manager-Befehle | -", String, "OK", "");
+                        ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | MRP ~ Übersicht der Server Manager-Befehle | -", String, "OK", "");
                     }else if(listitem == 7){//Projektleiter
                         new maxcmdcount = 0, String[2048];
-                        format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Übersicht der Projektleiter-Befehle | -{FFFFFF}\n\n", String);
+                        format(String, sizeof(String), "%s\t\t\t{DEA81A}- | MRP ~ Übersicht der Projektleiter-Befehle | -{FFFFFF}\n\n", String);
                         for(new i = 0; i < sizeof(ProjektleiterHelp); i++){
                             if(maxcmdcount == 8){
                                 format(String, sizeof(String), "%s\n", String);
@@ -36766,13 +36766,13 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                             maxcmdcount++;
                         }
                         format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
-                        ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Projektleiter-Befehle | -", String, "OK", "");
+                        ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | MRP ~ Übersicht der Projektleiter-Befehle | -", String, "OK", "");
                     }
                     return 1;
                 }
                 if(listitem == 0){//Supporter
                     new maxcmdcount = 0, String[2048];
-                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Übersicht der Supporter-Befehle | -{FFFFFF}\n\n", String);
+                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | MRP ~ Übersicht der Supporter-Befehle | -{FFFFFF}\n\n", String);
                     for(new i = 0; i < sizeof(SupporterHelp); i++){
                         if(maxcmdcount == 8){
                             format(String, sizeof(String), "%s\n", String);
@@ -36786,10 +36786,10 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                         maxcmdcount++;
                     }
                     format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
-                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Supporter-Befehle | -", String, "OK", "");
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | MRP ~ Übersicht der Supporter-Befehle | -", String, "OK", "");
                 }else if(listitem == 1){//Event Supporter
                     new maxcmdcount = 0, String[2048];
-                    format(String, sizeof(String), "%s\t\t\t\t{DEA81A}- | LyD ~ Übersicht der Event-Supporter-Befehle | -{FFFFFF}\n\n", String);
+                    format(String, sizeof(String), "%s\t\t\t\t{DEA81A}- | MRP ~ Übersicht der Event-Supporter-Befehle | -{FFFFFF}\n\n", String);
                     for(new i = 0; i < sizeof(EventSupporterHelp); i++){
                         if(maxcmdcount == 8){
                             format(String, sizeof(String), "%s\n", String);
@@ -36803,10 +36803,10 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                         maxcmdcount++;
                     }
                     format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
-                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Event-Supporter-Befehle | -", String, "OK", "");
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | MRP ~ Übersicht der Event-Supporter-Befehle | -", String, "OK", "");
                 }else if(listitem == 2){//Mod
                     new maxcmdcount = 0, String[2048];
-                    format(String, sizeof(String), "%s\t\t\t\t{DEA81A}- | LyD ~ Übersicht der Moderator-Befehle | -{FFFFFF}\n\n", String);
+                    format(String, sizeof(String), "%s\t\t\t\t{DEA81A}- | MRP ~ Übersicht der Moderator-Befehle | -{FFFFFF}\n\n", String);
                     for(new i = 0; i < sizeof(ModeratorHelp); i++){
                         if(maxcmdcount == 8){
                             format(String, sizeof(String), "%s\n", String);
@@ -36820,10 +36820,10 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                         maxcmdcount++;
                     }
                     format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
-                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Moderator-Befehle | -", String, "OK", "");
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | MRP ~ Übersicht der Moderator-Befehle | -", String, "OK", "");
                 }else if(listitem == 3){//Admin
                     new maxcmdcount = 0, String[2048];
-                    format(String, sizeof(String), "%s\t\t\t\t{DEA81A}- | LyD ~ Übersicht der Administrator-Befehle | -{FFFFFF}\n\n", String);
+                    format(String, sizeof(String), "%s\t\t\t\t{DEA81A}- | MRP ~ Übersicht der Administrator-Befehle | -{FFFFFF}\n\n", String);
                     for(new i = 0; i < sizeof(AdministratorHelp); i++){
                         if(maxcmdcount == 8){
                             format(String, sizeof(String), "%s\n", String);
@@ -36837,10 +36837,10 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                         maxcmdcount++;
                     }
                     format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
-                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Administrator-Befehle | -", String, "OK", "");
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | MRP ~ Übersicht der Administrator-Befehle | -", String, "OK", "");
                 }else if(listitem == 4){//Benny Vertretung
                     new maxcmdcount = 0, String[2048];
-                    format(String, sizeof(String), "%s\t\t{DEA81A}- | LyD ~ Übersicht der Benny Vertretung-Befehle | -{FFFFFF}\n\n", String);
+                    format(String, sizeof(String), "%s\t\t{DEA81A}- | MRP ~ Übersicht der Benny Vertretung-Befehle | -{FFFFFF}\n\n", String);
                     for(new i = 0; i < sizeof(VertretungBennyHelp); i++){
                         if(maxcmdcount == 8){
                             format(String, sizeof(String), "%s\n", String);
@@ -36854,10 +36854,10 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                         maxcmdcount++;
                     }
                     format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
-                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Benny Vertretung-Befehle | -", String, "OK", "");
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | MRP ~ Übersicht der Benny Vertretung-Befehle | -", String, "OK", "");
                 }else if(listitem == 5){//Server Manager
                     new maxcmdcount = 0, String[2048];
-                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Übersicht der Server Manager-Befehle | -{FFFFFF}\n\n", String);
+                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | MRP ~ Übersicht der Server Manager-Befehle | -{FFFFFF}\n\n", String);
                     for(new i = 0; i < sizeof(ManagerHelp); i++){
                         if(maxcmdcount == 8){
                             format(String, sizeof(String), "%s\n", String);
@@ -36871,10 +36871,10 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                         maxcmdcount++;
                     }
                     format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
-                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Server Manager-Befehle | -", String, "OK", "");
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | MRP ~ Übersicht der Server Manager-Befehle | -", String, "OK", "");
                 }else if(listitem == 6){//Projektleiter
                     new maxcmdcount = 0, String[2048];
-                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Übersicht der Projektleiter-Befehle | -{FFFFFF}\n\n", String);
+                    format(String, sizeof(String), "%s\t\t\t{DEA81A}- | MRP ~ Übersicht der Projektleiter-Befehle | -{FFFFFF}\n\n", String);
                     for(new i = 0; i < sizeof(ProjektleiterHelp); i++){
                         if(maxcmdcount == 8){
                             format(String, sizeof(String), "%s\n", String);
@@ -36888,7 +36888,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                         maxcmdcount++;
                     }
                     format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
-                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der Projektleiter-Befehle | -", String, "OK", "");
+                    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | MRP ~ Übersicht der Projektleiter-Befehle | -", String, "OK", "");
                 }
             }
         }
@@ -36897,7 +36897,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
             if(response)
             {
                 new String[2048];
-                format(String, sizeof(String), "%s\t\t\t{DEA81A}- | LyD ~ Ergebnis der Suche | -{FFFFFF}\n\n", String);
+                format(String, sizeof(String), "%s\t\t\t{DEA81A}- | MRP ~ Ergebnis der Suche | -{FFFFFF}\n\n", String);
                 for(new i = 0; i < sizeof(StandartHelpText); i++){
                     if(strfind(StandartHelpText[i], inputtext, true) != -1){
                         format(String, sizeof(String), "%s/%s - %s\n", String, StandartHelp[i], StandartHelpText[i]);
@@ -36964,7 +36964,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                     }
                 }
                 format(String, sizeof(String), "%s\n\nFalls du Fragen oder Probleme hast, kannst du mit '{EE600F}/Sup{FFFFFF}' ein Support-Ticket eröffnen.\nEin Supporter wird dir bestimmt weiterhelfen können!", String);
-                ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | LyD ~ Übersicht der allgemeinen Befehle | -", String, "OK", "");
+                ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_MSGBOX, "- | MRP ~ Übersicht der allgemeinen Befehle | -", String, "OK", "");
             }
         }
         case DIALOG_DRINKS: {
@@ -43179,7 +43179,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
             if(response)
             {
                 //Regeln Akzeptiert
-                ShowPlayerDialog(playerid, DIALOG_REG_STEP_2,DIALOG_STYLE_INPUT, COLOR_HEX_LIGHTBLUE"Registrierung:", COLOR_HEX_WHITE"Willkommen auf "COLOR_HEX_ORANGE"Live your Dream - Roleplay\n"COLOR_HEX_WHITE"Registriere dich bitte nun!\n\n"COLOR_HEX_GREEN"Gib bitte nun ein sicheres Passwort ein!\nHINWEIS: Dein Passwort muss mind. 8 stellig sein und 2 Zahlen enthalten,\naußerdem sollte es keine persönlichen Daten beinhaltet!", "OK", "Abbrechen");
+                ShowPlayerDialog(playerid, DIALOG_REG_STEP_2,DIALOG_STYLE_INPUT, COLOR_HEX_LIGHTBLUE"Registrierung:", COLOR_HEX_WHITE"Willkommen auf "COLOR_HEX_ORANGE"Monkey - Roleplay\n"COLOR_HEX_WHITE"Registriere dich bitte nun!\n\n"COLOR_HEX_GREEN"Gib bitte nun ein sicheres Passwort ein!\nHINWEIS: Dein Passwort muss mind. 8 stellig sein und 2 Zahlen enthalten,\naußerdem sollte es keine persönlichen Daten beinhaltet!", "OK", "Abbrechen");
                 // SetPlayerCameraPos(playerid, 369.8176, -1869.0303, 22.6842);//Brücke Verona Beach
                 // SetPlayerCameraLookAt(playerid, 369.7982, -1868.0253, 22.8143);
                 // SetPlayerPos(playerid, 381.1510, -1881.4520, 3.7626);
@@ -43216,13 +43216,13 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                     }
                     else {
                         // Sonderzeichen wurden escaped.
-                        ShowPlayerDialog(playerid,DIALOG_REG_STEP_2,DIALOG_STYLE_INPUT,COLOR_HEX_LIGHTBLUE"Registrierung:",COLOR_HEX_WHITE"Willkommen auf "COLOR_HEX_ORANGE"Live your Dream - Roleplay\n"COLOR_HEX_WHITE"Registriere dich bitte nun!\n\n"COLOR_HEX_RED"Gib bitte nun ein sicheres Passwort ein!\nHINWEIS: Dein Passwort muss mind. 8 stellig sein und aus 2 Zahlen bestehen,\naußerdem sollte es keine persönlichen Daten beinhaltet!\n\nDein Passwort enthält ungültige Zeichen!", "OK", "Abbrechen");
+                        ShowPlayerDialog(playerid,DIALOG_REG_STEP_2,DIALOG_STYLE_INPUT,COLOR_HEX_LIGHTBLUE"Registrierung:",COLOR_HEX_WHITE"Willkommen auf "COLOR_HEX_ORANGE"Monkey - Roleplay\n"COLOR_HEX_WHITE"Registriere dich bitte nun!\n\n"COLOR_HEX_RED"Gib bitte nun ein sicheres Passwort ein!\nHINWEIS: Dein Passwort muss mind. 8 stellig sein und aus 2 Zahlen bestehen,\naußerdem sollte es keine persönlichen Daten beinhaltet!\n\nDein Passwort enthält ungültige Zeichen!", "OK", "Abbrechen");
                     }
 
                 }
                 else
                 {
-                    ShowPlayerDialog(playerid, DIALOG_REG_STEP_2 ,DIALOG_STYLE_INPUT, COLOR_HEX_LIGHTBLUE"Registrierung:",  COLOR_HEX_WHITE"Willkommen auf "COLOR_HEX_ORANGE"Live your Dream - Roleplay\n"COLOR_HEX_WHITE"Bitte wiederhole nochmal dein Passwort.\n\n"COLOR_HEX_GREEN"Gib bitte nun ein sicheres Passwort ein!", "OK", "Abbrechen");
+                    ShowPlayerDialog(playerid, DIALOG_REG_STEP_2 ,DIALOG_STYLE_INPUT, COLOR_HEX_LIGHTBLUE"Registrierung:",  COLOR_HEX_WHITE"Willkommen auf "COLOR_HEX_ORANGE"Monkey - Roleplay\n"COLOR_HEX_WHITE"Bitte wiederhole nochmal dein Passwort.\n\n"COLOR_HEX_GREEN"Gib bitte nun ein sicheres Passwort ein!", "OK", "Abbrechen");
                     SendClientMessage(playerid, COLOR_RED, "Dein Passwort sollte mindestens 8 Zeichen besitzen.\nDavon müssen zwei eine Zahl sein ( 0-9 ).");
                 }
             }
@@ -43291,7 +43291,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                 if(strlen(inputtext) == 0 )
                 {
                     // Spieler[playerid][pTut] = 1;
-                    ShowPlayerDialog(playerid, DIALOG_LOGIN, DIALOG_STYLE_PASSWORD, COLOR_HEX_LIGHTBLUE"Anmeldung:", COLOR_HEX_WHITE"Willkommen auf "COLOR_HEX_ORANGE"Live your Dream - Roleplay\n"COLOR_HEX_WHITE"Ein Account unter diesem Namen ist bei uns registriert!\nSollte es dein Account sein, dann Logge dich bitte nun ein.\n \n"COLOR_HEX_GREEN"Bitte halte dein Passwort immer für dich!\n"COLOR_HEX_RED">Passwort vergessen?< - kontaktiere uns: Admin@LyD-SAMP.de", "OK", "Abbrechen");
+                    ShowPlayerDialog(playerid, DIALOG_LOGIN, DIALOG_STYLE_PASSWORD, COLOR_HEX_LIGHTBLUE"Anmeldung:", COLOR_HEX_WHITE"Willkommen auf "COLOR_HEX_ORANGE"Monkey - Roleplay\n"COLOR_HEX_WHITE"Ein Account unter diesem Namen ist bei uns registriert!\nSollte es dein Account sein, dann Logge dich bitte nun ein.\n \n"COLOR_HEX_GREEN"Bitte halte dein Passwort immer für dich!\n"COLOR_HEX_RED">Passwort vergessen?< - kontaktiere uns: Admin@monkey-roleplay.de", "OK", "Abbrechen");
 
                     Spieler[playerid][tLoginTimeout] = SetTimerEx("PlayerLoginTimeout",30011,false,"d",playerid);
                     Spieler[playerid][tSpawnView] = SetTimerEx("SetPlayerView",5003,false,"dd",playerid,1); // Muss,sonst klappt Spectate nicht
@@ -43299,7 +43299,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                 }
 
                 LoadPlayer(playerid, inputtext);
-                //ShowPlayerDialog(playerid, DIALOG_LOGMSG, DIALOG_STYLE_MSGBOX, "Live your Dream - Roleplay - Willkommen", "Schön das du wieder zu uns gefunden hast!\nProjektdaten:\nServer IP: Server.LyD-SAMP.de\nTeamspeak IP: TS.LyD-SAMP.de\nForum Adresse: www.LyD-SAMP.de\nFalls du noch kein Forum Account besitzt, bitten wir dich eins zu erstellen!\nHalte dich an die Server Verordnung!", "Akzeptieren", "Ablehnen");
+                //ShowPlayerDialog(playerid, DIALOG_LOGMSG, DIALOG_STYLE_MSGBOX, "Monkey - Roleplay - Willkommen", "Schön das du wieder zu uns gefunden hast!\nProjektdaten:\nServer IP: Server.monkey-roleplay.de\nTeamspeak IP: TS.monkey-roleplay.de\nForum Adresse: www.monkey-roleplay.de\nFalls du noch kein Forum Account besitzt, bitten wir dich eins zu erstellen!\nHalte dich an die Server Verordnung!", "Akzeptieren", "Ablehnen");
                 //TogglePlayerSpectating(playerid,false);
             }
             else
@@ -43531,7 +43531,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
             {
                 if(listitem!=2)
                 {
-                    ShowPlayerDialog(playerid, DIALOG_TUT_7, DIALOG_STYLE_MSGBOX, "Hilfetext 4/4: Spawn", COLOR_HEX_WHITE"Vielen Dank, dass du Dir Zeit genommen hast, um die Hilfetexte zu lesen.\nWir empfehlen dir, direkt ein Personalausweiß, Führerschein und ein Job zu besorgen.\nProjektdaten:\nForum Adresse: www.LyD-SAMP.de\nTeamspeak IP: TS.LyD-SAMP.de\nBitte melde dich auch in unserem Forum an!", "Spawn", "");
+                    ShowPlayerDialog(playerid, DIALOG_TUT_7, DIALOG_STYLE_MSGBOX, "Hilfetext 4/4: Spawn", COLOR_HEX_WHITE"Vielen Dank, dass du Dir Zeit genommen hast, um die Hilfetexte zu lesen.\nWir empfehlen dir, direkt ein Personalausweiß, Führerschein und ein Job zu besorgen.\nProjektdaten:\nForum Adresse: www.monkey-roleplay.de\nTeamspeak IP: TS.monkey-roleplay.de\nBitte melde dich auch in unserem Forum an!", "Spawn", "");
                     return 1;
                 }
             }
@@ -43834,7 +43834,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                 }
                 else if(listitem == 16 ) {
                     SetPlayerAttachedObject( playerid, ATTACHED_INDEX_MUSIK, 19421, 2, 0.035, 0.000000, 0.000000, 90.000000, 0.000000, 270.000000, 1.000000, 1.000000, 1.000000 ); // headphones01 - kopfhörer
-                    PlayAudioStreamForPlayer(playerid, "https://cdn.LyD-SAMP.de/radio/8010/radio.mp3");
+                    PlayAudioStreamForPlayer(playerid, "https://cdn.monkey-roleplay.de/radio/8010/radio.mp3");
                 }
                 else if(listitem == 17){
                     SetPlayerAttachedObject( playerid, ATTACHED_INDEX_MUSIK, 19421, 2, 0.035, 0.000000, 0.000000, 90.000000, 0.000000, 270.000000, 1.000000, 1.000000, 1.000000 ); // headphones01 - kopfhörer
@@ -44045,7 +44045,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                         {
                             if(GetPlayerVehicleID(i) == vID)
                             {
-                                PlayAudioStreamForPlayer(i, "https://cdn.LyD-SAMP.de/radio/8010/radio.mp3");
+                                PlayAudioStreamForPlayer(i, "https://cdn.monkey-roleplay.de/radio/8010/radio.mp3");
                             }
                         }
                         RadioSender[vID] = 17;
@@ -44168,7 +44168,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                 }
                 else if(listitem==3)
                 {
-                    ShowPlayerDialog(playerid, DIALOG_UEBERWEISEN, DIALOG_STYLE_MSGBOX, "ONLINEBANKING", "Eine Überweisung kann nur über das OnlineBanking unter www.Bank.LyD-SAMP.de durchgeführt werden!\nIhr Geld wird mit einem SICHEREN Transfer an den gewünschen Empfänger sofort überwiesen.\nSie haben auch eine Übersicht all Ihrer getätigten Überweisungen und können Ihre Bankpin beliebig ändern.\n\nDas ist unser Service für Sie!\n-Ihre Bank", "OK", "");
+                    ShowPlayerDialog(playerid, DIALOG_UEBERWEISEN, DIALOG_STYLE_MSGBOX, "ONLINEBANKING", "Eine Überweisung kann nur über das OnlineBanking unter www.Bank.monkey-roleplay.de durchgeführt werden!\nIhr Geld wird mit einem SICHEREN Transfer an den gewünschen Empfänger sofort überwiesen.\nSie haben auch eine Übersicht all Ihrer getätigten Überweisungen und können Ihre Bankpin beliebig ändern.\n\nDas ist unser Service für Sie!\n-Ihre Bank", "OK", "");
                     ClearAnimations(playerid);
                 }
                 else if(listitem == 4){
@@ -53001,7 +53001,7 @@ COMMAND:fskin(playerid,params[]) {
                             format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_array[e]);
                         }
                     }
-                    ShowPlayerDialog(playerid, DIALOG_SKINS, DIALOG_STYLE_PREVMODEL, "LyD - FSKIN", dialogstr, "Ok", "Abbrechen");
+                    ShowPlayerDialog(playerid, DIALOG_SKINS, DIALOG_STYLE_PREVMODEL, "MRP - FSKIN", dialogstr, "Ok", "Abbrechen");
                 }
                 else
                     SendClientMessage(playerid, COLOR_RED, "Du bist nicht am FSKIN-Punkt deiner Fraktion");
@@ -58299,7 +58299,7 @@ COMMAND:halloween(playerid,params[]) {
 				Spieler[playerid][pLevel] += 1;
 	            if( g_iGeschenk == sizeof(g_Geschenk) ) {
 	                // Alle wurden gefunden
-	                SendClientMessageToAll(COLOR_YELLOW,"Alle Kürbisse wurden gefunden! LyD wünscht euch gruselige Halloween!");
+	                SendClientMessageToAll(COLOR_YELLOW,"Alle Kürbisse wurden gefunden! MRP wünscht euch gruselige Halloween!");
 	            }
 	            return 1;
 	        }
@@ -60232,7 +60232,7 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
             new wyear, wmonth, wday;
             getdate(wyear, wmonth, wday);
             if (wmonth == 12 && wday < 25) {
-                SendClientMessage(playerid, COLOR_LIGHTRED, "Adventszeit auf LyD! Du kannst jeden Tag ein Adventstürchen öffnen.");
+                SendClientMessage(playerid, COLOR_LIGHTRED, "Adventszeit auf MRP! Du kannst jeden Tag ein Adventstürchen öffnen.");
                 SendClientMessage(playerid, COLOR_LIGHTRED, "Mit /Adventmin kannst du sehen, wie lange du noch warten musst.");
             }
 
@@ -60240,13 +60240,13 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
 
             AddPlayerToPlantArrayDataGang(playerid);
             
-            ShowPlayerDialog(playerid, DIALOG_SPAWNMELDUNG, DIALOG_STYLE_MSGBOX, "LyD - Roleplay", "LyD ist ZURÜCK! Im Forum findest du einen Eventplan!\n\nAm Spawn können sich neue Spieler bis zum 15.11.2019 ein Starterpack abholen.\nEs lohnt sich!\n\nProjektdaten:\n\nServer IP: Server.LyD-SAMP.de\nTeamspeak IP: TS.LyD-SAMP.de\nForum Adresse: www.LyD-SAMP.de\n\nSchau täglich auf unserem Forum vorbei, um über Neuigkeiten informiert zu sein!", "OK", "");
+            ShowPlayerDialog(playerid, DIALOG_SPAWNMELDUNG, DIALOG_STYLE_MSGBOX, "Monkey - Roleplay", "Am Spawn können sich neue Spieler ein Starterpack abholen.\nEs lohnt sich!\n\nProjektdaten:\n\nServer IP: server.monkey-roleplay.de\nTeamspeak IP: ts.monkey-roleplay.de\nForum Adresse: www.monkey-roleplay.de\n\nSchau täglich auf unserem Forum vorbei, um über Neuigkeiten informiert zu sein!", "OK", "");
             /*
             if(Spieler[playerid][pLevel] < 99)
             {
                 SendClientMessage(playerid, COLOR_YELLOW, "SERVER: Am 24. November 2017 ist BLACK FRIDAY SALE");
                 SendClientMessage(playerid, COLOR_GREEN, "SERVER: Es sind ALLE Autos, Motorräder, Boote und Flugzeuge um 30 PROZENT reduziert!");
-                SendClientMessage(playerid, COLOR_GREEN, "SERVER: und... 20 PROZENT auf ALLE Produkte im LyD-Shop: www.Shop.LyD-SAMP.de");
+                SendClientMessage(playerid, COLOR_GREEN, "SERVER: und... 20 PROZENT auf ALLE Produkte im MRP-Shop: www.Shop.monkey-roleplay.de");
             }
             if(Spieler[playerid][pLevel] < 99)
             {
@@ -60271,17 +60271,17 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
             }
             if(Spieler[playerid][pLevel] < 99)
             {
-                ShowPlayerDialog(playerid, DIALOG_SPAWNMELDUNG, DIALOG_STYLE_MSGBOX, "Live your Dream - Roleplay", "NEUIGKEITEN:\n\nAbsofort gilt im Falle 'sinnlosem Deathmatch'(SDM) eine neue Regelung:\nWer innerhalb 30 Tagen wegen 3 SDM-Fällen
+                ShowPlayerDialog(playerid, DIALOG_SPAWNMELDUNG, DIALOG_STYLE_MSGBOX, "Monkey - Roleplay", "NEUIGKEITEN:\n\nAbsofort gilt im Falle 'sinnlosem Deathmatch'(SDM) eine neue Regelung:\nWer innerhalb 30 Tagen wegen 3 SDM-Fällen
                 durch ein Teammitglied bestraft wurde, wird\nwegen '3/3 SDM-Fällen' dauerhaft gesperrt!\nEntbannanträge dürfen anschließend gestellt werden.
-                \nGenauere Informationen stehen im Forum!\n\nProjektdaten:\nServer IP: Server.LyD-SAMP.de\nTeamspeak IP:
-                TS.LyD-SAMP.de\nForum Adresse: www.LyD-SAMP.de\n\nSchau täglich in unserem Forum vorbei, um über Neuigkeiten informiert zu sein!", "OK", "");
+                \nGenauere Informationen stehen im Forum!\n\nProjektdaten:\nServer IP: Server.monkey-roleplay.de\nTeamspeak IP:
+                TS.monkey-roleplay.de\nForum Adresse: www.monkey-roleplay.de\n\nSchau täglich in unserem Forum vorbei, um über Neuigkeiten informiert zu sein!", "OK", "");
             }
             if(Spieler[playerid][pLevel] < 99)
             {
                 SendClientMessage(playerid, COLOR_YELLOW, "SERVER: Vom 18.07.2017 bis zum 01.08.2017 veranstalten wir ein Entbann- und StatsBack Event.");
                 SendClientMessage(playerid, COLOR_GREEN, "Wir möchten unsere Community mit einem StatsBack-Event erweitern und neue Spieler damit anwerben.");
                 SendClientMessage(playerid, COLOR_GREEN, "Ebenso haben wir uns überlegt, auch den gebannten Spielern, eine neue Chance zu geben.");
-                SendClientMessage(playerid, COLOR_GREEN, "Weitere Informationen stehen im Forum: www.LyD-SAMP.de");
+                SendClientMessage(playerid, COLOR_GREEN, "Weitere Informationen stehen im Forum: www.monkey-roleplay.de");
             }*/
             if(Spieler[playerid][pLevel] == 1)
             {
@@ -60292,7 +60292,7 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
             if(Spieler[playerid][pJailed] == 3)
             {
                 SendClientMessage(playerid, COLOR_RED, "SERVER: Du hast gegen die Server Regeln verstoßen und wurdest deshalb ins Admin-Prison gesperrt!");
-                SendClientMessage(playerid, COLOR_RED, "SERVER: Sollte dir der Grund dafür nicht bekannt sein, schaue im User Panel unter www.UCP.LyD-SAMP.de.");
+                SendClientMessage(playerid, COLOR_RED, "SERVER: Sollte dir der Grund dafür nicht bekannt sein, schaue im User Panel unter www.UCP.monkey-roleplay.de.");
                 SendClientMessage(playerid, COLOR_RED, "SERVER: Eventuell wurde gegen dich eine Beschwerde gestellt. Mit /Jailtime siehst du wann die Strafe abläuft.");
                 // SetTimerEx("LoadPremiumWeaponData", 353 ,false,"d",playerid); <- Er kann keine Premium Waffen haben
             }
@@ -60373,7 +60373,7 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
                 Kick(playerid);
             }
             else {
-                format(String,sizeof(String),COLOR_HEX_RED"Das Passwort war nicht korrekt! Versuche: %d/3\n\n"COLOR_HEX_WHITE"Ein Account unter diesem Namen ist bei uns registriert!\nSollte es dein Account sein, dann Logge dich bitte nun ein.\n\n"COLOR_HEX_RED">Passwort vergessen?< - kontaktiere uns: Admin@LyD-SAMP.de", Spieler[playerid][pLoginVersuch] );
+                format(String,sizeof(String),COLOR_HEX_RED"Das Passwort war nicht korrekt! Versuche: %d/3\n\n"COLOR_HEX_WHITE"Ein Account unter diesem Namen ist bei uns registriert!\nSollte es dein Account sein, dann Logge dich bitte nun ein.\n\n"COLOR_HEX_RED">Passwort vergessen?< - kontaktiere uns: Admin@monkey-roleplay.de", Spieler[playerid][pLoginVersuch] );
                 ShowPlayerDialog(playerid, DIALOG_LOGIN, DIALOG_STYLE_PASSWORD, COLOR_HEX_LIGHTBLUE"Anmeldung:", String , "OK", "Abbrechen");
             }
         }
@@ -60385,8 +60385,8 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
     }
     else if(resultid == THREAD_BESCHWERDEGGNMICH ) {
         if( cache_get_row_count(connectionHandle) > 0) {
-            SendClientMessage(extraid,COLOR_RED,"Gegen dich liegt eine Beschwerde vor! Unter www.UCP.LyD-SAMP.de kannst du die Beschwerde gegen dich sehen.");
-            ShowPlayerDialog(extraid, DIALOG_SPAWNMELDUNG, DIALOG_STYLE_MSGBOX, "LYD - ROLEPLAY", "Gegen dich wurde eine Beschwerde eingereicht!\nDu wirst beschuldigt, gegen die Server Regeln verstoßen zu haben.\nDu musst zu dieser Beschwerde Stellung nehmen und den weiteren Ablauf täglich beobachten,\nansonsten kann sich das Urteil durch ein Moderatoren negativ gegen dich auswirken!\n\nDie Beschwerdestelle ist unter folgendem Link zu erreichen:\nwww.UCP.LyD-SAMP.de", "OK", "");
+            SendClientMessage(extraid,COLOR_RED,"Gegen dich liegt eine Beschwerde vor! Unter www.UCP.monkey-roleplay.de kannst du die Beschwerde gegen dich sehen.");
+            ShowPlayerDialog(extraid, DIALOG_SPAWNMELDUNG, DIALOG_STYLE_MSGBOX, "MRP - ROLEPLAY", "Gegen dich wurde eine Beschwerde eingereicht!\nDu wirst beschuldigt, gegen die Server Regeln verstoßen zu haben.\nDu musst zu dieser Beschwerde Stellung nehmen und den weiteren Ablauf täglich beobachten,\nansonsten kann sich das Urteil durch ein Moderatoren negativ gegen dich auswirken!\n\nDie Beschwerdestelle ist unter folgendem Link zu erreichen:\nwww.UCP.monkey-roleplay.de", "OK", "");
         }
     }
     else if(resultid == THREAD_TECHNIKABTEILUNG ) {
@@ -60645,7 +60645,7 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
         new
             playerid = extraid;
         if( cache_get_row_count(connectionHandle) ) {
-            ShowPlayerDialog(playerid, DIALOG_LOGIN, DIALOG_STYLE_PASSWORD, COLOR_HEX_LIGHTBLUE"Anmeldung:", COLOR_HEX_WHITE"Willkommen auf "COLOR_HEX_ORANGE"Live your Dream - Roleplay\n"COLOR_HEX_WHITE"Ein Account unter diesem Namen ist bei uns registriert!\nSollte es dein Account sein, dann Logge dich bitte nun ein.\n \n"COLOR_HEX_GREEN"Bitte halte dein Passwort immer für dich!\n"COLOR_HEX_RED">Passwort vergessen?< - kontaktiere uns: Admin@LyD-SAMP.de", "OK", "Abbrechen");
+            ShowPlayerDialog(playerid, DIALOG_LOGIN, DIALOG_STYLE_PASSWORD, COLOR_HEX_LIGHTBLUE"Anmeldung:", COLOR_HEX_WHITE"Willkommen auf "COLOR_HEX_ORANGE"Monkey - Roleplay\n"COLOR_HEX_WHITE"Ein Account unter diesem Namen ist bei uns registriert!\nSollte es dein Account sein, dann Logge dich bitte nun ein.\n \n"COLOR_HEX_GREEN"Bitte halte dein Passwort immer für dich!\n"COLOR_HEX_RED">Passwort vergessen?< - kontaktiere uns: Admin@monkey-roleplay.de", "OK", "Abbrechen");
             Spieler[playerid][bAccountExists] = true;
 
             Spieler[playerid][tLoginTimeout] = SetTimerEx("PlayerLoginTimeout",30011,false,"d",playerid);
@@ -60654,14 +60654,14 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
         else {
             if(g_aSettings[ASETTING_REGBLOCK][ASETTING_TOGGLE]) {
                 static String[] = "\
-                                Wir begrüßen dich ganz Herzlich auf Live your Dream!\n\
+                                Wir begrüßen dich ganz Herzlich auf Monkey!\n\
                                 Aus aktuellem Anlass ist eine Registrierung gerade nicht möglich.\n\
                                 Schau doch einfach später nochmal vorbei!\n\n\
                                 Wir bitten vielmals um Verständnis!\n\n\
-                                Forum Adresse: www.LyD-SAMP.de\n\
-                                Teamspeak: TS.LyD-SAMP.de\n\
-                                User Panel: www.UCP.LyD-SAMP.de\n\
-                                E-Mail: Admin@LyD-SAMP.de";
+                                Forum Adresse: www.monkey-roleplay.de\n\
+                                Teamspeak: TS.monkey-roleplay.de\n\
+                                User Panel: www.UCP.monkey-roleplay.de\n\
+                                E-Mail: Admin@monkey-roleplay.de";
                 ShowPlayerDialog(playerid, DIALOG_REGSPERRE, DIALOG_STYLE_MSGBOX, "{FF0000}Registrationssperre" , String, "Disconnect","");
                 Spieler[playerid][tLoginTimeout] = SetTimerEx("PlayerRegsperreKick",10011,false,"d",playerid);
             }
@@ -60669,7 +60669,7 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
                 new
                     String[512],
                     header[128];
-                strcat(String,COLOR_HEX_WHITE"Wir begrüßen dich ganz Herzlich auf Live your Dream!\n\n",sizeof(String));
+                strcat(String,COLOR_HEX_WHITE"Wir begrüßen dich ganz Herzlich auf Monkey!\n\n",sizeof(String));
                 strcat(String,"Um dein virtuelles Traumleben näher zu kommen, musst du als erstes ein Spieleraccount anlegen.\n",sizeof(String));
                 strcat(String,"Bei deiner Registration wirst du Dir auch eine kurze Einführung von unserem Server anschauen\n",sizeof(String));
                 strcat(String,"dass nur ca. 2 Minuten dauern wird.\n",sizeof(String));
@@ -61039,7 +61039,7 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
         SendAdminMessage(COLOR_RED, string);
         format(string, sizeof(string), "[BANNED]: Sie wurden von %s %s für %d Minuten gebannt, Grund: %s", GetPlayerAdminRang(extraid), GetName(extraid), time, grund);
         SendClientMessage(pID, COLOR_RED, string);
-        format(string1, sizeof(string1), "Sind Sie der Meinung das diese Sperre falsch war? Dann schreiben Sie auf www.LyD-SAMP.de ein Entbannantrag!");
+        format(string1, sizeof(string1), "Sind Sie der Meinung das diese Sperre falsch war? Dann schreiben Sie auf www.monkey-roleplay.de ein Entbannantrag!");
         SendClientMessage(pID, COLOR_RED, string1);
 
         format(string,sizeof(string),"UPDATE `accounts` SET `GebanntVon` = '%s' ,`BanGrund` = '%s' ,`TimeBan` = %d WHERE `Name` = '%s'",
@@ -61182,7 +61182,7 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
             }
             new
                 String[500];
-            format(String,sizeof(String),"Ihr Spieler-Account wurde gesperrt!\n\nAufgrund eines Regelverstoßes wurde Ihr Spieleraccount gesperrt!\nSollte dies ein Fehlban sein, schreiben Sie ein Entbannantrag im Forum www.LyD-SAMP.de\nDie Daten des Banns:\nDauer: %s\nGrund: %s\nVon: %s",
+            format(String,sizeof(String),"Ihr Spieler-Account wurde gesperrt!\n\nAufgrund eines Regelverstoßes wurde Ihr Spieleraccount gesperrt!\nSollte dies ein Fehlban sein, schreiben Sie ein Entbannantrag im Forum www.monkey-roleplay.de\nDie Daten des Banns:\nDauer: %s\nGrund: %s\nVon: %s",
                 unixtimeban,bangrund,gebanntvon);
             ShowPlayerDialog(extraid,0,DIALOG_STYLE_MSGBOX,"Sie wurden Gesperrt",String,"Exit","");
         }
@@ -61652,10 +61652,10 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
     else if( resultid == THREAD_HWBAN ) {
         if( cache_get_row_count(connectionHandle) > 0 ) {
             ShowPlayerDialog(extraid,DIALOG_DUMMY,DIALOG_STYLE_MSGBOX,COLOR_HEX_LIGHTBLUE "Ban","Du wirst auf dem Server nicht toleriert!\n\
-                Du wurdest aufgrund eines Regelverstoßes aus dem Live your Dream - Roleplay Projekt\n\
+                Du wurdest aufgrund eines Regelverstoßes aus dem Monkey - Roleplay Projekt\n\
                 dauerhaft gesperrt! Wegen deinem Regelverstoß wirst du auf dem Server nicht mehr tolertiert.\n\n\
                 Sollte die dauerhafte Sperrung deiner Meinung nach nicht gerechtfertig sein,\n\
-                schreibe einen Entbannantrag im Forum unter www.LyD-SAMP.de","Exit","");
+                schreibe einen Entbannantrag im Forum unter www.monkey-roleplay.de","Exit","");
             KickDelay(extraid);
         }
     }
@@ -61668,10 +61668,10 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
         }
         else {
             ShowPlayerDialog(extraid,DIALOG_DUMMY,DIALOG_STYLE_MSGBOX,COLOR_HEX_LIGHTBLUE "Ban","Du wirst auf dem Server nicht toleriert!\n\
-                Du wurdest aufgrund eines Regelverstoßes aus dem Live your Dream - Roleplay Projekt\n\
+                Du wurdest aufgrund eines Regelverstoßes aus dem Monkey - Roleplay Projekt\n\
                 dauerhaft gesperrt! Wegen deinem Regelverstoß wirst du auf dem Server nicht mehr tolertiert.\n\n\
                 Sollte die dauerhafte Sperrung deiner Meinung nach nicht gerechtfertig sein,\n\
-                schreibe einen Entbannantrag im Forum unter www.LyD-SAMP.de","Exit","");
+                schreibe einen Entbannantrag im Forum unter www.monkey-roleplay.de","Exit","");
             KickDelay(extraid);
         }
     }
@@ -62906,8 +62906,8 @@ public ShowPlayerTutorial(playerid,step) {
         SetPlayerPos(playerid,1490.6090,-1741.4506,13.5469);
         SetPlayerFacingAngle(playerid,152.2931);
 
-        SendClientMessage(playerid,COLOR_YELLOW,"============================ LyD - Stadthalle ============================");
-        SendClientMessage(playerid,COLOR_WHITE,"Dieser Platz ist einer der wichtigsten Orte auf Live your Dream!");
+        SendClientMessage(playerid,COLOR_YELLOW,"============================ MRP - Stadthalle ============================");
+        SendClientMessage(playerid,COLOR_WHITE,"Dieser Platz ist einer der wichtigsten Orte auf Monkey!");
         SendClientMessage(playerid,COLOR_WHITE,"Auf diesem Platz liegt das Arbeitsamt, wo du eine Auswahl von mehr als 20 Berufen hast.");
         SendClientMessage(playerid,COLOR_WHITE,"Staatsangehörigkeit, Fahrzeugzulassung, Meldestelle - alle diese");
         SendClientMessage(playerid,COLOR_WHITE,"Verwaltungsangelegenheiten lassen sich beim Stadtamt erledigen.");
@@ -62922,7 +62922,7 @@ public ShowPlayerTutorial(playerid,step) {
         SetPlayerPos(playerid,1541.2928,-1661.9829,13.5523);
         SetPlayerFacingAngle(playerid,224.5919);
 
-        SendClientMessage(playerid,COLOR_YELLOW,"============================ LyD - Polizeizentrale ============================");
+        SendClientMessage(playerid,COLOR_YELLOW,"============================ MRP - Polizeizentrale ============================");
         SendClientMessage(playerid,COLOR_WHITE,"Das ist die Los Santos Polizeidienststelle, wo unter anderem auch gefährliche");
         SendClientMessage(playerid,COLOR_WHITE,"Straftäter hinter Gitter sitzen.");
         SendClientMessage(playerid,COLOR_WHITE,"Sollten die Verbrecher über den Weg laufen oder wenn du eine Straftat beobachtest,");
@@ -62940,7 +62940,7 @@ public ShowPlayerTutorial(playerid,step) {
         SetPlayerPos(playerid,2010.0386,-1438.3197,13.5547);
         SetPlayerFacingAngle(playerid,319.7918);
 
-        SendClientMessage(playerid,COLOR_YELLOW,"============================ LyD - Rettungsdienstsstelle ============================");
+        SendClientMessage(playerid,COLOR_YELLOW,"============================ MRP - Rettungsdienstsstelle ============================");
         SendClientMessage(playerid,COLOR_WHITE,"Das ist die Rettungsdienstsstelle Los Santos wo du eine Krankenversicherung abschließen kannst,");
         SendClientMessage(playerid,COLOR_WHITE,"die Kosten für eine ärztliche Behandlung werden dann für dich kostenlos sein!");
         SendClientMessage(playerid,COLOR_WHITE,"Eine ärztliche Behandlung würde ohne einer Krankenversicherung 450$ kosten,");
@@ -62959,7 +62959,7 @@ public ShowPlayerTutorial(playerid,step) {
         SetPlayerPos(playerid,1455.5131,-1024.8951,23.8281);
         SetPlayerFacingAngle(playerid,335.7801);
 
-        SendClientMessage(playerid,COLOR_YELLOW,"============================ LyD - Landeszentralbank ============================");
+        SendClientMessage(playerid,COLOR_YELLOW,"============================ MRP - Landeszentralbank ============================");
         SendClientMessage(playerid,COLOR_WHITE,"Das ist die Landeszentralbank in Los Santos wo du ein Kredit aufnehmen kannst");
         SendClientMessage(playerid,COLOR_WHITE,"so wie dein Bankkonto mit einer Bankpinnummer anlegen kannst.");
         SendClientMessage(playerid,COLOR_WHITE,"In Los Santos gibt es zwei Banken, einmal die normale Los Santos Bank und die");
@@ -62975,8 +62975,8 @@ public ShowPlayerTutorial(playerid,step) {
         SetPlayerPos(playerid,376.7904,-2020.4138,7.8301);
         SetPlayerFacingAngle(playerid,225.8178);
 
-        SendClientMessage(playerid,COLOR_YELLOW,"============================ LyD - Freizeit ============================");
-        SendClientMessage(playerid,COLOR_WHITE,"Auf Live your Dream gibt es viele Orte wo du deine Freizeit genießen kannst!");
+        SendClientMessage(playerid,COLOR_YELLOW,"============================ MRP - Freizeit ============================");
+        SendClientMessage(playerid,COLOR_WHITE,"Auf Monkey gibt es viele Orte wo du deine Freizeit genießen kannst!");
         SendClientMessage(playerid,COLOR_WHITE,"Du könntest eine Runde mit dem Riesenrad drehen oder schön in Ruhe angeln auf dem");
         SendClientMessage(playerid,COLOR_WHITE,"sonnigen LS Strand oder vielleicht mal auf der Go-Kartbahn oder auf unserem");
         SendClientMessage(playerid,COLOR_WHITE,"Wasser-Autoscooter herumdüsen und vieles mehr!");
@@ -65918,7 +65918,7 @@ COMMAND:kredit(playerid,params[]) {
     new string2[256];
     new string3[256];
     new string4[768];
-    format(string1, sizeof(string1), "Sehr geehrte Kundin, sehr geehrter Kunde,\n\num ein Kredit aufnehmen zu können, müssen Sie auf unserer Internetseite www.LyD-SAMP.de,\n");
+    format(string1, sizeof(string1), "Sehr geehrte Kundin, sehr geehrter Kunde,\n\num ein Kredit aufnehmen zu können, müssen Sie auf unserer Internetseite www.monkey-roleplay.de,\n");
     format(string2, sizeof(string2), "unter der Kategorie'Staatliche Antragsstelle' ein Kreditantrag stellen.\nBitte verwenden Sie für Ihren Kreditantrag die dafür bestehende Vorlage.\n");
     format(string3, sizeof(string3), "Ihre Kreditanfrage werden wir dann dann von einem Sachbearbeiter bearbeiten lassen!\n");
     format(string4, sizeof(string4), "Unter welchen Konditionen Sie ein Kredit erhalten, werden Sie während der Bearbeitung\nIhrer Kreditanfrage von unserem Sachbearbeiter erfahren.\n\ngez.\nIhre Bank");
@@ -66164,7 +66164,7 @@ COMMAND:musik(playerid,params[]) {
     if( !Spieler[playerid][pMP3Player] ) {
         return SendClientMessage(playerid,COLOR_RED,"Du besitzt keinen MP3-Player.");
     }
-    ShowPlayerDialog(playerid, DIALOG_MUSIK, DIALOG_STYLE_LIST, COLOR_HEX_ORANGE"Radiosender", COLOR_HEX_WHITE"Radio ausschalten\n1-Live\nTechnoBase.FM\nHardBase.FM\nI Love Radio\nBreakz.us\nYouFM\nPlanet Radio\nThe Club\nNightWax\nI Love Mashup\nDas Hitradio\nI Love the Battle\nI Love 2Dance\nLogin-Musik\niTunes Hot 40\nLyD Webradio\nEigener Audiostream", "Auswählen", "Abbrechen");
+    ShowPlayerDialog(playerid, DIALOG_MUSIK, DIALOG_STYLE_LIST, COLOR_HEX_ORANGE"Radiosender", COLOR_HEX_WHITE"Radio ausschalten\n1-Live\nTechnoBase.FM\nHardBase.FM\nI Love Radio\nBreakz.us\nYouFM\nPlanet Radio\nThe Club\nNightWax\nI Love Mashup\nDas Hitradio\nI Love the Battle\nI Love 2Dance\nLogin-Musik\niTunes Hot 40\nMRP Webradio\nEigener Audiostream", "Auswählen", "Abbrechen");
     return 1;
 }
 COMMAND:mp3player(playerid,params[]) {
@@ -71727,7 +71727,7 @@ COMMAND:firmen(playerid, params[]) {
         "{FFFFFF}Auf dieser Liste werden alle Firmeninhaber aufgelistet.\n\
         Um eine Firma die noch keinen Besitzer hat zu kaufen,\n\
         muss man ein Antrag beim Gewerbeamt im\n\
-        Forum: {4422FF}www.LyD-SAMP.de{FFFFFF} stellen.","Ansehen","Abbruch");
+        Forum: {4422FF}www.monkey-roleplay.de{FFFFFF} stellen.","Ansehen","Abbruch");
     return 1;
 }
 
@@ -75825,7 +75825,7 @@ stock CheckTeleHack(spielerid,zeitms)
         else
         {
             SendClientMessage(spielerid, COLOR_RED, "[BANNED] Du wurdest soeben vom Server-System dauerhaft aus dem Server gebannt. Grund: Teleporthack");
-            SendClientMessage(spielerid, COLOR_RED, "Sind Sie der Meinung das diese Sperre falsch war? Dann schreiben Sie auf www.LyD-SAMP.de ein Entbannantrag!");
+            SendClientMessage(spielerid, COLOR_RED, "Sind Sie der Meinung das diese Sperre falsch war? Dann schreiben Sie auf www.monkey-roleplay.de ein Entbannantrag!");
             new query[256];
             format(query,sizeof(query),"Gebannt: %s von: System, Grund: Teleporthack, Dauer: Permanent",GetName(spielerid));
             BanLog(query);
@@ -76059,6 +76059,11 @@ public Load_FrakcarsEx() {
         	break;
 		}
 	}
+}
+
+CMD:createdb(playerid){
+    Create_DB();
+    return SendClientMessage(playerid, COLOR_GREEN, "DONE");
 }
 
 stock Create_DB() {

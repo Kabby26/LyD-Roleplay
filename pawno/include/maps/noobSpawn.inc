@@ -39,7 +39,6 @@ hook OnGameModeInit() {
 
     // Actors
     actor_noobSpawn[0] = CreateDynamicActor(150, 809.7925, -1338.9929, 13.5400, 255.5065, .worldid = VW_MAIN, .interiorid = MAPS_NOOBSPAWN_INTERIOR); // Greeting woman
-    ApplyDynamicActorAnimation(actor_noobSpawn[0], "PED", "endchat_03", 4.0, 1, 0, 0, 0, 0);
     actor_noobSpawn[1] = CreateDynamicActor(141, 816.6170, -1345.5221, 13.5283, 271.2476, .worldid = VW_MAIN, .interiorid = MAPS_NOOBSPAWN_INTERIOR); // Information woman
 
 	// Objects
@@ -76,15 +75,15 @@ hook OnGameModeInit() {
     SetDynamicObjectMaterial(object_noobSpawn[16], 0, 2951, "a51_labdoor", "washapartwall1_256", 0xFFFFFFFF);
     SetDynamicObjectMaterial(object_noobSpawn[16], 2, 16322, "a51_stores", "metalic128", 0xFFFFFFFF);
     object_noobSpawn[17] = CreateDynamicObject(19172, 808.7720, -1339.1927, 14.1365, 0.0000, -0.2000, 64.0998, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1
-    SetDynamicObjectMaterialText(object_noobSpawn[17], 0,"Forum: www.lyd-samp.de", 90, "Arial", 16, 1, 0xFFFFFFFF, 0x0, 0);
+    SetDynamicObjectMaterialText(object_noobSpawn[17], 0,"Forum: www.monkey-roleplay.de", 90, "Arial", 16, 1, 0xFFFFFFFF, 0x0, 0);
     object_noobSpawn[18] = CreateDynamicObject(19172, 808.7848, -1339.1671, 14.7067, 0.0000, -0.2000, 64.0998, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1
     SetDynamicObjectMaterialText(object_noobSpawn[18], 0,"Unsere Plattformen:", 90, "Arial", 24, 1, 0xFFFFFFFF, 0x0, 0);
     object_noobSpawn[19] = CreateDynamicObject(19172, 808.7589, -1339.2186, 13.7064, 0.0000, -0.2000, 64.0998, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1
-    SetDynamicObjectMaterialText(object_noobSpawn[19], 0,"Teamspeak: ts.lyd-samp.de", 90, "Arial", 16, 1, 0xFFFFFFFF, 0x0, 0);
+    SetDynamicObjectMaterialText(object_noobSpawn[19], 0,"Teamspeak: ts.monkey-roleplay.de", 90, "Arial", 16, 1, 0xFFFFFFFF, 0x0, 0);
     object_noobSpawn[20] = CreateDynamicObject(19172, 808.7546, -1339.2282, 13.9264, 0.0000, -0.2000, 64.0998, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1
-    SetDynamicObjectMaterialText(object_noobSpawn[20], 0,"UCP: www.ucp.lyd-samp.de", 90, "Arial", 16, 1, 0xFFFFFFFF, 0x0, 0);
+    SetDynamicObjectMaterialText(object_noobSpawn[20], 0,"UCP: ---", 90, "Arial", 16, 1, 0xFFFFFFFF, 0x0, 0);
     object_noobSpawn[21] = CreateDynamicObject(19172, 808.3779, -1355.2445, 14.7985, 0.0000, -0.2000, 129.9998, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1
-    SetDynamicObjectMaterialText(object_noobSpawn[21], 0,"Willkommen auf LyD!", 90, "Arial", 22, 1, 0xFFFFFFFF, 0x0, 0);
+    SetDynamicObjectMaterialText(object_noobSpawn[21], 0,"Willkommen auf Monkey Roleplay!", 90, "Arial", 22, 1, 0xFFFFFFFF, 0x0, 0);
     object_noobSpawn[22] = CreateDynamicObject(19172, 808.4025, -1355.2229, 14.1688, -0.7999, -0.2000, 129.7998, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1
     SetDynamicObjectMaterialText(object_noobSpawn[22], 0,"Fuer Cheatermeldungen - benutze /Admin", 90, "Arial", 14, 1, 0xFFFFFFFF, 0x0, 0);
     object_noobSpawn[23] = CreateDynamicObject(19172, 808.4042, -1355.2202, 13.9488, -0.7999, -0.2000, 129.7998, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1
@@ -140,7 +139,7 @@ hook OnGameModeInit() {
     object_noobSpawn[51] = CreateDynamicObject(19172, 808.4059, -1355.2174, 13.7188, -0.7999, -0.2000, 129.7998, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1
     SetDynamicObjectMaterialText(object_noobSpawn[51], 0,"Fuer eine Uebersicht - benutze /Help", 90, "Arial", 15, 1, 0xFFFFFFFF, 0x0, 0);
     object_noobSpawn[52] = CreateDynamicObject(19172, 808.3779, -1355.2445, 14.7985, 0.0000, -0.2000, 129.9998, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1
-    SetDynamicObjectMaterialText(object_noobSpawn[52], 0,"Willkommen auf LyD!", 90, "Arial", 22, 1, 0xFFFFFFFF, 0x0, 0);
+    SetDynamicObjectMaterialText(object_noobSpawn[52], 0,"Willkommen auf Monkey Roleplay!", 90, "Arial", 22, 1, 0xFFFFFFFF, 0x0, 0);
     object_noobSpawn[53] = CreateDynamicObject(967, 816.3640, -1345.1729, 12.5152, 0.0000, 0.0000, -179.1999, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //bar_gatebox01
     SetDynamicObjectMaterial(object_noobSpawn[53], 0, 10765, "airportgnd_sfse", "desgreengrass", 0xFFFFFFFF);
     SetDynamicObjectMaterial(object_noobSpawn[53], 1, 10765, "airportgnd_sfse", "ws_whiteplaster_top", 0xFFFFFFFF);

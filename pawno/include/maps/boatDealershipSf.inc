@@ -53,5 +53,5 @@ hook OnGameModeInit() {
     SetDynamicObjectMaterial(object_boatDealershipSf[19], 0, 1355, "break_s_bins", "CJ_WOOD_DARK", 0xFFFFFFFF);
     object_boatDealershipSf[20] = CreateDynamicObject(19172, -1483.4501, 711.2283, 6.8490, 0.0000, 0.0000, 90.4999, VW_MAIN, MAPS_BOATDEALERSHIPSF_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1
     SetDynamicObjectMaterial(object_boatDealershipSf[20], 0, 1355, "break_s_bins", "CJ_WOOD_DARK", 0xFFFFFFFF);
-    SetDynamicObjectMaterialText(object_boatDealershipSf[20], 1, "LyD - Bootsverkauf", 90, "Arial", 20, 1, 0xFF000000, 0x0, 1);
+    SetDynamicObjectMaterialText(object_boatDealershipSf[20], 1, "MRP - Bootsverkauf", 90, "Arial", 20, 1, 0xFF000000, 0x0, 1);
 }

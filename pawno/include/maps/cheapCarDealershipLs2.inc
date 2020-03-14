@@ -45,7 +45,7 @@ hook OnGameModeInit() {
     object_cheapCarDealershipLs2[9] = CreateDynamicObject(19366, 2118.1701, -1119.5301, 25.1826, 0.0000, 0.0000, 72.1999, VW_MAIN, MAPS_CHEAPCARDEALERSHIPLS2_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //wall014
     SetDynamicObjectMaterial(object_cheapCarDealershipLs2[9], 0, 10101, "2notherbuildsfe", "sl_vicbrikwall01", 0xFFFFFFFF);
     object_cheapCarDealershipLs2[10] = CreateDynamicObject(19172, 2135.7407, -1124.2064, 25.2077, 0.0000, 0.0000, 173.3000, VW_MAIN, MAPS_CHEAPCARDEALERSHIPLS2_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1
-    SetDynamicObjectMaterialText(object_cheapCarDealershipLs2[10], 0,"LyD | Autohaus Günstig", 90, "Arial", 24, 1, 0xFFFFFFFF, 0x0, 0);
+    SetDynamicObjectMaterialText(object_cheapCarDealershipLs2[10], 0,"MRP | Autohaus Günstig", 90, "Arial", 24, 1, 0xFFFFFFFF, 0x0, 0);
     object_cheapCarDealershipLs2[11] = CreateDynamicObject(19172, 2117.9904, -1119.3697, 25.1184, 0.0000, 0.0000, 163.5998, VW_MAIN, MAPS_CHEAPCARDEALERSHIPLS2_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1
     SetDynamicObjectMaterialText(object_cheapCarDealershipLs2[11], 0, "<--- Günstige Autos!", 90, "Arial", 24, 1, 0xFFFFFFFF, 0x0, 0);
 }
