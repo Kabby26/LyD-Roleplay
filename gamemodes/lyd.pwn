@@ -123,8 +123,8 @@ Yakuza:
 
 #define PREIS_SCHEIDUNG 32000
 #define SOUND_ALHAMBRA "http://kabby.xyz/MRP/alhambra.mp3"
-#define URL_LOGINMUSIC "http://kabby.xyz/MRP/login.wav"
-#define SOUND_HOSPITAL "http://kabby.xyz/MRP/hospital.mp3"
+#define URL_LOGINMUSIC "https://server.monkey-roleplay.de/lyd/login.mp3"
+#define SOUND_HOSPITAL ""
 #define STREAMER_MAX_OBJECTS 900
 
 #define HAUSTIER_OFFSET 1.5
@@ -2804,22 +2804,22 @@ enum {
 #if defined TEST // Testserver
 	#define     SQL_HOST            "localhost"
 	#define     SQL_USER            "root"
-	#define     SQL_PASS            "To26Go01Li20No02"
+	#define     SQL_PASS            "98kw1aq1bkawwqa810uc94ilrn484hqq0o4xwig5"
 	#define     SQL_DATA            "lyd"
 
 	#define     WEBSQL_HOST         "localhost"
 	#define     WEBSQL_USER         "root"
-	#define     WEBSQL_PASS         "To26Go01Li20No02"
+	#define     WEBSQL_PASS         "98kw1aq1bkawwqa810uc94ilrn484hqq0o4xwig5"
 	#define     WEBSQL_DATA         "lyd"
 #else // Main-Server
 	#define     SQL_HOST            "localhost"
 	#define     SQL_USER            "root"
-	#define     SQL_PASS            "To26Go01Li20No02"
+	#define     SQL_PASS            "98kw1aq1bkawwqa810uc94ilrn484hqq0o4xwig5"
 	#define     SQL_DATA            "lyd"
 
 	#define     WEBSQL_HOST         "localhost"
 	#define     WEBSQL_USER         "root"
-	#define     WEBSQL_PASS         "To26Go01Li20No02"
+	#define     WEBSQL_PASS         "98kw1aq1bkawwqa810uc94ilrn484hqq0o4xwig5"
 	#define     WEBSQL_DATA         "lyd"
 #endif
 
@@ -35018,7 +35018,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
     				SendAdminMessage(COLOR_YELLOW, string);
 				}else if(listitem == 12){
 				    Spieler[playerid][pFraktion] = 12;
-				    format(string,sizeof(string),"%s %s hat sich in die Fraktion Carli Kartell gesetzt!", GetPlayerAdminRang(playerid), GetName(playerid));
+				    format(string,sizeof(string),"%s %s hat sich in die Fraktion Cali Kartell gesetzt!", GetPlayerAdminRang(playerid), GetName(playerid));
     				SendAdminMessage(COLOR_YELLOW, string);
 				}else if(listitem == 13){
 				    Spieler[playerid][pFraktion] = 13;
@@ -67598,6 +67598,7 @@ public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY
         if(playerzone != hitzone){
             for(new i ; i < iGangZones ; i++){
                 if( g_GangZone[i][GZ_iStatus] == 1 ){
+                    SendClientMessage(playerid, COLOR_RED, "[GF]{FFFFFF} Du darfst nicht aus dem Gebiet schießen!");
                     return 0;
                 }
             }
@@ -67610,6 +67611,7 @@ public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY
                 if(playerzone != hitzone){
                     for(new o ; o < iGangZones ; o++){
                         if( g_GangZone[o][GZ_iStatus] == 1 ){
+                            SendClientMessage(playerid, COLOR_RED, "[GF]{FFFFFF} Du darfst nicht aus dem Gebiet schießen!");
                             return 0;
                         }
                     }
