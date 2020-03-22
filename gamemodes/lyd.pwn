@@ -123,7 +123,7 @@ Yakuza:
 
 #define PREIS_SCHEIDUNG 32000
 #define SOUND_ALHAMBRA "http://kabby.xyz/MRP/alhambra.mp3"
-#define URL_LOGINMUSIC "https://server.monkey-roleplay.de/lyd/login.mp3"
+#define URL_LOGINMUSIC "https://monkey-roleplay.de/lyd/login.mp3"
 #define SOUND_HOSPITAL ""
 #define STREAMER_MAX_OBJECTS 900
 
@@ -526,7 +526,7 @@ enum {
     SAFEBOX_MATS,
     SAFEBOX_WCODES,
     SAFEBOX_SPICE,
-    SAFEBOX_KRAUTER,
+    //SAFEBOX_KRAUTER,
     SAFEBOX_GANGSAMEN
 }
 
@@ -540,7 +540,7 @@ new const g_SafeboxItems[][] = {
     "Waffenteile",
     "Wantedcodes",
     "Spice",
-    "Kräuter",
+    //"Kräuter",
     "Drogensamen"
 };
 
@@ -2455,6 +2455,8 @@ stock bool:IsTUVNeeded(distance) {
 #define     DIALOG_CONFIRM_WCODES 1463
 #define     DIALOG_CONFIRM_SPICE 1464
 
+#define     DIALOG_SKINS_EINGELADEN 1465
+
 
 #define     KEIN_KENNZEICHEN    "KEINE PLAKETTE"
 
@@ -2810,7 +2812,7 @@ enum {
 	#define     WEBSQL_HOST         "localhost"
 	#define     WEBSQL_USER         "root"
 	#define     WEBSQL_PASS         "98kw1aq1bkawwqa810uc94ilrn484hqq0o4xwig5"
-	#define     WEBSQL_DATA         "lyd"
+	#define     WEBSQL_DATA         "ucp"
 #else // Main-Server
 	#define     SQL_HOST            "localhost"
 	#define     SQL_USER            "root"
@@ -2820,7 +2822,7 @@ enum {
 	#define     WEBSQL_HOST         "localhost"
 	#define     WEBSQL_USER         "root"
 	#define     WEBSQL_PASS         "98kw1aq1bkawwqa810uc94ilrn484hqq0o4xwig5"
-	#define     WEBSQL_DATA         "lyd"
+	#define     WEBSQL_DATA         "ucp"
 #endif
 
 #define     MAX_HOUSES          703
@@ -3466,7 +3468,7 @@ enum e_FraktionSafeBox {
     FSB_iWaffenteile,
     FSB_iWantedcodes,
     FSB_iSpice,
-    FSB_iKrauter,
+    //FSB_iKrauter,
     FSB_iGSamen,
     FSB_iSprit
 }
@@ -6028,17 +6030,17 @@ public OnGameModeInit2() {
     TextDrawColor(DatumMessage, -1);
     TextDrawSetOutline(DatumMessage, 1);
     TextDrawSetProportional(DatumMessage, 1);
-//klammer start
-    /*Logo1 = TextDrawCreate(557.000000, 16.000000, "Dream");
+//klammer start LYD LOGO
+    /*Logo1 = TextDrawCreate(557.000000, 16.000000, "Roleplay");
     TextDrawBackgroundColor(Logo1, 255);
     TextDrawFont(Logo1, 3);
     TextDrawLetterSize(Logo1, 0.280000, 1.699998);
     TextDrawColor(Logo1, 869072895);
     TextDrawSetOutline(Logo1, 1);
-    TextDrawSetProportional(Logo1, 1);*/
+    TextDrawSetProportional(Logo1, 1);
 
-    //Logo2 = TextDrawCreate(554.000000, 5.000000, "Monkey");
-    /*Logo2 = TextDrawCreate(514.000000, 125.000000, "Monkey");
+    Logo2 = TextDrawCreate(554.000000, 5.000000, "Monkey");
+    //Logo2 = TextDrawCreate(514.000000, 125.000000, "Monkey");
     TextDrawBackgroundColor(Logo2, 255);
     TextDrawFont(Logo2, 0);
     TextDrawLetterSize(Logo2, 0.479999, 1.699998);
@@ -6702,7 +6704,7 @@ public OnPlayerConnect(playerid)
 		SendClientMessage(playerid, COLOR_RED, "Du wurdest gekickt, da dein Name nicht passend war!");
 		Kick(playerid);
 	}
-	format(string, sizeof(string), "* %s hat Monkey betreten.", sName);
+	format(string, sizeof(string), "* %s hat Monkey Roleplay betreten.", sName);
     
 	for (new i = 0; i < MAX_PLAYERS; i++)
 	    if (IsPlayerConnected(i) && gPlayerLogged[i] == 1 && pChatSettings[i][CHAT_JL] == 1)
@@ -7666,15 +7668,15 @@ public OnPlayerDisconnect(playerid, reason)
     pUnderCover[playerid] = 0;
     if(reason==0)
     {
-        format(String, sizeof(String), "* %s hat Monkey verlassen. (Crash/Time-Out)", sName);
+        format(String, sizeof(String), "* %s hat Monkey Roleplay verlassen. (Crash/Time-Out)", sName);
     }
     else if(reason==1)
     {
-        format(String, sizeof(String), "* %s hat Monkey verlassen.", sName);
+        format(String, sizeof(String), "* %s hat Monkey Roleplay verlassen.", sName);
     }
     else if(reason==2)
     {
-        format(String, sizeof(String), "* %s hat Monkey verlassen. (Kick/Bann)", sName);
+        format(String, sizeof(String), "* %s hat Monkey Roleplay verlassen. (Kick/Bann)", sName);
     }
     // SendAdminMessage(COLOR_GREY, str);
     for(new i = 0 ; i < MAX_PLAYERS ; i++)
@@ -14285,19 +14287,21 @@ CMD:sellkekse(playerid, params[])
 
 CMD:sellwaffenteile(playerid, params[])
 {
-    new pID, menge, Float:x, Float:y, Float:z;
-    if(sscanf(params, "ui", pID, menge))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Sellwaffenteile [SpielerID/Name] [Menge]");
+    new pID, menge, preis, Float:x, Float:y, Float:z;
+    if(sscanf(params, "uii", pID, menge, preis))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Sellwaffenteile [SpielerID/Name] [Menge] [Preis]");
     if (playerid == pID) return SendClientMessage(playerid, COLOR_RED, "Du kannst dir selber keine Waffenteile verkaufen.");
     if(Spieler[playerid][pJob] != 18)return SendClientMessage(playerid, COLOR_RED, "Du bist kein Waffendealer.");
     GetPlayerPos(pID, x,y,z);
+    if(preis < 1 || preis > 100000000)return SendClientMessage(playerid, COLOR_ORANGE, "Der Preis sollte zwischen $1 und $100.000.000 liegen.");
     if(!IsPlayerConnected(pID))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
     if(!IsPlayerInRangeOfPoint(playerid, 5.0, x,y,z))return SendClientMessage(playerid, COLOR_RED, "Du bist nicht in der Nähe des Spielers.");
     if(menge > Spieler[playerid][pWaffenteile])return SendClientMessage(playerid, COLOR_RED, "Soviele Waffenteile besitzt du nicht.");
     if( menge < 0 ) {
         return SendClientMessage(playerid,COLOR_RED,"Der Betrag kann nicht negativ sein!");
     }
-    if(Spieler[pID][pFraktion] != 19) return SendClientMessage(playerid, COLOR_RED, "Du kannst nur an Terroristen verkaufen!");
-
+    if(preis/menge < 20||preis/menge > 25) {
+        return SendClientMessage(playerid,COLOR_RED,"Der aktuelle Stückpreis bei Waffenteilen liegt im Rahmen von 20$ bis 25$!");
+    }
     // Goldkiller: WTF ist das ???? :
     // if(menge < 999999999999999 )return SendClientMessage(playerid, COLOR_RED, "Ungültige Anzahl");
 
@@ -14316,34 +14320,31 @@ CMD:sellwaffenteile(playerid, params[])
     SendClientMessage(playerid, COLOR_LIGHTBLUE, string);
     */
     ShowPlayerDialog(playerid,DIALOG_SELLWTEILE,DIALOG_STYLE_MSGBOX,"Handelsinformation","\
-        Der aktuelle Stückpreis bei Waffenteilen liegt bei $20!","Einverstanden","Ablehnen");
+        Der aktuelle Stückpreis bei Waffenteilen liegt zwischen 20$ bis 25$.\n\
+        Höhere oder niedrigere Beträge sind unzulässig und werden nach Server Regel §11(Geldwäsche) administrativ bestraft!\n\
+        Strafmaß: dauerhafte- oder zeitliche Sperrung, Admin-Verwarnung, Prison oder Inventar-/Geldentzug.\n\
+        Jeder Handel wird gespeichert und geprüft!","Einverstanden","Ablehnen");
     return 1;
 }
 
 CMD:selldrogen(playerid, params[])
 {
-    new pID, menge, Float:x, Float:y, Float:z;
-    if(sscanf(params, "uii", pID, menge))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Selldrogen [SpielerID/Name] [Menge]");
-    if(!(Spieler[playerid][pFraktion] == 6 || Spieler[playerid][pFraktion] == 7 || Spieler[playerid][pFraktion] == 10 || Spieler[playerid][pFraktion] == 11 || Spieler[playerid][pFraktion] == 12 || Spieler[playerid][pFraktion] == 13
-    || Spieler[playerid][pFraktion] == 20 || Spieler[playerid][pFraktion] == 21)) return SendClientMessage(playerid,COLOR_RED,"Du bist kein Gang/Mafien Mitglied.");
+    new pID, menge, preis, Float:x, Float:y, Float:z;
+    if(sscanf(params, "uii", pID, menge, preis))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Selldrogen [SpielerID/Name] [Menge] [Preis]");
     if (playerid == pID) return SendClientMessage(playerid, COLOR_RED, "Du kannst dir selber keine Drogen verkaufen.");
-    if(Spieler[pID][pFraktion] != 19) return SendClientMessage(playerid, COLOR_RED, "Du kannst Drogen nur an Terroristen verkaufen!");
-    //if(Spieler[playerid][pJob] != 17)return SendClientMessage(playerid, COLOR_RED, "Du bist kein Drogendealer.");
+    if(Spieler[playerid][pJob] != 17)return SendClientMessage(playerid, COLOR_RED, "Du bist kein Drogendealer.");
     GetPlayerPos(pID, x,y,z);
-    //if(preis < 1 || preis > 100000000)return SendClientMessage(playerid, COLOR_ORANGE, "Der Preis muss zwischen $1 und $100.000.000 liegen.");
+    if(preis < 1 || preis > 100000000)return SendClientMessage(playerid, COLOR_ORANGE, "Der Preis muss zwischen $1 und $100.000.000 liegen.");
     if(!IsPlayerConnected(pID))return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
     if(!IsPlayerInRangeOfPoint(playerid, 5.0, x,y,z))return SendClientMessage(playerid, COLOR_RED, "Du bist nicht in der Nähe des Spielers.");
     if(menge > Spieler[playerid][pDrugs])return SendClientMessage(playerid, COLOR_RED, "Soviel Gramm hast du nicht.");
     if( menge < 0 ) {
         return SendClientMessage(playerid,COLOR_RED,"Der Betrag kann nicht negativ sein!");
     }
-    if(Spieler[pID][pFraktion] != 19) return SendClientMessage(playerid, COLOR_RED, "Du kannst nur an Terroristen verkaufen!");
-
-    /*if(preis/menge < 240||preis/menge > 400) {
+    if(preis/menge < 240||preis/menge > 400) {
         return SendClientMessage(playerid,COLOR_RED,"Der aktuelle Stückpreis bei Drogen liegt im Rahmen von 240$ bis 400$!");
-    }*/
-
-    // Goldkiller: WTF ist das ???? : | Deine Mum MFG Berkans Assistent Kabby
+    }
+    // Goldkiller: WTF ist das ???? :
     // if(menge < 999999999999999 )return SendClientMessage(playerid, COLOR_RED, "Ungültige Anzahl");
 
     SetPVarString(playerid,"SellDrugs",params);
@@ -14361,16 +14362,20 @@ CMD:selldrogen(playerid, params[])
     SendClientMessage(playerid, COLOR_LIGHTBLUE, string);
     */
     ShowPlayerDialog(playerid,DIALOG_SELLDRUGS,DIALOG_STYLE_MSGBOX,"Handelsinformation","\
-        Der aktuelle Verkaufspreis je Gramm liegt bei $800.","Einverstanden","Ablehnen");
+        Der aktuelle Verkaufspreis je Gramm liegt zwischen 240$ bis 400$.\n\
+        Höhere oder niedrigere Beträge sind unzulässig und werden nach Server Regel §11(Geldwäsche) administrativ bestraft!\n\
+        Strafmaß: dauerhafte- oder zeitliche Sperrung, Admin-Verwarnung, Prison oder Inventar-/Geldentzug.\n\
+        Jeder Drogenhandel wird gespeichert und geprüft!","Einverstanden","Ablehnen");
     return 1;
 }
 
 CMD:sellwantedcodes(playerid, params[])
 {
     if (Spieler[playerid][pJob] != 21) return SendClientMessage(playerid, COLOR_RED, "Du bist kein Wanted-Hacker.");
-    new pID, menge, Float:x, Float:y, Float:z;
-    if (sscanf(params, "ui", pID, menge)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING" /Sellwantedcodes [SpielerID/Name] [Menge]");
+    new pID, menge, preis, Float:x, Float:y, Float:z;
+    if (sscanf(params, "uii", pID, menge, preis)) return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING" /Sellwantedcodes [SpielerID/Name] [Menge] [Preis]");
     if (playerid == pID) return SendClientMessage(playerid, COLOR_RED, "Du kannst dir selber keine Wantedcodes verkaufen.");
+    if (preis < 1 || preis > 100000000) return SendClientMessage(playerid, COLOR_ORANGE, "Der Preis sollte zwischen $1 und $100.000.000 liegen.");
     if (!IsPlayerConnected(pID)) return SendClientMessage(playerid, COLOR_RED, "Der Spieler ist nicht online.");
 
     GetPlayerPos(pID, x, y, z);
@@ -14378,11 +14383,16 @@ CMD:sellwantedcodes(playerid, params[])
     if (menge < 0) return SendClientMessage(playerid,COLOR_RED,"Der Betrag kann nicht negativ sein!");
     if (menge > Spieler[playerid][pWantedCodes]) return SendClientMessage(playerid, COLOR_RED, "Soviele Wantedcodes hast du nicht.");
 
-    if(Spieler[pID][pFraktion] != 19) return SendClientMessage(playerid, COLOR_RED, "Du kannst nur an Terroristen verkaufen!");
+    if (preis / menge < 2000 || preis / menge > 2500) {
+        return SendClientMessage(playerid, COLOR_RED, "Der aktuelle Stückpreis bei Wantedcodes liegt im Rahmen von 2.000$ bis 2.500$!");
+    }
 
     SetPVarString(playerid, "SELL_WCODES", params);
     ShowPlayerDialog(playerid, DIALOG_SELLWCODES, DIALOG_STYLE_MSGBOX, "Handelsinformation","\
-        Der aktuelle Verkaufspreis je Code liegt bei $1.750!", "Einverstanden", "Ablehnen");
+        Der aktuelle Verkaufspreis je Code liegt zwischen 2.000$ bis 2.500$.\n\
+        Höhere oder niedrigere Beträge sind unzulässig und werden nach Server Regel §11 (Geldwäsche) administrativ bestraft!\n\
+        Strafmaß: dauerhafte- oder zeitliche Sperrung, Admin-Verwarnung, Prison oder Inventar-/Geldentzug.\n\
+        Jeder Wantedcodehandel wird gespeichert und geprüft!", "Einverstanden", "Ablehnen");
     return 1;
 }
 
@@ -22927,26 +22937,26 @@ CMD:accept(playerid, params[])
             }
         }
     }
-    else if(strcmp(entry, "krauter", true) == 0)
+    else if(strcmp(entry, "spice", true) == 0)
     {
         if(!(pSpiceID[playerid] == 999))
         {
             if(IsPlayerConnected(pSpiceID[playerid]))
             {
                 if(GetPlayerMoney(playerid) < pSpicePreis[playerid])return SendClientMessage(playerid, COLOR_RED, "Soviel Geld hast du nicht.");
-                if(pSpiceMenge[playerid]>Spieler[pSpiceID[playerid]][pKrauterMische])return SendClientMessage(playerid, COLOR_RED, "Der Verkäufer besitzt nicht die benötigte Menge an Kräuter");
+                if(pSpiceMenge[playerid]>Spieler[pSpiceID[playerid]][pSpice])return SendClientMessage(playerid, COLOR_RED, "Der Verkäufer besitzt nicht die benötigte Menge an Spice");
                 GivePlayerCash(playerid, -pSpicePreis[playerid]);
                 GivePlayerCash(pSpiceID[playerid], pSpicePreis[playerid]);
                 //Spieler[pDrogenID[playerid]][pDrugs] -= pDrogenMenge[playerid];
-                Spieler[playerid][pKrauterMische] += pSpiceMenge[playerid];
-                Spieler[pSpiceID[playerid]][pKrauterMische] -= pSpiceMenge[playerid];
-                format(string, sizeof(string), "Du hast %d Gramm Kräuter von %s für $%s abgekauft.", pSpiceMenge[playerid], GetName(pSpiceID[playerid]), AddDelimiters(pSpicePreis[playerid]));
+                Spieler[playerid][pSpice] += pSpiceMenge[playerid];
+                Spieler[pSpiceID[playerid]][pSpice] -= pSpiceMenge[playerid];
+                format(string, sizeof(string), "Du hast %d Gramm Spice von %s für $%s abgekauft.", pSpiceMenge[playerid], GetName(pSpiceID[playerid]), AddDelimiters(pSpicePreis[playerid]));
                 SendClientMessage(playerid, COLOR_LIGHTBLUE, string);
-                format(string, sizeof(string), "%s hat dir %d Gramm Kräuter für $%s abgekauft.", GetName(playerid), pSpiceMenge[playerid], AddDelimiters(pSpicePreis[playerid]));
+                format(string, sizeof(string), "%s hat dir %d Gramm Spice für $%s abgekauft.", GetName(playerid), pSpiceMenge[playerid], AddDelimiters(pSpicePreis[playerid]));
                 SendClientMessage(pSpiceID[playerid], COLOR_LIGHTBLUE, string);
                 new ort[24], ddealerlog[128];
                 GetPlayer2DZone(playerid, ort, 24);
-                format(ddealerlog, sizeof(ddealerlog), "Name: %s - Käufer: %s - Kräuter: %d - Geld: %d - Ort: %s", GetName(pSpiceID[playerid]), GetName(playerid), pSpiceMenge[playerid], pSpicePreis[playerid], ort);
+                format(ddealerlog, sizeof(ddealerlog), "Name: %s - Käufer: %s - Spice: %d - Geld: %d - Ort: %s", GetName(pSpiceID[playerid]), GetName(playerid), pSpiceMenge[playerid], pSpicePreis[playerid], ort);
                 pSpiceID[playerid] = 999;
                 pSpiceMenge[playerid] = 0;
                 pSpicePreis[playerid] = 0;
@@ -23085,6 +23095,7 @@ CMD:accept(playerid, params[])
                     format(dialogstr, sizeof(dialogstr), "%s%d\n\n", dialogstr, skins_array[i]);
                 }
             }
+            ShowPlayerDialog(playerid, DIALOG_SKINS_EINGELADEN, DIALOG_STYLE_PREVMODEL, "MRP - Fraktionsskin auswählen", dialogstr, "Ok", "Abbrechen");
             SendClientMessage(playerid, COLOR_GREEN, "Wähle nun deinen Fraktionsskin!");
             if (frakid == 15) AddPlayerToPlantArrayData(playerid);
             if( IsAFightFaction( Spieler[playerid][pFraktion] ) ) AddPlayerToPlantArrayDataGang(playerid);
@@ -30436,7 +30447,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
     if (dialogid == DIALOG_DURCHSUCHEN ){
         /*format(string, sizeof(string), "%sDrogen: %i", string, Spieler[pID][pDrugs]);
         format(string, sizeof(string), "%s\nSpice: %i", string, Spieler[pID][pSpice]);
-        format(string, sizeof(string), "%s\nKräutersamen: %i", string, Spieler[pID][pDrogenSamen]);
+        format(string, sizeof(string), "%s\nSpicesamen: %i", string, Spieler[pID][pDrogenSamen]);
         format(string, sizeof(string), "%s\nKräutermischung: %i", string, Spieler[pID][pKrauterMische]);
         format(string, sizeof(string), "%s\nDrogensamen: %i", string, Spieler[pID][pGangDrogenSamen]);
         format(string, sizeof(string), "%s\nWaffenteile: %i", string, Spieler[pID][pWaffenteile]);
@@ -30476,45 +30487,50 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                     SendRoundMessage(x,y,z, COLOR_PURPLE, string);
                 }
                 case 2: {
-                    if(Spieler[pID][pDrogenSamen] == 0) return SendClientMessage(playerid, COLOR_RED, "[DURCHSUCHEN] {FFFFFF}Der Spieler besitzt keine Kräutersamen!");
+                    if(Spieler[pID][pDrogenSamen] == 0) return SendClientMessage(playerid, COLOR_RED, "[DURCHSUCHEN] {FFFFFF}Der Spieler besitzt keine Spicesamen!");
                     Spieler[pID][pDrogenSamen] = 0;
-                    format(string, sizeof(string), "* %s nahm Kräutersamen von %s ab.", GetName(playerid), GetName(pID));
+                    format(string, sizeof(string), "* %s nahm Spicesamen von %s ab.", GetName(playerid), GetName(pID));
                     SendRoundMessage(x,y,z, COLOR_PURPLE, string);
                 }
-                case 3: {
+                /*case 3: {
                     if(Spieler[pID][pKrauterMische] == 0) return SendClientMessage(playerid, COLOR_RED, "[DURCHSUCHEN] {FFFFFF}Der Spieler besitzt keine Kräuter!");
                     Spieler[pID][pKrauterMische] = 0;
                     format(string, sizeof(string), "* %s nahm Kräuter von %s ab.", GetName(playerid), GetName(pID));
                     SendRoundMessage(x,y,z, COLOR_PURPLE, string);
-                }
-                case 4: {
+                }*/
+                case 3: {
                     if(Spieler[pID][pGangDrogenSamen] == 0) return SendClientMessage(playerid, COLOR_RED, "[DURCHSUCHEN] {FFFFFF}Der Spieler besitzt keine Drogensamen!");
                     Spieler[pID][pGangDrogenSamen] = 0;
                     format(string, sizeof(string), "* %s nahm Drogensamen von %s ab.", GetName(playerid), GetName(pID));
                     SendRoundMessage(x,y,z, COLOR_PURPLE, string);
                 }
-                case 5: {
+                case 4: {
                     if(Spieler[pID][pWaffenteile] == 0) return SendClientMessage(playerid, COLOR_RED, "[DURCHSUCHEN] {FFFFFF}Der Spieler besitzt keine Waffenteile!");
                     Spieler[pID][pWaffenteile] = 0;
                     format(string, sizeof(string), "* %s nahm Waffenteile von %s ab.", GetName(playerid), GetName(pID));
                     SendRoundMessage(x,y,z, COLOR_PURPLE, string);
                 }
-                case 6: {
+                case 5: {
                     if(Spieler[pID][pWantedCodes] == 0) return SendClientMessage(playerid, COLOR_RED, "[DURCHSUCHEN] {FFFFFF}Der Spieler besitzt keine Wantedcodes!");
                     Spieler[pID][pWantedCodes] = 0;
                     format(string, sizeof(string), "* %s nahm Wantedcodes von %s ab.", GetName(playerid), GetName(pID));
                     SendRoundMessage(x,y,z, COLOR_PURPLE, string);
                 }
-                case 7: {
+                case 6: {
                     if(Spieler[pID][pBrecheisen] == 0) return SendClientMessage(playerid, COLOR_RED, "[DURCHSUCHEN] {FFFFFF}Der Spieler besitzt kein Brecheisen!");
                     Spieler[pID][pBrecheisen] = 0;
                     format(string, sizeof(string), "* %s nahm Brecheisen von %s ab.", GetName(playerid), GetName(pID));
                     SendRoundMessage(x,y,z, COLOR_PURPLE, string);
                 }
-                case 8: {
+                case 7: {
                     if(Spieler[pID][pC4] == 0) return SendClientMessage(playerid, COLOR_RED, "[DURCHSUCHEN] {FFFFFF}Der Spieler besitzt kein C4!");
                     Spieler[pID][pC4] = 0;
                     format(string, sizeof(string), "* %s nahm C4 von %s ab.", GetName(playerid), GetName(pID));
+                    SendRoundMessage(x,y,z, COLOR_PURPLE, string);
+                }
+                case 8: {
+                    ResetPlayerWeapons(pID);
+                    format(string, sizeof(string), "* %s nahm Waffen von %s ab.", GetName(playerid), GetName(pID));
                     SendRoundMessage(x,y,z, COLOR_PURPLE, string);
                 }
                 case 9: {
@@ -30577,11 +30593,6 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                     format(string, sizeof(string), "* %s nahm Waffen von %s ab.", GetName(playerid), GetName(pID));
                     SendRoundMessage(x,y,z, COLOR_PURPLE, string);
                 }
-                case 21: {
-                    ResetPlayerWeapons(pID);
-                    format(string, sizeof(string), "* %s nahm Waffen von %s ab.", GetName(playerid), GetName(pID));
-                    SendRoundMessage(x,y,z, COLOR_PURPLE, string);
-                }
             }
             new weapons[13][2];
             new wpName1[32], wpName2[32], wpName3[32], wpName4[32], wpName5[32], wpName6[32], wpName7[32];
@@ -30606,8 +30617,8 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
             new /*string[256], */ueberschrift[128];
             format(string, sizeof(string), "Drogen: %i", Spieler[pID][pDrugs]);
             format(string, sizeof(string), "%s\nSpice: %i", string, Spieler[pID][pSpice]);
-            format(string, sizeof(string), "%s\nKräutersamen: %i", string, Spieler[pID][pDrogenSamen]);
-            format(string, sizeof(string), "%s\nKräutermischung: %i", string, Spieler[pID][pKrauterMische]);
+            format(string, sizeof(string), "%s\nSpicesamen: %i", string, Spieler[pID][pDrogenSamen]);
+            //format(string, sizeof(string), "%s\nKräutermischung: %i", string, Spieler[pID][pKrauterMische]);
             format(string, sizeof(string), "%s\nDrogensamen: %i", string, Spieler[pID][pGangDrogenSamen]);
             format(string, sizeof(string), "%s\nWaffenteile: %i", string, Spieler[pID][pWaffenteile]);
             format(string, sizeof(string), "%s\nWanted-Codes: %i", string, Spieler[pID][pWantedCodes]);
@@ -33954,20 +33965,19 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
             ShowWaffenLager(playerid,0);
         }
         case DIALOG_SELLSPICE: {
-            if (!response) return SendClientMessage(playerid, COLOR_RED, "Du hast den Verkauf von Kräutern abgebrochen.");
+            if (!response) return SendClientMessage(playerid, COLOR_RED, "Du hast den Verkauf von Spice abgebrochen.");
             new pID, menge, preis;
             new string[128];
             GetPVarString(playerid,"SellSpice",string,sizeof(string));
-            sscanf(string,"ud",pID,menge);
+            sscanf(string,"udd",pID,menge,preis);
 
-            preis = menge * 1000;
             pSpiceID[pID] = playerid;
             pSpicePreis[pID] = preis;
             pSpiceMenge[pID] = menge;
-            format(string, sizeof(string), "Du hast von %s eine Anfrage für Kräuter erhalten. Menge: %d, Preis: $%s.", GetName(playerid), menge, AddDelimiters(preis));
+            format(string, sizeof(string), "Du hast von %s eine Anfrage für Spice erhalten. Menge: %d, Preis: $%s.", GetName(playerid), menge, AddDelimiters(preis));
             SendClientMessage(pID, COLOR_LIGHTBLUE, string);
-            SendClientMessage(pID, COLOR_LIGHTBLUE, "Tippe '/Accept Krauter' zur Annahme von Spice.");
-            format(string, sizeof(string), "Du hast %s eine Anfrage für Kräuter gemacht. Menge: %d Gramm Kräuter, Preis: $%s.", GetName(pID), menge, AddDelimiters(preis));
+            SendClientMessage(pID, COLOR_LIGHTBLUE, "Tippe '/Accept Spice' zur Annahme von Spice.");
+            format(string, sizeof(string), "Du hast %s eine Anfrage für Spice gemacht. Menge: %d Gramm Spice, Preis: $%s.", GetName(pID), menge, AddDelimiters(preis));
             SendClientMessage(playerid, COLOR_LIGHTBLUE, string);
         }
         case DIALOG_SELLDRUGS: {
@@ -33975,10 +33985,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
             new pID, menge, preis;
             new string[128];
             GetPVarString(playerid,"SellDrugs",string,sizeof(string));
-            sscanf(string, "ui", pID, menge);
-
-            preis = menge * 800;
-
+            sscanf(string, "uii", pID, menge, preis);
             pDrogenID[pID] = playerid;
             pDrogenPreis[pID] = preis;
             pDrogenMenge[pID] = menge;
@@ -33994,8 +34001,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
             new pID, menge, preis;
             new string[128];
             GetPVarString(playerid, "SELL_WCODES", string, sizeof(string));
-            sscanf(string, "ui", pID, menge);
-            preis = menge * 1750;
+            sscanf(string, "uii", pID, menge, preis);
             format(string, sizeof(string), "%i %i %i", playerid, menge, preis);
             SetPVarString(pID, "BUY_WCODES", string);
 
@@ -34010,8 +34016,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
             new pID, menge, preis;
             new string[128];
             GetPVarString(playerid,"SellWTeile",string,sizeof(string));
-            sscanf(string, "ui", pID, menge);
-            preis = menge * 20;
+            sscanf(string, "uii", pID, menge, preis);
             pWTeileID[pID] = playerid;
             pWTeilePreis[pID] = preis;
             pWTeileMenge[pID] = menge;
@@ -44341,6 +44346,70 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                 }
             }
         }
+        case DIALOG_SKINS_EINGELADEN:
+        {
+            if(response){
+                if(Spieler[playerid][pFraktion] == 0){   
+                    SetPlayerSkin(playerid, skins_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_array[listitem];
+                }else if(Spieler[playerid][pFraktion] == 1){   
+                    SetPlayerSkin(playerid, skins_pd_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_pd_array[listitem];
+                }else if(Spieler[playerid][pFraktion] == 3){   
+                    SetPlayerSkin(playerid, skins_samd_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_samd_array[listitem];
+                }else if(Spieler[playerid][pFraktion] == 4){   
+                    SetPlayerSkin(playerid, skins_news_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_news_array[listitem];
+                }else if(Spieler[playerid][pFraktion] == 5){   
+                    SetPlayerSkin(playerid, skins_oamt_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_oamt_array[listitem];
+                }else if(Spieler[playerid][pFraktion] == 6){   
+                    SetPlayerSkin(playerid, skins_gsf_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_gsf_array[listitem];
+                }else if(Spieler[playerid][pFraktion] == 7){   
+                    SetPlayerSkin(playerid, skins_ballas_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_ballas_array[listitem];
+                }else if(Spieler[playerid][pFraktion] == 9){   
+                    SetPlayerSkin(playerid, skins_regierung_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_regierung_array[listitem];
+                }else if(Spieler[playerid][pFraktion] == 10){   
+                    SetPlayerSkin(playerid, skins_yakuza_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_yakuza_array[listitem];
+                }else if(Spieler[playerid][pFraktion] == 11){   
+                    SetPlayerSkin(playerid, skins_aztecas_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_aztecas_array[listitem];
+                }else if(Spieler[playerid][pFraktion] == 12){   
+                    SetPlayerSkin(playerid, skins_cali_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_cali_array[listitem];
+                }else if(Spieler[playerid][pFraktion] == 13){   
+                    SetPlayerSkin(playerid, skins_vagos_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_vagos_array[listitem];
+                }else if(Spieler[playerid][pFraktion] == 14){   
+                    SetPlayerSkin(playerid, skins_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_array[listitem];
+                }else if(Spieler[playerid][pFraktion] == 15){   
+                    SetPlayerSkin(playerid, skins_nd_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_nd_array[listitem];
+                }else if(Spieler[playerid][pFraktion] == 19){   
+                    SetPlayerSkin(playerid, skins_terrorist_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_terrorist_array[listitem];
+                }else if(Spieler[playerid][pFraktion] == 20){   
+                    SetPlayerSkin(playerid, skins_lcn_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_lcn_array[listitem];
+                }else if(Spieler[playerid][pFraktion] == 21){   
+                    SetPlayerSkin(playerid, skins_triaden_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_triaden_array[listitem];
+                }else{
+                    SetPlayerSkin(playerid, skins_array[listitem]);
+                    Spieler[playerid][pSkin] = skins_array[listitem];
+                }
+                Spieler[playerid][pSpawnChange] = 2;
+                SpawnPlayerEx(playerid);
+                SaveAccount(playerid);
+            }
+
+        }
         case DIALOG_HANDYAUFLADEN:
         {
             if(response)
@@ -46449,7 +46518,7 @@ CMD:durchsuchen(playerid, params[])
     if(IsPlayerInRangeOfPoint(playerid, 7.0, x,y,z)){
         /*format(string, sizeof(string), COLOR_HEX_BLUE"Drogen: "COLOR_HEX_WHITE"%i "COLOR_HEX_ORANGE"|"COLOR_HEX_BLUE"Drogensamen: "COLOR_HEX_WHITE"%i "COLOR_HEX_ORANGE"|"COLOR_HEX_BLUE" Waffenteile: "COLOR_HEX_WHITE"%i", Spieler[pID][pDrugs], Spieler[pID][pGangDrogenSamen], Spieler[pID][pWaffenteile]);
         SendClientMessage(playerid, COLOR_WHITE, string);
-        format(string, sizeof(string), COLOR_HEX_BLUE"Hacker Codes: "COLOR_HEX_WHITE"%i "COLOR_HEX_ORANGE"|"COLOR_HEX_BLUE" Spice-Drogen: "COLOR_HEX_WHITE"%i"COLOR_HEX_ORANGE"|"COLOR_HEX_BLUE"Kräuter: "COLOR_HEX_WHITE"%i "COLOR_HEX_ORANGE"|"COLOR_HEX_BLUE" Kräutersamen: "COLOR_HEX_WHITE"%i", Spieler[pID][pWantedCodes] , Spieler[pID][pSpice], Spieler[pID][pKrauterMische], Spieler[pID][pDrogenSamen]);
+        format(string, sizeof(string), COLOR_HEX_BLUE"Hacker Codes: "COLOR_HEX_WHITE"%i "COLOR_HEX_ORANGE"|"COLOR_HEX_BLUE" Spice-Drogen: "COLOR_HEX_WHITE"%i"COLOR_HEX_ORANGE"|"COLOR_HEX_BLUE"Kräuter: "COLOR_HEX_WHITE"%i "COLOR_HEX_ORANGE"|"COLOR_HEX_BLUE" Spicesamen: "COLOR_HEX_WHITE"%i", Spieler[pID][pWantedCodes] , Spieler[pID][pSpice], Spieler[pID][pKrauterMische], Spieler[pID][pDrogenSamen]);
         SendClientMessage(playerid, COLOR_WHITE, string);
         new weapons[13][2];
         new wpName1[32], wpName2[32], wpName3[32], wpName4[32], wpName5[32], wpName6[32], wpName7[32];
@@ -46509,8 +46578,8 @@ CMD:durchsuchen(playerid, params[])
         new /*string[256], */ueberschrift[128];
         format(string, sizeof(string), "%sDrogen: %i", string, Spieler[pID][pDrugs]);
         format(string, sizeof(string), "%s\nSpice: %i", string, Spieler[pID][pSpice]);
-        format(string, sizeof(string), "%s\nKräutersamen: %i", string, Spieler[pID][pDrogenSamen]);
-        format(string, sizeof(string), "%s\nKräutermischung: %i", string, Spieler[pID][pKrauterMische]);
+        format(string, sizeof(string), "%s\nSpicesamen: %i", string, Spieler[pID][pDrogenSamen]);
+        //format(string, sizeof(string), "%s\nKräutermischung: %i", string, Spieler[pID][pKrauterMische]);
         format(string, sizeof(string), "%s\nDrogensamen: %i", string, Spieler[pID][pGangDrogenSamen]);
         format(string, sizeof(string), "%s\nWaffenteile: %i", string, Spieler[pID][pWaffenteile]);
         format(string, sizeof(string), "%s\nWanted-Codes: %i", string, Spieler[pID][pWantedCodes]);
@@ -54622,12 +54691,12 @@ stock SaveFraktionsSafeBox() {
     new
         query[200];
     for(new i = 0; i < sizeof(g_FraktionsSafeBox) ; i++) {
-        format(query,sizeof(query),"UPDATE `frakbox` SET `drogen` = %d, `waffenteile` = %d, `wantedcodes` = %d, `spice` = %d, `krauter` = %d, `gangsamen` = %d, `sprit` = %d WHERE `fraktionsid` = %d",
+        format(query,sizeof(query),"UPDATE `frakbox` SET `drogen` = %d, `waffenteile` = %d, `wantedcodes` = %d, `spice` = %d, `gangsamen` = %d, `sprit` = %d WHERE `fraktionsid` = %d",
             g_FraktionsSafeBox[i][FSB_iDrogen],
             g_FraktionsSafeBox[i][FSB_iWaffenteile],
             g_FraktionsSafeBox[i][FSB_iWantedcodes],
             g_FraktionsSafeBox[i][FSB_iSpice],
-            g_FraktionsSafeBox[i][FSB_iKrauter],
+            //g_FraktionsSafeBox[i][FSB_iKrauter],
             g_FraktionsSafeBox[i][FSB_iGSamen],
             g_FraktionsSafeBox[i][FSB_iSprit],
             i
@@ -54726,7 +54795,7 @@ stock FSafeboxInteraction(playerid, action, itemid, amount, bool:dialog) {
                 format(message, sizeof(message), "[INFO] {FFFFFF}%s hat {FF9900}%s Gramm Spice {FFFFFF}aus der FSafebox entnommen.", GetName(playerid), AddDelimiters(amount));
                 SendFraktionMessage(fraktion, COLOR_YELLOW, message);
             }
-            case SAFEBOX_KRAUTER: {
+            /*case SAFEBOX_KRAUTER: {
                 if (amount > g_FraktionsSafeBox[fraktion][FSB_iKrauter]) {
                     SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}So viele Kräuter ist nicht gelagert.");
                     if (dialog) ShowFSafeboxDialog(playerid, DIALOG_FSAFEBOX_TAKE, itemid);
@@ -54737,7 +54806,7 @@ stock FSafeboxInteraction(playerid, action, itemid, amount, bool:dialog) {
                 Spieler[playerid][pKrauterMische] += amount;
                 format(message, sizeof(message), "[INFO] {FFFFFF}%s hat {FF9900}%s Gramm Kräuter {FFFFFF}aus der FSafebox entnommen.", GetName(playerid), AddDelimiters(amount));
                 SendFraktionMessage(fraktion, COLOR_YELLOW, message);
-            }
+            }*/
             case SAFEBOX_GANGSAMEN: {
                 if (amount > g_FraktionsSafeBox[fraktion][FSB_iGSamen]) {
                     SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}So viele Drogensamen ist nicht gelagert.");
@@ -54805,7 +54874,7 @@ stock FSafeboxInteraction(playerid, action, itemid, amount, bool:dialog) {
                 format(message, sizeof(message), "[INFO] {FFFFFF}%s hat {FF9900}%s Gramm Spice {FFFFFF}in die FSafebox eingelagert.", GetName(playerid), AddDelimiters(amount));
                 SendFraktionMessage(fraktion, COLOR_YELLOW, message);
             }
-            case SAFEBOX_KRAUTER: {
+            /*case SAFEBOX_KRAUTER: {
                 if (amount > Spieler[playerid][pKrauterMische]) {
                     SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}So viele Kräuter hast du nicht dabei.");
                     if (dialog) ShowFSafeboxDialog(playerid, DIALOG_FSAFEBOX_STORE, itemid);
@@ -54816,7 +54885,7 @@ stock FSafeboxInteraction(playerid, action, itemid, amount, bool:dialog) {
                 g_FraktionsSafeBox[fraktion][FSB_iKrauter] += amount;
                 format(message, sizeof(message), "[INFO] {FFFFFF}%s hat {FF9900}%s Gramm Kräuter {FFFFFF}in die FSafebox eingelagert.", GetName(playerid), AddDelimiters(amount));
                 SendFraktionMessage(fraktion, COLOR_YELLOW, message);
-            }
+            }*/
             case SAFEBOX_GANGSAMEN: {
                 if (amount > Spieler[playerid][pGangDrogenSamen]) {
                     SendClientMessage(playerid, COLOR_RED, "[INFO] {FFFFFF}So viele Drogensamen hast du nicht dabei.");
@@ -54860,9 +54929,9 @@ stock ShowFSafeboxDialog(playerid, dialogid, extraid = 0) {
     switch (dialogid) {
         case DIALOG_FSAFEBOX_MENU: {
             dialogText = "Material\tMenge\n";
-            format(dialogText, sizeof(dialogText), "%s{FFFFFF}Drogen\t%s Gramm\nWaffenteile\t%s Stück\nWantedcodes\t%s Stück\nSpice\t%s Gramm\nKräuter\t%s Gramm\nDrogensamen\t%s Stück", 
+            format(dialogText, sizeof(dialogText), "%s{FFFFFF}Drogen\t%s Gramm\nWaffenteile\t%s Stück\nWantedcodes\t%s Stück\nSpice\t%s Gramm\nDrogensamen\t%s Stück", 
                 dialogText, AddDelimiters(g_FraktionsSafeBox[fraktion][FSB_iDrogen]), AddDelimiters(g_FraktionsSafeBox[fraktion][FSB_iWaffenteile]), 
-                AddDelimiters(g_FraktionsSafeBox[fraktion][FSB_iWantedcodes]), AddDelimiters(g_FraktionsSafeBox[fraktion][FSB_iSpice]), AddDelimiters(g_FraktionsSafeBox[fraktion][FSB_iKrauter]), AddDelimiters(g_FraktionsSafeBox[fraktion][FSB_iGSamen]));
+                AddDelimiters(g_FraktionsSafeBox[fraktion][FSB_iWantedcodes]), AddDelimiters(g_FraktionsSafeBox[fraktion][FSB_iSpice]), AddDelimiters(g_FraktionsSafeBox[fraktion][FSB_iGSamen]));
 
             return ShowPlayerDialog(playerid, DIALOG_FSAFEBOX_MENU, DIALOG_STYLE_TABLIST_HEADERS, "{EFCE6D}FSafebox - Übersicht", dialogText, "Auswählen", "Schließen");
         }
@@ -54885,10 +54954,10 @@ stock ShowFSafeboxDialog(playerid, dialogid, extraid = 0) {
                     format(dialogText, sizeof(dialogText), "Einlagern (Inventar: %s Gramm)", AddDelimiters(Spieler[playerid][pSpice]));
                     if (Spieler[playerid][pRank] >= 5) format(dialogText, sizeof(dialogText), "%s\nEntnehmen (Lager: %s Gramm)", dialogText, AddDelimiters(g_FraktionsSafeBox[fraktion][FSB_iSpice]));
                 }
-                case SAFEBOX_KRAUTER: {
+                /*case SAFEBOX_KRAUTER: {
                     format(dialogText, sizeof(dialogText), "Einlagern (Inventar: %s Gramm)", AddDelimiters(Spieler[playerid][pKrauterMische]));
                     if (Spieler[playerid][pRank] >= 5) format(dialogText, sizeof(dialogText), "%s\nEntnehmen (Lager: %s Gramm)", dialogText, AddDelimiters(g_FraktionsSafeBox[fraktion][FSB_iKrauter]));
-                }
+                }*/
                 case SAFEBOX_GANGSAMEN: {
                     format(dialogText, sizeof(dialogText), "Einlagern (Inventar: %s Stück)", AddDelimiters(Spieler[playerid][pGangDrogenSamen]));
                     if (Spieler[playerid][pRank] >= 5) format(dialogText, sizeof(dialogText), "%s\nEntnehmen (Lager: %s Gramm)", dialogText, AddDelimiters(g_FraktionsSafeBox[fraktion][FSB_iGSamen]));
@@ -54932,13 +55001,13 @@ stock ShowFSafeboxDialog(playerid, dialogid, extraid = 0) {
                     format(dialogText, sizeof(dialogText), "{BADA55}Spice: {FFFFFF}%s Gramm in der FSafebox\nGebe an, wieviele Gramm Spice du entnehmen möchtest:", 
                         AddDelimiters(g_FraktionsSafeBox[fraktion][FSB_iSpice]));
                 }
-                case SAFEBOX_KRAUTER: {
+                /*case SAFEBOX_KRAUTER: {
                     if (g_FraktionsSafeBox[fraktion][FSB_iKrauter] <= 0) return ShowPlayerDialog(playerid, DIALOG_FSAFEBOX_NOITEMS, DIALOG_STYLE_MSGBOX, dialogCaption, 
                         "{FFFFFF}Es sind keine Kräuter in der FSafebox gelagert.", "Zurück", "");
 
                     format(dialogText, sizeof(dialogText), "{BADA55}Kräuter: {FFFFFF}%s Gramm in der FSafebox\nGebe an, wieviele Gramm Kräuter du entnehmen möchtest:", 
                         AddDelimiters(g_FraktionsSafeBox[fraktion][FSB_iKrauter]));
-                }
+                }*/
                 case SAFEBOX_GANGSAMEN: {
                     if (g_FraktionsSafeBox[fraktion][FSB_iGSamen] <= 0) return ShowPlayerDialog(playerid, DIALOG_FSAFEBOX_NOITEMS, DIALOG_STYLE_MSGBOX, dialogCaption, 
                         "{FFFFFF}Es sind keine Drogensamen in der FSafebox gelagert.", "Zurück", "");
@@ -54977,12 +55046,12 @@ stock ShowFSafeboxDialog(playerid, dialogid, extraid = 0) {
 
                     format(dialogText, sizeof(dialogText), "{BADA55}Spice: {FFFFFF}%s Gramm im Inventar\nGebe an, wieviele Gramm Spice du einlagern möchtest:", AddDelimiters(Spieler[playerid][pSpice]));
                 }
-                case SAFEBOX_KRAUTER: {
+                /*case SAFEBOX_KRAUTER: {
                     if (Spieler[playerid][pSpice] <= 0) return ShowPlayerDialog(playerid, DIALOG_FSAFEBOX_NOITEMS, DIALOG_STYLE_MSGBOX, dialogCaption, 
                         "{FFFFFF}Du hast keine Kräuter zum Einlagern.", "Zurück", "");
 
                     format(dialogText, sizeof(dialogText), "{BADA55}Kräuter: {FFFFFF}%s Gramm im Inventar\nGebe an, wieviele Gramm Kräuter du einlagern möchtest:", AddDelimiters(Spieler[playerid][pKrauterMische]));
-                }
+                }*/
                 case SAFEBOX_GANGSAMEN: {
                     if (Spieler[playerid][pGangDrogenSamen] <= 0) return ShowPlayerDialog(playerid, DIALOG_FSAFEBOX_NOITEMS, DIALOG_STYLE_MSGBOX, dialogCaption, 
                         "{FFFFFF}Du hast keine Drogensamen zum Einlagern.", "Zurück", "");
@@ -61100,7 +61169,7 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
         }
     }
     else if( resultid == THREAD_LOADFRAKTIONSSAFEBOX ) {
-        new rows, row, i, id, spice, drugs, wcodes, waffenteile, krauter, gdsamen, spritl;
+        new rows, row, i, id, spice, drugs, wcodes, waffenteile/*, krauter*/, gdsamen, spritl;
         rows = cache_get_row_count(connectionHandle);
         while( row < rows ) {
             id = cache_get_field_content_int(row,"fraktionsid",connectionHandle);
@@ -61108,7 +61177,7 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
             waffenteile = cache_get_field_content_int(row, "waffenteile",connectionHandle);
             wcodes = cache_get_field_content_int(row, "wantedcodes",connectionHandle);
             spice = cache_get_field_content_int(row, "spice",connectionHandle);
-            krauter = cache_get_field_content_int(row, "krauter",connectionHandle);
+            //krauter = cache_get_field_content_int(row, "krauter",connectionHandle);
             gdsamen = cache_get_field_content_int(row, "gangsamen",connectionHandle);
             spritl = cache_get_field_content_int(row, "sprit",connectionHandle);
             row++;
@@ -61124,7 +61193,7 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
             g_FraktionsSafeBox[id][FSB_iWaffenteile] = waffenteile;
             g_FraktionsSafeBox[id][FSB_iWantedcodes] = wcodes;
             g_FraktionsSafeBox[id][FSB_iSpice] = spice;
-            g_FraktionsSafeBox[id][FSB_iKrauter] = krauter;
+            //g_FraktionsSafeBox[id][FSB_iKrauter] = krauter;
             g_FraktionsSafeBox[id][FSB_iGSamen] = gdsamen;
             g_FraktionsSafeBox[id][FSB_iSprit] = spritl;
             i++;
@@ -63098,8 +63167,8 @@ CMD:inventar(playerid, params[]) {
     new string[256], ueberschrift[128];
     if(Spieler[playerid][pDrugs] != 0) { format(string, sizeof(string), "%sDrogen: %i", string, Spieler[playerid][pDrugs]); }
     if(Spieler[playerid][pSpice] != 0) { format(string, sizeof(string), "%s\nSpice: %i", string, Spieler[playerid][pSpice]); }
-    if(Spieler[playerid][pDrogenSamen] != 0) { format(string, sizeof(string), "%s\nKräutersamen: %i", string, Spieler[playerid][pDrogenSamen]); }
-    if(Spieler[playerid][pKrauterMische] != 0) { format(string, sizeof(string), "%s\nKräutermischung: %i", string, Spieler[playerid][pKrauterMische]); }
+    if(Spieler[playerid][pDrogenSamen] != 0) { format(string, sizeof(string), "%s\nSpicesamen: %i", string, Spieler[playerid][pDrogenSamen]); }
+    //if(Spieler[playerid][pKrauterMische] != 0) { format(string, sizeof(string), "%s\nKräutermischung: %i", string, Spieler[playerid][pKrauterMische]); }
     if(Spieler[playerid][pGangDrogenSamen] != 0) { format(string, sizeof(string), "%s\nDrogensamen: %i", string, Spieler[playerid][pGangDrogenSamen]); }
     if(Spieler[playerid][pWaffenteile] != 0) { format(string, sizeof(string), "%s\nWaffenteile: %i", string, Spieler[playerid][pWaffenteile]); }
     if(Spieler[playerid][pWantedCodes] != 0) { format(string, sizeof(string), "%s\nWanted-Codes: %i", string, Spieler[playerid][pWantedCodes]); }
@@ -65426,7 +65495,7 @@ stock GetBombDrahtColorString( string[] , size = sizeof(string) ) { // scheiss f
     return 1;
 }
 
-CMD:makespice(playerid, params[]){
+/*CMD:makespice(playerid, params[]){
     if(Spieler[playerid][pFraktion] != 19) return SendClientMessage(playerid, COLOR_RED, "[MAKESPICE] {FFFFFF}Du bist kein Terrorist!");
     new needDrogen = 2, needKrauter = 1, Anzahl;
     if(sscanf(params,"i",Anzahl)) return SendClientMessage(playerid,COLOR_BLUE, INFO_STRING"/Makespice [Anzahl]");
@@ -65439,7 +65508,7 @@ CMD:makespice(playerid, params[]){
 
     SCMFormatted(playerid, COLOR_GREEN, "[MAKESPICE] {FFFFFF}Du hast %i Spice aus %i Drogen und %i Kräutern hergestellt!", Anzahl, needDrogen*Anzahl, needKrauter*Anzahl);
     return 1;
-}
+}*/
 
 CMD:spicesperre(playerid, params[]){
     if(Spieler[playerid][pFraktion] != 19) return SendClientMessage(playerid, COLOR_RED, "[SSPERRE] {FFFFFF}Du bist kein Terrorist!");
@@ -71249,7 +71318,7 @@ CMD:fsbreset(playerid, params[]) {
     g_FraktionsSafeBox[fraktion][FSB_iWaffenteile] = 0;
     g_FraktionsSafeBox[fraktion][FSB_iWantedcodes] = 0;
     g_FraktionsSafeBox[fraktion][FSB_iSpice] = 0;
-    g_FraktionsSafeBox[fraktion][FSB_iKrauter] = 0;
+    //g_FraktionsSafeBox[fraktion][FSB_iKrauter] = 0;
     g_FraktionsSafeBox[fraktion][FSB_iGSamen] = 0;
 
     new message[145];
