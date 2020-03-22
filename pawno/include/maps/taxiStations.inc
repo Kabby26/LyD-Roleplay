@@ -8,14 +8,14 @@
 //static Float:DRAWDISTANCE   = 350.0;
 
 // Taxi stations in LS points
-#define TAXISTATIONS_JOBSKIN_POINT_CITYHALL     1482.8569, -1657.9299, 13.4684
+#define TAXISTATIONS_JOBSKIN_POINT_CITYHALL     1442.4465,-1639.1947,13.6280
 //#define TAXISTATIONS_JOBSKIN_POINT_BUSSTATION   1272.3879, -1353.3357, 13.5069
 
 // Map variables
 new pickup_taxiStations[1];
 new text3D_taxiStations[1];
 //new actor_taxiStations[2];
-new vehicle_taxiStations[4];
+new vehicle_taxiStations[6];
 
 hook OnPlayerConnect(playerid) {
     // ---
@@ -43,10 +43,17 @@ hook OnGameModeInit() {
     ApplyDynamicActorAnimation(actor_taxiStations[1], "GANGS", "leanIDLE", 4.0, 1, 0, 0, 0, 0);
     */
     // Vehicles
-    vehicle_taxiStations[0] = AddStaticVehicleEx(420, 1484.7172, -1662.0835, 13.5004, 178.9520, 6, 6, 60*10); // Taxicar1
+    /*vehicle_taxiStations[0] = AddStaticVehicleEx(420, 1484.7172, -1662.0835, 13.5004, 178.9520, 6, 6, 60*10); // Taxicar1
     vehicle_taxiStations[1] = AddStaticVehicleEx(438, 1488.8422, -1662.3359, 13.2709, 179.3681, 6, 6, 60*10); // Taxicar1
     vehicle_taxiStations[2] = AddStaticVehicleEx(420, 1493.6617, -1662.5077, 13.2709, 179.3681, 6, 6, 60*10); // Taxicar1
-    vehicle_taxiStations[3] = AddStaticVehicleEx(420, 1498.2452, -1661.9644, 13.5002, 178.9830, 6, 6, 60*10); // Taxicar1
+    vehicle_taxiStations[3] = AddStaticVehicleEx(420, 1498.2452, -1661.9644, 13.5002, 178.9830, 6, 6, 60*10); // Taxicar1*/
+
+    vehicle_taxiStations[0] = AddStaticVehicleEx(420, 1457.3201,-1642.9407,13.2789,90.1557, 6, 6, 60*10);
+    vehicle_taxiStations[1] = AddStaticVehicleEx(420, 1470.3037,-1642.9843,13.1810,90.2907, 6, 6, 60*10);
+    vehicle_taxiStations[2] = AddStaticVehicleEx(420, 1489.1276,-1643.2502,13.4129,269.7363, 6, 6, 60*10);
+    vehicle_taxiStations[3] = AddStaticVehicleEx(420, 1502.7079,-1643.0225,13.1812,270.1382, 6, 6, 60*10);
+    vehicle_taxiStations[4] = AddStaticVehicleEx(420, 1517.0214,-1643.0815,13.4214,269.0073, 6, 6, 60*10);
+    vehicle_taxiStations[5] = AddStaticVehicleEx(420, 1443.0872,-1643.0731,13.1547,90.5903, 6, 6, 60*10);
  
 
 	// Objects

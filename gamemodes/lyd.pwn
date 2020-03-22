@@ -6713,19 +6713,22 @@ public OnPlayerConnect(playerid)
 
     //PlayAudioStreamForPlayer(playerid, URL_LOGINMUSIC);
 
-    new randomLogin = RandomEx(0, 4);
+    new randomLogin = RandomEx(0, 100);
 
-    switch(randomLogin){
-        case 0:
-            PlayAudioStreamForPlayer(playerid, "https://summerjam.xyz/music/login.wav");
-        case 1:
-            PlayAudioStreamForPlayer(playerid, "https://summerjam.xyz/music/login2.wav");
-        case 2:
-            PlayAudioStreamForPlayer(playerid, "https://summerjam.xyz/music/login3.wav");
-        case 3:
-            PlayAudioStreamForPlayer(playerid, "https://summerjam.xyz/music/login4.wav");
-        case 4:
-            PlayAudioStreamForPlayer(playerid, URL_LOGINMUSIC);
+    if(randomLogin > 0 && randomLogin < 20){
+        PlayAudioStreamForPlayer(playerid, "https://summerjam.xyz/music/login.wav");
+    }
+    if(randomLogin > 20 && randomLogin < 40){
+        PlayAudioStreamForPlayer(playerid, "https://summerjam.xyz/music/login2.wav");
+    }
+    if(randomLogin > 40 && randomLogin < 60){
+        PlayAudioStreamForPlayer(playerid, "https://summerjam.xyz/music/login3.wav");
+    }
+    if(randomLogin > 60 && randomLogin < 80){
+        PlayAudioStreamForPlayer(playerid, "https://summerjam.xyz/music/login4.wav");
+    }
+    if(randomLogin > 80 && randomLogin < 100){
+        PlayAudioStreamForPlayer(playerid, URL_LOGINMUSIC);
     }
 
     //PlayAudioStreamForPlayer(playerid, "http://www.uploadmusic.org/MUSIC/5384711376757549.mp3");
@@ -7241,16 +7244,19 @@ public OnPlayerConnect(playerid)
         }
     }
 
-    switch(randomLogin){
-        case 0:
+    if(randomLogin > 0 && randomLogin < 20){
             SendClientMessage(playerid, COLOR_LIGHTBLUE, "{2E94D0}[{FFFFFF}MRP{2E94D0}]{FFFFFF} Du hörst gerade '{2E94D0}Parov Stelar - All Night{FFFFFF}'");
-        case 1:
-            SendClientMessage(playerid, COLOR_LIGHTBLUE, "{2E94D0}[{FFFFFF}MRP{2E94D0}]{FFFFFF} Du hörst gerade '{2E94D0}Deorro ft. Chris Brown - Five more Hours{FFFFFF}'");
-        case 2:
+    }
+    if(randomLogin > 20 && randomLogin < 40){
+        SendClientMessage(playerid, COLOR_LIGHTBLUE, "{2E94D0}[{FFFFFF}MRP{2E94D0}]{FFFFFF} Du hörst gerade '{2E94D0}Deorro ft. Chris Brown - Five more Hours{FFFFFF}'");
+    }
+    if(randomLogin > 40 && randomLogin < 60){
             SendClientMessage(playerid, COLOR_LIGHTBLUE, "{2E94D0}[{FFFFFF}MRP{2E94D0}]{FFFFFF} Du hörst gerade '{2E94D0}Eric Prydz - Pjanoo{FFFFFF}'");
-        case 3:
+    }
+    if(randomLogin > 60 && randomLogin < 80){
             SendClientMessage(playerid, COLOR_LIGHTBLUE, "{2E94D0}[{FFFFFF}MRP{2E94D0}]{FFFFFF} Du hörst gerade '{2E94D0}Martin Garrix - Bouncybob (ft. Justin Mylo & Mesto){FFFFFF}'");
-        case 4:
+    }
+    if(randomLogin > 80 && randomLogin < 100){
             SendClientMessage(playerid, COLOR_LIGHTBLUE, "{2E94D0}[{FFFFFF}MRP{2E94D0}]{FFFFFF} Du hörst gerade: '{2E94D0}20syl - Voices feat. Rita J.{FFFFFF}'");
     }
 
@@ -74603,8 +74609,8 @@ stock InitSchilder() {
     //Verkehrsberuhigte Zone
     CreateDynamicObject(8548, 1558.15564, -1737.48230, 13.75410,   0.00000, 0.00000, 265.49109);
     CreateDynamicObject(8548, 1558.15564, -1726.94690, 13.75410,   0.00000, 0.00000, 85.52088);
-    CreateDynamicObject(8548, 1434.65601, -1662.11084, 13.75410,   0.00000, 0.00000, 0.00000);
-    CreateDynamicObject(8548, 1424.29236, -1662.36926, 13.75410,   0.00000, 0.00000, -178.00000);
+    //CreateDynamicObject(8548, 1434.65601, -1662.11084, 13.75410,   0.00000, 0.00000, 0.00000);//SH
+    //CreateDynamicObject(8548, 1424.29236, -1662.36926, 13.75410,   0.00000, 0.00000, -178.00000);//sh
     CreateDynamicObject(8548, 1447.63989, -1597.48877, 13.75410,   0.00000, 0.00000, 268.51483);
     CreateDynamicObject(8548, 1447.63989, -1587.06335, 13.75410,   0.00000, 0.00000, 85.34580);
     CreateDynamicObject(8548, 1543.63818, -1597.68958, 13.75410,   0.00000, 0.00000, 272.20981);
@@ -74655,8 +74661,8 @@ stock InitParkscheibe() {
 	    Float:Y;
 	// TODO: Peek parkscheiben map file?
     CreateDynamicObject(963, 1351.64575, -1270.84008, 13.41868, 90.00000, 0.00000, 0.00000); //Hauptammu Parkscheinautomat
-	//CreateDynamicObject(963, 1445.02282, -1772.52527, 13.57012, 90.00000, 90.00000, 0.00000); // Cityhall (Stadthalle) Parkscheinautomat
-	CreateDynamicObject(963, 1488.6666, -1725.9537, 13.57012, 90.00000, 0.00000, 0.00000); // Cityhall (Stadthalle) Parkscheinautomat
+	CreateDynamicObject(963, 1488.3590,-1694.6951,13.3918, 90.00000, 90.00000, 0.00000); // Cityhall (Stadthalle) Parkscheinautomat
+	//CreateDynamicObject(963, 1488.6666, -1725.9537, 13.57012, 90.00000, 0.00000, 0.00000); // Cityhall (Stadthalle) Parkscheinautomat
 	for(new i , j = Streamer_GetUpperBound(STREAMER_TYPE_OBJECT) ; i < j ; i++) {
 	    if( IsValidDynamicObject(i) ) {
 	        modelid = Streamer_GetIntData(STREAMER_TYPE_OBJECT,i,E_STREAMER_MODEL_ID);

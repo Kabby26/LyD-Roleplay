@@ -4,20 +4,20 @@
 #define MAPS_BUSSTATION_INTERIOR      0
 
 // Local drawdistance & streamdistance setting
-static Float:STREAMDISTANCE = 200.0;
-static Float:DRAWDISTANCE   = 190.0;
+//static Float:STREAMDISTANCE = 200.0;
+//static Float:DRAWDISTANCE   = 190.0;
 
 // Bus station in LS points
-#define BUSSTATION_JOBSKIN_POINT   1257.3746, -1334.1302, 13.2733
+#define BUSSTATION_JOBSKIN_POINT   1449.5822,-1612.3098,13.6280
 #define BUSSTATION_INFO_POINT1     1257.3948, -1379.4574, 13.2933
 #define BUSSTATION_INFO_POINT2     1257.0052, -1297.3274, 13.2804
 
 // Map variables
-new object_busStation[22];
+//new object_busStation[22];
 new pickup_busStation[1];
-new text3D_busStation[3];
-new actor_busStation[4];
-new vehicle_busStation[4];
+new text3D_busStation[1];
+//new actor_busStation[4];
+new vehicle_busStation[6];
 
 hook OnPlayerConnect(playerid) {
     // ---
@@ -32,28 +32,35 @@ hook OnGameModeInit() {
     pickup_busStation[0] = CreateDynamicPickup(1275, 1, BUSSTATION_JOBSKIN_POINT, VW_MAIN, MAPS_BUSSTATION_INTERIOR); // Job clothes point
 
     // 3DTextLabels
-    text3D_busStation[0] = _:CreateDynamic3DTextLabel("Arbeitskleidung fÃ¼r Busfahrer\n" COLOR_HEX_WHITE "Tippe /Jobkleidung", COLOR_YELLOW, BUSSTATION_JOBSKIN_POINT, 25.0, .testlos = 1, .worldid = VW_MAIN, .interiorid = MAPS_BUSSTATION_INTERIOR); // Job clothes point
-    text3D_busStation[1] = _:CreateDynamic3DTextLabel("LOS SANTOS - BUSBAHNHOF", COLOR_YELLOW, BUSSTATION_INFO_POINT1, 20.0, .testlos = 1, .worldid = VW_MAIN, .interiorid = MAPS_BUSSTATION_INTERIOR); // Info point
-    text3D_busStation[2] = _:CreateDynamic3DTextLabel("LOS SANTOS - BUSBAHNHOF", COLOR_YELLOW, BUSSTATION_INFO_POINT2, 20.0, .testlos = 1, .worldid = VW_MAIN, .interiorid = MAPS_BUSSTATION_INTERIOR); // Info point
+    text3D_busStation[0] = _:CreateDynamic3DTextLabel("Arbeitskleidung für Busfahrer\n" COLOR_HEX_WHITE "Tippe /Jobkleidung", COLOR_YELLOW, BUSSTATION_JOBSKIN_POINT, 25.0, .testlos = 1, .worldid = VW_MAIN, .interiorid = MAPS_BUSSTATION_INTERIOR); // Job clothes point
+    //text3D_busStation[1] = _:CreateDynamic3DTextLabel("LOS SANTOS - BUSBAHNHOF", COLOR_YELLOW, BUSSTATION_INFO_POINT1, 20.0, .testlos = 1, .worldid = VW_MAIN, .interiorid = MAPS_BUSSTATION_INTERIOR); // Info point
+    //text3D_busStation[2] = _:CreateDynamic3DTextLabel("LOS SANTOS - BUSBAHNHOF", COLOR_YELLOW, BUSSTATION_INFO_POINT2, 20.0, .testlos = 1, .worldid = VW_MAIN, .interiorid = MAPS_BUSSTATION_INTERIOR); // Info point
     
     // Actors
-    actor_busStation[0] = CreateDynamicActor(7, 1256.5770, -1369.8331, 13.2933, 90.4237, .worldid = VW_MAIN, .interiorid = MAPS_BUSSTATION_INTERIOR); // Watch guy
+    /*actor_busStation[0] = CreateDynamicActor(7, 1256.5770, -1369.8331, 13.2933, 90.4237, .worldid = VW_MAIN, .interiorid = MAPS_BUSSTATION_INTERIOR); // Watch guy
     ApplyDynamicActorAnimation(actor_busStation[0], "MISC", "SEAT_watch", 0.2, 1, 0, 0, 0, 0);
     actor_busStation[1] = CreateDynamicActor(56, 1256.5248, -1349.7919, 13.2933, 93.1852, .worldid = VW_MAIN, .interiorid = MAPS_BUSSTATION_INTERIOR); // Leaning woman
     ApplyDynamicActorAnimation(actor_busStation[1], "MISC", "Plyrlean_loop", 4.0, 1, 0, 0, 0, 0);
     actor_busStation[2] = CreateDynamicActor(255, 1256.7325, -1330.8378, 13.2733, 93.3848, .worldid = VW_MAIN, .interiorid = MAPS_BUSSTATION_INTERIOR); // Smoking driver
     ApplyDynamicActorAnimation(actor_busStation[2], "SMOKING", "M_smkstnd_loop", 4.0, 1, 0, 0, 0, 0);
     actor_busStation[3] = CreateDynamicActor(79, 1257.9977, -1304.9066, 13.4862, 84.9854, .worldid = VW_MAIN, .interiorid = MAPS_BUSSTATION_INTERIOR); // Sleeping hobo
-    ApplyDynamicActorAnimation(actor_busStation[3], "CRACK", "crckidle2", 4.0, 1, 0, 0, 0, 0);
+    ApplyDynamicActorAnimation(actor_busStation[3], "CRACK", "crckidle2", 4.0, 1, 0, 0, 0, 0);*/
     
     // Vehicles
-    vehicle_busStation[0] = AddStaticVehicleEx(431, 1252.5062, -1306.5398, 13.2808, 179.3419, 3, 3, 60*10); //Bus
+   /*vehicle_busStation[0] = AddStaticVehicleEx(431, 1252.5062, -1306.5398, 13.2808, 179.3419, 3, 3, 60*10); //Bus
     vehicle_busStation[1] = AddStaticVehicleEx(431, 1252.2013, -1323.8386, 13.2532, 179.7427, 3, 3, 60*10); //Bus
     vehicle_busStation[2] = AddStaticVehicleEx(431, 1252.2871, -1350.3728, 13.2473, 180.2377, 3, 3, 60*10); //Bus
-    vehicle_busStation[3] = AddStaticVehicleEx(431, 1252.2953, -1367.1998, 13.2963, 180.0122, 3, 3, 60*10); //Bus
+    vehicle_busStation[3] = AddStaticVehicleEx(431, 1252.2953, -1367.1998, 13.2963, 180.0122, 3, 3, 60*10); //Bus*/
+
+    vehicle_busStation[0] = AddStaticVehicleEx(431, 1457.2258,-1607.6608,13.4827,270.6710, 3, 3, 60*10);
+    vehicle_busStation[1] = AddStaticVehicleEx(431, 1503.6342,-1607.1447,13.4730,270.3678, 3, 3, 60*10);
+    vehicle_busStation[2] = AddStaticVehicleEx(431, 1503.7108,-1616.7319,13.4760,270.5411, 3, 3, 60*10);
+    vehicle_busStation[3] = AddStaticVehicleEx(431, 1458.7617,-1617.0116,13.4788,270.9594, 3, 3, 60*10);
+    vehicle_busStation[4] = AddStaticVehicleEx(431, 1502.2627,-1634.7043,13.4779,269.3953, 3, 3, 60*10);
+    vehicle_busStation[5] = AddStaticVehicleEx(431, 1457.8877,-1634.2360,13.4766,269.3952, 3, 3, 60*10);
 
     // Objects
-    object_busStation[0] = CreateDynamicObject(8841, 1257.29712, -1316.30408, 15.28890, 0.00000, 0.00000, 270.32339, VW_MAIN, MAPS_BUSSTATION_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+    /*object_busStation[0] = CreateDynamicObject(8841, 1257.29712, -1316.30408, 15.28890, 0.00000, 0.00000, 270.32339, VW_MAIN, MAPS_BUSSTATION_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
     object_busStation[1] = CreateDynamicObject(8841, 1257.35718, -1359.85144, 15.30890, 0.00000, 0.00000, 270.32339, VW_MAIN, MAPS_BUSSTATION_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
     object_busStation[2] = CreateDynamicObject(19121, 1257.31323, -1315.53027, 12.88323, 0.00000, 0.00000, 359.79898, VW_MAIN, MAPS_BUSSTATION_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
     object_busStation[3] = CreateDynamicObject(19121, 1257.32324, -1300.17322, 12.88323, 0.00000, 0.00000, 0.00000, VW_MAIN, MAPS_BUSSTATION_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
@@ -75,4 +82,5 @@ hook OnGameModeInit() {
     object_busStation[19] = CreateDynamicObject(1280, 1257.19177, -1355.09753, 12.67530, 0.00000, 0.00000, 0.00000, VW_MAIN, MAPS_BUSSTATION_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
     object_busStation[20] = CreateDynamicObject(1257, 1257.44983, -1363.64429, 13.18870, 0.00000, 0.00000, 359.78561, VW_MAIN, MAPS_BUSSTATION_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
     object_busStation[21] = CreateDynamicObject(1280, 1257.19177, -1370.01648, 12.67530, 0.00000, 0.00000, 0.00000, VW_MAIN, MAPS_BUSSTATION_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+*/
 }
