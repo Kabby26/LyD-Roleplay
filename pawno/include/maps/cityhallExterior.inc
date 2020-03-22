@@ -22,7 +22,287 @@ static Float:DRAWDISTANCE   = 200.0;
 #define JEFF_COORDS									1338.7585, -1805.1331, 13.5469
 #define JEFF_COORDS_FACING                          1338.7585, -1805.1331, 13.5469, 270.0000
 
-// Map variables
+hook OnPlayerConnect(playerid) {
+	RemoveBuildingForPlayer(playerid, 4057, 1479.5547, -1693.1406, 19.5781, 0.25);
+	RemoveBuildingForPlayer(playerid, 4210, 1479.5625, -1631.4531, 12.0781, 0.25);
+	RemoveBuildingForPlayer(playerid, 713, 1457.9375, -1620.6953, 13.4531, 0.25);
+	RemoveBuildingForPlayer(playerid, 713, 1496.8672, -1707.8203, 13.4063, 0.25);
+	RemoveBuildingForPlayer(playerid, 1283, 1430.1719, -1719.4688, 15.6250, 0.25);
+	RemoveBuildingForPlayer(playerid, 1226, 1451.6250, -1727.6719, 16.4219, 0.25);
+	RemoveBuildingForPlayer(playerid, 1226, 1467.9844, -1727.6719, 16.4219, 0.25);
+	RemoveBuildingForPlayer(playerid, 1226, 1485.1719, -1727.6719, 16.4219, 0.25);
+	RemoveBuildingForPlayer(playerid, 1280, 1468.9844, -1713.5078, 13.4531, 0.25);
+	RemoveBuildingForPlayer(playerid, 1231, 1479.6953, -1716.7031, 15.6250, 0.25);
+	RemoveBuildingForPlayer(playerid, 1226, 1505.1797, -1727.6719, 16.4219, 0.25);
+	RemoveBuildingForPlayer(playerid, 1280, 1488.7656, -1713.7031, 13.4531, 0.25);
+	RemoveBuildingForPlayer(playerid, 1289, 1504.7500, -1711.8828, 13.5938, 0.25);
+	RemoveBuildingForPlayer(playerid, 1258, 1445.0078, -1704.7656, 13.6953, 0.25);
+	RemoveBuildingForPlayer(playerid, 1226, 1433.7109, -1702.3594, 16.4219, 0.25);
+	RemoveBuildingForPlayer(playerid, 1226, 1433.7109, -1676.6875, 16.4219, 0.25);
+	RemoveBuildingForPlayer(playerid, 1258, 1445.0078, -1692.2344, 13.6953, 0.25);
+	RemoveBuildingForPlayer(playerid, 1226, 1433.7109, -1656.2500, 16.4219, 0.25);
+	RemoveBuildingForPlayer(playerid, 1226, 1433.7109, -1636.2344, 16.4219, 0.25);
+	RemoveBuildingForPlayer(playerid, 712, 1445.8125, -1650.0234, 22.2578, 0.25);
+	RemoveBuildingForPlayer(playerid, 1226, 1433.7109, -1619.0547, 16.4219, 0.25);
+	RemoveBuildingForPlayer(playerid, 1283, 1443.2031, -1592.9453, 15.6250, 0.25);
+	RemoveBuildingForPlayer(playerid, 673, 1457.7266, -1710.0625, 12.3984, 0.25);
+	RemoveBuildingForPlayer(playerid, 620, 1461.6563, -1707.6875, 11.8359, 0.25);
+	RemoveBuildingForPlayer(playerid, 1280, 1468.9844, -1704.6406, 13.4531, 0.25);
+	RemoveBuildingForPlayer(playerid, 700, 1463.0625, -1701.5703, 13.7266, 0.25);
+	RemoveBuildingForPlayer(playerid, 1231, 1479.6953, -1702.5313, 15.6250, 0.25);
+	RemoveBuildingForPlayer(playerid, 673, 1457.5547, -1697.2891, 12.3984, 0.25);
+	RemoveBuildingForPlayer(playerid, 1280, 1468.9844, -1694.0469, 13.4531, 0.25);
+	RemoveBuildingForPlayer(playerid, 1231, 1479.3828, -1692.3906, 15.6328, 0.25);
+	RemoveBuildingForPlayer(playerid, 4186, 1479.5547, -1693.1406, 19.5781, 0.25);
+	RemoveBuildingForPlayer(playerid, 620, 1461.1250, -1687.5625, 11.8359, 0.25);
+	RemoveBuildingForPlayer(playerid, 700, 1463.0625, -1690.6484, 13.7266, 0.25);
+	RemoveBuildingForPlayer(playerid, 641, 1458.6172, -1684.1328, 11.1016, 0.25);
+	RemoveBuildingForPlayer(playerid, 625, 1457.2734, -1666.2969, 13.6953, 0.25);
+	RemoveBuildingForPlayer(playerid, 1280, 1468.9844, -1682.7188, 13.4531, 0.25);
+	RemoveBuildingForPlayer(playerid, 712, 1471.4063, -1666.1797, 22.2578, 0.25);
+	RemoveBuildingForPlayer(playerid, 1231, 1479.3828, -1682.3125, 15.6328, 0.25);
+	RemoveBuildingForPlayer(playerid, 625, 1458.2578, -1659.2578, 13.6953, 0.25);
+	RemoveBuildingForPlayer(playerid, 712, 1449.8516, -1655.9375, 22.2578, 0.25);
+	RemoveBuildingForPlayer(playerid, 1231, 1477.9375, -1652.7266, 15.6328, 0.25);
+	RemoveBuildingForPlayer(playerid, 1280, 1479.6094, -1653.2500, 13.4531, 0.25);
+	RemoveBuildingForPlayer(playerid, 625, 1457.3516, -1650.5703, 13.6953, 0.25);
+	RemoveBuildingForPlayer(playerid, 625, 1454.4219, -1642.4922, 13.6953, 0.25);
+	RemoveBuildingForPlayer(playerid, 1280, 1467.8516, -1646.5938, 13.4531, 0.25);
+	RemoveBuildingForPlayer(playerid, 1280, 1472.8984, -1651.5078, 13.4531, 0.25);
+	RemoveBuildingForPlayer(playerid, 1280, 1465.9375, -1639.8203, 13.4531, 0.25);
+	RemoveBuildingForPlayer(playerid, 1231, 1466.4688, -1637.9609, 15.6328, 0.25);
+	RemoveBuildingForPlayer(playerid, 625, 1449.5938, -1635.0469, 13.6953, 0.25);
+	RemoveBuildingForPlayer(playerid, 1280, 1467.7109, -1632.8906, 13.4531, 0.25);
+	RemoveBuildingForPlayer(playerid, 1232, 1465.8906, -1629.9766, 15.5313, 0.25);
+	RemoveBuildingForPlayer(playerid, 1280, 1472.6641, -1627.8828, 13.4531, 0.25);
+	RemoveBuildingForPlayer(playerid, 1280, 1479.4688, -1626.0234, 13.4531, 0.25);
+	RemoveBuildingForPlayer(playerid, 3985, 1479.5625, -1631.4531, 12.0781, 0.25);
+	RemoveBuildingForPlayer(playerid, 4206, 1479.5547, -1639.6094, 13.6484, 0.25);
+	RemoveBuildingForPlayer(playerid, 1232, 1465.8359, -1608.3750, 15.3750, 0.25);
+	RemoveBuildingForPlayer(playerid, 1229, 1466.4844, -1598.0938, 14.1094, 0.25);
+	RemoveBuildingForPlayer(playerid, 1226, 1451.3359, -1596.7031, 16.4219, 0.25);
+	RemoveBuildingForPlayer(playerid, 1226, 1471.3516, -1596.7031, 16.4219, 0.25);
+	RemoveBuildingForPlayer(playerid, 1280, 1488.7656, -1704.5938, 13.4531, 0.25);
+	RemoveBuildingForPlayer(playerid, 700, 1494.2109, -1694.4375, 13.7266, 0.25);
+	RemoveBuildingForPlayer(playerid, 1280, 1488.7656, -1693.7344, 13.4531, 0.25);
+	RemoveBuildingForPlayer(playerid, 620, 1496.9766, -1686.8516, 11.8359, 0.25);
+	RemoveBuildingForPlayer(playerid, 641, 1494.1406, -1689.2344, 11.1016, 0.25);
+	RemoveBuildingForPlayer(playerid, 1280, 1488.7656, -1682.6719, 13.4531, 0.25);
+	RemoveBuildingForPlayer(playerid, 712, 1480.6094, -1666.1797, 22.2578, 0.25);
+	RemoveBuildingForPlayer(playerid, 712, 1488.2266, -1666.1797, 22.2578, 0.25);
+	RemoveBuildingForPlayer(playerid, 1280, 1486.4063, -1651.3906, 13.4531, 0.25);
+	RemoveBuildingForPlayer(playerid, 1280, 1491.3672, -1646.3828, 13.4531, 0.25);
+	RemoveBuildingForPlayer(playerid, 1280, 1493.1328, -1639.4531, 13.4531, 0.25);
+	RemoveBuildingForPlayer(playerid, 1280, 1486.1797, -1627.7656, 13.4531, 0.25);
+	RemoveBuildingForPlayer(playerid, 1280, 1491.2188, -1632.6797, 13.4531, 0.25);
+	RemoveBuildingForPlayer(playerid, 1232, 1494.4141, -1629.9766, 15.5313, 0.25);
+	RemoveBuildingForPlayer(playerid, 1232, 1494.3594, -1608.3750, 15.3750, 0.25);
+	RemoveBuildingForPlayer(playerid, 1226, 1488.5313, -1596.7031, 16.4219, 0.25);
+	RemoveBuildingForPlayer(playerid, 1229, 1498.0547, -1598.0938, 14.1094, 0.25);
+	RemoveBuildingForPlayer(playerid, 1288, 1504.7500, -1705.4063, 13.5938, 0.25);
+	RemoveBuildingForPlayer(playerid, 1287, 1504.7500, -1704.4688, 13.5938, 0.25);
+	RemoveBuildingForPlayer(playerid, 1286, 1504.7500, -1695.0547, 13.5938, 0.25);
+	RemoveBuildingForPlayer(playerid, 1285, 1504.7500, -1694.0391, 13.5938, 0.25);
+	RemoveBuildingForPlayer(playerid, 673, 1498.9609, -1684.6094, 12.3984, 0.25);
+	RemoveBuildingForPlayer(playerid, 625, 1504.1641, -1662.0156, 13.6953, 0.25);
+	RemoveBuildingForPlayer(playerid, 625, 1504.7188, -1670.9219, 13.6953, 0.25);
+	RemoveBuildingForPlayer(playerid, 620, 1503.1875, -1621.1250, 11.8359, 0.25);
+	RemoveBuildingForPlayer(playerid, 673, 1501.2813, -1624.5781, 12.3984, 0.25);
+	RemoveBuildingForPlayer(playerid, 673, 1498.3594, -1616.9688, 12.3984, 0.25);
+	RemoveBuildingForPlayer(playerid, 1226, 1504.8906, -1596.7031, 16.4219, 0.25);
+	RemoveBuildingForPlayer(playerid, 712, 1508.4453, -1668.7422, 22.2578, 0.25);
+	RemoveBuildingForPlayer(playerid, 625, 1505.6953, -1654.8359, 13.6953, 0.25);
+	RemoveBuildingForPlayer(playerid, 625, 1508.5156, -1647.8594, 13.6953, 0.25);
+	RemoveBuildingForPlayer(playerid, 625, 1513.2734, -1642.4922, 13.6953, 0.25);
+	RemoveBuildingForPlayer(playerid, 1258, 1510.8906, -1607.3125, 13.6953, 0.25);
+	RemoveBuildingForPlayer(playerid, 1226, 1524.8281, -1721.6328, 16.4219, 0.25);
+	RemoveBuildingForPlayer(playerid, 1226, 1524.8281, -1705.2734, 16.4219, 0.25);
+	RemoveBuildingForPlayer(playerid, 1229, 1524.2188, -1693.9688, 14.1094, 0.25);
+	RemoveBuildingForPlayer(playerid, 1226, 1524.8281, -1688.0859, 16.4219, 0.25);
+	RemoveBuildingForPlayer(playerid, 1229, 1524.2188, -1673.7109, 14.1094, 0.25);
+	RemoveBuildingForPlayer(playerid, 1226, 1524.8281, -1668.0781, 16.4219, 0.25);
+	RemoveBuildingForPlayer(playerid, 1226, 1524.8281, -1647.6406, 16.4219, 0.25);
+	RemoveBuildingForPlayer(playerid, 1226, 1524.8281, -1621.9609, 16.4219, 0.25);
+	RemoveBuildingForPlayer(playerid, 1226, 1525.3828, -1611.1563, 16.4219, 0.25);
+	RemoveBuildingForPlayer(playerid, 1283, 1528.9531, -1605.8594, 15.6250, 0.25);
+}
+
+new stadthalle_Obj[94];
+new pickup_cityhallExterior[2];
+new text3D_cityhallExterior[3];
+new actor_cityhallExterior[1];
+new vehicle_cityhallExterior[1];
+
+hook OnGameModeInit() {
+
+	// Map Icon
+    CreateDynamicMapIcon(CITYHALL_INTERIOR_ENTER_COORDS, 38, 0, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR);
+
+	// Pickups
+    pickup_cityhallExterior[0] = CreateDynamicPickup(19197, 1, CITYHALL_INTERIOR_ENTER_COORDS, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR); // Cityhall
+    pickup_cityhallExterior[1] = CreateDynamicPickup(19197, 1, REGISTRATIONOFFICE_INTERIOR_ENTER_COORDS, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR); // Registration office
+
+	// 3DTextLabels
+    text3D_cityhallExterior[0] = _:CreateDynamic3DTextLabel(COLOR_HEX_YELLOW "-> San Andreas Stadtamt <-\n" COLOR_HEX_WHITE "Arbeitsamt, Meldeamt, Passbehörde\nGebäude betreten mit 'Enter'", COLOR_WHITE, CITYHALL_INTERIOR_ENTER_COORDS, 30.0, .testlos = 1, .worldid = VW_MAIN, .interiorid = MAPS_CITYHALLEXTERIOR_INTERIOR); // Cityhall
+    text3D_cityhallExterior[1] = _:CreateDynamic3DTextLabel(COLOR_HEX_YELLOW "-> Kraftfahrtbundesamt - Zulassungsstelle <-\n" COLOR_HEX_WHITE "Gebäude betreten mit 'Enter'", COLOR_WHITE, REGISTRATIONOFFICE_INTERIOR_ENTER_COORDS, 30.0, .testlos = 1, .worldid = VW_MAIN, .interiorid = MAPS_CITYHALLEXTERIOR_INTERIOR); // Registration office
+    text3D_cityhallExterior[2] = _:CreateDynamic3DTextLabel(COLOR_HEX_BLUE "Illegaler Jobvermittler - Jeff\n" COLOR_HEX_WHITE "Tippe /Illegalejobs", COLOR_WHITE, JEFF_COORDS, 20.0, .testlos = 1, .worldid = VW_MAIN, .interiorid = MAPS_CITYHALLEXTERIOR_INTERIOR); // Jeff
+
+    // Actors
+    actor_cityhallExterior[0] = CreateDynamicActor(32, JEFF_COORDS_FACING, .streamdistance = STREAMDISTANCE);
+    ApplyDynamicActorAnimation(actor_cityhallExterior[0], "SMOKING", "M_smklean_loop", 4.0, 1, 0, 0, 0, 0);
+
+    // Vehicles
+    vehicle_cityhallExterior[0] = AddStaticVehicle(482, JEFF_VAN_COORDS, 0, 0); // burrito (Jeff)
+
+
+	stadthalle_Obj[0] = CreateDynamicObject(13296, 1508.17090, -1717.63940, 15.37680,   0.00000, 0.00000, 0.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[1] = CreateDynamicObject(1676, 1511.15405, -1723.35779, 13.88240,   0.00000, 0.00000, 0.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[2] = CreateDynamicObject(1676, 1506.65405, -1723.35779, 13.88240,   0.00000, 0.00000, 0.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[3] = CreateDynamicObject(10631, 1481.14026, -1708.36133, 16.73250,   0.00000, 0.00000, 180.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[4] = CreateDynamicObject(6257, 1452.89722, -1708.69409, 19.62130,   0.00000, 0.00000, -90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[5] = CreateDynamicObject(1492, 1454.41577, -1717.63489, 12.36510,   0.00000, 0.00000, 0.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[6] = CreateDynamicObject(19800, 1476.15051, -1650.12659, 2.64920,   0.00000, 0.04000, 194.56120, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[7] = CreateDynamicObject(3466, 1511.30237, -1650.62610, 14.89710,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[8] = CreateDynamicObject(19543, 1494.04956, -1622.10828, 12.33640,   0.00000, 0.00000, 0.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[9] = CreateDynamicObject(19543, 1509.04761, -1622.10828, 12.33640,   0.00000, 0.00000, 0.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[10] = CreateDynamicObject(19543, 1517.44763, -1622.10828, 12.36640,   0.00000, 0.00000, 0.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[11] = CreateDynamicObject(1360, 1498.19812, -1662.15466, 13.02240,   0.00000, 0.00000, 5.76520, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[12] = CreateDynamicObject(1360, 1498.00903, -1660.03699, 13.02240,   0.00000, 0.00000, 5.76520, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[13] = CreateDynamicObject(1360, 1496.43262, -1652.80115, 13.02240,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[14] = CreateDynamicObject(1360, 1497.83752, -1657.84790, 13.02240,   0.00000, 0.00000, 5.76520, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[15] = CreateDynamicObject(1360, 1497.62280, -1655.87268, 13.02240,   0.00000, 0.00000, 5.76520, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[16] = CreateDynamicObject(1360, 1497.53406, -1654.35400, 13.02240,   0.00000, 0.00000, 5.76520, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[17] = CreateDynamicObject(1360, 1494.21057, -1652.80115, 13.02240,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[18] = CreateDynamicObject(1360, 1492.14856, -1652.80115, 13.02240,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[19] = CreateDynamicObject(1360, 1490.77576, -1660.44751, 13.38140,   0.00000, 0.00000, 0.94420, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[20] = CreateDynamicObject(1360, 1490.91931, -1662.61328, 13.37540,   0.00000, 0.00000, 2.55120, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[21] = CreateDynamicObject(1360, 1490.96997, -1664.66052, 13.33940,   0.00000, 0.00000, 2.71190, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[22] = CreateDynamicObject(3466, 1450.88538, -1650.62610, 14.89710,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[23] = CreateDynamicObject(19543, 1475.22314, -1629.21033, 12.33440,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[24] = CreateDynamicObject(19543, 1441.78760, -1636.07617, 12.35840,   0.00000, 0.00000, 0.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[25] = CreateDynamicObject(19543, 1463.95251, -1604.16614, 12.36840,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[26] = CreateDynamicObject(19543, 1475.22314, -1614.21326, 12.33440,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[27] = CreateDynamicObject(3466, 1477.52539, -1650.62610, 14.89710,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[28] = CreateDynamicObject(3466, 1506.77734, -1612.23706, 14.89110,   0.00000, 0.00000, -90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[29] = CreateDynamicObject(3466, 1480.19128, -1612.23706, 14.89110,   0.00000, 0.00000, -90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[30] = CreateDynamicObject(3466, 1453.61731, -1612.23706, 14.89110,   0.00000, 0.00000, -90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[31] = CreateDynamicObject(1418, 1520.11365, -1625.19104, 13.07320,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[32] = CreateDynamicObject(1418, 1520.11365, -1621.79199, 13.07320,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[33] = CreateDynamicObject(1418, 1520.11365, -1618.34705, 13.07320,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[34] = CreateDynamicObject(1418, 1520.11365, -1614.84900, 13.07320,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[35] = CreateDynamicObject(1418, 1520.11365, -1611.35095, 13.07320,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[36] = CreateDynamicObject(1418, 1520.11365, -1607.85303, 13.07320,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[37] = CreateDynamicObject(1418, 1520.11365, -1604.40796, 13.07320,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[38] = CreateDynamicObject(1418, 1520.13965, -1600.91003, 13.07320,   0.00000, 0.00000, 89.35720, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[39] = CreateDynamicObject(1418, 1437.56140, -1661.84302, 13.07320,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[40] = CreateDynamicObject(1418, 1437.56140, -1658.39001, 13.07320,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[41] = CreateDynamicObject(1418, 1437.56140, -1654.91394, 13.07320,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[42] = CreateDynamicObject(1418, 1437.56140, -1651.43799, 13.07320,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[43] = CreateDynamicObject(1418, 1437.56140, -1647.96204, 13.07320,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[44] = CreateDynamicObject(1418, 1437.56140, -1644.48596, 13.07320,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[45] = CreateDynamicObject(1418, 1437.56140, -1641.01001, 13.07320,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[46] = CreateDynamicObject(1418, 1437.56140, -1637.53406, 13.07320,   0.00000, 0.00000, 89.19650, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[47] = CreateDynamicObject(617, 1437.85144, -1631.28967, 12.24810,   0.00000, 0.00000, 0.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[48] = CreateDynamicObject(617, 1495.25378, -1643.66235, 12.24810,   0.00000, 0.00000, 0.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[49] = CreateDynamicObject(617, 1483.40393, -1632.24146, 12.24810,   0.00000, 0.00000, 0.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[50] = CreateDynamicObject(617, 1458.77234, -1631.76013, 12.24810,   0.00000, 0.00000, 0.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[51] = CreateDynamicObject(617, 1516.61304, -1630.49463, 12.24810,   0.00000, 0.00000, 0.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[52] = CreateDynamicObject(3850, 1515.49329, -1710.18665, 12.89890,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[53] = CreateDynamicObject(3850, 1518.90930, -1710.18665, 12.89890,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[54] = CreateDynamicObject(3850, 1492.28125, -1710.18665, 12.89890,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[55] = CreateDynamicObject(3850, 1495.69727, -1710.18665, 12.89890,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[56] = CreateDynamicObject(9833, 1507.44092, -1695.83984, 15.14710,   0.00000, 0.00000, 7.41600, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[57] = CreateDynamicObject(10444, 1507.87878, -1695.80566, 12.58670,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[58] = CreateDynamicObject(3515, 1511.28333, -1695.74585, 12.39370,   0.00000, 21.01200, 0.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[59] = CreateDynamicObject(3515, 1504.00354, -1695.62329, 12.39370,   0.00000, -21.01200, 0.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[60] = CreateDynamicObject(19358, 1467.61560, -1646.81067, -1.43060,   0.00000, 0.00000, 94.82100, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[61] = CreateDynamicObject(19358, 1468.18262, -1646.76868, -1.43060,   0.00000, 0.00000, 94.82100, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[62] = CreateDynamicObject(1223, 1502.07996, -1679.64575, 12.56590,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[63] = CreateDynamicObject(1223, 1517.88770, -1679.50745, 12.56590,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[64] = CreateDynamicObject(1223, 1482.94678, -1679.61951, 12.56590,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[65] = CreateDynamicObject(1223, 1438.26709, -1679.68713, 12.56590,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[66] = CreateDynamicObject(1223, 1509.50781, -1666.21729, 12.56590,   0.00000, 0.00000, -90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[67] = CreateDynamicObject(1223, 1474.11206, -1666.18872, 12.56590,   0.00000, 0.00000, -90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[68] = CreateDynamicObject(1223, 1490.66333, -1666.27429, 12.56590,   0.00000, 0.00000, -90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[69] = CreateDynamicObject(1223, 1446.18079, -1666.19739, 12.56590,   0.00000, 0.00000, -90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[70] = CreateDynamicObject(1223, 1462.80396, -1679.65955, 12.56590,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+
+	stadthalle_Obj[71] = CreateDynamicObject(19866, 1523.13184, -1691.05334, 12.31700,   0.00000, 0.00000, 0.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	SetDynamicObjectMaterial(stadthalle_Obj[71], 0, 18202, "w_towncs_t", "ahoodfence2", 0xFFFFFFFF);
+	stadthalle_Obj[72] = CreateDynamicObject(19866, 1523.13184, -1696.05334, 12.31700,   0.00000, 0.00000, 0.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	SetDynamicObjectMaterial(stadthalle_Obj[72], 0, 18202, "w_towncs_t", "ahoodfence2", 0xFFFFFFFF);
+	stadthalle_Obj[73] = CreateDynamicObject(19866, 1520.71484, -1703.01758, 12.31500,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	SetDynamicObjectMaterial(stadthalle_Obj[73], 0, 18202, "w_towncs_t", "ahoodfence2", 0xFFFFFFFF);
+	stadthalle_Obj[74] = CreateDynamicObject(19866, 1523.12976, -1700.61328, 12.31700,   0.00000, 0.00000, 0.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	SetDynamicObjectMaterial(stadthalle_Obj[74], 0, 18202, "w_towncs_t", "ahoodfence2", 0xFFFFFFFF);
+	stadthalle_Obj[75] = CreateDynamicObject(19866, 1515.71680, -1703.01758, 12.31500,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	SetDynamicObjectMaterial(stadthalle_Obj[75], 0, 18202, "w_towncs_t", "ahoodfence2", 0xFFFFFFFF);
+	stadthalle_Obj[76] = CreateDynamicObject(19866, 1510.73279, -1703.01758, 12.31500,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	SetDynamicObjectMaterial(stadthalle_Obj[76], 0, 18202, "w_towncs_t", "ahoodfence2", 0xFFFFFFFF);
+	stadthalle_Obj[77] = CreateDynamicObject(19866, 1505.74878, -1703.01758, 12.31500,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	SetDynamicObjectMaterial(stadthalle_Obj[77], 0, 18202, "w_towncs_t", "ahoodfence2", 0xFFFFFFFF);
+	stadthalle_Obj[78] = CreateDynamicObject(19866, 1500.76477, -1703.01758, 12.31500,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	SetDynamicObjectMaterial(stadthalle_Obj[78], 0, 18202, "w_towncs_t", "ahoodfence2", 0xFFFFFFFF);
+	stadthalle_Obj[79] = CreateDynamicObject(19866, 1495.78076, -1703.01758, 12.31500,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	SetDynamicObjectMaterial(stadthalle_Obj[79], 0, 18202, "w_towncs_t", "ahoodfence2", 0xFFFFFFFF);
+	stadthalle_Obj[80] = CreateDynamicObject(19866, 1495.13684, -1703.01965, 12.31500,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	SetDynamicObjectMaterial(stadthalle_Obj[80], 0, 18202, "w_towncs_t", "ahoodfence2", 0xFFFFFFFF);
+	stadthalle_Obj[81] = CreateDynamicObject(19866, 1492.67078, -1695.64453, 12.31700,   0.00000, 0.00000, 0.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	SetDynamicObjectMaterial(stadthalle_Obj[81], 0, 18202, "w_towncs_t", "ahoodfence2", 0xFFFFFFFF);
+	stadthalle_Obj[82] = CreateDynamicObject(19866, 1492.66675, -1690.99146, 12.31700,   0.00000, 0.00000, 0.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	SetDynamicObjectMaterial(stadthalle_Obj[82], 0, 18202, "w_towncs_t", "ahoodfence2", 0xFFFFFFFF);
+	stadthalle_Obj[83] = CreateDynamicObject(19866, 1495.06519, -1688.57935, 12.31500,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	SetDynamicObjectMaterial(stadthalle_Obj[83], 0, 18202, "w_towncs_t", "ahoodfence2", 0xFFFFFFFF);
+	stadthalle_Obj[84] = CreateDynamicObject(19866, 1500.05920, -1688.57935, 12.31500,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	SetDynamicObjectMaterial(stadthalle_Obj[84], 0, 18202, "w_towncs_t", "ahoodfence2", 0xFFFFFFFF);
+	stadthalle_Obj[85] = CreateDynamicObject(19866, 1505.05725, -1688.57935, 12.31500,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	SetDynamicObjectMaterial(stadthalle_Obj[85], 0, 18202, "w_towncs_t", "ahoodfence2", 0xFFFFFFFF);
+	stadthalle_Obj[86] = CreateDynamicObject(19866, 1510.05420, -1688.57935, 12.31500,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	SetDynamicObjectMaterial(stadthalle_Obj[86], 0, 18202, "w_towncs_t", "ahoodfence2", 0xFFFFFFFF);
+	stadthalle_Obj[87] = CreateDynamicObject(19866, 1515.05225, -1688.57935, 12.31500,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	SetDynamicObjectMaterial(stadthalle_Obj[87], 0, 18202, "w_towncs_t", "ahoodfence2", 0xFFFFFFFF);
+	stadthalle_Obj[88] = CreateDynamicObject(19866, 1520.05823, -1688.57727, 12.31500,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	SetDynamicObjectMaterial(stadthalle_Obj[88], 0, 18202, "w_towncs_t", "ahoodfence2", 0xFFFFFFFF);
+	stadthalle_Obj[89] = CreateDynamicObject(19866, 1520.73022, -1688.57935, 12.31500,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	SetDynamicObjectMaterial(stadthalle_Obj[89], 0, 18202, "w_towncs_t", "ahoodfence2", 0xFFFFFFFF);
+	stadthalle_Obj[90] = CreateDynamicObject(19866, 1492.67078, -1700.62146, 12.31700,   0.00000, 0.00000, 0.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	SetDynamicObjectMaterial(stadthalle_Obj[90], 0, 18202, "w_towncs_t", "ahoodfence2", 0xFFFFFFFF);
+	stadthalle_Obj[91] = CreateDynamicObject(19531, 1492.51099, -1740.95276, 12.36660,   0.00000, 0.00000, 0.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	SetDynamicObjectMaterial(stadthalle_Obj[91], 0, 17298, "weefarmcuntw", "sjmbigold1", 0xFFFFFFFF);
+	stadthalle_Obj[92] = CreateDynamicObject(19533, 1493.35913, -1673.09460, 12.37870,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	SetDynamicObjectMaterial(stadthalle_Obj[92], 0, 5134, "wasteland_las2", "ws_bigstones", 0xFFFFFFFF);
+	stadthalle_Obj[93] = CreateDynamicObject(19533, 1465.73511, -1673.08411, 12.38270,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	SetDynamicObjectMaterial(stadthalle_Obj[93], 0, 5134, "wasteland_las2", "ws_bigstones", 0xFFFFFFFF);
+
+}
+
+hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys) {
+	if (newkeys & KEY_SECONDARY_ATTACK) {
+		if (IsPlayerInRangeOfPoint(playerid, 2.0, CITYHALL_INTERIOR_ENTER_COORDS)) { // Cityhall Entrance
+			SetPlayerFacingAngle(playerid, CITYHALL_INTERIOR_EXIT_FACING);
+			SetCameraBehindPlayer(playerid);
+			SetPlayerPosEx(playerid, CITYHALL_INTERIOR_EXIT_COORDS, MAPS_CITYHALLINTERIOR_INTERIOR, VW_CITYHALLINTERIOR);
+			return 1;
+		} else if (IsPlayerInRangeOfPoint(playerid, 2.0, REGISTRATIONOFFICE_INTERIOR_ENTER_COORDS)) { // Registration office Entrance
+            SendClientMessage(playerid, COLOR_WHITE, "Sachbearbeiter sagt: Herzlich Willkommen beim Kraftfahrtbundesamt (Zulassungsstelle)!");
+		    SetPlayerFacingAngle(playerid, REGISTRATIONOFFICE_INTERIOR_EXIT_FACING);
+			SetCameraBehindPlayer(playerid);
+			SetPlayerPosEx(playerid, REGISTRATIONOFFICE_INTERIOR_EXIT_COORDS, MAPS_REGISTRATIONOFFICE_INTERIOR, VW_REGISTRATIONOFFICE);
+			return 1;
+		} else if (IsPlayerInRangeOfPoint(playerid, 2.0, REGISTRATIONOFFICE_INTERIOR_EXIT_COORDS)) { // Registration office Exit
+			SendClientMessage(playerid, COLOR_WHITE, "Sachbearbeiter sagt: Vielen Dank für Ihr Besuch! Wir wünschen Ihnen einen schönen Tag.");
+		    SetPlayerFacingAngle(playerid, REGISTRATIONOFFICE_INTERIOR_ENTER_FACING);
+            SetCameraBehindPlayer(playerid);
+			SetPlayerPosEx(playerid, REGISTRATIONOFFICE_INTERIOR_ENTER_COORDS, MAPS_CITYHALLEXTERIOR_INTERIOR, VW_MAIN);
+            return 1;
+		}
+	}
+
+	return 1;
+}
+
+
+/*// Map variables
 new stadthalle_Obj[157];
 new pickup_cityhallExterior[2];
 new text3D_cityhallExterior[3];
@@ -434,210 +714,4 @@ hook OnGameModeInit() {
 	stadthalle_Obj[154] = CreateDynamicObject(8623, 1464.0721, -1685.6081, 12.9841, 0.0000, 0.0000, 0.0, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //bush03_lvs
 	stadthalle_Obj[155] = CreateDynamicObject(8623, 1495.6335, -1685.6081, 12.9841, 0.0000, 0.0000, 0.0, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //bush03_lvs
 
-}
-
-
-//New Cityhall Bugged @Summer_Jam
-/*hook OnPlayerConnect(playerid) {
-RemoveBuildingForPlayer(playerid, 4057, 1479.5547, -1693.1406, 19.5781, 0.25);
-RemoveBuildingForPlayer(playerid, 4210, 1479.5625, -1631.4531, 12.0781, 0.25);
-RemoveBuildingForPlayer(playerid, 713, 1457.9375, -1620.6953, 13.4531, 0.25);
-RemoveBuildingForPlayer(playerid, 713, 1496.8672, -1707.8203, 13.4063, 0.25);
-RemoveBuildingForPlayer(playerid, 1283, 1430.1719, -1719.4688, 15.6250, 0.25);
-RemoveBuildingForPlayer(playerid, 1226, 1451.6250, -1727.6719, 16.4219, 0.25);
-RemoveBuildingForPlayer(playerid, 1226, 1467.9844, -1727.6719, 16.4219, 0.25);
-RemoveBuildingForPlayer(playerid, 1226, 1485.1719, -1727.6719, 16.4219, 0.25);
-RemoveBuildingForPlayer(playerid, 1280, 1468.9844, -1713.5078, 13.4531, 0.25);
-RemoveBuildingForPlayer(playerid, 1231, 1479.6953, -1716.7031, 15.6250, 0.25);
-RemoveBuildingForPlayer(playerid, 1226, 1505.1797, -1727.6719, 16.4219, 0.25);
-RemoveBuildingForPlayer(playerid, 1280, 1488.7656, -1713.7031, 13.4531, 0.25);
-RemoveBuildingForPlayer(playerid, 1289, 1504.7500, -1711.8828, 13.5938, 0.25);
-RemoveBuildingForPlayer(playerid, 1258, 1445.0078, -1704.7656, 13.6953, 0.25);
-RemoveBuildingForPlayer(playerid, 1226, 1433.7109, -1702.3594, 16.4219, 0.25);
-RemoveBuildingForPlayer(playerid, 1226, 1433.7109, -1676.6875, 16.4219, 0.25);
-RemoveBuildingForPlayer(playerid, 1258, 1445.0078, -1692.2344, 13.6953, 0.25);
-RemoveBuildingForPlayer(playerid, 1226, 1433.7109, -1656.2500, 16.4219, 0.25);
-RemoveBuildingForPlayer(playerid, 1226, 1433.7109, -1636.2344, 16.4219, 0.25);
-RemoveBuildingForPlayer(playerid, 712, 1445.8125, -1650.0234, 22.2578, 0.25);
-RemoveBuildingForPlayer(playerid, 1226, 1433.7109, -1619.0547, 16.4219, 0.25);
-RemoveBuildingForPlayer(playerid, 1283, 1443.2031, -1592.9453, 15.6250, 0.25);
-RemoveBuildingForPlayer(playerid, 673, 1457.7266, -1710.0625, 12.3984, 0.25);
-RemoveBuildingForPlayer(playerid, 620, 1461.6563, -1707.6875, 11.8359, 0.25);
-RemoveBuildingForPlayer(playerid, 1280, 1468.9844, -1704.6406, 13.4531, 0.25);
-RemoveBuildingForPlayer(playerid, 700, 1463.0625, -1701.5703, 13.7266, 0.25);
-RemoveBuildingForPlayer(playerid, 1231, 1479.6953, -1702.5313, 15.6250, 0.25);
-RemoveBuildingForPlayer(playerid, 673, 1457.5547, -1697.2891, 12.3984, 0.25);
-RemoveBuildingForPlayer(playerid, 1280, 1468.9844, -1694.0469, 13.4531, 0.25);
-RemoveBuildingForPlayer(playerid, 1231, 1479.3828, -1692.3906, 15.6328, 0.25);
-RemoveBuildingForPlayer(playerid, 4186, 1479.5547, -1693.1406, 19.5781, 0.25);
-RemoveBuildingForPlayer(playerid, 620, 1461.1250, -1687.5625, 11.8359, 0.25);
-RemoveBuildingForPlayer(playerid, 700, 1463.0625, -1690.6484, 13.7266, 0.25);
-RemoveBuildingForPlayer(playerid, 641, 1458.6172, -1684.1328, 11.1016, 0.25);
-RemoveBuildingForPlayer(playerid, 625, 1457.2734, -1666.2969, 13.6953, 0.25);
-RemoveBuildingForPlayer(playerid, 1280, 1468.9844, -1682.7188, 13.4531, 0.25);
-RemoveBuildingForPlayer(playerid, 712, 1471.4063, -1666.1797, 22.2578, 0.25);
-RemoveBuildingForPlayer(playerid, 1231, 1479.3828, -1682.3125, 15.6328, 0.25);
-RemoveBuildingForPlayer(playerid, 625, 1458.2578, -1659.2578, 13.6953, 0.25);
-RemoveBuildingForPlayer(playerid, 712, 1449.8516, -1655.9375, 22.2578, 0.25);
-RemoveBuildingForPlayer(playerid, 1231, 1477.9375, -1652.7266, 15.6328, 0.25);
-RemoveBuildingForPlayer(playerid, 1280, 1479.6094, -1653.2500, 13.4531, 0.25);
-RemoveBuildingForPlayer(playerid, 625, 1457.3516, -1650.5703, 13.6953, 0.25);
-RemoveBuildingForPlayer(playerid, 625, 1454.4219, -1642.4922, 13.6953, 0.25);
-RemoveBuildingForPlayer(playerid, 1280, 1467.8516, -1646.5938, 13.4531, 0.25);
-RemoveBuildingForPlayer(playerid, 1280, 1472.8984, -1651.5078, 13.4531, 0.25);
-RemoveBuildingForPlayer(playerid, 1280, 1465.9375, -1639.8203, 13.4531, 0.25);
-RemoveBuildingForPlayer(playerid, 1231, 1466.4688, -1637.9609, 15.6328, 0.25);
-RemoveBuildingForPlayer(playerid, 625, 1449.5938, -1635.0469, 13.6953, 0.25);
-RemoveBuildingForPlayer(playerid, 1280, 1467.7109, -1632.8906, 13.4531, 0.25);
-RemoveBuildingForPlayer(playerid, 1232, 1465.8906, -1629.9766, 15.5313, 0.25);
-RemoveBuildingForPlayer(playerid, 1280, 1472.6641, -1627.8828, 13.4531, 0.25);
-RemoveBuildingForPlayer(playerid, 1280, 1479.4688, -1626.0234, 13.4531, 0.25);
-RemoveBuildingForPlayer(playerid, 3985, 1479.5625, -1631.4531, 12.0781, 0.25);
-RemoveBuildingForPlayer(playerid, 4206, 1479.5547, -1639.6094, 13.6484, 0.25);
-RemoveBuildingForPlayer(playerid, 1232, 1465.8359, -1608.3750, 15.3750, 0.25);
-RemoveBuildingForPlayer(playerid, 1229, 1466.4844, -1598.0938, 14.1094, 0.25);
-RemoveBuildingForPlayer(playerid, 1226, 1451.3359, -1596.7031, 16.4219, 0.25);
-RemoveBuildingForPlayer(playerid, 1226, 1471.3516, -1596.7031, 16.4219, 0.25);
-RemoveBuildingForPlayer(playerid, 1280, 1488.7656, -1704.5938, 13.4531, 0.25);
-RemoveBuildingForPlayer(playerid, 700, 1494.2109, -1694.4375, 13.7266, 0.25);
-RemoveBuildingForPlayer(playerid, 1280, 1488.7656, -1693.7344, 13.4531, 0.25);
-RemoveBuildingForPlayer(playerid, 620, 1496.9766, -1686.8516, 11.8359, 0.25);
-RemoveBuildingForPlayer(playerid, 641, 1494.1406, -1689.2344, 11.1016, 0.25);
-RemoveBuildingForPlayer(playerid, 1280, 1488.7656, -1682.6719, 13.4531, 0.25);
-RemoveBuildingForPlayer(playerid, 712, 1480.6094, -1666.1797, 22.2578, 0.25);
-RemoveBuildingForPlayer(playerid, 712, 1488.2266, -1666.1797, 22.2578, 0.25);
-RemoveBuildingForPlayer(playerid, 1280, 1486.4063, -1651.3906, 13.4531, 0.25);
-RemoveBuildingForPlayer(playerid, 1280, 1491.3672, -1646.3828, 13.4531, 0.25);
-RemoveBuildingForPlayer(playerid, 1280, 1493.1328, -1639.4531, 13.4531, 0.25);
-RemoveBuildingForPlayer(playerid, 1280, 1486.1797, -1627.7656, 13.4531, 0.25);
-RemoveBuildingForPlayer(playerid, 1280, 1491.2188, -1632.6797, 13.4531, 0.25);
-RemoveBuildingForPlayer(playerid, 1232, 1494.4141, -1629.9766, 15.5313, 0.25);
-RemoveBuildingForPlayer(playerid, 1232, 1494.3594, -1608.3750, 15.3750, 0.25);
-RemoveBuildingForPlayer(playerid, 1226, 1488.5313, -1596.7031, 16.4219, 0.25);
-RemoveBuildingForPlayer(playerid, 1229, 1498.0547, -1598.0938, 14.1094, 0.25);
-RemoveBuildingForPlayer(playerid, 1288, 1504.7500, -1705.4063, 13.5938, 0.25);
-RemoveBuildingForPlayer(playerid, 1287, 1504.7500, -1704.4688, 13.5938, 0.25);
-RemoveBuildingForPlayer(playerid, 1286, 1504.7500, -1695.0547, 13.5938, 0.25);
-RemoveBuildingForPlayer(playerid, 1285, 1504.7500, -1694.0391, 13.5938, 0.25);
-RemoveBuildingForPlayer(playerid, 673, 1498.9609, -1684.6094, 12.3984, 0.25);
-RemoveBuildingForPlayer(playerid, 625, 1504.1641, -1662.0156, 13.6953, 0.25);
-RemoveBuildingForPlayer(playerid, 625, 1504.7188, -1670.9219, 13.6953, 0.25);
-RemoveBuildingForPlayer(playerid, 620, 1503.1875, -1621.1250, 11.8359, 0.25);
-RemoveBuildingForPlayer(playerid, 673, 1501.2813, -1624.5781, 12.3984, 0.25);
-RemoveBuildingForPlayer(playerid, 673, 1498.3594, -1616.9688, 12.3984, 0.25);
-RemoveBuildingForPlayer(playerid, 1226, 1504.8906, -1596.7031, 16.4219, 0.25);
-RemoveBuildingForPlayer(playerid, 712, 1508.4453, -1668.7422, 22.2578, 0.25);
-RemoveBuildingForPlayer(playerid, 625, 1505.6953, -1654.8359, 13.6953, 0.25);
-RemoveBuildingForPlayer(playerid, 625, 1508.5156, -1647.8594, 13.6953, 0.25);
-RemoveBuildingForPlayer(playerid, 625, 1513.2734, -1642.4922, 13.6953, 0.25);
-RemoveBuildingForPlayer(playerid, 1258, 1510.8906, -1607.3125, 13.6953, 0.25);
-RemoveBuildingForPlayer(playerid, 1226, 1524.8281, -1721.6328, 16.4219, 0.25);
-RemoveBuildingForPlayer(playerid, 1226, 1524.8281, -1705.2734, 16.4219, 0.25);
-RemoveBuildingForPlayer(playerid, 1229, 1524.2188, -1693.9688, 14.1094, 0.25);
-RemoveBuildingForPlayer(playerid, 1226, 1524.8281, -1688.0859, 16.4219, 0.25);
-RemoveBuildingForPlayer(playerid, 1229, 1524.2188, -1673.7109, 14.1094, 0.25);
-RemoveBuildingForPlayer(playerid, 1226, 1524.8281, -1668.0781, 16.4219, 0.25);
-RemoveBuildingForPlayer(playerid, 1226, 1524.8281, -1647.6406, 16.4219, 0.25);
-RemoveBuildingForPlayer(playerid, 1226, 1524.8281, -1621.9609, 16.4219, 0.25);
-RemoveBuildingForPlayer(playerid, 1226, 1525.3828, -1611.1563, 16.4219, 0.25);
-RemoveBuildingForPlayer(playerid, 1283, 1528.9531, -1605.8594, 15.6250, 0.25);
-}
-
-hook OnGameModeInit() {
-CreateObject(19533, 1493.35913, -1673.09460, 12.37870,   0.00000, 0.00000, 90.00000);
-CreateObject(19533, 1465.73511, -1673.08411, 12.38270,   0.00000, 0.00000, 90.00000);
-CreateObject(19545, 1460.11157, -1709.59314, 12.37210,   0.00000, 0.00000, 90.00000);
-CreateObject(13296, 1508.17090, -1717.63940, 15.37680,   0.00000, 0.00000, 0.00000);
-CreateObject(1676, 1511.15405, -1723.35779, 13.88240,   0.00000, 0.00000, 0.00000);
-CreateObject(1676, 1506.65405, -1723.35779, 13.88240,   0.00000, 0.00000, 0.00000);
-CreateObject(10631, 1481.14026, -1708.36133, 16.73250,   0.00000, 0.00000, 180.00000);
-CreateObject(6257, 1452.89722, -1708.69409, 19.62130,   0.00000, 0.00000, -90.00000);
-CreateObject(1492, 1454.41577, -1717.63489, 12.36510,   0.00000, 0.00000, 0.00000);
-CreateObject(19800, 1476.15051, -1650.12659, 2.64920,   0.00000, 0.04000, 194.56120);
-CreateObject(3466, 1511.30237, -1650.62610, 14.89710,   0.00000, 0.00000, 90.00000);
-CreateObject(19543, 1494.04956, -1622.10828, 12.33640,   0.00000, 0.00000, 0.00000);
-CreateObject(19543, 1509.04761, -1622.10828, 12.33640,   0.00000, 0.00000, 0.00000);
-CreateObject(19543, 1517.44763, -1622.10828, 12.36640,   0.00000, 0.00000, 0.00000);
-CreateObject(1360, 1498.19812, -1662.15466, 13.02240,   0.00000, 0.00000, 5.76520);
-CreateObject(1360, 1498.00903, -1660.03699, 13.02240,   0.00000, 0.00000, 5.76520);
-CreateObject(1360, 1496.43262, -1652.80115, 13.02240,   0.00000, 0.00000, 90.00000);
-CreateObject(1360, 1497.83752, -1657.84790, 13.02240,   0.00000, 0.00000, 5.76520);
-CreateObject(1360, 1497.62280, -1655.87268, 13.02240,   0.00000, 0.00000, 5.76520);
-CreateObject(1360, 1497.53406, -1654.35400, 13.02240,   0.00000, 0.00000, 5.76520);
-CreateObject(1360, 1494.21057, -1652.80115, 13.02240,   0.00000, 0.00000, 90.00000);
-CreateObject(1360, 1492.14856, -1652.80115, 13.02240,   0.00000, 0.00000, 90.00000);
-CreateObject(1360, 1490.77576, -1660.44751, 13.38140,   0.00000, 0.00000, 0.94420);
-CreateObject(1360, 1490.91931, -1662.61328, 13.37540,   0.00000, 0.00000, 2.55120);
-CreateObject(1360, 1490.96997, -1664.66052, 13.33940,   0.00000, 0.00000, 2.71190);
-CreateObject(3466, 1450.88538, -1650.62610, 14.89710,   0.00000, 0.00000, 90.00000);
-CreateObject(19543, 1475.22314, -1629.21033, 12.33440,   0.00000, 0.00000, 90.00000);
-CreateObject(19543, 1441.78760, -1636.07617, 12.35840,   0.00000, 0.00000, 0.00000);
-CreateObject(19543, 1463.95251, -1604.16614, 12.36840,   0.00000, 0.00000, 90.00000);
-CreateObject(19543, 1475.22314, -1614.21326, 12.33440,   0.00000, 0.00000, 90.00000);
-CreateObject(3466, 1477.52539, -1650.62610, 14.89710,   0.00000, 0.00000, 90.00000);
-CreateObject(3466, 1506.77734, -1612.23706, 14.89110,   0.00000, 0.00000, -90.00000);
-CreateObject(3466, 1480.19128, -1612.23706, 14.89110,   0.00000, 0.00000, -90.00000);
-CreateObject(3466, 1453.61731, -1612.23706, 14.89110,   0.00000, 0.00000, -90.00000);
-CreateObject(1418, 1520.11365, -1625.19104, 13.07320,   0.00000, 0.00000, 90.00000);
-CreateObject(1418, 1520.11365, -1621.79199, 13.07320,   0.00000, 0.00000, 90.00000);
-CreateObject(1418, 1520.11365, -1618.34705, 13.07320,   0.00000, 0.00000, 90.00000);
-CreateObject(1418, 1520.11365, -1614.84900, 13.07320,   0.00000, 0.00000, 90.00000);
-CreateObject(1418, 1520.11365, -1611.35095, 13.07320,   0.00000, 0.00000, 90.00000);
-CreateObject(1418, 1520.11365, -1607.85303, 13.07320,   0.00000, 0.00000, 90.00000);
-CreateObject(1418, 1520.11365, -1604.40796, 13.07320,   0.00000, 0.00000, 90.00000);
-CreateObject(1418, 1520.13965, -1600.91003, 13.07320,   0.00000, 0.00000, 89.35720);
-CreateObject(1418, 1437.56140, -1661.84302, 13.07320,   0.00000, 0.00000, 90.00000);
-CreateObject(1418, 1437.56140, -1658.39001, 13.07320,   0.00000, 0.00000, 90.00000);
-CreateObject(1418, 1437.56140, -1654.91394, 13.07320,   0.00000, 0.00000, 90.00000);
-CreateObject(1418, 1437.56140, -1651.43799, 13.07320,   0.00000, 0.00000, 90.00000);
-CreateObject(1418, 1437.56140, -1647.96204, 13.07320,   0.00000, 0.00000, 90.00000);
-CreateObject(1418, 1437.56140, -1644.48596, 13.07320,   0.00000, 0.00000, 90.00000);
-CreateObject(1418, 1437.56140, -1641.01001, 13.07320,   0.00000, 0.00000, 90.00000);
-CreateObject(1418, 1437.56140, -1637.53406, 13.07320,   0.00000, 0.00000, 89.19650);
-CreateObject(617, 1454.80005, -1631.47388, 12.24810,   0.00000, 0.00000, 0.00000);
-CreateObject(617, 1522.26404, -1614.21960, 12.24810,   0.00000, 0.00000, 0.00000);
-CreateObject(617, 1495.25378, -1643.66235, 12.24810,   0.00000, 0.00000, 0.00000);
-CreateObject(617, 1495.02563, -1630.63220, 12.24810,   0.00000, 0.00000, 0.00000);
-CreateObject(617, 1473.58594, -1630.91333, 12.24810,   0.00000, 0.00000, 0.00000);
-CreateObject(617, 1435.41760, -1652.21643, 12.24810,   0.00000, 0.00000, 0.00000);
-CreateObject(617, 1437.69324, -1630.72937, 12.24810,   0.00000, 0.00000, 0.00000);
-CreateObject(617, 1437.56250, -1610.13562, 12.24810,   0.00000, 0.00000, 0.00000);
-CreateObject(617, 1516.61304, -1630.49463, 12.24810,   0.00000, 0.00000, 0.00000);
-CreateObject(3850, 1515.49329, -1710.18665, 12.89890,   0.00000, 0.00000, 90.00000);
-CreateObject(3850, 1518.90930, -1710.18665, 12.89890,   0.00000, 0.00000, 90.00000);
-CreateObject(3850, 1492.28125, -1710.18665, 12.89890,   0.00000, 0.00000, 90.00000);
-CreateObject(3850, 1495.69727, -1710.18665, 12.89890,   0.00000, 0.00000, 90.00000);
-CreateObject(9833, 1507.44092, -1695.83984, 15.14710,   0.00000, 0.00000, 0.00000);
-CreateObject(10444, 1507.87878, -1695.80566, 12.50670,   0.00000, 0.00000, 90.00000);
-CreateObject(19866, 1523.13184, -1691.05334, 12.31700,   0.00000, 0.00000, 0.00000);
-CreateObject(19866, 1523.13184, -1696.05334, 12.31700,   0.00000, 0.00000, 0.00000);
-CreateObject(19866, 1520.71484, -1703.01758, 12.31500,   0.00000, 0.00000, 90.00000);
-CreateObject(19866, 1523.12976, -1700.61328, 12.31700,   0.00000, 0.00000, 0.00000);
-CreateObject(19866, 1515.71680, -1703.01758, 12.31500,   0.00000, 0.00000, 90.00000);
-CreateObject(19866, 1510.73279, -1703.01758, 12.31500,   0.00000, 0.00000, 90.00000);
-CreateObject(19866, 1505.74878, -1703.01758, 12.31500,   0.00000, 0.00000, 90.00000);
-CreateObject(19866, 1500.76477, -1703.01758, 12.31500,   0.00000, 0.00000, 90.00000);
-CreateObject(19866, 1495.78076, -1703.01758, 12.31500,   0.00000, 0.00000, 90.00000);
-CreateObject(19866, 1495.13684, -1703.01965, 12.31500,   0.00000, 0.00000, 90.00000);
-CreateObject(19866, 1492.67078, -1700.62146, 12.31700,   0.00000, 0.00000, 0.00000);
-CreateObject(19866, 1492.67078, -1695.64453, 12.31700,   0.00000, 0.00000, 0.00000);
-CreateObject(19866, 1492.66675, -1690.99146, 12.31700,   0.00000, 0.00000, 0.00000);
-CreateObject(19866, 1495.06519, -1688.57935, 12.31500,   0.00000, 0.00000, 90.00000);
-CreateObject(19866, 1500.05920, -1688.57935, 12.31500,   0.00000, 0.00000, 90.00000);
-CreateObject(19866, 1505.05725, -1688.57935, 12.31500,   0.00000, 0.00000, 90.00000);
-CreateObject(19866, 1510.05420, -1688.57935, 12.31500,   0.00000, 0.00000, 90.00000);
-CreateObject(19866, 1515.05225, -1688.57935, 12.31500,   0.00000, 0.00000, 90.00000);
-CreateObject(19866, 1520.05823, -1688.57727, 12.31500,   0.00000, 0.00000, 90.00000);
-CreateObject(19866, 1520.73022, -1688.57935, 12.31500,   0.00000, 0.00000, 90.00000);
-CreateObject(3515, 1516.51807, -1695.54211, 12.39367,   0.00000, 0.00000, 0.00000);
-CreateObject(3515, 1499.06958, -1695.58142, 12.39367,   0.00000, 0.00000, 0.00000);
-CreateObject(1597, 1449.04724, -1688.61523, 14.95520,   0.00000, 0.00000, 90.00000);
-CreateObject(1597, 1461.16638, -1688.61523, 14.95520,   0.00000, 0.00000, 90.00000);
-CreateObject(1597, 1472.94995, -1688.61523, 14.95520,   0.00000, 0.00000, 90.00000);
-CreateObject(1597, 1484.94592, -1688.61523, 14.95520,   0.00000, 0.00000, 90.00000);
-CreateObject(19358, 1467.61560, -1646.81067, -1.43060,   0.00000, 0.00000, 94.82100);
-CreateObject(19358, 1468.18262, -1646.76868, -1.43060,   0.00000, 0.00000, 94.82100);
-CreateObject(19545, 1493.40723, -1688.02112, 12.37910,   0.00000, 0.00000, 90.00000);
-CreateObject(19545, 1493.40723, -1703.01904, 12.37910,   0.00000, 0.00000, 90.00000);
-CreateObject(19545, 1493.40723, -1718.01611, 12.37910,   0.00000, 0.00000, 90.00000);
 }*/

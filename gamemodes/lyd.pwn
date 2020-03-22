@@ -6061,6 +6061,7 @@ public OnGameModeInit2() {
         aiVehicles[ Kaufliste[a][Carid] ] = VEH_KAUFLISTE;
     }
 
+    //pTextdraw[playerid] = CreatePlayerTextDraw(playerid, 000000, 340.000000, "DASISTEINTEST");
     Leer = TextDrawCreate(490.000000, 340.000000, "Animation Abbrechen:~r~ Enter");
     TextDrawBackgroundColor(Leer, 255);
     TextDrawFont(Leer, 2);
@@ -6710,7 +6711,23 @@ public OnPlayerConnect(playerid)
 	    if (IsPlayerConnected(i) && gPlayerLogged[i] == 1 && pChatSettings[i][CHAT_JL] == 1)
             SendClientMessage(i, COLOR_GREY, string);
 
-    PlayAudioStreamForPlayer(playerid, URL_LOGINMUSIC);
+    //PlayAudioStreamForPlayer(playerid, URL_LOGINMUSIC);
+
+    new randomLogin = RandomEx(0, 4);
+
+    switch(randomLogin){
+        case 0:
+            PlayAudioStreamForPlayer(playerid, "https://summerjam.xyz/music/login.wav");
+        case 1:
+            PlayAudioStreamForPlayer(playerid, "https://summerjam.xyz/music/login2.wav");
+        case 2:
+            PlayAudioStreamForPlayer(playerid, "https://summerjam.xyz/music/login3.wav");
+        case 3:
+            PlayAudioStreamForPlayer(playerid, "https://summerjam.xyz/music/login4.wav");
+        case 4:
+            PlayAudioStreamForPlayer(playerid, URL_LOGINMUSIC);
+    }
+
     //PlayAudioStreamForPlayer(playerid, "http://www.uploadmusic.org/MUSIC/5384711376757549.mp3");
     PlayerKey[playerid] = 0;
 
@@ -7223,6 +7240,21 @@ public OnPlayerConnect(playerid)
             }
         }
     }
+
+    switch(randomLogin){
+        case 0:
+            SendClientMessage(playerid, COLOR_LIGHTBLUE, "{2E94D0}[{FFFFFF}MRP{2E94D0}]{FFFFFF} Du hörst gerade '{2E94D0}Parov Stelar - All Night{FFFFFF}'");
+        case 1:
+            SendClientMessage(playerid, COLOR_LIGHTBLUE, "{2E94D0}[{FFFFFF}MRP{2E94D0}]{FFFFFF} Du hörst gerade '{2E94D0}Deorro ft. Chris Brown - Five more Hours{FFFFFF}'");
+        case 2:
+            SendClientMessage(playerid, COLOR_LIGHTBLUE, "{2E94D0}[{FFFFFF}MRP{2E94D0}]{FFFFFF} Du hörst gerade '{2E94D0}Eric Prydz - Pjanoo{FFFFFF}'");
+        case 3:
+            SendClientMessage(playerid, COLOR_LIGHTBLUE, "{2E94D0}[{FFFFFF}MRP{2E94D0}]{FFFFFF} Du hörst gerade '{2E94D0}Martin Garrix - Bouncybob (ft. Justin Mylo & Mesto){FFFFFF}'");
+        case 4:
+            SendClientMessage(playerid, COLOR_LIGHTBLUE, "{2E94D0}[{FFFFFF}MRP{2E94D0}]{FFFFFF} Du hörst gerade: '{2E94D0}20syl - Voices feat. Rita J.{FFFFFF}'");
+    }
+
+
     return 1;
 }
 
@@ -11214,7 +11246,7 @@ public SetPlayerSpawn(playerid)
             if( Spieler[playerid][bAccountExists] ) {
                 ShowPlayerDialog(playerid, DIALOG_LOGIN, DIALOG_STYLE_PASSWORD, COLOR_HEX_LIGHTBLUE"Anmeldung:", COLOR_HEX_ORANGE"[MRP]\n\n"COLOR_HEX_WHITE"Willkommen auf "COLOR_HEX_GREEN"Monkey - Roleplay\n"COLOR_HEX_WHITE"Ein Account unter diesem Namen ist bei uns registriert!\nSollte es dein Account sein, dann Logge dich bitte nun ein.\n \n"COLOR_HEX_ORANGE"Behalte dein Passwort immer für dich!\n"COLOR_HEX_RED">Passwort vergessen?< - kontaktiere uns: Admin@monkey-roleplay.de", "OK", "Abbrechen");
 
-                Spieler[playerid][tLoginTimeout] = SetTimerEx("PlayerLoginTimeout",30011,false,"d",playerid);
+                Spieler[playerid][tLoginTimeout] = SetTimerEx("PlayerLoginTimeout",90033,false,"d",playerid);
                 Spieler[playerid][tSpawnView] = SetTimerEx("SetPlayerView",5003,false,"dd",playerid,1); // Muss,sonst klappt Spectate nicht
             }
             else {
