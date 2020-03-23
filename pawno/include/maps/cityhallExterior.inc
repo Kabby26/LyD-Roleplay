@@ -127,7 +127,7 @@ hook OnPlayerConnect(playerid) {
 	RemoveBuildingForPlayer(playerid, 1283, 1528.9531, -1605.8594, 15.6250, 0.25);
 }
 
-new stadthalle_Obj[54];
+new stadthalle_Obj[55];
 new pickup_cityhallExterior[2];
 new text3D_cityhallExterior[3];
 new actor_cityhallExterior[1];
@@ -196,16 +196,16 @@ hook OnGameModeInit() {
 	stadthalle_Obj[38] = CreateDynamicObject(983, 1521.92432, -1599.47717, 12.98360,   0.00000, 0.00000, 47.50000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
 	stadthalle_Obj[39] = CreateDynamicObject(983, 1516.37219, -1597.34387, 12.98360,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
 	stadthalle_Obj[40] = CreateDynamicObject(983, 1437.19348, -1599.50598, 12.98360,   0.00000, 0.00000, -47.50000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
-	stadthalle_Obj[41] = CreateDynamicObject(1223, 1434.65906, -1667.63550, 12.55160,   0.00000, 0.00000, 450.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
-	stadthalle_Obj[42] = CreateDynamicObject(1223, 1461.33496, -1667.68054, 12.55160,   0.00000, 0.00000, 450.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
-	stadthalle_Obj[43] = CreateDynamicObject(1223, 1487.78516, -1667.74084, 12.55160,   0.00000, 0.00000, 450.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
-	stadthalle_Obj[44] = CreateDynamicObject(1223, 1516.44153, -1667.77039, 12.55160,   0.00000, 0.00000, 450.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[41] = CreateDynamicObject(1223, 1434.65906, -1667.63550, 12.36260,   0.00000, 0.00000, 450.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[42] = CreateDynamicObject(1223, 1461.33496, -1667.68054, 12.36260,   0.00000, 0.00000, 450.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[43] = CreateDynamicObject(1223, 1487.78516, -1667.74084, 12.36260,   0.00000, 0.00000, 450.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[44] = CreateDynamicObject(1223, 1516.44153, -1667.77039, 12.36260,   0.00000, 0.00000, 450.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
 	stadthalle_Obj[45] = CreateDynamicObject(1290, 1503.48193, -1685.72876, 18.11320,   0.00000, 0.00000, 0.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
 	stadthalle_Obj[46] = CreateDynamicObject(3660, 1507.32654, -1726.02832, 14.28410,   0.00000, 0.00000, 0.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
 	stadthalle_Obj[47] = CreateDynamicObject(7390, 1523.05676, -1716.50818, 17.16120,   0.00000, 0.00000, -30.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
 	stadthalle_Obj[48] = CreateDynamicObject(19545, 1493.31274, -1719.81299, 12.37950,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
 	SetDynamicObjectMaterial(stadthalle_Obj[48], 0, 17298, "weefarmcuntw", "sjmbigold1", 0xFFFFFFFF);
-	stadthalle_Obj[49] = CreateDynamicObject(19545, 1493.39612, -1704.81665, 12.37750,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
+	stadthalle_Obj[49] = CreateDynamicObject(19545, 1493.39612, -1704.81665, 12.34950,   0.00000, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
 	SetDynamicObjectMaterial(stadthalle_Obj[49], 0, 17298, "weefarmcuntw", "sjmbigold1", 0xFFFFFFFF);
 	stadthalle_Obj[50] = CreateDynamicObject(19545, 1454.68103, -1698.57019, 12.35550,   0.00000, 0.00000, 0.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
 	SetDynamicObjectMaterial(stadthalle_Obj[50], 0, 17298, "weefarmcuntw", "sjmbigold1", 0xFFFFFFFF);
@@ -215,6 +215,7 @@ hook OnGameModeInit() {
 	SetDynamicObjectMaterial(stadthalle_Obj[52], 0, 5134, "wasteland_las2", "ws_bigstones", 0xFFFFFFFF);
 	stadthalle_Obj[53] = CreateDynamicObject(19533, 1465.73511, -1660.52515, 12.30870,   0.14530, 0.00000, 90.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
 	SetDynamicObjectMaterial(stadthalle_Obj[53], 0, 5134, "wasteland_las2", "ws_bigstones", 0xFFFFFFFF);
+	stadthalle_Obj[54] = CreateDynamicObject(3660, 1435.27380, -1707.71472, 14.02010,   0.00000, 0.00000, 90.00000);
 }
 
 hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys) {

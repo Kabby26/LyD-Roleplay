@@ -81,9 +81,9 @@ hook OnGameModeInit() {
     object_noobSpawn[19] = CreateDynamicObject(19172, 808.7589, -1339.2186, 13.7064, 0.0000, -0.2000, 64.0998, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1
     SetDynamicObjectMaterialText(object_noobSpawn[19], 0,"Teamspeak: ts.monkey-roleplay.de", 90, "Arial", 16, 1, 0xFFFFFFFF, 0x0, 0);
     object_noobSpawn[20] = CreateDynamicObject(19172, 808.7546, -1339.2282, 13.9264, 0.0000, -0.2000, 64.0998, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1
-    SetDynamicObjectMaterialText(object_noobSpawn[20], 0,"UCP: ---", 90, "Arial", 16, 1, 0xFFFFFFFF, 0x0, 0);
+    SetDynamicObjectMaterialText(object_noobSpawn[20], 0,"UCP: ucp.monkey-roleplay.de", 90, "Arial", 16, 1, 0xFFFFFFFF, 0x0, 0);
     object_noobSpawn[21] = CreateDynamicObject(19172, 808.3779, -1355.2445, 14.7985, 0.0000, -0.2000, 129.9998, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1
-    SetDynamicObjectMaterialText(object_noobSpawn[21], 0,"Willkommen auf Monkey Roleplay!", 90, "Arial", 22, 1, 0xFFFFFFFF, 0x0, 0);
+    SetDynamicObjectMaterialText(object_noobSpawn[21], 0,"Willkommen auf MRP!", 90, "Arial", 22, 1, 0xFFFFFFFF, 0x0, 0);
     object_noobSpawn[22] = CreateDynamicObject(19172, 808.4025, -1355.2229, 14.1688, -0.7999, -0.2000, 129.7998, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1
     SetDynamicObjectMaterialText(object_noobSpawn[22], 0,"Fuer Cheatermeldungen - benutze /Admin", 90, "Arial", 14, 1, 0xFFFFFFFF, 0x0, 0);
     object_noobSpawn[23] = CreateDynamicObject(19172, 808.4042, -1355.2202, 13.9488, -0.7999, -0.2000, 129.7998, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1

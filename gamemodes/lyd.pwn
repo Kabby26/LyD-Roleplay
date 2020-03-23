@@ -5325,19 +5325,19 @@ public MinuteTimer(playerid) {
         SendServerInfo(COLOR_BLUE,   "________________________________________________________________");
     }
     else if (minute == 25) {
-        SendServerInfo(COLOR_BLUE,   "___________________________________________________________________");
+        /*SendServerInfo(COLOR_BLUE,   "___________________________________________________________________");
         SendServerInfo(COLOR_YELLOW, "                                     MRP ~ Spenden für den Server");
         SendServerInfo(COLOR_WHITE,  "Du möchtest MRP unterstützen?");
         SendServerInfo(COLOR_WHITE,  "Dann schau in unserem Shop vorbei, wo Du dir tolle Extras sichern kannst!");
         SendServerInfo(COLOR_WHITE,  "Unseren Shop erreichst Du unter: monkey-roleplay.de/shop");
-        SendServerInfo(COLOR_BLUE,   "___________________________________________________________________");
+        SendServerInfo(COLOR_BLUE,   "___________________________________________________________________");*/
     }
     else if (minute == 40) {
         SendServerInfo(COLOR_BLUE,   "________________________________________________________________");
         SendServerInfo(COLOR_YELLOW, "                                      MRP ~ Informationen");
         SendServerInfo(COLOR_WHITE,  "In unserem Forum findest Du wichtige Neuigkeiten,");
         SendServerInfo(COLOR_WHITE,  "bezüglich Updates und Neuerungen, welche Du nicht verpassen solltest!");
-        SendServerInfo(COLOR_WHITE,  "Unser Forum erreichst du unter: monkey-roleplay.de/forum");
+        SendServerInfo(COLOR_WHITE,  "Unser Forum erreichst du unter: www.monkey-roleplay.de");
         SendServerInfo(COLOR_WHITE,  "Unsere Teamspeak-IP lautet: ts.monkey-roleplay.de");
         SendServerInfo(COLOR_BLUE,   "________________________________________________________________");
     }
@@ -6131,8 +6131,8 @@ public OnGameModeInit2() {
     CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Starterpack\n"COLOR_HEX_WHITE"Tippe /Starterpack", COLOR_WHITE, 808.8542,-1347.3077,13.5416, 8.0);
     CreateDynamicPickup(1239, 1,  808.8542,-1347.3077,13.5416, 0);
 
-    CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Asservatenkammer - Illegale Gegenstände abgeben\n"COLOR_HEX_WHITE"Tippe /Abgeben [Waffenteile/Spice/Drogen/WCodes]", COLOR_WHITE, 1754.412963, -1592.894897, 13.532833, 8.0);
-    CreateDynamicPickup(1239, 1, 1754.412963, -1592.894897, 13.532833, 0);
+    //CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Asservatenkammer - Illegale Gegenstände abgeben\n"COLOR_HEX_WHITE"Tippe /Abgeben [Waffenteile/Spice/Drogen/WCodes]", COLOR_WHITE, 1754.412963, -1592.894897, 13.532833, 8.0);
+    //CreateDynamicPickup(1239, 1, 1754.412963, -1592.894897, 13.532833, 0);
 
     CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Bankschalter\n"COLOR_HEX_WHITE"Tippe /Bank\nTippe /Kredit\nTippe /Ueberweisen", COLOR_WHITE, 1683.024658, -1022.939270, 1340.750854, 8.0, .worldid = VW_BANKINTERIORLS);
     CreateDynamicPickup(1239, 1, 1683.024658, -1022.939270, 1340.750854, .worldid = VW_BANKINTERIORLS);
@@ -8199,6 +8199,8 @@ CMD:removealllabels(playerid, params[]){
 	SendClientMessage(playerid, COLOR_YELLOW, "[INFO] {FFFFFF}Es wurden alle Labels gelöscht");
 	return 1;
 }
+
+
 
 /*new objects;
 new objectmodel[5000];
@@ -31342,8 +31344,14 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
             gGas[veh] = GetMaxTank(veh);
     		gMaxGas[veh] = GetMaxTank(veh);
 
-            format(string,sizeof(string),"%s%s",#COLOR_HEX_BLACK,NumberPlates[FrakCarInfo[e][f_frak]]);
-        	SetVehicleNumberPlate(FrakCarInfo[e][f_veh], string);
+            if(FrakCarInfo[e][f_frak] == 1 && num == 560 || num == 541 || num == 415 || num == 426 || num == 445 || num == 579){
+                format(string,sizeof(string),"%s%s",#COLOR_HEX_BLACK, "LS-4826");
+                SetVehicleNumberPlate(FrakCarInfo[e][f_veh], string);
+            }else{
+                format(string,sizeof(string),"%s%s",#COLOR_HEX_BLACK,NumberPlates[FrakCarInfo[e][f_frak]]);
+                SetVehicleNumberPlate(FrakCarInfo[e][f_veh], string);
+            }
+        	
 
 			switch (FrakCarInfo[e][f_frak])
         	{
@@ -35523,7 +35531,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                     needWaffenteile = 1000;
                     giveWeapon = 16;
                 }
-                if(Schwarzmarkt_Waffenteile < needWaffenteile) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Es befinden sich nicht genug Waffenteile im Schwarzmarkt, um diese Waffe bauen zu können!");
+                //if(Schwarzmarkt_Waffenteile < needWaffenteile) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Es befinden sich nicht genug Waffenteile im Schwarzmarkt, um diese Waffe bauen zu können!");
                 if(GetPlayerMoney(playerid) < Price) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast zu wenig Geld dabei!");
                 GivePlayerCash(playerid, -Price);
                 GivePlayerWeapon(playerid, giveWeapon, Schuss);
@@ -35536,7 +35544,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                 if(listitem == 0){
                     new needWaffenteile = 1500;
                     new price = 50000;
-                    if(Schwarzmarkt_Waffenteile < needWaffenteile) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Es befinden sich nicht genug Waffenteile im Schwarzmarkt, um diese Waffe bauen zu können!");
+                    //if(Schwarzmarkt_Waffenteile < needWaffenteile) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Es befinden sich nicht genug Waffenteile im Schwarzmarkt, um diese Waffe bauen zu können!");
                     if(GetPlayerMoney(playerid) < price) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast zu wenig Geld dabei!");
                     GivePlayerCash(playerid, -price);
                     Spieler[playerid][pC4] += 1;
@@ -35546,7 +35554,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                 }else if(listitem == 1){
                     new needWaffenteile = 80;
                     new price = 10000;
-                    if(Schwarzmarkt_Waffenteile < needWaffenteile) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Es befinden sich nicht genug Waffenteile im Schwarzmarkt, um diese Waffe bauen zu können!");
+                    //if(Schwarzmarkt_Waffenteile < needWaffenteile) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Es befinden sich nicht genug Waffenteile im Schwarzmarkt, um diese Waffe bauen zu können!");
                     if(GetPlayerMoney(playerid) < price) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du hast zu wenig Geld dabei!");
                     GivePlayerCash(playerid, -price);
                     Spieler[playerid][pBrecheisen] += 1;
@@ -46399,7 +46407,7 @@ CMD:undercover(playerid)
     return 1;
 }
 
-CMD:abgeben(playerid, params[]){
+/*CMD:abgeben(playerid, params[]){
     new string[128], eingabe[24];
     if(sscanf(params, "s[24]", eingabe))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Abgeben [Drogen/Waffenteile/WCodes/Spice]");
     if(IsPlayerInRangeOfPoint(playerid, 4.0, 1754.412963, -1592.894897, 13.532833)){
@@ -46420,7 +46428,7 @@ CMD:abgeben(playerid, params[]){
         }
     }
     return 1;
-}
+}*/
 
 /*CMD:entnehmen(playerid, params[])
 {
@@ -74653,6 +74661,24 @@ stock IsPlayerAtParkautomat(playerid)
     return 999;
 }
 
+CMD:getobjects(playerid, params[]){
+    return SCMFormatted(playerid, COLOR_RED, "Es sind %i Dynamische Objekte erstellt!", CountDynamicObjects());
+}
+
+CMD:countobjects(playerid, params[]){
+    for(new i = 0; i < 10000; i++){
+        new string[128];
+ 		new Float:xo, Float:yo, Float:zo;
+		GetObjectPos(i, xo, yo, zo);
+		if(xo!=0 && yo!=0 && zo!=0){
+			format(string, sizeof(string), "ID:%dCreateObject(%f,%f,%f);",i,xo,yo,zo);
+			SendClientMessage(playerid, COLOR_BLUE, string);
+		}
+    }
+    SendClientMessage(playerid, COLOR_RED, "ENDE");
+    return 1;
+}
+
 stock InitParkscheibe() {
 	new
 	    modelid,
@@ -76058,7 +76084,13 @@ public Reload_FCars() {
 		    FrakCarInfo[e][f_dbid] = cache_get_field_content_int(i, "id", gSQL);
 		    FrakCarInfo[e][f_world] = cache_get_field_content_int(i, "world", gSQL);
 		    SetVehicleVirtualWorld(FrakCarInfo[e][f_veh],world);
-            format(string,sizeof(string),"%s%s",#COLOR_HEX_BLACK,NumberPlates[FrakCarInfo[e][f_frak]]);
+            if(FrakCarInfo[e][f_frak] == 1 && modelid == 560 || modelid == 541 || modelid == 415 || modelid == 426 || modelid == 445 || modelid == 579){
+                format(string,sizeof(string),"%s%s",#COLOR_HEX_BLACK, "LS-4826");
+                SetVehicleNumberPlate(FrakCarInfo[e][f_veh], string);
+            }else{
+                format(string,sizeof(string),"%s%s",#COLOR_HEX_BLACK,NumberPlates[FrakCarInfo[e][f_frak]]);
+                SetVehicleNumberPlate(FrakCarInfo[e][f_veh], string);
+            }
         	SetVehicleNumberPlate(FrakCarInfo[e][f_veh], string);
 
 			switch (FrakCarInfo[e][f_frak])
@@ -76128,7 +76160,13 @@ public Load_FrakcarsEx() {
             gMaxGas[FrakCarInfo[e][f_veh]] = GetMaxTank(FrakCarInfo[e][f_veh]);
             gGas[e] = GetMaxTank(e);
     		gMaxGas[e] = GetMaxTank(e);
-            format(string,sizeof(string),"%s%s",#COLOR_HEX_BLACK,NumberPlates[FrakCarInfo[e][f_frak]]);
+            if(FrakCarInfo[e][f_veh] == 1 && modelid == 560 || modelid == 541 || modelid == 415 || modelid == 426 || modelid == 445 || modelid == 579){
+                format(string,sizeof(string),"%s%s",#COLOR_HEX_BLACK, "LS-4826");
+                SetVehicleNumberPlate(FrakCarInfo[e][f_veh], string);
+            }else{
+                format(string,sizeof(string),"%s%s",#COLOR_HEX_BLACK,NumberPlates[FrakCarInfo[e][f_frak]]);
+                SetVehicleNumberPlate(FrakCarInfo[e][f_veh], string);
+            }
         	SetVehicleNumberPlate(FrakCarInfo[e][f_veh], string);
 
 			switch (FrakCarInfo[e][f_frak])
