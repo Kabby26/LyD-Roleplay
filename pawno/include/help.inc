@@ -479,7 +479,7 @@ new FrakGangHelp[34][]= {
     {"fc"},
     {"bg"},
     {"flock"},
-    {"gdg"},
+    {"ggd (/givegangdrugs))"},
     {"frespawn"},
     {"kidnap"},
     {"mundbinde"},

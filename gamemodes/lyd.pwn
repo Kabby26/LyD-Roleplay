@@ -46213,7 +46213,7 @@ stock Stats(playerid, targetid)
         format(dialogCaption, sizeof(dialogCaption), "Statistik von %s", GetName(targetid));
         
         new final[2000];
-        /*format(final, sizeof(final), #COL_LIGHTBLUE "Spielstand:" #COL_DEFAULT "\n\
+        format(final, sizeof(final), #COL_LIGHTBLUE "Spielstand:" #COL_DEFAULT "\n\
             Spielername: [%s], Level: [%d], Geburtstag: [%s], Respektpunkte: [%d/%d] \nSpielstunden: [%d], Geschlecht: [%s], PayDay in: [%d Minuten]\n\
             Accounttyp: [%s], Adminrang: [%d], Adminverwarnungen: [%d/3], Fraktionssperre: [%s]\nBargeld: [$%s], Bank: [$%s], Zusätzliche-Steuern: [$%s], Coins: [%d]\n\n\
             " #COL_LIGHTBLUE "Daten:" #COL_DEFAULT "\nTelefonnummer: [%d], Handyvertrag: [%s]\nStaatsangehörigkeit: [%s], Verheiratet mit: [%s]\n\n\
@@ -46236,9 +46236,9 @@ stock Stats(playerid, targetid)
             Spieler[targetid][pAngel] ? "Ja" : "Nein", Spieler[targetid][pKills], Spieler[targetid][pCrimes], Spieler[targetid][pDeaths],
             Spieler[targetid][pDeaths] == 0 ? float(Spieler[targetid][pKills]) : float(Spieler[targetid][pKills]) / float(Spieler[targetid][pDeaths]),
             Spieler[targetid][pWantedDeaths], Spieler[targetid][pWanteds], Spieler[targetid][pArrested], Spieler[targetid][pLobe], Spieler[targetid][pEventPoints]
-        );*/
+        );
 
-        format(final, sizeof(final), #COL_LIGHTBLUE "Spielstand:" #COL_DEFAULT "\n\
+        /*format(final, sizeof(final), #COL_LIGHTBLUE "Spielstand:" #COL_DEFAULT "\n\
             Spielername: [%s], Level: [%d], Respektpunkte: [%d/%d], Geburtstag: [%s], Geschlecht: [%s] \nSpielstunden: [%d], PayDay in: [%d Minuten]\n\
             Accounttyp: [%s], Adminrang: [%d], Adminverwarnungen: [%d/3], Fraktionssperre: [%s]\nBargeld: [$%s], Bank: [$%s], Zusätzliche-Steuern: [$%s], Coins: [%d]\n\n\
             " #COL_LIGHTBLUE "Daten:" #COL_DEFAULT "\nTelefonnummer: [%d], Handyvertrag: [%s]\nStaatsangehörigkeit: [%s], Verheiratet mit: [%s]\n\n\
@@ -46258,7 +46258,7 @@ stock Stats(playerid, targetid)
             Spieler[targetid][pAngel] ? "Ja" : "Nein", Spieler[targetid][pKills], Spieler[targetid][pCrimes], Spieler[targetid][pDeaths],
             Spieler[targetid][pDeaths] == 0 ? float(Spieler[targetid][pKills]) : float(Spieler[targetid][pKills]) / float(Spieler[targetid][pDeaths]),
             Spieler[targetid][pWantedDeaths], Spieler[targetid][pWanteds], Spieler[targetid][pArrested], Spieler[targetid][pLobe], Spieler[targetid][pEventPoints]
-        );
+        );*/
 
 
         new index = GetPlayerHouse(targetid);

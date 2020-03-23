@@ -345,7 +345,7 @@ COMMAND:pflanzen(playerid, params[]) {
         new pflanze = GetClosestDrogenPflanze(playerid, 3.0);
         if (pflanze == -1) return SendClientMessage(playerid, COLOR_RED, "Es ist keine Spicepflanze in deiner Nähe.");
         if (g_DrogenPflanzen[pflanze][DP_iFortschritt] < DROGENPFLANZE_REIF) return SendClientMessage(playerid, COLOR_RED, "Die Spicepflanze ist noch nicht reif.");
-        new randomAmount = RandomEx(10, 14), message[145];
+        new randomAmount = RandomEx(7, 11), message[145];
         if(g_DrogenPflanzen[pflanze][DP_bDestroyed] == true) return SendClientMessage(playerid, COLOR_RED, "Die Pflanze wurde bereits geerntet!");
         g_DrogenPflanzen[pflanze][DP_bDestroyed] = true;
         UpdateDynamic3DTextLabelText(g_DrogenPflanzen[pflanze][DP_text3D], COLOR_WHITE, "[ {009D00}Spicepflanze {FFFFFF}]\n{FFFF00}> Die Pflanze wurde geerntet <");
