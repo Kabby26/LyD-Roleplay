@@ -937,7 +937,7 @@ enum {
 #include <YSI\y_timers>
 #include <YSI\y_hooks>
 #include <YSI\y_bit>
-#include <weapon-config>
+//#include <weapon-config>//Benny Hitbox
 #include <modeldialog>
 
 #if defined MAX_PLAYERS
@@ -5632,9 +5632,9 @@ public OnGameModeInit() {
 	Streamer_SetVisibleItems(STREAMER_TYPE_OBJECT, STREAMER_MAX_OBJECTS, -1); // Object fix
     CallLocalFunction("OnGameModeInit2", ""); // y_hooks
     /*HITBOX NEU ODER SO*/
-    SetDisableSyncBugs(true);
-    SetDamageSounds(0, 0);
-    SetDamageFeed(false);
+    //SetDisableSyncBugs(true);
+    //SetDamageSounds(0, 0);
+    //SetDamageFeed(false);
     //---------------------
 }
 
@@ -49064,8 +49064,8 @@ public split(const strsrc[], strdest[][], delimiter)
 }
 
 //Bei neuer Hitbox anpassen
-//public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
-public OnPlayerDamage(&playerid, &Float:amount, &issuerid, &weapon, &bodypart)
+public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
+//public OnPlayerDamage(&playerid, &Float:amount, &issuerid, &weapon, &bodypart)
 {
     if(IsPlayerAFK(playerid) || IsAFK[playerid] == 1){
         return 0;
@@ -49075,7 +49075,7 @@ public OnPlayerDamage(&playerid, &Float:amount, &issuerid, &weapon, &bodypart)
     if( issuerid != INVALID_PLAYER_ID) {
         SetPVarString(playerid, "DAMAGE.NAME", GetName(issuerid));
         SetPVarFloat(playerid, "DAMAGE.AMOUNT", amount);
-        SetPVarInt(playerid, "DAMAGE.WEAPON", weapon);
+        SetPVarInt(playerid, "DAMAGE.WEAPON", weaponid);
         SetPVarInt(playerid, "DAMAGE.TIME", gettime());
         PlayerPlaySound(issuerid,17802,0.0,0.0,0.0);
         if( 1 <= Spieler[playerid][pTot] <= 2 ) {
@@ -49084,7 +49084,7 @@ public OnPlayerDamage(&playerid, &Float:amount, &issuerid, &weapon, &bodypart)
         }
         // Headshot Script von dir, soll NUR für Hitmans eingestellt werden und nur bei der Zielperson funktionieren.
         if( Spieler[issuerid][pFraktion] == 14 && !Spieler[playerid][pAdminDienst]) {
-            if(weapon == 34 ) {
+            if(weaponid == 34 ) {
                 if(bodypart == 9) {
                     new
                         auftraggeber = Spieler[issuerid][pHitmenAuftragID];
@@ -49150,6 +49150,8 @@ public OnPlayerDamage(&playerid, &Float:amount, &issuerid, &weapon, &bodypart)
     return 1;
 }*/
 
+/*forward OnPlayerDamageDone(playerid, Float:amount, issuerid, weapon, bodypart);
+
 public OnPlayerDamageDone(playerid, Float:amount, issuerid, weapon, bodypart){
     if(issuerid != INVALID_PLAYER_ID){
         if(Spieler[playerid][DmgTog] == 1){
@@ -49157,7 +49159,7 @@ public OnPlayerDamageDone(playerid, Float:amount, issuerid, weapon, bodypart){
         }
     }
     return 1;
-}
+}*/
 
 public OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 {
@@ -74908,12 +74910,12 @@ stock GetWeaponNameEx(weaponid, weapon[], len = sizeof(weapon))
 }
 
 //Für neue Hitbox ausklammern
-/*stock ReturnWeaponName(weaponid) {
+stock ReturnWeaponName(weaponid) {
     new string[64];
     GetWeaponNameEx(weaponid, string, sizeof(string));
 
     return string;
-}*/
+}
 
 COMMAND:delallgvehs(playerid,params[]) {
     #pragma unused params
