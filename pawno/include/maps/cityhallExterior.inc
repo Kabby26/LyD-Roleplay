@@ -127,7 +127,7 @@ hook OnPlayerConnect(playerid) {
 	RemoveBuildingForPlayer(playerid, 1283, 1528.9531, -1605.8594, 15.6250, 0.25);
 }
 
-new stadthalle_Obj[55];
+new stadthalle_Obj[58];
 new pickup_cityhallExterior[2];
 new text3D_cityhallExterior[3];
 new actor_cityhallExterior[1];
@@ -205,17 +205,19 @@ hook OnGameModeInit() {
 	stadthalle_Obj[47] = CreateDynamicObject(7390, 1523.05676, -1716.50818, 17.16120,   0.00000, 0.00000, -30.00000, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
 	stadthalle_Obj[48] = CreateObject(19545, 1493.31274, -1719.81299, 12.37950,   0.00000, 0.00000, 90.00000);
 	SetObjectMaterial(stadthalle_Obj[48], 0, 17298, "weefarmcuntw", "sjmbigold1", 0xFFFFFFFF);
-	stadthalle_Obj[49] = CreateObject(19545, 1493.39612, -1704.81665, 12.34950,   0.00000, 0.00000, 90.00000);
+	stadthalle_Obj[49] = CreateObject(19545, 1493.39612, -1704.81665, 12.37750,   0.00000, 0.00000, 90.00000);
 	SetObjectMaterial(stadthalle_Obj[49], 0, 17298, "weefarmcuntw", "sjmbigold1", 0xFFFFFFFF);
-	stadthalle_Obj[50] = CreateObject(19545, 1454.68103, -1698.57019, 12.35550,   0.00000, 0.00000, 0.00000);
+	stadthalle_Obj[50] = CreateObject(19545, 1454.68103, -1698.57019, 12.37550,   0.00000, 0.00000, 0.00000);
 	SetObjectMaterial(stadthalle_Obj[50], 0, 17298, "weefarmcuntw", "sjmbigold1", 0xFFFFFFFF);
-	stadthalle_Obj[51] = CreateObject(19545, 1439.68005, -1698.57019, 12.35550,   0.00000, 0.00000, 0.00000);
+	stadthalle_Obj[51] = CreateObject(19545, 1439.68616, -1698.57214, 12.37750,   0.00000, 0.00000, 0.00000);
 	SetObjectMaterial(stadthalle_Obj[51], 0, 17298, "weefarmcuntw", "sjmbigold1", 0xFFFFFFFF);
 	stadthalle_Obj[52] = CreateObject(19533, 1493.31287, -1660.51978, 12.24070,   -0.26000, 0.00000, 90.00000);
 	SetObjectMaterial(stadthalle_Obj[52], 0, 5134, "wasteland_las2", "ws_bigstones", 0xFFFFFFFF);
 	stadthalle_Obj[53] = CreateObject(19533, 1465.73511, -1660.52515, 12.30870,   0.14530, 0.00000, 90.00000);
 	SetObjectMaterial(stadthalle_Obj[53], 0, 5134, "wasteland_las2", "ws_bigstones", 0xFFFFFFFF);
 	stadthalle_Obj[54] = CreateObject(3660, 1435.27380, -1707.71472, 14.02010,   0.00000, 0.00000, 90.00000);
+	stadthalle_Obj[56] = CreateDynamicObject(2942, 1466.9621, -1749.8344, 15.0809, 0.0000, 0.0000, 180.0, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //kmb_atm1
+	stadthalle_Obj[57] = CreateDynamicObject(2942, 1495.3919, -1749.8344, 15.0809, 0.0000, 0.0000, 180.0, VW_MAIN, MAPS_CITYHALLEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //kmb_atm1
 }
 
 hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys) {

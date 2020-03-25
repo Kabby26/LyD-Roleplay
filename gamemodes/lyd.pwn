@@ -4198,7 +4198,7 @@ new Float:ATM[][] = {
     {-29.488010, -2522.075195, 36.048595},
     {1466.9621, -1749.8344, 15.0809}, //sh
 	{1495.3919, -1749.8344, 15.0809}, //sh
-	{1488.2028, -1634.4946, 12.9274}, //sh
+	//{1488.2028, -1634.4946, 12.9274}, //sh
 	{1292.7639, -994.2083, 32.3353},
     {1674.3127, -1033.3083, 1340.3857},//bankint
     {1674.2822, -1034.2076, 1340.3857},//bankint
@@ -6128,8 +6128,8 @@ public OnGameModeInit2() {
 	CreateDynamicPickup(19197, 1, 286.14,-40.63,1001.52, 53);//Ausgang Ammu LV
 
 
-    CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Starterpack\n"COLOR_HEX_WHITE"Tippe /Starterpack", COLOR_WHITE, 808.8542,-1347.3077,13.5416, 8.0);
-    CreateDynamicPickup(1239, 1,  808.8542,-1347.3077,13.5416, 0);
+    //CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Starterpack\n"COLOR_HEX_WHITE"Tippe /Starterpack", COLOR_WHITE, 808.8542,-1347.3077,13.5416, 8.0);
+    //CreateDynamicPickup(1239, 1,  808.8542,-1347.3077,13.5416, 0);
 
     //CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Asservatenkammer - Illegale Gegenstände abgeben\n"COLOR_HEX_WHITE"Tippe /Abgeben [Waffenteile/Spice/Drogen/WCodes]", COLOR_WHITE, 1754.412963, -1592.894897, 13.532833, 8.0);
     //CreateDynamicPickup(1239, 1, 1754.412963, -1592.894897, 13.532833, 0);
@@ -7305,6 +7305,7 @@ public OnPlayerUpdateTacho() {
                     else if(RadioSender[vehicleid] == 13){radios ="I Love 2Dance";}
                     else if(RadioSender[vehicleid] == 14){radios ="Login-Musik";}
                     else if(RadioSender[vehicleid] == 15){radios ="iTunes Hot 40";}
+                    else if(RadioSender[vehicleid] == 17){radios ="RMF MAXXX";}
                     else if(RadioSender[vehicleid] == 18){radios ="Eigener Audiostream";}
 
                     besitzer = GetCarOwner(vehicleid);
@@ -16498,7 +16499,7 @@ CMD:radio(playerid)
         new vID = GetPlayerVehicleID(playerid);
         new mod = GetVehicleModel(vID);
         if(IsBicycle(mod))return SendClientMessage(playerid, COLOR_ORANGE, "Du kannst kein Radio auf einem Fahrrad hören.");
-        ShowPlayerDialog(playerid, DIALOG_RADIO, DIALOG_STYLE_LIST, COLOR_HEX_ORANGE"Radiosender", COLOR_HEX_WHITE"Radio ausschalten\n1-Live\nTechnoBase.FM\nHardBase.FM\nI Love Radio\nBreakz.us\nYouFM\nPlanet Radio\nThe Club\nNightWax\nI Love Mashup\nDas Hitradio\nI Love the Battle\nI Love 2Dance\nLogin-Musik\niTunes Hot 40\nMRP Webradio\nEigener Audiostream", "Auswählen", "Abbrechen");
+        ShowPlayerDialog(playerid, DIALOG_RADIO, DIALOG_STYLE_LIST, COLOR_HEX_ORANGE"Radiosender", COLOR_HEX_WHITE"Radio ausschalten\n1-Live\nTechnoBase.FM\nHardBase.FM\nI Love Radio\nBreakz.us\nYouFM\nPlanet Radio\nThe Club\nNightWax\nI Love Mashup\nDas Hitradio\nI Love the Battle\nI Love 2Dance\nLogin-Musik\niTunes Hot 40\nRMF MAXXX\nEigener Audiostream", "Auswählen", "Abbrechen");
     }
     else
     {
@@ -20729,7 +20730,7 @@ CMD:serverinfo(playerid)
     SendClientMessage(playerid, COLOR_BLUE, "* TEAMSPEAK IP *: {FFFFFF}TS.monkey-roleplay.de");
     SendClientMessage(playerid, COLOR_BLUE, "* FORUM ADRESSE *: {FFFFFF}www.monkey-roleplay.de");
     SendClientMessage(playerid, COLOR_BLUE, "* USER PANEL *: {FFFFFF}www.UCP.monkey-roleplay.de");
-    SendClientMessage(playerid, COLOR_BLUE, "* PROJEKTLEITER *: {FFFFFF}Kabby & riyuko");
+    SendClientMessage(playerid, COLOR_BLUE, "* PROJEKTLEITER *: {FFFFFF}Kabby & Summer_Cem");
     SendClientMessage(playerid, COLOR_BLUE, "* ENTWICKLER *: {FFFFFF}Kabby");
     return 1;
 }
@@ -25514,7 +25515,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
             }
             else if(RadioSender[vehicleid] == 12)
             {
-                PlayAudioStreamForPlayer(playerid, "http://iloveradio.de/ilovethebattle.m3u");
+                PlayAudioStreamForPlayer(playerid, "http://iloveradio.de/ilovehiphop.m3u");
             }
             else if(RadioSender[vehicleid] == 13)
             {
@@ -25523,6 +25524,9 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
             else if(RadioSender[vehicleid] == 14)
             {
                 PlayAudioStreamForPlayer(playerid, URL_LOGINMUSIC);
+            }
+            else if(RadioSender[vehicleid] == 17){
+                PlayAudioStreamForPlayer(playerid, "http://217.74.72.11:8000/rmf_maxxx");
             }
             else if(RadioSender[vehicleid] == 15)
             {
@@ -25789,7 +25793,7 @@ public OnPlayerWaitLinie(playerid)
                 else if(pCheckpoint[playerid] == CP_BUSLINIE2CP5)
                 {
                     SetPlayerCheckpointEx(playerid, 939.6364,-1237.1488,16.4456, 5.0, CP_BUSLINIE2CP6);
-                    format(string, sizeof(string), "Nächste Haltestelle: das Ordnungsamt");
+                    format(string, sizeof(string), "Nächste Haltestelle: das alte Ordnungsamt");
                     SendRoundMessage(x, y, z, COLOR_PURPLE, string);
                     UnfreezePlayer(playerid);
                     //KillTimer(buswait[playerid]);
@@ -25810,7 +25814,8 @@ public OnPlayerWaitLinie(playerid)
                 }
                 else if(pCheckpoint[playerid] == CP_BUSLINIE2CP7)
                 {
-                    SetPlayerCheckpointEx(playerid, 1262.7012,-1346.5897,13.2076, 5.0, CP_BUSLINIE2CP8);
+                    //SetPlayerCheckpointEx(playerid, 1262.7012,-1346.5897,13.2076, 5.0, CP_BUSLINIE2CP8);
+                    SetPlayerCheckpointEx(playerid, 1481.1105,-1651.5016,13.3762, 5.0, CP_BUSLINIE2CP8);
                     format(string, sizeof(string), "Nächste Haltestelle: Los Santos Busbahnhof");
                     SendRoundMessage(x, y, z, COLOR_PURPLE, string);
                     UnfreezePlayer(playerid);
@@ -25894,7 +25899,7 @@ public OnPlayerWaitLinie(playerid)
                 }
                 else if(pCheckpoint[playerid] == CP_BUSLINIE1CP6)
                 {
-                    SetPlayerCheckpointEx(playerid, 1262.7012,-1346.5897,13.2076, 5.0, CP_BUSLINIE1CP7);
+                    SetPlayerCheckpointEx(playerid, 1481.1105,-1651.5016,13.3762, 5.0, CP_BUSLINIE1CP7);
                     format(string, sizeof(string), "Nächste Haltestelle: Los Santos Busbahnhof");
                     SendRoundMessage(x, y, z, COLOR_PURPLE, string);
                     UnfreezePlayer(playerid);
@@ -25989,7 +25994,7 @@ public OnPlayerWaitLinie(playerid)
                 }
                 else if(pCheckpoint[playerid] == CP_BUSLINIE3CP7)
                 {
-                    SetPlayerCheckpointEx(playerid, 1262.7012,-1346.5897,13.2076, 5.0, CP_BUSLINIE3CP8);
+                    SetPlayerCheckpointEx(playerid, 1481.1105,-1651.5016,13.3762, 5.0, CP_BUSLINIE3CP8);
                     format(string, sizeof(string), "Nächste Haltestelle: Los Santos Busbahnhof");
                     SendRoundMessage(x, y, z, COLOR_PURPLE, string);
                     UnfreezePlayer(playerid);
@@ -26073,7 +26078,7 @@ public OnPlayerWaitLinie(playerid)
                 }
                 else if(pCheckpoint[playerid] == CP_BUSLINIE4CP6)
                 {
-                    SetPlayerCheckpointEx(playerid, 1262.7012,-1346.5897,13.2076, 5.0, CP_BUSLINIE4CP7);
+                    SetPlayerCheckpointEx(playerid, 1481.1105,-1651.5016,13.3762, 5.0, CP_BUSLINIE4CP7);
                     format(string, sizeof(string), "Nächste Haltestelle: Los Santos Busbahnhof");
                     SendRoundMessage(x, y, z, COLOR_PURPLE, string);
                     UnfreezePlayer(playerid);
@@ -43869,7 +43874,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                 }
                 else if(listitem == 12 ) {
                     SetPlayerAttachedObject( playerid, ATTACHED_INDEX_MUSIK, 19421, 2, 0.035, 0.000000, 0.000000, 90.000000, 0.000000, 270.000000, 1.000000, 1.000000, 1.000000 ); // headphones01 - kopfhörer
-                    PlayAudioStreamForPlayer(playerid, "http://iloveradio.de/ilovethebattle.m3u");
+                    PlayAudioStreamForPlayer(playerid, "http://iloveradio.de/ilovehiphop.m3u");
                 }
                 else if(listitem == 13 ) {
                     SetPlayerAttachedObject( playerid, ATTACHED_INDEX_MUSIK, 19421, 2, 0.035, 0.000000, 0.000000, 90.000000, 0.000000, 270.000000, 1.000000, 1.000000, 1.000000 ); // headphones01 - kopfhörer
@@ -43885,7 +43890,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                 }
                 else if(listitem == 16 ) {
                     SetPlayerAttachedObject( playerid, ATTACHED_INDEX_MUSIK, 19421, 2, 0.035, 0.000000, 0.000000, 90.000000, 0.000000, 270.000000, 1.000000, 1.000000, 1.000000 ); // headphones01 - kopfhörer
-                    PlayAudioStreamForPlayer(playerid, "https://cdn.monkey-roleplay.de/radio/8010/radio.mp3");
+                    PlayAudioStreamForPlayer(playerid, "http://217.74.72.11:8000/rmf_maxxx");
                 }
                 else if(listitem == 17){
                     SetPlayerAttachedObject( playerid, ATTACHED_INDEX_MUSIK, 19421, 2, 0.035, 0.000000, 0.000000, 90.000000, 0.000000, 270.000000, 1.000000, 1.000000, 1.000000 ); // headphones01 - kopfhörer
@@ -44052,7 +44057,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                         {
                             if(GetPlayerVehicleID(i) == vID)
                             {
-                                PlayAudioStreamForPlayer(i, "http://iloveradio.de/ilovethebattle.m3u");
+                                PlayAudioStreamForPlayer(i, "http://iloveradio.de/ilovehiphop.m3u");
                             }
                         }
                         RadioSender[vID] = 12;
@@ -44096,7 +44101,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                         {
                             if(GetPlayerVehicleID(i) == vID)
                             {
-                                PlayAudioStreamForPlayer(i, "https://cdn.monkey-roleplay.de/radio/8010/radio.mp3");
+                                PlayAudioStreamForPlayer(i, "http://217.74.72.11:8000/rmf_maxxx");
                             }
                         }
                         RadioSender[vID] = 17;
@@ -56397,7 +56402,7 @@ COMMAND:startbonus(playerid,params[]) {
     return 1;
 }
 
-CMD:starterpack(playerid){
+/*CMD:starterpack(playerid){
     if(Spieler[playerid][pLevel] > 3) return SendClientMessage(playerid, COLOR_RED, "[STARTERPACK] {FFFFFF}Du bist leider nicht für den Starterpack qualifiziert!");
     if(!IsPlayerInRangeOfPoint(playerid, 3.0, 808.8542,-1347.3077,13.5416)) return SendClientMessage(playerid, COLOR_RED, "[STARTERPACK] {FFFFFF}Du bist nicht am Starterpack Punkt!");
     new jahr, monat, tag;
@@ -56415,7 +56420,7 @@ CMD:starterpack(playerid){
 	Spieler[playerid][pLKWLic] = 1;
     SendClientMessage(playerid, COLOR_GREEN, "[STARTERPACK] {FFFFFF}Du hast folgende Dinge erhalten: Level 8, $2.500.000, 70 Spielstunden und alle Führerscheine.");
     return 1;
-}
+}*/
 
 
 COMMAND:waffenspind(playerid,params[]) {
@@ -60355,7 +60360,7 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
 
             AddPlayerToPlantArrayDataGang(playerid);
             
-            ShowPlayerDialog(playerid, DIALOG_SPAWNMELDUNG, DIALOG_STYLE_MSGBOX, "Monkey - Roleplay", "Am Spawn können sich neue Spieler ein Starterpack abholen.\nEs lohnt sich!\n\nProjektdaten:\n\nServer IP: server.monkey-roleplay.de\nTeamspeak IP: ts.monkey-roleplay.de\nForum Adresse: www.monkey-roleplay.de\n\nSchau täglich auf unserem Forum vorbei, um über Neuigkeiten informiert zu sein!", "OK", "");
+            ShowPlayerDialog(playerid, DIALOG_SPAWNMELDUNG, DIALOG_STYLE_MSGBOX, "Monkey - Roleplay", "Projektdaten:\n\nServer IP: server.monkey-roleplay.de\nTeamspeak IP: ts.monkey-roleplay.de\nForum Adresse: www.monkey-roleplay.de\n\nSchau täglich auf unserem Forum vorbei, um über Neuigkeiten informiert zu sein!", "OK", "");
             /*
             if(Spieler[playerid][pLevel] < 99)
             {
@@ -66279,7 +66284,7 @@ COMMAND:musik(playerid,params[]) {
     if( !Spieler[playerid][pMP3Player] ) {
         return SendClientMessage(playerid,COLOR_RED,"Du besitzt keinen MP3-Player.");
     }
-    ShowPlayerDialog(playerid, DIALOG_MUSIK, DIALOG_STYLE_LIST, COLOR_HEX_ORANGE"Radiosender", COLOR_HEX_WHITE"Radio ausschalten\n1-Live\nTechnoBase.FM\nHardBase.FM\nI Love Radio\nBreakz.us\nYouFM\nPlanet Radio\nThe Club\nNightWax\nI Love Mashup\nDas Hitradio\nI Love the Battle\nI Love 2Dance\nLogin-Musik\niTunes Hot 40\nMRP Webradio\nEigener Audiostream", "Auswählen", "Abbrechen");
+    ShowPlayerDialog(playerid, DIALOG_MUSIK, DIALOG_STYLE_LIST, COLOR_HEX_ORANGE"Radiosender", COLOR_HEX_WHITE"Radio ausschalten\n1-Live\nTechnoBase.FM\nHardBase.FM\nI Love Radio\nBreakz.us\nYouFM\nPlanet Radio\nThe Club\nNightWax\nI Love Mashup\nDas Hitradio\nI Love the Battle\nI Love 2Dance\nLogin-Musik\niTunes Hot 40\nRMF MAXXX\nEigener Audiostream", "Auswählen", "Abbrechen");
     return 1;
 }
 COMMAND:mp3player(playerid,params[]) {
