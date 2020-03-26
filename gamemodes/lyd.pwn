@@ -2804,22 +2804,22 @@ enum {
 //#define TEST
 
 #if defined TEST // Testserver
-	#define     SQL_HOST            "localhost"
+	#define     SQL_HOST            "185.245.96.169"
 	#define     SQL_USER            "root"
 	#define     SQL_PASS            "98kw1aq1bkawwqa810uc94ilrn484hqq0o4xwig5"
 	#define     SQL_DATA            "lyd"
 
-	#define     WEBSQL_HOST         "localhost"
+	#define     WEBSQL_HOST         "185.245.96.169"
 	#define     WEBSQL_USER         "root"
 	#define     WEBSQL_PASS         "98kw1aq1bkawwqa810uc94ilrn484hqq0o4xwig5"
 	#define     WEBSQL_DATA         "ucp"
 #else // Main-Server
-	#define     SQL_HOST            "localhost"
+	#define     SQL_HOST            "185.245.96.169"
 	#define     SQL_USER            "root"
 	#define     SQL_PASS            "98kw1aq1bkawwqa810uc94ilrn484hqq0o4xwig5"
 	#define     SQL_DATA            "lyd"
 
-	#define     WEBSQL_HOST         "localhost"
+	#define     WEBSQL_HOST         "185.245.96.169"
 	#define     WEBSQL_USER         "root"
 	#define     WEBSQL_PASS         "98kw1aq1bkawwqa810uc94ilrn484hqq0o4xwig5"
 	#define     WEBSQL_DATA         "ucp"
@@ -5669,6 +5669,7 @@ public OnGameModeInit2() {
     SetTimer("PayDay",60000,true);
     SetTimer("NagelBand_Timer",NAGELBAND_TIMER_INTERVALL,true);
     SetTimer("SaveAll", ( 10*60*1000 ) + 2161 ,true); // Alle ~10 Minuten
+    //SetTimerEx("AllSave", 300000,true, "i", "-1");
     World_Pulse();
     SetTimer("World_Pulse",60013 * 59 , true ); // Alle ~60 Minuten
     g_EventUhr[EU_tTimer] = INVALID_TIMER_ID;
@@ -6551,6 +6552,11 @@ public OnGameModeInit2() {
     SetWeather(7);
     return 1;
 }
+
+/*forward AllSave(playerid);
+public AllSave(playerid){
+    return cmd_allesspeichern(playerid);
+}*/
 
 forward SaveAll();
 public SaveAll() {
@@ -10625,6 +10631,8 @@ CMD:unfreeze(playerid, params[])
 
 public OnPlayerSpawn(playerid)
 {
+    //Prev_DestroyPlayerTextDraws(playerid);
+
     Spieler[playerid][aufgenommen] = 0;
 
     if (!gPlayerLogged[playerid]) {
@@ -14221,30 +14229,30 @@ CMD:post(playerid)
 stock CreateBrief(briefabsendername[],briefempfangername[],absendertext[])
 {
     SendClientMessage(GetPlayerIdFromName(briefempfangername),COLOR_YELLOW,"Du hast ungelesene Post erhalten! Gehe zum Postamt und öffne die Post.");
-    new pfad[64];
-    format(pfad,64,"./scriptfiles/Briefe/%s",briefabsendername);
+    new pfad[128];
+    format(pfad,64,"/home/sampserver/samp/scriptfiles/Briefe/%s",briefabsendername);
     if(!dir_exists(pfad))
     {
         dir_create(pfad);
     }
-    format(pfad,64,"./scriptfiles/Briefe/%s/Abgesendete Briefe",briefabsendername);
+    format(pfad,128,"/home/sampserver/samp/scriptfiles/Briefe/%s/Abgesendete Briefe",briefabsendername);
     if(!dir_exists(pfad))
     {
         dir_create(pfad);
     }
-    format(pfad,64,"./scriptfiles/Briefe/%s",briefempfangername);
+    format(pfad,128,"/home/sampserver/samp/scriptfiles/Briefe/%s",briefempfangername);
     if(!dir_exists(pfad))
     {
         dir_create(pfad);
     }
-    format(pfad,64,"./scriptfiles/Briefe/%s/Empfangene Briefe",briefempfangername);
+    format(pfad,128,"/home/sampserver/samp/scriptfiles/Briefe/%s/Empfangene Briefe",briefempfangername);
     if(!dir_exists(pfad))
     {
         dir_create(pfad);
     }
     for(new i;i<50;i++)
     {
-        format(pfad,64,"/Briefe/%s/Abgesendete Briefe/Brief%i.txt",briefabsendername,i);
+        format(pfad,128,"/Briefe/%s/Abgesendete Briefe/Brief%i.txt",briefabsendername,i);
         if(fexist(pfad))
         {
         }
@@ -49138,7 +49146,7 @@ public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
     return 1;
 }
 
-/*public OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid)
+public OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid)
 {
     if(1 <= Spieler[playerid][pJailed] <= 3)
     {
@@ -49147,8 +49155,15 @@ public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
         SendClientMessage(playerid, COLOR_ORANGE, "Du wurdest für eine Minute gefreezed wegen Knast-DM.");
         knastunfreezetimer[playerid] = SetTimerEx("KnastUnfreeze", 60000*1, 0, "i", playerid);
     }
+
+    if(playerid != INVALID_PLAYER_ID){
+        if(Spieler[damagedid][DmgTog] == 1){
+            PlayerPlaySound(damagedid, 1135, 0.0, 0.0, 0.0);
+        }
+    }
+
     return 1;
-}*/
+}
 
 /*forward OnPlayerDamageDone(playerid, Float:amount, issuerid, weapon, bodypart);
 
@@ -50581,7 +50596,12 @@ stock LogCoinbase(name[], boughtOrSold, Float:amount, asset[], fiat)
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[128], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/CoinbaseLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/CoinbaseLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    //format(pfad,64,"/home/sampserver/samp/scriptfiles/Briefe/%s",briefabsendername);
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/CoinbaseLog"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/CoinbaseLog");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[COINBASE] [%02d:%02d:%02d] - %s %s %.5f %s for $%d.\r\n", stunde, minute, sekunde, name, boughtOrSold ? "sold" : "bought", amount, asset, fiat);
     fwrite(LogFile, string);
@@ -50591,12 +50611,17 @@ stock LogCoinbase(name[], boughtOrSold, Float:amount, asset[], fiat)
 
 stock LogCommand(text[])
 {
-    new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[128], path[64];
+    new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[128], path[128];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/CommandLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/CommandLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/CommandLog"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/CommandLog");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[CMD] [%02d:%02d:%02d] - %s\r\n", stunde, minute, sekunde, text);
+    printf("%s - %s", path, string);
     fwrite(LogFile, string);
     fclose(LogFile);
     return 1;
@@ -50607,7 +50632,11 @@ stock LogVehicleDeath(text[])
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[128], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/VehicleDeath/%02d-%02d-%d.txt", tag, monat, jahr);
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/VehicleDeath/%02d-%02d-%d.txt", tag, monat, jahr);
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/VehicleDeath"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/VehicleDeath");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[VDEATH] [%02d:%02d:%02d] - %s\r\n", stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -50620,7 +50649,11 @@ stock LogBus(text[])
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[128], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/BusLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/BusLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/BusLog"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/BusLog");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[BUS] [%02d:%02d:%02d] - %s\r\n", stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -50633,7 +50666,11 @@ stock LogBus(text[])
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[128], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/Advents/%02d-%02d-%d.txt", tag, monat, jahr);
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/Advents/%02d-%02d-%d.txt", tag, monat, jahr);
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/Advents"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/Advents");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[ADVENTSKALENDER] [%02d:%02d:%02d] - %s\r\n", stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -50646,7 +50683,11 @@ stock LogGlobalChat(text[])
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[128], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/GChat/%02d-%02d-%d.txt", tag, monat, jahr);
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/GChat/%02d-%02d-%d.txt", tag, monat, jahr);
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/GChat"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/GChat");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[GC] [%02d:%02d:%02d] - %s\r\n", stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -50659,7 +50700,11 @@ stock LogJobChat(text[])
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[128], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/JChat/%02d-%02d-%d.txt", tag, monat, jahr);
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/JChat/%02d-%02d-%d.txt", tag, monat, jahr);
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/JChat"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/JChat");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[JC] [%02d:%02d:%02d] - %s\r\n", stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -50672,7 +50717,11 @@ stock LogAdminChat(text[])
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[128], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/AChat/%02d-%02d-%d.txt", tag, monat, jahr);
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/AChat/%02d-%02d-%d.txt", tag, monat, jahr);
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/AChat"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/AChat");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[AC] [%02d:%02d:%02d] - %s\r\n", stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -50685,7 +50734,11 @@ stock LogFrakChat(text[])
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[128], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/FChat/%02d-%02d-%d.txt", tag, monat, jahr);
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/FChat/%02d-%02d-%d.txt", tag, monat, jahr);
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/FChat"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/FChat");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[FC] [%02d:%02d:%02d] - %s\r\n", stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -50698,7 +50751,11 @@ stock LogPilot(text[])
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[128], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/PilotLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/PilotLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/PilotLog"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/PilotLog");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[PILOT] [%02d:%02d:%02d] - %s\r\n", stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -50711,7 +50768,11 @@ stock LogTrucker(text[])
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[128], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/TruckerLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/TruckerLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/TruckerLog"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/TruckerLog");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[TRUCKER] [%02d:%02d:%02d] - %s\r\n", stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -50724,7 +50785,11 @@ stock LogFarmer(text[])
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[128], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/FarmerLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/FarmerLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/FarmerLog"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/FarmerLog");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[FARMER] [%02d:%02d:%02d] - %s\r\n", stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -50737,7 +50802,11 @@ stock LogAnwalt(text[])
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[128], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/AnwaltLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/AnwaltLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/AnwaltLog"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/AnwaltLog");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[ANWALT] [%02d:%02d:%02d] - %s\r\n", stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -50750,7 +50819,11 @@ stock LogWDealer(text[])
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[128], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/WDealerLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/WDealerLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/WDealerLog"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/WDealerLog");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[WDEALER] [%02d:%02d:%02d] - %s\r\n", stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -50763,7 +50836,11 @@ stock LogDDealer(text[])
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[128], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/DDealerLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/DDealerLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/DDealerLog"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/DDealerLog");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[DDealer] [%02d:%02d:%02d] - %s\r\n", stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -50776,7 +50853,11 @@ stock PayLog(text[])
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[128], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/ZahlenLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/ZahlenLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/ZahlenLog"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/ZahlenLog");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[ZAHLEN] [%02d:%02d:%02d] - %s\r\n", stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -50789,7 +50870,11 @@ stock ClubLog(text[])
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[300], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/ClubLog/clublog.txt");
+    format(path, sizeof(path), "/home/sampserver/samp/Logs/ClubLog/clublog.txt");
+    if(!dir_exists("/home/sampserver/samp/Logs/ClubLog"))
+    {
+        dir_create("/home/sampserver/samp/Logs/ClubLog");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[%02d %02d %d %02d:%02d:%02d] - %s\r\n", tag, monat, jahr , stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -50803,10 +50888,18 @@ stock SupporterLog(text[],wertung)
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
     if(wertung == 1 ) {
-        format(path, sizeof(path), "/Logs/SupporterLog/positiv.txt");
+        format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/SupporterLog/positiv.txt");
+        if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/SupporterLog"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/SupporterLog");
+    }
     }
     else {
-        format(path, sizeof(path), "/Logs/SupporterLog/negativ.txt");
+        format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/SupporterLog/negativ.txt");
+        if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/SupporterLog"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/SupporterLog");
+    }
     }
     format(string, sizeof(string), "[%02d %02d %d %02d:%02d:%02d] - %s\r\n", tag, monat, jahr , stunde, minute, sekunde, text);
     LogFile = fopen(path, io_append);
@@ -50820,7 +50913,11 @@ stock BankLog(text[])
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[128], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/BankLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/BankLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/BankLog"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/BankLog");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[BANK] [%02d:%02d:%02d] - %s\r\n", stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -50833,7 +50930,11 @@ stock TaschendiebLog(text[])
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[256], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/TaschendiebLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/TaschendiebLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/TaschendiebLog"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/TaschendiebLog");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[Taschendieb] [%02d:%02d:%02d] - %s\r\n", stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -50846,7 +50947,11 @@ stock HitmanLog(text[])
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[256], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/HitmanLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/HitmanLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/HitmanLog"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/HitmanLog");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[Hitman] [%02d:%02d:%02d] - %s\r\n", stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -50859,7 +50964,11 @@ stock AuszahlenLog(text[])
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[128], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/AuszahlenLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/AuszahlenLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/AuszahlenLog"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/AuszahlenLog");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[AUSZ] [%02d:%02d:%02d] - %s\r\n", stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -50872,7 +50981,11 @@ stock DrugLog(text[])
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[256], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/DrugLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/DrugLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/DrugLog"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/DrugLog");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[DRUG] [%02d:%02d:%02d] - %s\r\n", stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -50885,7 +50998,11 @@ stock CookiesLog(text[])
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[256], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/CookiesLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/CookiesLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/CookiesLog"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/CookiesLog");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[COOKIES] [%02d:%02d:%02d] - %s\r\n", stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -50898,7 +51015,11 @@ stock WCodeLog(text[])
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[256], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/WCodeLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/WCodeLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/WCodeLog"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/WCodeLog");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[WCODES] [%02d:%02d:%02d] - %s\r\n", stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -50911,7 +51032,11 @@ stock WaffenteileLog(text[])
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[256], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/WaffenteileLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/WaffenteileLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/WaffenteileLog"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/WaffenteileLog");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[WTEILE] [%02d:%02d:%02d] - %s\r\n", stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -50924,7 +51049,11 @@ stock EinzahlenLog(text[])
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[128], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/EinzahlenLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/EinzahlenLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/EinzahlenLog"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/EinzahlenLog");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[EINZ] [%02d:%02d:%02d] - %s\r\n", stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -50936,7 +51065,11 @@ stock BanLog( text[] ) {
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[256], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/BanLog/banlog.txt");
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/BanLog/banlog.txt");
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/BanLog"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/BanLog");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[%02d %02d %d %02d:%02d:%02d] - %s\r\n", tag, monat, jahr , stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -50948,7 +51081,11 @@ stock LoginLog( text[] ) {
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[256], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/LoginLog/loginlog.txt");
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/LoginLog/loginlog.txt");
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/LoginLog"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/LoginLog");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[%02d %02d %d %02d:%02d:%02d] - %s\r\n", tag, monat, jahr , stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -50961,7 +51098,11 @@ stock AdminLog( text[] ) {
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[256], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/Admin/log.txt");
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/Admin/log.txt");
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/Admin"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/Admin");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[%02d %02d %d %02d:%02d:%02d] - %s\r\n", tag, monat, jahr , stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -50973,7 +51114,11 @@ stock SkillLog( text[] ) {
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[256], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/SkillLog/log.txt");
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/SkillLog/log.txt");
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/SkillLog"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/SkillLog");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[%02d %02d %d %02d:%02d:%02d] - %s\r\n", tag, monat, jahr , stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -50988,7 +51133,11 @@ stock MySQLThreadOwnerLog( text[] ) {
     string[0] = '\0';
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/MySQLThreadOwner/loginlog.txt");
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/MySQLThreadOwner/loginlog.txt");
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/MySQLThreadOwner"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/MySQLThreadOwner");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[%02d %02d %d %02d:%02d:%02d] - %s\r\n", tag, monat, jahr , stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -51001,7 +51150,11 @@ stock GeworbenLog( text[] ) {
     static string[1024];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/GeworbenLog/loginlog.txt");
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/GeworbenLog/loginlog.txt");
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/GeworbenLog"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/GeworbenLog");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[%02d %02d %d %02d:%02d:%02d] - %s\r\n", tag, monat, jahr , stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -51013,7 +51166,11 @@ stock FriendLog( text[] ) {
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[256], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/FriendLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/FriendLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/FriendLog"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/FriendLog");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[%02d %02d %d %02d:%02d:%02d] - %s\r\n", tag, monat, jahr , stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -51025,7 +51182,11 @@ stock GebeLog( text[] ) {
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[256], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/GebeLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/GebeLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/GebeLog"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/GebeLog");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[GEBEN] [%02d:%02d:%02d] - %s\r\n", stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -51037,7 +51198,11 @@ stock GebeCheckLog( text[] ) {
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[256], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/GebeCheckLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/GebeCheckLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/GebeCheckLog"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/GebeCheckLog");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[GEBENCHECK] [%02d:%02d:%02d] - %s\r\n", stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -57798,7 +57963,11 @@ stock RemoveAccountLog( text[] ) {
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[256], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/Unused/accounts.txt");
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/Unused/accounts.txt");
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/Unused"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/Unused");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[%02d %02d %d %02d:%02d:%02d] - %s\r\n", tag, monat, jahr , stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -57946,7 +58115,11 @@ stock VertragLog( text[] ) {
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[256], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/Vertrag/Vertrag.log");
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/Vertrag/Vertrag.log");
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/Vertrag"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/Vertrag");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[%02d %02d %d %02d:%02d:%02d] - %s\r\n", tag, monat, jahr , stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -57958,7 +58131,11 @@ stock OamtLog( text[] ) {
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[256], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/Oamt/Oamt.log");
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/Oamt/Oamt.log");
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/Oamt"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/Oamt");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[%02d %02d %d %02d:%02d:%02d] - %s\r\n", tag, monat, jahr , stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -57970,7 +58147,11 @@ stock KaufLog( text[] ) {
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[256], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/KaufLog/KaufLog.log");
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/KaufLog/KaufLog.log");
+    if(!dir_exists("/home/sampserver/samp/scriptfiles/Logs/KaufLog"))
+    {
+        dir_create("/home/sampserver/samp/scriptfiles/Logs/KaufLog");
+    }
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[%02d %02d %d %02d:%02d:%02d] - %s\r\n", tag, monat, jahr , stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -61704,26 +61885,26 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
                 new b,pfad[64];
                 for(;b<50;b++)
                 {
-                    format(pfad,64,"./scriptfiles/Briefe/%s/Abgesendete Briefe/Brief%i.txt",result,b);
+                    format(pfad,64,"/home/sampserver/samp/scriptfiles/Briefe/%s/Abgesendete Briefe/Brief%i.txt",result,b);
                     if(fexist(pfad))
                     {
                         fremove(pfad);
                     }
                 }
-                format(pfad,64,"./scriptfiles/Briefe/%s/Abgesendete Briefe",result);
+                format(pfad,64,"/home/sampserver/samp/scriptfiles/Briefe/%s/Abgesendete Briefe",result);
                 if(dir_exists(pfad))
                 {
                     dir_delete(pfad);
                 }
                 for(b=0;b<50;b++)
                 {
-                    format(pfad,64,"./scriptfiles/Briefe/%s/Empfangene Briefe/Brief%i.txt",result,b);
+                    format(pfad,64,"/home/sampserver/samp/scriptfiles/Briefe/%s/Empfangene Briefe/Brief%i.txt",result,b);
                     if(fexist(pfad))
                     {
                         fremove(pfad);
                     }
                 }
-                format(pfad,64,"./scriptfiles/Briefe/%s/Empfangene Briefe",result);
+                format(pfad,64,"/home/sampserver/samp/scriptfiles/Briefe/%s/Empfangene Briefe",result);
                 if(dir_exists(pfad))
                 {
                     dir_delete(pfad);
@@ -64537,7 +64718,7 @@ public NPC(var)
 #endif
 */
 
-COMMAND:allesspeichern(playerid,params[]) {
+CMD:allesspeichern(playerid,params[]) {
     #pragma unused params
     if(Spieler[playerid][pAdmin] < 4) return ERROR_RANG_MSG(playerid);
     SendClientMessage(playerid,COLOR_YELLOW,"Daten werden zum Speichern gesendet ...");
@@ -68698,7 +68879,7 @@ stock AimbotLog(text[])
     new File:LogFile, jahr, monat, tag, stunde, minute, sekunde, string[128], path[64];
     getdate(jahr, monat, tag);
     gettime(stunde, minute, sekunde);
-    format(path, sizeof(path), "/Logs/AimbotLog/%02d-%02d-%d.txt", tag, monat, jahr);
+    format(path, sizeof(path), "/home/sampserver/samp/scriptfiles/Logs/AimbotLog/%02d-%02d-%d.txt", tag, monat, jahr);
     LogFile = fopen(path, io_append);
     format(string, sizeof(string), "[Aimbot] [%02d:%02d:%02d] - %s\r\n", stunde, minute, sekunde, text);
     fwrite(LogFile, string);
@@ -70811,14 +70992,16 @@ CMD:gangfight(playerid, params[]) {
         return SCMFormatted(playerid, COLOR_RED, "Dieses Ganggebiet hat noch %i Stunden %i Minuten lang eine Zeitsperre.", h, m);
     }
 
-    new day = GetWeekDayNumber(),
+    /*new day = GetWeekDayNumber(),
         minimumPlayers = (day == WEEKDAY_MONDAY && hour >= 19 && hour < 21) ||
                          (day == WEEKDAY_WEDNESDAY && hour >= 19 && hour < 21) ||
                          (day == WEEKDAY_FRIDAY && hour >= 19 && hour < 21) ||
                          (day == WEEKDAY_SATURDAY && hour >= 19 && hour < 21) ||
-                         (day == WEEKDAY_SUNDAY && hour >= 18 && hour < 21) ? 0 : GANG_FIGHT_PLAYERS;
+                         (day == WEEKDAY_SUNDAY && hour >= 18 && hour < 21) ? 0 : GANG_FIGHT_PLAYERS;*/
+
+    new minimumPlayers = GANG_FIGHT_PLAYERS;
     
-    if(day == WEEKDAY_TUESDAY || day == WEEKDAY_THURSDAY) return SendClientMessage(playerid, COLOR_RED, "[GF] {FFFFFF}Heute kann kein Gangfight gestartet werden!");
+    //if(day == WEEKDAY_TUESDAY || day == WEEKDAY_THURSDAY) return SendClientMessage(playerid, COLOR_RED, "[GF] {FFFFFF}Heute kann kein Gangfight gestartet werden!");
 
         /*minimumPlayers = (day == WEEKDAY_MONDAY && WEEKDAY_TUESDAY && WEEKDAY_WEDNESDAY && hour >= 19 && hour < 21) ||
                          (day == WEEKDAY_THURSDAY && WEEKDAY_FRIDAY && WEEKDAY_SATURDAY && hour >= 19 && hour < 21) ||
