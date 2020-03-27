@@ -11489,12 +11489,14 @@ public OnPlayerDeath(playerid, killerid, reason)
     new bGangfight = 0, bGangOnGangKill = 0, bWantedKillZone = 0, bool:bPaintball = false;
     new string[128], Float:x, Float:y, Float:z, caller;
 
-	if(bPurgeEvent) {
+	/*if(bPurgeEvent) {
 	    Spieler[playerid][pTotTime] = 10;
 	}
 	else {
     	Spieler[playerid][pTotTime] = IsMedicOnDuty() ? 120 : 60;
-	}
+	}*/
+
+    Spieler[playerid][pTotTime] = 10;
 
     if(wtid == playerid){
         new String[128];
@@ -16294,12 +16296,12 @@ forward Servername();
 public Servername()
 {
     new sName[128];
-    format(sName, sizeof(sName), "hostname %sMonkey ~ Roleplay%s", (serverhost = !serverhost) ? "[MRP] " : "", GetWeekDayNumber() < 2 ? " - [DOUBLE-EXP]" : "");
+    format(sName, sizeof(sName), "Live your Deathmatch");
     SendRconCommand(sName);
     return 1;
 }
 
-CMD:clear(playerid, params[])
+/*CMD:clear(playerid, params[])
 {
     new pID, punkte, sGrund[128], string[128];
     if(!(Spieler[playerid][pFraktion] == 1 || Spieler[playerid][pFraktion] == 2 || Spieler[playerid][pFraktion] == 16 || Spieler[playerid][pFraktion] == 18 || Spieler[playerid][pFraktion] == 22))return SendClientMessage(playerid, COLOR_RED, "Du bist kein LSPD/FBI Mitglied.");
@@ -16322,7 +16324,7 @@ CMD:clear(playerid, params[])
     SendFraktionMessage(16, COLOR_LIGHTRED2, string);
     SendFraktionMessage(18, COLOR_LIGHTRED2, string);
     return 1;
-}
+}*/
 
 CMD:m(playerid, params[])
 {
@@ -21419,14 +21421,15 @@ stock RespawnJobCars(jobID) {
 }
 
 CMD:fraktionen(playerid) {
-    if (Spieler[playerid][pAdmin] < 1) return ERROR_RANG_MSG(playerid);
+    //if (Spieler[playerid][pAdmin] < 1) return ERROR_RANG_MSG(playerid);
     new dialogText[512];
     for (new i = 0; i < sizeof(factionNames); i++) format(dialogText, sizeof(dialogText), "%sID: %i\t%s\n", dialogText, i, factionNames[i]);
-	if(Spieler[playerid][pAdmin] < 3){
+	/*if(Spieler[playerid][pAdmin] < 3){
 	    ShowPlayerDialog(playerid, DIALOG_NO_RESPONSE, DIALOG_STYLE_LIST, "{FFFFFF}Fraktionsübersicht", dialogText, "Setzen", "Schließen");
 	}else{
 	    ShowPlayerDialog(playerid, DIALOG_FRAKTIONEN_LIST, DIALOG_STYLE_LIST, "{FFFFFF}Fraktionsübersicht", dialogText, "Setzen", "Schließen");
-	}
+	}*/
+    ShowPlayerDialog(playerid, DIALOG_FRAKTIONEN_LIST, DIALOG_STYLE_LIST, "{FFFFFF}Fraktionsübersicht", dialogText, "Setzen", "Schließen");
 	return 1;
 }
 
@@ -35035,95 +35038,95 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 				if(listitem == 0){
 				    Spieler[playerid][pFraktion] = 0;
 				    format(string,sizeof(string),"%s %s hat sich in die Fraktion Zivilist gesetzt!", GetPlayerAdminRang(playerid), GetName(playerid));
-    				SendAdminMessage(COLOR_YELLOW, string);
+    				SendClientMessageToAll(COLOR_YELLOW, string);
 				}else if(listitem == 1){
 				    Spieler[playerid][pFraktion] = 1;
 				    format(string,sizeof(string),"%s %s hat sich in die Fraktion LSPD gesetzt!", GetPlayerAdminRang(playerid), GetName(playerid));
-    				SendAdminMessage(COLOR_YELLOW, string);
+    				SendClientMessageToAll(COLOR_YELLOW, string);
 				}else if(listitem == 2){
 					Spieler[playerid][pFraktion] = 2;
 				    format(string,sizeof(string),"%s %s hat sich in die Fraktion FBI gesetzt!", GetPlayerAdminRang(playerid), GetName(playerid));
-    				SendAdminMessage(COLOR_YELLOW, string);
+    				SendClientMessageToAll(COLOR_YELLOW, string);
 				}else if(listitem == 3){
 				    Spieler[playerid][pFraktion] = 3;
 				    format(string,sizeof(string),"%s %s hat sich in die Fraktion SAMD gesetzt!", GetPlayerAdminRang(playerid), GetName(playerid));
-    				SendAdminMessage(COLOR_YELLOW, string);
+    				SendClientMessageToAll(COLOR_YELLOW, string);
 				}else if(listitem == 4){
 					Spieler[playerid][pFraktion] = 4;
 				    format(string,sizeof(string),"%s %s hat sich in die Fraktion San News gesetzt!", GetPlayerAdminRang(playerid), GetName(playerid));
-    				SendAdminMessage(COLOR_YELLOW, string);
+    				SendClientMessageToAll(COLOR_YELLOW, string);
 				}else if(listitem == 5){
 				    Spieler[playerid][pFraktion] = 5;
 				    format(string,sizeof(string),"%s %s hat sich in die Fraktion O-AMT gesetzt!", GetPlayerAdminRang(playerid), GetName(playerid));
-    				SendAdminMessage(COLOR_YELLOW, string);
+    				SendClientMessageToAll(COLOR_YELLOW, string);
 				}else if(listitem == 6){
 					Spieler[playerid][pFraktion] = 6;
 				    format(string,sizeof(string),"%s %s hat sich in die Fraktion Grove Street gesetzt!", GetPlayerAdminRang(playerid), GetName(playerid));
-    				SendAdminMessage(COLOR_YELLOW, string);
+    				SendClientMessageToAll(COLOR_YELLOW, string);
 				}else if(listitem == 7){
                     Spieler[playerid][pFraktion] = 7;
 				    format(string,sizeof(string),"%s %s hat sich in die Fraktion Ballas gesetzt!", GetPlayerAdminRang(playerid), GetName(playerid));
-    				SendAdminMessage(COLOR_YELLOW, string);
+    				SendClientMessageToAll(COLOR_YELLOW, string);
 				}else if(listitem == 8){
 				    Spieler[playerid][pFraktion] = 8;
 				    format(string,sizeof(string),"%s %s hat sich in die Fraktion Fahrschule gesetzt!", GetPlayerAdminRang(playerid), GetName(playerid));
-    				SendAdminMessage(COLOR_YELLOW, string);
+    				SendClientMessageToAll(COLOR_YELLOW, string);
 				}else if(listitem == 9){
 				    Spieler[playerid][pFraktion] = 9;
 				    format(string,sizeof(string),"%s %s hat sich in die Fraktion Regierung gesetzt!", GetPlayerAdminRang(playerid), GetName(playerid));
-    				SendAdminMessage(COLOR_YELLOW, string);
+    				SendClientMessageToAll(COLOR_YELLOW, string);
 				}else if(listitem == 10){
 				    Spieler[playerid][pFraktion] = 10;
 				    format(string,sizeof(string),"%s %s hat sich in die Fraktion Yakuza gesetzt!", GetPlayerAdminRang(playerid), GetName(playerid));
-    				SendAdminMessage(COLOR_YELLOW, string);
+    				SendClientMessageToAll(COLOR_YELLOW, string);
 				}else if(listitem == 11){
 				    Spieler[playerid][pFraktion] = 11;
 				    format(string,sizeof(string),"%s %s hat sich in die Fraktion Aztecaz gesetzt!", GetPlayerAdminRang(playerid), GetName(playerid));
-    				SendAdminMessage(COLOR_YELLOW, string);
+    				SendClientMessageToAll(COLOR_YELLOW, string);
 				}else if(listitem == 12){
 				    Spieler[playerid][pFraktion] = 12;
 				    format(string,sizeof(string),"%s %s hat sich in die Fraktion Cali Kartell gesetzt!", GetPlayerAdminRang(playerid), GetName(playerid));
-    				SendAdminMessage(COLOR_YELLOW, string);
+    				SendClientMessageToAll(COLOR_YELLOW, string);
 				}else if(listitem == 13){
 				    Spieler[playerid][pFraktion] = 13;
 				    format(string,sizeof(string),"%s %s hat sich in die Fraktion Vagos gesetzt!", GetPlayerAdminRang(playerid), GetName(playerid));
-    				SendAdminMessage(COLOR_YELLOW, string);
+    				SendClientMessageToAll(COLOR_YELLOW, string);
 				}else if(listitem == 14){
                     Spieler[playerid][pFraktion] = 14;
 				    format(string,sizeof(string),"%s %s hat sich in die Fraktion Agency gesetzt!", GetPlayerAdminRang(playerid), GetName(playerid));
-    				SendAdminMessage(COLOR_YELLOW, string);
+    				SendClientMessageToAll(COLOR_YELLOW, string);
 				}else if(listitem == 15){
 				    Spieler[playerid][pFraktion] = 15;
 				    format(string,sizeof(string),"%s %s hat sich in die Fraktion Nine Demons gesetzt!", GetPlayerAdminRang(playerid), GetName(playerid));
-    				SendAdminMessage(COLOR_YELLOW, string);
+    				SendClientMessageToAll(COLOR_YELLOW, string);
 				}else if(listitem == 16){
 				    Spieler[playerid][pFraktion] = 16;
 				    format(string,sizeof(string),"%s %s hat sich in die Fraktion LVPD gesetzt!", GetPlayerAdminRang(playerid), GetName(playerid));
-    				SendAdminMessage(COLOR_YELLOW, string);
+    				SendClientMessageToAll(COLOR_YELLOW, string);
 				}else if(listitem == 17){
 				    Spieler[playerid][pFraktion] = 17;
 				    format(string,sizeof(string),"%s %s hat sich in die Fraktion Wheelman gesetzt!", GetPlayerAdminRang(playerid), GetName(playerid));
-    				SendAdminMessage(COLOR_YELLOW, string);
+    				SendClientMessageToAll(COLOR_YELLOW, string);
 				}else if(listitem == 18){
                     Spieler[playerid][pFraktion] = 18;
 				    format(string,sizeof(string),"%s %s hat sich in die Fraktion Army gesetzt!", GetPlayerAdminRang(playerid), GetName(playerid));
-    				SendAdminMessage(COLOR_YELLOW, string);
+    				SendClientMessageToAll(COLOR_YELLOW, string);
 				}else if(listitem == 19){
                     Spieler[playerid][pFraktion] = 19;
 				    format(string,sizeof(string),"%s %s hat sich in die Fraktion Terroristen gesetzt!", GetPlayerAdminRang(playerid), GetName(playerid));
-    				SendAdminMessage(COLOR_YELLOW, string);
+    				SendClientMessageToAll(COLOR_YELLOW, string);
 				}else if(listitem == 20){
 				    Spieler[playerid][pFraktion] = 20;
 				    format(string,sizeof(string),"%s %s hat sich in die Fraktion LCN gesetzt!", GetPlayerAdminRang(playerid), GetName(playerid));
-    				SendAdminMessage(COLOR_YELLOW, string);
+    				SendClientMessageToAll(COLOR_YELLOW, string);
 				}else if(listitem == 21){
 				    Spieler[playerid][pFraktion] = 21;
 				    format(string,sizeof(string),"%s %s hat sich in die Fraktion Triaden gesetzt!", GetPlayerAdminRang(playerid), GetName(playerid));
-    				SendAdminMessage(COLOR_YELLOW, string);
+    				SendClientMessageToAll(COLOR_YELLOW, string);
 				}else if(listitem == 22){
                     Spieler[playerid][pFraktion] = 22;
 				    format(string,sizeof(string),"%s %s hat sich in die Fraktion Zollamt gesetzt!", GetPlayerAdminRang(playerid), GetName(playerid));
-    				SendAdminMessage(COLOR_YELLOW, string);
+    				SendClientMessageToAll(COLOR_YELLOW, string);
 				}
 			}
 		}
