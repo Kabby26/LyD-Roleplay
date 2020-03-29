@@ -9,31 +9,53 @@ static Float:STREAMDISTANCE = 250.0;
 static Float:DRAWDISTANCE   = 230.0;
 
 // LSPD points
-#define LSPD_INTERIOR_ENTER_COORDS		        960.5489, -1598.3197, 13.6220
+#define LSPD_INTERIOR_ENTER_COORDS		        1554.7012,-1675.6483,16.1953
 #define LSPD_INTERIOR_EXIT_COORDS		        1619.5063, -1377.3353, 1962.5280
 #define LSPD_INTERIOR_ENTER_FACING		        0.0000
 #define LSPD_INTERIOR_EXIT_FACING               270.0000
-#define LSPD_STATEREPAIR_COORDS			        1027.2825, -1616.0955, 5.9308
-#define LSPD_ARREST_COORDS                      1027.3700, -1672.3691, 5.9308
-#define LSPD_HELI_STAIRS_POINT                  949.6291, -1606.3474, 22.5215
+#define LSPD_STATEREPAIR_COORDS			        1585.2158,-1677.6071,5.8977
+#define LSPD_ARREST_COORDS                      1561.0787,-1694.2789,5.8906
+#define LSPD_HELI_STAIRS_POINT                  1565.0645,-1684.4164,28.3956
 #define LSPD_HELI_STAIRS_POINT_FACING           90.0000
 #define LSPD_INTERIOR_HELI_STAIRS_POINT         1626.2921, -1369.3011, 1962.5068
 #define LSPD_INTERIOR_HELI_STAIRS_POINT_FACING  180.0000
-#define LSPD_GATE_FOR_RANGE_COORDS	            999.0969, -1602.5316, 8.4957
-#define LSPD_GATE_OPEN_Z                        9.7009
-#define LSPD_GATE_CLOSED_Z                      4.5309
+#define LSPD_GATE_FOR_RANGE_COORDS	            1544.6738, -1630.8242, 13.0934
+#define LSPD_GATE2_FOR_RANGE_COORDS	            1587.6007, -1638.3031, 14.0443
+
+#define LSPD_GATE_CLOSED_X                      1544.6738
+#define LSPD_GATE_CLOSED_Y                      -1630.8242
+#define LSPD_GATE_CLOSED_Z                      13.0934
+#define LSPD_GATE_CLOSED_rX                     0.0000
+#define LSPD_GATE_CLOSED_rY                     0.0000
+#define LSPD_GATE_CLOSED_rZ                     90.0000
+
+#define LSPD_GATE_OPEN_X                        1544.6738
+#define LSPD_GATE_OPEN_Y                        -1630.8242
+#define LSPD_GATE_OPEN_Z                        13.0933
+#define LSPD_GATE_OPEN_rX                       0.0000
+#define LSPD_GATE_OPEN_rY                       90.0000
+#define LSPD_GATE_OPEN_rZ                       90.0000
+
+#define LSPD_GATE2_CLOSED_X                      1587.6007
+#define LSPD_GATE2_CLOSED_Y                      -1638.3031
+#define LSPD_GATE2_CLOSED_Z                      14.0443
+
+#define LSPD_GATE2_OPEN_X                        1587.6008
+#define LSPD_GATE2_OPEN_Y                        -1638.3032
+#define LSPD_GATE2_OPEN_Z                        8.1642
 
 #define LSPD_INTERIOR_GARAGE_POINT              1642.4449, -1388.1652, 1962.5164
 #define LSPD_INTERIOR_GARAGE_POINT_FACING       0.0000
-#define LSPD_GARAGE_POINT                       1040.0753, -1632.6056, 5.9308
+#define LSPD_GARAGE_POINT                       1524.9681,-1677.8594,5.8906
 #define LSPD_GARAGE_POINT_FACING                270.0000
 
 // Map variables
-new object_lspdExterior[304];
+new object_lspdExterior[17];
 new pickup_lspdExterior[5];
 new text3D_lspdExterior[2];
-new actor_lspdExterior[1];
+//new actor_lspdExterior[1];
 new object_lspdExterior_gate;
+new object_lspdExterior_gate2;
 
 
 CMD:pdgate(playerid, params[]) {
@@ -41,14 +63,43 @@ CMD:pdgate(playerid, params[]) {
         return SendClientMessage(playerid, COLOR_RED, "Du bist kein Staatsbeamter.");
 
     if (IsPlayerInRangeOfPoint(playerid, 20.0, LSPD_GATE_FOR_RANGE_COORDS)) {
-        new Float:fX, Float:fY, Float:fZ;
+        new Float:fX, Float:fY, Float:fZ, Float:rX, Float:rY, Float:rZ;
         GetDynamicObjectPos(object_lspdExterior_gate, fX, fY, fZ);
+        GetDynamicObjectRot(object_lspdExterior_gate, rX, rY, rZ);
         
-        if (fZ == LSPD_GATE_OPEN_Z)
-            MoveDynamicObject(object_lspdExterior_gate, fX, fY, LSPD_GATE_CLOSED_Z, 3.25);
-        else
-            MoveDynamicObject(object_lspdExterior_gate, fX, fY, LSPD_GATE_OPEN_Z, 3.25);
+        if (rY == LSPD_GATE_OPEN_rY){
+            MoveDynamicObject(object_lspdExterior_gate, LSPD_GATE_CLOSED_X, LSPD_GATE_CLOSED_Y, LSPD_GATE_CLOSED_Z, 0.005, LSPD_GATE_CLOSED_rX, LSPD_GATE_CLOSED_rY, LSPD_GATE_CLOSED_rZ);
+            DestroyDynamicObject(object_lspdExterior[0]);
+            DestroyDynamicObject(object_lspdExterior[13]);
+            DestroyDynamicObject(object_lspdExterior[14]);
+            DestroyDynamicObject(object_lspdExterior[15]);
+            object_lspdExterior[0] = CreateDynamicObject(18649, 1544.7429, -1625.7784, 12.0726, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_LSPDEXTERIOR_INTERIOR, .streamdistance = -1, .drawdistance = DRAWDISTANCE); //Grüne Roehre
+            object_lspdExterior[13] = CreateDynamicObject(18649, 1544.7429, -1623.6386, 12.0726, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_LSPDEXTERIOR_INTERIOR, .streamdistance = -1, .drawdistance = DRAWDISTANCE); //Grüne Roehre
+            object_lspdExterior[14] = CreateDynamicObject(18649, 1544.7429, -1627.9388, 12.0726, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_LSPDEXTERIOR_INTERIOR, .streamdistance = -1, .drawdistance = DRAWDISTANCE); //Grüne Roehre
+            object_lspdExterior[15] = CreateDynamicObject(18649, 1544.7429, -1629.9610, 12.0726, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_LSPDEXTERIOR_INTERIOR, .streamdistance = -1, .drawdistance = DRAWDISTANCE); //Grüne Roehre
 
+        }else{
+            MoveDynamicObject(object_lspdExterior_gate, LSPD_GATE_OPEN_X, LSPD_GATE_OPEN_Y, LSPD_GATE_OPEN_Z, 0.005, LSPD_GATE_OPEN_rX, LSPD_GATE_OPEN_rY, LSPD_GATE_OPEN_rZ);
+            DestroyDynamicObject(object_lspdExterior[0]);
+            DestroyDynamicObject(object_lspdExterior[13]);
+            DestroyDynamicObject(object_lspdExterior[14]);
+            DestroyDynamicObject(object_lspdExterior[15]);
+            object_lspdExterior[0] = CreateDynamicObject(18647, 1544.7429, -1625.7784, 12.0726, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_LSPDEXTERIOR_INTERIOR, .streamdistance = -1, .drawdistance = DRAWDISTANCE); //Rote Roehre
+            object_lspdExterior[13] = CreateDynamicObject(18647, 1544.7429, -1623.6386, 12.0726, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_LSPDEXTERIOR_INTERIOR, .streamdistance = -1, .drawdistance = DRAWDISTANCE); //Rote Roehre
+            object_lspdExterior[14] = CreateDynamicObject(18647, 1544.7429, -1627.9388, 12.0726, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_LSPDEXTERIOR_INTERIOR, .streamdistance = -1, .drawdistance = DRAWDISTANCE); //Rote Roehre
+            object_lspdExterior[15] = CreateDynamicObject(18647, 1544.7429, -1629.9610, 12.0726, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_LSPDEXTERIOR_INTERIOR, .streamdistance = -1, .drawdistance = DRAWDISTANCE); //Rote Roehre
+        }
+        return 1;
+    }
+
+    if (IsPlayerInRangeOfPoint(playerid, 20.0, LSPD_GATE2_FOR_RANGE_COORDS)) {
+        new Float:fX, Float:fY, Float:fZ;
+        GetDynamicObjectPos(object_lspdExterior_gate2, fX, fY, fZ);
+        if(fZ == LSPD_GATE2_OPEN_Z){
+            MoveDynamicObject(object_lspdExterior_gate2, 1587.6007, -1638.3031, 14.0443, 2.37);
+        }else{
+            MoveDynamicObject(object_lspdExterior_gate2, 1587.6007, -1638.3031, 8.1642, 2.37);
+        }
         return 1;
     }
     
@@ -56,15 +107,6 @@ CMD:pdgate(playerid, params[]) {
 }
 
 hook OnPlayerConnect(playerid) {
-	// Remove RenderWare objects
-    RemoveBuildingForPlayer(playerid, 759, 930.8439, -1615.9799, 12.2734, 0.10); // sm_bush_large_1
-    RemoveBuildingForPlayer(playerid, 634, 930.8750, -1616.7199, 11.9218, 0.10); // veg_palmkbb11
-    RemoveBuildingForPlayer(playerid, 759, 940.6640, -1616.1999, 12.3671, 0.10); // sm_bush_large_1
-    RemoveBuildingForPlayer(playerid, 6047, 952.7109, -1599.5400, 20.7108, 0.10); // wilshire1_law
-    RemoveBuildingForPlayer(playerid, 6072, 952.7109, -1599.5400, 20.7108, 0.10); // LOD Model of wilshire1_law
-    RemoveBuildingForPlayer(playerid, 6043, 955.1480, -1612.2500, 20.1718, 0.10); // wilshire1w_law
-    RemoveBuildingForPlayer(playerid, 6036, 1003.8900, -1598.0400, 17.8437, 0.10); // filler01_laW
-    RemoveBuildingForPlayer(playerid, 6073, 1003.8900, -1598.0400, 17.8437, 0.10); // LOD Model of filler01_laW
 }
 
 hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys) {
@@ -93,6 +135,28 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys) {
 }
 
 hook OnGameModeInit() {
+    object_lspdExterior[0] = CreateDynamicObject(18647, 1544.7429, -1625.7784, 12.0726, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_LSPDEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //Rote Roehre
+    //object_lspdExterior[1] = CreateDynamicObject(968, 1544.6738, -1630.8242, 13.0934, 0.0000, 0.0000, 90.0000, VW_MAIN, MAPS_LSPDEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //schranke auf
+    object_lspdExterior[2] = CreateDynamicObject(19124, 1544.6861, -1623.1914, 12.9133, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_LSPDEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //Licht Rot
+    object_lspdExterior[3] = CreateDynamicObject(968, 1544.6738, -1630.8242, 13.0934, 0.0000, 90.0000, 90.0000, VW_MAIN, MAPS_LSPDEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //schranke zu
+    object_lspdExterior[4] = CreateDynamicObject(970, 1544.6661, -1620.6628, 13.0637, 0.0000, 0.0000, 90.0000, VW_MAIN, MAPS_LSPDEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //fencesmallb
+    object_lspdExterior[5] = CreateDynamicObject(2990, 1587.6007, -1638.3031, 14.0443, 0.0000, 0.0000, 180.0000, VW_MAIN, MAPS_LSPDEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //gate zu
+    object_lspdExterior[6] = CreateDynamicObject(19124, 1543.8752, -1633.1999, 13.0934, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_LSPDEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //Licht Rot
+    object_lspdExterior[7] = CreateDynamicObject(19124, 1543.8752, -1635.5517, 13.0934, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_LSPDEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //Licht Rot
+    object_lspdExterior[8] = CreateDynamicObject(19124, 1543.8752, -1634.3607, 13.0934, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_LSPDEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //Licht Rot
+    object_lspdExterior[9] = CreateDynamicObject(970, 1543.8852, -1637.9182, 13.4737, 0.0000, 0.0000, 90.0000, VW_MAIN, MAPS_LSPDEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //fencesmallb
+    object_lspdExterior[10] = CreateDynamicObject(19124, 1544.6258, -1618.2597, 13.0634, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_LSPDEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //Licht Rot
+    //object_lspdExterior[11] = CreateDynamicObject(2990, 1587.6007, -1638.3031, 8.1642, 0.0000, 0.0000, 180.0000, VW_MAIN, MAPS_LSPDEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //gate auf
+    object_lspdExterior[12] = CreateDynamicObject(1566, 1564.2777, -1683.8099, 28.9020, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_LSPDEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //CJ_WS_DOOR
+    object_lspdExterior[13] = CreateDynamicObject(18647, 1544.7429, -1623.6386, 12.0726, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_LSPDEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //Rote Roehre
+    object_lspdExterior[14] = CreateDynamicObject(18647, 1544.7429, -1627.9388, 12.0726, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_LSPDEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //Rote Roehre
+    object_lspdExterior[15] = CreateDynamicObject(18647, 1544.7429, -1629.9610, 12.0726, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_LSPDEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //Rote Roehre
+    object_lspdExterior[16] = CreateDynamicObject(19172, 1555.8508, -1675.5970, 18.7009, 0.0000, 0.0000, -90.0000, VW_MAIN, MAPS_LSPDEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1
+    SetDynamicObjectMaterial(object_lspdExterior[16], 0, 7009, "vgndwntwn1", "newpolice_sa", 0x00000000);
+
+    object_lspdExterior_gate = object_lspdExterior[3];
+    object_lspdExterior_gate2 = object_lspdExterior[5];
+
     // Map Icon
     CreateDynamicMapIcon(LSPD_INTERIOR_ENTER_COORDS, 30, 0, VW_MAIN, MAPS_LSPDEXTERIOR_INTERIOR);
 
@@ -108,7 +172,7 @@ hook OnGameModeInit() {
     text3D_lspdExterior[1] = _:CreateDynamic3DTextLabel(COLOR_HEX_BLUE "Einsperrpunkt\n" COLOR_HEX_WHITE "Tippe /Arrest", COLOR_WHITE, LSPD_ARREST_COORDS, 10.0, .testlos = 1, .worldid = VW_MAIN, .interiorid = MAPS_LSPDEXTERIOR_INTERIOR); // /arrest
     
     // Actors
-    actor_lspdExterior[0] = CreateDynamicActor(50, 1031.0018, -1619.6342, 6.2667, -0.1000); //Mechanic
+    /*actor_lspdExterior[0] = CreateDynamicActor(50, 1031.0018, -1619.6342, 6.2667, -0.1000); //Mechanic
     ApplyDynamicActorAnimation(actor_lspdExterior[0], "BD_FIRE", "M_SMKLEAN_LOOP", 4.0999, 1, 0, 0, 0, 0);
 
 	// Vehicles
@@ -680,5 +744,5 @@ hook OnGameModeInit() {
 
     object_lspdExterior[303] = CreateDynamicObject(19377, 955.4387, -1604.9707, 25.9137, 0.0000, 90.0000, 90.0000, VW_MAIN, MAPS_LSPDEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //wall025
     SetDynamicObjectMaterial(object_lspdExterior[303], 0, 16093, "a51_ext", "ws_whitewall2_top", 0xFFFFFFFF);
-    object_lspdExterior_gate = object_lspdExterior[302];
+    object_lspdExterior_gate = object_lspdExterior[302];*/
 }

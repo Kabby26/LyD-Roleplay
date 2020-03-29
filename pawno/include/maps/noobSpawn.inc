@@ -12,10 +12,10 @@ static Float:DRAWDISTANCE   = 230.0;
 #define NOOBSPAWN_SERVERINFO_POINT   817.4735, -1345.8376, 13.5269
 
 // Map variables
-new object_noobSpawn[65];
+new object_noobSpawn[54];
 new pickup_noobSpawn[2];
 new text3D_noobSpawn[2];
-new actor_noobSpawn[2];
+//new actor_noobSpawn[2];
 
 hook OnPlayerConnect(playerid) {
     // ---
@@ -37,123 +37,97 @@ hook OnGameModeInit() {
     text3D_noobSpawn[0] = _:CreateDynamic3DTextLabel("Server Informationen\n" COLOR_HEX_WHITE "Tippe /Info", COLOR_GREEN, NOOBSPAWN_SERVERINFO_POINT, 15.0, .testlos = 1, .worldid = VW_MAIN, .interiorid = MAPS_NOOBSPAWN_INTERIOR);
     text3D_noobSpawn[1] = _:CreateDynamic3DTextLabel("Startbonus\n" COLOR_HEX_RED "Tippe: /Startbonus", COLOR_GREEN, NOOBSPAWN_STARTBONUS_POINT, 20.0, .testlos = 1, .worldid = VW_MAIN, .interiorid = MAPS_NOOBSPAWN_INTERIOR);
 
-    // Actors
-    actor_noobSpawn[0] = CreateDynamicActor(150, 809.7925, -1338.9929, 13.5400, 255.5065, .worldid = VW_MAIN, .interiorid = MAPS_NOOBSPAWN_INTERIOR); // Greeting woman
-    actor_noobSpawn[1] = CreateDynamicActor(141, 816.6170, -1345.5221, 13.5283, 271.2476, .worldid = VW_MAIN, .interiorid = MAPS_NOOBSPAWN_INTERIOR); // Information woman
-
-	// Objects
-    object_noobSpawn[0] = CreateDynamicObject(970, 825.3814, -1337.3884, 13.0036, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //fencesmallb
-    SetDynamicObjectMaterial(object_noobSpawn[0], 0, 10101, "2notherbuildsfe", "Bow_Abpave_Gen", 0xFFFFFFFF);
-    object_noobSpawn[1] = CreateDynamicObject(970, 821.2515, -1337.3884, 13.0036, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //fencesmallb
-    SetDynamicObjectMaterial(object_noobSpawn[1], 0, 10101, "2notherbuildsfe", "Bow_Abpave_Gen", 0xFFFFFFFF);
-    object_noobSpawn[2] = CreateDynamicObject(970, 813.6513, -1337.3884, 13.0036, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //fencesmallb
-    SetDynamicObjectMaterial(object_noobSpawn[2], 0, 10101, "2notherbuildsfe", "Bow_Abpave_Gen", 0xFFFFFFFF);
-    object_noobSpawn[3] = CreateDynamicObject(19121, 815.8870, -1337.3857, 13.0712, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //BollardLight1
-    object_noobSpawn[4] = CreateDynamicObject(19452, 808.5363, -1339.5000, 11.0361, 89.8000, -24.6000, -1.2999, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //wall092
-    SetDynamicObjectMaterial(object_noobSpawn[4], 0, 14650, "ab_trukstpc", "mp_CJ_WOOD5", 0xFFFFFFFF);
-    object_noobSpawn[5] = CreateDynamicObject(19121, 818.9970, -1337.3857, 13.0712, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //BollardLight1
-    object_noobSpawn[6] = CreateDynamicObject(970, 807.4481, -1346.5837, 13.0527, -0.0996, -0.1999, -90.0998, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //fencesmallb
-    SetDynamicObjectMaterial(object_noobSpawn[6], 0, 10101, "2notherbuildsfe", "Bow_Abpave_Gen", 0xFFFFFFFF);
-    object_noobSpawn[7] = CreateDynamicObject(970, 807.4406, -1350.7430, 13.0670, -0.0996, -0.1999, -90.0998, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //fencesmallb
-    SetDynamicObjectMaterial(object_noobSpawn[7], 0, 10101, "2notherbuildsfe", "Bow_Abpave_Gen", 0xFFFFFFFF);
-    object_noobSpawn[8] = CreateDynamicObject(970, 807.4334, -1354.9045, 13.0818, -0.0996, -0.1999, -90.0998, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //fencesmallb
-    SetDynamicObjectMaterial(object_noobSpawn[8], 0, 10101, "2notherbuildsfe", "Bow_Abpave_Gen", 0xFFFFFFFF);
-    object_noobSpawn[9] = CreateDynamicObject(970, 807.4602, -1339.4532, 13.0277, -0.0996, -0.1999, -90.0998, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //fencesmallb
-    SetDynamicObjectMaterial(object_noobSpawn[9], 0, 10101, "2notherbuildsfe", "Bow_Abpave_Gen", 0xFFFFFFFF);
-    object_noobSpawn[10] = CreateDynamicObject(19121, 807.4464, -1341.6861, 13.0712, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //BollardLight1
-    object_noobSpawn[11] = CreateDynamicObject(19121, 807.4464, -1344.3664, 13.0712, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //BollardLight1
-    object_noobSpawn[12] = CreateDynamicObject(19121, 807.5366, -1357.0367, 13.0712, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //BollardLight1
-    object_noobSpawn[13] = CreateDynamicObject(1280, 811.2056, -1356.6291, 12.9231, 0.0000, 0.0000, -89.4999, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //parkbench1
-    SetDynamicObjectMaterial(object_noobSpawn[13], 1, 14668, "711c", "gun_ceiling1128", 0xFFFFFFFF);
-    object_noobSpawn[14] = CreateDynamicObject(1360, 849.4369, -1378.2752, -0.7429, 0.0000, 0.0000, 46.5000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //CJ_BUSH_PROP3
-    SetDynamicObjectMaterial(object_noobSpawn[14], 0, 2951, "a51_labdoor", "washapartwall1_256", 0xFFFFFFFF);
-    SetDynamicObjectMaterial(object_noobSpawn[14], 2, 16322, "a51_stores", "metalic128", 0xFFFFFFFF);
-    object_noobSpawn[15] = CreateDynamicObject(1360, 853.4190, -1382.0546, -0.7429, 0.0000, 0.0000, 46.5000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //CJ_BUSH_PROP3
-    SetDynamicObjectMaterial(object_noobSpawn[15], 0, 2951, "a51_labdoor", "washapartwall1_256", 0xFFFFFFFF);
-    SetDynamicObjectMaterial(object_noobSpawn[15], 2, 16322, "a51_stores", "metalic128", 0xFFFFFFFF);
-    object_noobSpawn[16] = CreateDynamicObject(1360, 857.0679, -1385.5168, -0.7429, 0.0000, 0.0000, 46.5000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //CJ_BUSH_PROP3
-    SetDynamicObjectMaterial(object_noobSpawn[16], 0, 2951, "a51_labdoor", "washapartwall1_256", 0xFFFFFFFF);
-    SetDynamicObjectMaterial(object_noobSpawn[16], 2, 16322, "a51_stores", "metalic128", 0xFFFFFFFF);
-    object_noobSpawn[17] = CreateDynamicObject(19172, 808.7720, -1339.1927, 14.1365, 0.0000, -0.2000, 64.0998, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1
-    SetDynamicObjectMaterialText(object_noobSpawn[17], 0,"Forum: www.monkey-roleplay.de", 90, "Arial", 16, 1, 0xFFFFFFFF, 0x0, 0);
-    object_noobSpawn[18] = CreateDynamicObject(19172, 808.7848, -1339.1671, 14.7067, 0.0000, -0.2000, 64.0998, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1
-    SetDynamicObjectMaterialText(object_noobSpawn[18], 0,"Unsere Plattformen:", 90, "Arial", 24, 1, 0xFFFFFFFF, 0x0, 0);
-    object_noobSpawn[19] = CreateDynamicObject(19172, 808.7589, -1339.2186, 13.7064, 0.0000, -0.2000, 64.0998, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1
-    SetDynamicObjectMaterialText(object_noobSpawn[19], 0,"Teamspeak: ts.monkey-roleplay.de", 90, "Arial", 16, 1, 0xFFFFFFFF, 0x0, 0);
-    object_noobSpawn[20] = CreateDynamicObject(19172, 808.7546, -1339.2282, 13.9264, 0.0000, -0.2000, 64.0998, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1
-    SetDynamicObjectMaterialText(object_noobSpawn[20], 0,"UCP: ucp.monkey-roleplay.de", 90, "Arial", 16, 1, 0xFFFFFFFF, 0x0, 0);
-    object_noobSpawn[21] = CreateDynamicObject(19172, 808.3779, -1355.2445, 14.7985, 0.0000, -0.2000, 129.9998, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1
-    SetDynamicObjectMaterialText(object_noobSpawn[21], 0,"Willkommen auf MRP!", 90, "Arial", 22, 1, 0xFFFFFFFF, 0x0, 0);
-    object_noobSpawn[22] = CreateDynamicObject(19172, 808.4025, -1355.2229, 14.1688, -0.7999, -0.2000, 129.7998, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1
-    SetDynamicObjectMaterialText(object_noobSpawn[22], 0,"Fuer Cheatermeldungen - benutze /Admin", 90, "Arial", 14, 1, 0xFFFFFFFF, 0x0, 0);
-    object_noobSpawn[23] = CreateDynamicObject(19172, 808.4042, -1355.2202, 13.9488, -0.7999, -0.2000, 129.7998, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1
-    SetDynamicObjectMaterialText(object_noobSpawn[23], 0,"Fuer die Orientierung - benutze /Navi", 90, "Arial", 15, 1, 0xFFFFFFFF, 0x0, 0);
-    object_noobSpawn[24] = CreateDynamicObject(1280, 813.2362, -1337.6838, 12.9231, 0.0000, 0.0000, 90.1001, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //parkbench1
-    SetDynamicObjectMaterial(object_noobSpawn[24], 1, 14668, "711c", "gun_ceiling1128", 0xFFFFFFFF);
-    object_noobSpawn[25] = CreateDynamicObject(1280, 822.0169, -1337.6694, 12.9231, 0.0000, 0.0000, 90.1001, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //parkbench1
-    SetDynamicObjectMaterial(object_noobSpawn[25], 1, 14668, "711c", "gun_ceiling1128", 0xFFFFFFFF);
-    object_noobSpawn[26] = CreateDynamicObject(19172, 808.4005, -1355.2257, 14.3988, -0.7999, -0.2000, 129.7998, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1
-    SetDynamicObjectMaterialText(object_noobSpawn[26], 0,"Fuer Fragen - benutze /Sup", 90, "Arial", 15, 1, 0xFFFFFFFF, 0x0, 0);
-    object_noobSpawn[27] = CreateDynamicObject(970, 809.5009, -1337.3884, 13.0036, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //fencesmallb
-    SetDynamicObjectMaterial(object_noobSpawn[27], 0, 10101, "2notherbuildsfe", "Bow_Abpave_Gen", 0xFFFFFFFF);
-    object_noobSpawn[28] = CreateDynamicObject(1360, 845.0623, -1374.1252, -0.7429, 0.0000, 0.0000, 46.5000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //CJ_BUSH_PROP3
-    SetDynamicObjectMaterial(object_noobSpawn[28], 0, 2951, "a51_labdoor", "washapartwall1_256", 0xFFFFFFFF);
-    SetDynamicObjectMaterial(object_noobSpawn[28], 2, 16322, "a51_stores", "metalic128", 0xFFFFFFFF);
-    object_noobSpawn[29] = CreateDynamicObject(1360, 839.3535, -1368.7060, -0.7429, 0.0000, 0.0000, 46.5000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //CJ_BUSH_PROP3
-    SetDynamicObjectMaterial(object_noobSpawn[29], 0, 2951, "a51_labdoor", "washapartwall1_256", 0xFFFFFFFF);
-    SetDynamicObjectMaterial(object_noobSpawn[29], 2, 16322, "a51_stores", "metalic128", 0xFFFFFFFF);
-    object_noobSpawn[30] = CreateDynamicObject(1375, 815.3081, -1359.7972, 0.1385, -0.2998, 1.0000, 47.6996, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //tramstop_SF
-    object_noobSpawn[31] = CreateDynamicObject(640, 841.4866, -1341.9995, 6.7670, 0.0000, 0.0000, 23.7999, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //kb_planter+bush2
-    SetDynamicObjectMaterial(object_noobSpawn[31], 0, 10101, "2notherbuildsfe", "Bow_Abpave_Gen", 0xFFFFFFFF);
-    object_noobSpawn[32] = CreateDynamicObject(1360, 814.6018, -1346.1185, -0.8320, 0.0000, 0.0000, 47.2000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //CJ_BUSH_PROP3
-    object_noobSpawn[33] = CreateDynamicObject(1375, 796.9146, -1342.7358, 0.0697, 0.0000, 0.3998, 51.7000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //tramstop_SF
-    object_noobSpawn[34] = CreateDynamicObject(1360, 820.2686, -1351.2290, -0.8920, 0.0000, 0.0000, 47.2000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //CJ_BUSH_PROP3
-    object_noobSpawn[35] = CreateDynamicObject(1360, 808.6868, -1340.8188, -0.7421, 0.0000, 0.0000, 47.2000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //CJ_BUSH_PROP3
-    object_noobSpawn[36] = CreateDynamicObject(1360, 802.9547, -1335.6457, -0.7421, 0.0000, 0.0000, 47.2000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //CJ_BUSH_PROP3
-    object_noobSpawn[37] = CreateDynamicObject(1360, 796.7241, -1330.2165, -0.7421, 0.0000, 0.0000, 47.2000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //CJ_BUSH_PROP3
-    object_noobSpawn[38] = CreateDynamicObject(1360, 789.8045, -1323.9852, -0.7421, 0.0000, 0.0000, 47.2000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //CJ_BUSH_PROP3
-    object_noobSpawn[39] = CreateDynamicObject(1233, 816.4837, -1332.9117, 14.0256, 0.0000, 0.0000, 179.8000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //noparkingsign1
-    object_noobSpawn[40] = CreateDynamicObject(1375, 825.1723, -1368.7724, -0.1176, -0.2998, 1.0000, 47.6996, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //tramstop_SF
-    object_noobSpawn[41] = CreateDynamicObject(967, 816.3640, -1346.6331, 12.5152, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //bar_gatebox01
-    SetDynamicObjectMaterial(object_noobSpawn[41], 0, 10765, "airportgnd_sfse", "desgreengrass", 0xFFFFFFFF);
-    SetDynamicObjectMaterial(object_noobSpawn[41], 1, 10765, "airportgnd_sfse", "ws_whiteplaster_top", 0xFFFFFFFF);
-    object_noobSpawn[42] = CreateDynamicObject(2942, 827.1663, -1355.6239, 13.1646, 0.0000, 0.0000, -90.6998, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //kmb_atm1
-    object_noobSpawn[43] = CreateDynamicObject(3802, 826.8685, -1352.6462, 17.5550, 0.0996, 1.5999, 179.1999, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //sfx_plant03
-    SetDynamicObjectMaterial(object_noobSpawn[43], 1, 16093, "a51_ext", "block2_high", 0xFFFFFFFF);
-    SetDynamicObjectMaterial(object_noobSpawn[43], 3, 16093, "a51_ext", "stormdrain2_nt", 0xFFFFFFFF);
-    SetDynamicObjectMaterial(object_noobSpawn[43], 5, 16093, "a51_ext", "BLOCK2", 0xFFFFFFFF);
-    object_noobSpawn[44] = CreateDynamicObject(19358, 808.4810, -1355.4625, 14.1331, 0.0000, -0.8999, 39.7999, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //wall006
-    SetDynamicObjectMaterial(object_noobSpawn[44], 0, 14652, "ab_trukstpa", "CJ_WOOD6", 0xFFFFFFFF);
-    object_noobSpawn[45] = CreateDynamicObject(3802, 814.8411, -1356.4261, 17.5310, 0.0000, 0.0000, 91.4998, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //sfx_plant03
-    SetDynamicObjectMaterial(object_noobSpawn[45], 1, 16093, "a51_ext", "block2_high", 0xFFFFFFFF);
-    object_noobSpawn[46] = CreateDynamicObject(1360, 834.5607, -1364.2596, -0.8920, 0.0000, 0.0000, 47.2000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //CJ_BUSH_PROP3
-    SetDynamicObjectMaterial(object_noobSpawn[46], 1, 16322, "a51_stores", "metalic128", 0xFFFFFFFF);
-    object_noobSpawn[47] = CreateDynamicObject(3802, 817.3513, -1339.9890, 17.6177, 0.8999, 2.0999, -90.1996, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //sfx_plant03
-    SetDynamicObjectMaterial(object_noobSpawn[47], 1, 16093, "a51_ext", "block2_high", 0xFFFFFFFF);
-    object_noobSpawn[48] = CreateDynamicObject(3802, 810.1104, -1347.7403, 17.5069, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //sfx_plant03
-    SetDynamicObjectMaterial(object_noobSpawn[48], 1, 16093, "a51_ext", "block2_high", 0xFFFFFFFF);
-    object_noobSpawn[49] = CreateDynamicObject(3802, 823.1591, -1356.1816, 17.5062, -0.5000, 0.4999, 89.3000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //sfx_plant03
-    SetDynamicObjectMaterial(object_noobSpawn[49], 1, 16093, "a51_ext", "block2_high", 0xFFFFFFFF);
-    object_noobSpawn[50] = CreateDynamicObject(640, 839.3153, -1337.0770, 6.7670, 0.0000, 0.0000, 23.7999, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //kb_planter+bush2
-    SetDynamicObjectMaterial(object_noobSpawn[50], 0, 10101, "2notherbuildsfe", "Bow_Abpave_Gen", 0xFFFFFFFF);
-    object_noobSpawn[51] = CreateDynamicObject(19172, 808.4059, -1355.2174, 13.7188, -0.7999, -0.2000, 129.7998, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1
-    SetDynamicObjectMaterialText(object_noobSpawn[51], 0,"Fuer eine Uebersicht - benutze /Help", 90, "Arial", 15, 1, 0xFFFFFFFF, 0x0, 0);
-    object_noobSpawn[52] = CreateDynamicObject(19172, 808.3779, -1355.2445, 14.7985, 0.0000, -0.2000, 129.9998, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //SAMPPicture1
-    SetDynamicObjectMaterialText(object_noobSpawn[52], 0,"Willkommen auf Monkey Roleplay!", 90, "Arial", 22, 1, 0xFFFFFFFF, 0x0, 0);
-    object_noobSpawn[53] = CreateDynamicObject(967, 816.3640, -1345.1729, 12.5152, 0.0000, 0.0000, -179.1999, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //bar_gatebox01
-    SetDynamicObjectMaterial(object_noobSpawn[53], 0, 10765, "airportgnd_sfse", "desgreengrass", 0xFFFFFFFF);
-    SetDynamicObjectMaterial(object_noobSpawn[53], 1, 10765, "airportgnd_sfse", "ws_whiteplaster_top", 0xFFFFFFFF);
-    object_noobSpawn[54] = CreateDynamicObject(1239, 817.0948, -1345.2106, 13.5363, 0.0000, 0.0000, -93.3999, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //info
-    object_noobSpawn[55] = CreateDynamicObject(1375, 832.9511, -1375.8508, -0.3194, -0.6998, 1.0000, 47.6996, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //tramstop_SF
-    object_noobSpawn[56] = CreateDynamicObject(970, 825.4514, -1344.5699, 13.0036, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //fencesmallb
-    SetDynamicObjectMaterial(object_noobSpawn[56], 0, 10101, "2notherbuildsfe", "Bow_Abpave_Gen", 0xFFFFFFFF);
-    object_noobSpawn[57] = CreateDynamicObject(19121, 823.2172, -1344.5666, 13.0712, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //BollardLight1
-    object_noobSpawn[58] = CreateDynamicObject(1286, 813.7977, -1356.6202, 13.1358, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //newstandnew4
-    object_noobSpawn[59] = CreateDynamicObject(1286, 813.3776, -1356.6202, 13.1358, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //newstandnew4
-    object_noobSpawn[60] = CreateDynamicObject(1286, 817.6781, -1356.6202, 13.1358, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //newstandnew4
-    object_noobSpawn[61] = CreateDynamicObject(1286, 818.0985, -1356.6202, 13.1358, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //newstandnew4
-    object_noobSpawn[62] = CreateDynamicObject(640, 843.6531, -1346.9138, 6.7670, 0.0000, 0.0000, 23.7999, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //kb_planter+bush2
-    SetDynamicObjectMaterial(object_noobSpawn[62], 0, 10101, "2notherbuildsfe", "Bow_Abpave_Gen", 0xFFFFFFFF);
-    object_noobSpawn[63] = CreateDynamicObject(1340, 826.0897, -1348.7567, 13.5705, 0.0000, 0.0000, 179.7998, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //chillidogcart
-    object_noobSpawn[64] = CreateDynamicObject(1239, 815.6415, -1346.5881, 13.5363, 0.0000, 0.0000, -93.3999, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //info
+    object_noobSpawn[0] = CreateDynamicObject(19447, 809.3823, -1344.1517, 17.9496, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //wall087
+    SetDynamicObjectMaterial(object_noobSpawn[0], 0, 18065, "ab_sfammumain", "breezewall", 0x00000000);
+    object_noobSpawn[1] = CreateDynamicObject(19464, 816.5775, -1356.9693, 12.9498, 0.0000, 0.0000, 90.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //wall104
+    SetDynamicObjectMaterial(object_noobSpawn[1], 0, 18065, "ab_sfammumain", "breezewall", 0x00000000);
+    object_noobSpawn[2] = CreateDynamicObject(19447, 809.3823, -1353.7734, 17.9496, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //wall087
+    SetDynamicObjectMaterial(object_noobSpawn[2], 0, 18065, "ab_sfammumain", "breezewall", 0x00000000);
+    object_noobSpawn[3] = CreateDynamicObject(19447, 814.1115, -1339.3393, 17.9496, 0.0000, 0.0000, 90.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //wall087
+    SetDynamicObjectMaterial(object_noobSpawn[3], 0, 18065, "ab_sfammumain", "breezewall", 0x00000000);
+    object_noobSpawn[4] = CreateDynamicObject(19447, 823.7412, -1339.3393, 17.9496, 0.0000, 0.0000, 90.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //wall087
+    SetDynamicObjectMaterial(object_noobSpawn[4], 0, 18065, "ab_sfammumain", "breezewall", 0x00000000);
+    object_noobSpawn[5] = CreateDynamicObject(19464, 810.6477, -1356.9693, 12.9498, 0.0000, 0.0000, 90.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //wall104
+    SetDynamicObjectMaterial(object_noobSpawn[5], 0, 18065, "ab_sfammumain", "breezewall", 0x00000000);
+    object_noobSpawn[6] = CreateDynamicObject(19933, 827.7014, -1338.2187, 15.0797, 0.0000, 0.0000, 180.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //MKWallOven1
+    SetDynamicObjectMaterial(object_noobSpawn[6], 0, 18065, "ab_sfammumain", "breezewall", 0xFFFFFFFF);
+    object_noobSpawn[7] = CreateDynamicObject(18981, 820.1746, -1349.8701, 20.0464, 0.0000, 90.0000, 0.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //Concrete1mx25mx25m
+    SetDynamicObjectMaterial(object_noobSpawn[7], 0, 18065, "ab_sfammumain", "gun_floor1", 0xFFFFFAFA);
+    object_noobSpawn[8] = CreateDynamicObject(19464, 822.4882, -1356.9693, 12.9498, 0.0000, 0.0000, 90.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //wall104
+    SetDynamicObjectMaterial(object_noobSpawn[8], 0, 18065, "ab_sfammumain", "breezewall", 0x00000000);
+    object_noobSpawn[9] = CreateDynamicObject(19464, 828.4082, -1356.9693, 12.9498, 0.0000, 0.0000, 90.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //wall104
+    SetDynamicObjectMaterial(object_noobSpawn[9], 0, 18065, "ab_sfammumain", "breezewall", 0x00000000);
+    object_noobSpawn[10] = CreateDynamicObject(19464, 827.5888, -1347.5273, 12.9498, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //wall104
+    SetDynamicObjectMaterial(object_noobSpawn[10], 0, 18065, "ab_sfammumain", "breezewall", 0x00000000);
+    object_noobSpawn[11] = CreateDynamicObject(19464, 827.5888, -1353.4659, 12.9600, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //wall104
+    SetDynamicObjectMaterial(object_noobSpawn[11], 0, 18065, "ab_sfammumain", "breezewall", 0x00000000);
+    object_noobSpawn[12] = CreateDynamicObject(19464, 827.5888, -1359.3962, 12.9399, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //wall104
+    SetDynamicObjectMaterial(object_noobSpawn[12], 0, 18065, "ab_sfammumain", "breezewall", 0x00000000);
+    object_noobSpawn[13] = CreateDynamicObject(19464, 827.5888, -1346.2663, 18.0499, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //wall104
+    SetDynamicObjectMaterial(object_noobSpawn[13], 0, 18065, "ab_sfammumain", "breezewall", 0x00000000);
+    object_noobSpawn[14] = CreateDynamicObject(19464, 827.5888, -1352.1949, 18.0499, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //wall104
+    SetDynamicObjectMaterial(object_noobSpawn[14], 0, 18065, "ab_sfammumain", "breezewall", 0x00000000);
+    object_noobSpawn[15] = CreateDynamicObject(19464, 828.4082, -1356.9693, 18.0499, 0.0000, 0.0000, 90.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //wall104
+    SetDynamicObjectMaterial(object_noobSpawn[15], 0, 18065, "ab_sfammumain", "breezewall", 0x00000000);
+    object_noobSpawn[16] = CreateDynamicObject(19464, 822.4882, -1356.9693, 18.0499, 0.0000, 0.0000, 90.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //wall104
+    SetDynamicObjectMaterial(object_noobSpawn[16], 0, 18065, "ab_sfammumain", "breezewall", 0x00000000);
+    object_noobSpawn[17] = CreateDynamicObject(19464, 816.5775, -1356.9693, 18.0499, 0.0000, 0.0000, 90.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //wall104
+    SetDynamicObjectMaterial(object_noobSpawn[17], 0, 18065, "ab_sfammumain", "breezewall", 0x00000000);
+    object_noobSpawn[18] = CreateDynamicObject(19464, 810.6477, -1356.9693, 18.0499, 0.0000, 0.0000, 90.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //wall104
+    SetDynamicObjectMaterial(object_noobSpawn[18], 0, 18065, "ab_sfammumain", "breezewall", 0x00000000);
+    object_noobSpawn[19] = CreateDynamicObject(19464, 827.5888, -1358.1247, 18.0400, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //wall104
+    SetDynamicObjectMaterial(object_noobSpawn[19], 0, 18065, "ab_sfammumain", "breezewall", 0x00000000);
+    object_noobSpawn[20] = CreateDynamicObject(19464, 827.5786, -1340.3348, 18.0599, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //wall104
+    SetDynamicObjectMaterial(object_noobSpawn[20], 0, 18065, "ab_sfammumain", "breezewall", 0x00000000);
+    object_noobSpawn[21] = CreateDynamicObject(19933, 827.7014, -1337.6684, 15.0797, 0.0000, 0.0000, 180.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //MKWallOven1
+    SetDynamicObjectMaterial(object_noobSpawn[21], 0, 18065, "ab_sfammumain", "breezewall", 0xFFFFFFFF);
+    object_noobSpawn[22] = CreateDynamicObject(19933, 827.7014, -1337.6684, 14.2096, 0.0000, 0.0000, 180.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //MKWallOven1
+    SetDynamicObjectMaterial(object_noobSpawn[22], 0, 18065, "ab_sfammumain", "breezewall", 0xFFFFFFFF);
+    object_noobSpawn[23] = CreateDynamicObject(19933, 827.7014, -1337.6684, 12.4596, 0.0000, 0.0000, 180.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //MKWallOven1
+    SetDynamicObjectMaterial(object_noobSpawn[23], 0, 18065, "ab_sfammumain", "breezewall", 0xFFFFFFFF);
+    object_noobSpawn[24] = CreateDynamicObject(19933, 827.7014, -1337.6684, 13.3396, 0.0000, 0.0000, 180.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //MKWallOven1
+    SetDynamicObjectMaterial(object_noobSpawn[24], 0, 18065, "ab_sfammumain", "breezewall", 0xFFFFFFFF);
+    object_noobSpawn[25] = CreateDynamicObject(19933, 827.7014, -1338.2187, 14.2096, 0.0000, 0.0000, 180.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //MKWallOven1
+    SetDynamicObjectMaterial(object_noobSpawn[25], 0, 18065, "ab_sfammumain", "breezewall", 0xFFFFFFFF);
+    object_noobSpawn[26] = CreateDynamicObject(19933, 827.7014, -1338.2187, 13.3498, 0.0000, 0.0000, 180.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //MKWallOven1
+    SetDynamicObjectMaterial(object_noobSpawn[26], 0, 18065, "ab_sfammumain", "breezewall", 0xFFFFFFFF);
+    object_noobSpawn[27] = CreateDynamicObject(19933, 827.7014, -1338.2187, 12.4696, 0.0000, 0.0000, 180.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //MKWallOven1
+    SetDynamicObjectMaterial(object_noobSpawn[27], 0, 18065, "ab_sfammumain", "breezewall", 0xFFFFFFFF);
+    object_noobSpawn[28] = CreateDynamicObject(19786, 809.4688, -1351.4438, 17.6622, 5.0000, 0.0000, 90.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //LCDTVBig1
+    object_noobSpawn[29] = CreateDynamicObject(640, 811.1193, -1356.4018, 13.0853, 0.0000, 0.0000, 90.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //kb_planter+bush2
+    object_noobSpawn[30] = CreateDynamicObject(19786, 809.4688, -1344.5146, 17.6622, 5.0000, 0.0000, 90.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //LCDTVBig1
+    object_noobSpawn[31] = CreateObject(19172, 809.6021, -1347.8487, 17.6746, 8.6000, 0.0000, 90.0000); //SAMPPicture1
+    SetObjectMaterialText(object_noobSpawn[31], "Herzlich Willkommen!", 0, OBJECT_MATERIAL_SIZE_256x128, "Arial", 24, 1, 0xFFFFFFFF, 0x00000000, 1);
+    SetObjectMaterialText(object_noobSpawn[31], "", 1, OBJECT_MATERIAL_SIZE_256x128, "Arial", 24, 1, 0xFFFFFFFF, 0x00000000, 0);
+    object_noobSpawn[32] = CreateDynamicObject(19786, 809.4688, -1347.8658, 17.6622, 5.0000, 0.0000, 90.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //LCDTVBig1
+    object_noobSpawn[33] = CreateObject(19172, 809.6021, -1351.4200, 17.6746, 8.6000, 0.0000, 90.0000); //SAMPPicture1
+    SetObjectMaterialText(object_noobSpawn[33], "monkey-roleplay.de", 0, OBJECT_MATERIAL_SIZE_256x128, "Arial", 24, 1, 0xFFFFFFFF, 0x00000000, 1);
+    SetObjectMaterialText(object_noobSpawn[33], "", 1, OBJECT_MATERIAL_SIZE_256x128, "Arial", 24, 1, 0xFFFFFFFF, 0x00000000, 0);
+    object_noobSpawn[34] = CreateObject(19172, 837.4721, -1357.5288, 21.8057, 0.0000, 0.0000, -90.0000); //SAMPPicture1
+    SetObjectMaterialText(object_noobSpawn[34], "Call Wasio: Tel.: +49 421 390 4 7777", 0, OBJECT_MATERIAL_SIZE_256x128, "Arial", 24, 0, 0xFFFFFFFF, 0x00000000, 1);
+    SetObjectMaterialText(object_noobSpawn[34], "", 1, OBJECT_MATERIAL_SIZE_256x128, "Arial", 10, 1, 0xFFFFFFFF, 0x00000000, 0);
+    SetObjectMaterialText(object_noobSpawn[34], "Example Text", 2, OBJECT_MATERIAL_SIZE_256x128, "Arial", 24, 1, 0xFFFFFFFF, 0x00000000, 0);
+    object_noobSpawn[35] = CreateDynamicObject(640, 821.7105, -1356.4018, 13.0853, 0.0000, 0.0000, 90.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //kb_planter+bush2
+    object_noobSpawn[36] = CreateDynamicObject(1280, 816.4568, -1356.5080, 12.9144, 0.0000, 0.0000, -90.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //parkbench1
+    object_noobSpawn[37] = CreateDynamicObject(640, 827.0703, -1348.8016, 13.0853, 0.0000, 0.0000, 180.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //kb_planter+bush2
+    object_noobSpawn[38] = CreateDynamicObject(640, 824.6304, -1337.8608, 13.0853, 0.0000, 0.0000, 90.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //kb_planter+bush2
+    object_noobSpawn[39] = CreateDynamicObject(640, 817.7382, -1337.8608, 13.0853, 0.0000, 0.0000, 90.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //kb_planter+bush2
+    object_noobSpawn[40] = CreateDynamicObject(640, 810.5885, -1337.8608, 13.0853, 0.0000, 0.0000, 90.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //kb_planter+bush2
+    object_noobSpawn[41] = CreateDynamicObject(19126, 821.1812, -1337.8287, 13.0666, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //BollardLight6
+    object_noobSpawn[42] = CreateDynamicObject(19126, 814.1812, -1337.8287, 13.0666, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //BollardLight6
+    object_noobSpawn[43] = CreateObject(19173, 827.2185, -1354.4537, 12.3493, 0.0000, 0.0000, 90.0000); //SAMPPicture2
+    SetObjectMaterialText(object_noobSpawn[43], "#WASIO", 0, OBJECT_MATERIAL_SIZE_256x128, "Segoe Print", 24, 1, 0xFFE6E6FA, 0x00000000, 0);
+    SetObjectMaterialText(object_noobSpawn[43], "Example Text", 1, OBJECT_MATERIAL_SIZE_256x128, "Arial", 24, 1, 0xFFFFFFFF, 0x00000000, 0);
+    object_noobSpawn[44] = CreateDynamicObject(970, 808.0289, -1353.6430, 13.0836, 0.0000, 0.0000, 90.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //fencesmallb
+    object_noobSpawn[45] = CreateDynamicObject(1280, 816.5169, -1346.7257, 12.9144, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //parkbench1
+    object_noobSpawn[46] = CreateDynamicObject(1360, 817.0540, -1348.7196, 12.8233, 0.0000, 0.0000, 90.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //CJ_BUSH_PROP3
+    object_noobSpawn[47] = CreateDynamicObject(1360, 817.0540, -1344.6485, 12.8233, 0.0000, 0.0000, 90.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //CJ_BUSH_PROP3
+    object_noobSpawn[48] = CreateDynamicObject(1280, 817.6867, -1346.7257, 12.9144, 0.0000, 0.0000, 180.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //parkbench1
+    object_noobSpawn[49] = CreateDynamicObject(19126, 807.9508, -1344.2091, 13.0666, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //BollardLight6
+    object_noobSpawn[50] = CreateDynamicObject(19126, 807.9508, -1350.5205, 13.0666, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //BollardLight6
+    object_noobSpawn[51] = CreateDynamicObject(970, 808.0289, -1347.3109, 13.0836, 0.0000, 0.0000, 90.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //fencesmallb
+    object_noobSpawn[52] = CreateDynamicObject(970, 808.0289, -1341.1190, 13.0836, 0.0000, 0.0000, 90.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //fencesmallb
+    object_noobSpawn[53] = CreateObject(19172, 809.6021, -1344.4960, 17.6746, 8.6000, 0.0000, 90.0000); //SAMPPicture1
+    SetObjectMaterialText(object_noobSpawn[53], "ts.monkey-roleplay.de", 0, OBJECT_MATERIAL_SIZE_256x128, "Arial", 23, 1, 0xFFFFFFFF, 0x00000000, 1);
+    SetObjectMaterialText(object_noobSpawn[53], "", 1, OBJECT_MATERIAL_SIZE_256x128, "Arial", 24, 1, 0xFFFFFFFF, 0x00000000, 0);
 }

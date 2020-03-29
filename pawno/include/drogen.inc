@@ -477,10 +477,15 @@ COMMAND:sellspice(playerid,params[]) {
     if(menge > Spieler[playerid][pSpice]) return SendClientMessage(playerid, COLOR_RED, "Soviel Spice hast du nicht.");
     if(menge < 1 || menge > 10000)return SendClientMessage(playerid, COLOR_RED, "Der Wert sollte zwischen 1 und 10.000 liegen.");
     SetPVarString(playerid,"SellSpice",params);
+
+    if(preis/menge < 100||preis/menge > 150) {
+        return SendClientMessage(playerid,COLOR_RED,"Der aktuelle Stückpreis bei Spice liegt im Rahmen von 20$ bis 25$!");
+    }
+
     if(preis >= 1 && preis < 100000000)
     {
         ShowPlayerDialog(playerid,DIALOG_SELLSPICE,DIALOG_STYLE_MSGBOX,"Spice Verkauf Information","\
-        Der aktuelle Preis je Gramm Spice ist im Rahmen von 1.000$ bis 1.500$!\n\
+        Der aktuelle Preis je Gramm Spice ist im Rahmen von 100$ bis 150$!\n\
         Höhere Beträge werden laut Server Regel §6 als Geldwäsche gewertet und Administrativ bestraft!\n\
         Die Strafe könnte sein: Perm-/Timeban, Admin-Verwarnung, Prison oder Drogen/Geld wird eingezogen!\n\
         Jeder Drogenhandel wird gespeichert!","Einverstanden","Ablehnen");

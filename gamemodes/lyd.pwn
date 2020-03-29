@@ -124,7 +124,7 @@ Yakuza:
 #define PREIS_SCHEIDUNG 32000
 #define SOUND_ALHAMBRA "http://kabby.xyz/MRP/alhambra.mp3"
 #define URL_LOGINMUSIC "https://monkey-roleplay.de/lyd/login.mp3"
-#define SOUND_HOSPITAL ""
+#define SOUND_HOSPITAL "https://monkey-roleplay.de/lyd/hospital.mp3"
 #define STREAMER_MAX_OBJECTS 900
 
 #define HAUSTIER_OFFSET 1.5
@@ -2457,6 +2457,8 @@ stock bool:IsTUVNeeded(distance) {
 
 #define     DIALOG_SKINS_EINGELADEN 1465
 
+#define     DIALOG_STARTPACK 1466
+
 
 #define     KEIN_KENNZEICHEN    "KEINE PLAKETTE"
 
@@ -3093,6 +3095,8 @@ new meslock[MAX_PLAYERS];
 new oldskin[MAX_PLAYERS];
 new bool:bBlockTelecom = false;
 new bool:bPurgeEvent = false;
+
+new helmsir[MAX_PLAYERS];
 
 // Frakcars-System
 
@@ -6129,8 +6133,8 @@ public OnGameModeInit2() {
 	CreateDynamicPickup(19197, 1, 286.14,-40.63,1001.52, 53);//Ausgang Ammu LV
 
 
-    //CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Starterpack\n"COLOR_HEX_WHITE"Tippe /Starterpack", COLOR_WHITE, 808.8542,-1347.3077,13.5416, 8.0);
-    //CreateDynamicPickup(1239, 1,  808.8542,-1347.3077,13.5416, 0);
+    CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Starterpack\n"COLOR_HEX_WHITE"Tippe /Starterpack", COLOR_WHITE, 808.8542,-1347.3077,13.5416, 8.0);
+    CreateDynamicPickup(1239, 1,  808.8542,-1347.3077,13.5416, 0);
 
     //CreateDynamic3DTextLabel(COLOR_HEX_YELLOW"Asservatenkammer - Illegale Gegenstände abgeben\n"COLOR_HEX_WHITE"Tippe /Abgeben [Waffenteile/Spice/Drogen/WCodes]", COLOR_WHITE, 1754.412963, -1592.894897, 13.532833, 8.0);
     //CreateDynamicPickup(1239, 1, 1754.412963, -1592.894897, 13.532833, 0);
@@ -6688,6 +6692,14 @@ public OnPlayerRequestClass(playerid, classid)
 new Float:oldposx[MAX_PLAYERS],Float:oldposy[MAX_PLAYERS],Float:oldposz[MAX_PLAYERS];
 public OnPlayerConnect(playerid)
 {
+
+    if(helmsir[playerid] == 1){
+        RemovePlayerAttachedObject(playerid, 7);
+        RemovePlayerAttachedObject(playerid, 8);
+        RemovePlayerAttachedObject(playerid, 9);
+        helmsir[playerid] = 0;
+    }
+
     //#if defined USE_NPCS
     //printf("OnPlayerConnect(%d) Bot %d",playerid,IsPlayerNPC(playerid) );
     new _gettime = gettime();
@@ -7437,6 +7449,14 @@ public OnUpdateDatum()
 
 public OnPlayerDisconnect(playerid, reason)
 {
+
+    if(helmsir[playerid] == 1){
+        RemovePlayerAttachedObject(playerid, 7);
+        RemovePlayerAttachedObject(playerid, 8);
+        RemovePlayerAttachedObject(playerid, 9);
+        helmsir[playerid] = 0;
+    }
+
     if(fuelcountactive[playerid]==1)
     {
         GivePlayerCash(playerid,-100*fuelcount[playerid]);
@@ -8506,8 +8526,8 @@ CMD:delmarker(playerid,params[])
 
 CMD:gebietupgrade(playerid,params[])
 {
-	if(Spieler[playerid][pAdmin] < 3)return ERROR_RANG_MSG(playerid);
-    if(Spieler[playerid][pFV] != 1)return ERROR_RANG_MSG(playerid);
+	//if(Spieler[playerid][pAdmin] < 3)return ERROR_RANG_MSG(playerid);
+    //if(Spieler[playerid][pFV] != 1)return ERROR_RANG_MSG(playerid);
     for(new index;index<MAX_GANGZONES;index++)
     {
         if(!IsPlayerInRangeOfPoint(playerid , 6.0 , g_GangZone[index][GZ_fIconX],g_GangZone[index][GZ_fIconY],g_GangZone[index][GZ_fIconZ])&&index==MAX_GANGZONES-1)
@@ -8516,6 +8536,10 @@ CMD:gebietupgrade(playerid,params[])
         }
         else if(IsPlayerInRangeOfPoint(playerid , 6.0 , g_GangZone[index][GZ_fIconX],g_GangZone[index][GZ_fIconY],g_GangZone[index][GZ_fIconZ]))
         {
+            if(Spieler[playerid][pFraktion]!=g_GangZone[index][GZ_iOwner])
+            {
+                return SendClientMessage(playerid, COLOR_RED, "Diese Gangzone gehört dir nicht");
+            }
         	ShowPlayerDialog(playerid,DIALOG_GUP,DIALOG_STYLE_LIST,"Gebietupgrade","Maschine für Waffenteile\nMaschine für Drogen\nVerpachtung","Auswählen","Abbrechen");
             break;
         }
@@ -9867,10 +9891,10 @@ CMD:loadwaren(playerid, params[])
     new string[128];
     new waren;
     if(sscanf(params, "i", waren))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Loadwaren [Waren] - $5 pro Ware!");
-    if( Spieler[playerid][tickJobCheckpoint] > gettime() ) {
+    /*if( Spieler[playerid][tickJobCheckpoint] > gettime() ) {
         return SCMFormatted(playerid, COLOR_YELLOW, "[INFO] {FFFFFF}Du kannst erst in {FFFF00}%d Sekunden {FFFFFF}weiterarbeiten.", Spieler[playerid][tickJobCheckpoint] - gettime());
         //return Spieler[playerid][tickJobCheckpoint] = gettime() + (5*60);
-    }
+    }*/
     if(IsPlayerInRangeOfPoint(playerid, 10.0, 577.4390,1221.7273,11.2689))
     {
         new vID = GetPlayerVehicleID(playerid);
@@ -9928,10 +9952,10 @@ CMD:loadbenzin(playerid, params[])
     new string[128];
     new benzin;
     if(sscanf(params, "i", benzin))return SendClientMessage(playerid, COLOR_BLUE, INFO_STRING"/Loadbenzin [Benzin] - $6 pro Liter!");
-    if( Spieler[playerid][tickJobCheckpoint] > gettime() ) {
+    /*if( Spieler[playerid][tickJobCheckpoint] > gettime() ) {
         return SCMFormatted(playerid, COLOR_YELLOW, "[INFO] {FFFFFF}Du kannst erst in {FFFF00}%d Sekunden {FFFFFF}weiterarbeiten.", Spieler[playerid][tickJobCheckpoint] - gettime());
         //return Spieler[playerid][tickJobCheckpoint] = gettime() + (5*60);
-    }
+    }*/
     if(IsPlayerInRangeOfPoint(playerid, 20.0, 268.9609,1384.2981,10.1610))
     {
         new vID = GetPlayerVehicleID(playerid);
@@ -10021,6 +10045,7 @@ CMD:jailtime(playerid, params[])
     }
     ConvertSec(Spieler[playerid][pJailTime], sekunden, minute, stunde);
     SCMFormatted(playerid, COLOR_WHITE, "Du bist noch für %d Sekunden [%d Min.] im Gefängnis%s.", Spieler[playerid][pJailTime], minute, waitingTimeString);
+    SCMFormatted(playerid, COLOR_WHITE, "Du kannst dich für $%i aus dem Knast freikaufen! (/Kaution)", Spieler[playerid][pJailTime]*15);
     return 1;
 }
 
@@ -10851,6 +10876,14 @@ public OnPlayerSpawn(playerid)
     }
     //PB ENDE
 
+    if(helmsir[playerid] == 1){
+        RemovePlayerAttachedObject(playerid, 7);
+        RemovePlayerAttachedObject(playerid, 8);
+        RemovePlayerAttachedObject(playerid, 9);
+        helmsir[playerid] = 0;
+    }
+
+    //ShowPlayerDialog(playerid, DIALOG_SKINS, DIALOG_STYLE_PREVMODEL, "", "", "", "");
     return 1;
 }
 
@@ -11252,9 +11285,9 @@ public SetPlayerSpawn(playerid)
 				Streamer_UpdateEx(playerid,1515.711791, -1457.327270, 9.5);
             }
         }
-        if( Spieler[playerid][pHours] < 2 ) {
+        /*if( Spieler[playerid][pHours] < 2 ) {
             SetPlayerAttachedObject( playerid, 2, 1210, 5, 0.293532, 0.103431, 0.007843, 340.256103, 257.806579, 0.000000, 1.000000, 1.000000, 1.000000 );
-        }
+        }*/
     }
     DeletePlayerDropItem(playerid);
     {
@@ -11331,7 +11364,6 @@ public OnPlayerTot(playerid)
             }
             if(Spieler[playerid][aufgenommen] == 1){
 	            if(IsPlayerInRangeOfPoint(playerid, 10.0, 1463.9080, -1063.1261, 23.8477) || IsPlayerInRangeOfPoint(playerid, 10.0, 1185.7225,-1323.6067,13.5590) || IsPlayerInRangeOfPoint(playerid, 10.0, 2002.5291,-1445.5175,13.5615)){
-                    PlayAudioStreamForPlayer(playerid, SOUND_HOSPITAL);
 					new Float:x, Float:y, Float:z, Float:distance, Float:smallestDistance = 10000, index = 0, String[128], string[128];
 					format(String, sizeof(String), "* Patienten %s wurde ins Krankenhaus abgeliefert.", GetName(playerid));
 					SendRoundMessage(x, y, z, COLOR_PURPLE, String);
@@ -11352,6 +11384,8 @@ public OnPlayerTot(playerid)
 					for (new i = 0; i < sizeof(HOSPITAL); i++)
 					if ((distance = GetDistance(x, y, z, HOSPITAL[i][0], HOSPITAL[i][1], HOSPITAL[i][2])) < smallestDistance) index = i, smallestDistance = distance;
                     SetPlayerCameraLookAt(playerid, HOSPITAL[index][0], HOSPITAL[index][1], HOSPITAL[index][2]);
+
+                    //9*PlayAudioStreamForPlayer(playerid, SOUND_HOSPITAL);
 					ShowPlayerDialog(playerid, DIALOG_REVIVE_SPAWN, DIALOG_STYLE_LIST, COLOR_HEX_ORANGE"Spawnpunkt wählen", COLOR_HEX_WHITE"Gesetzter Spawnpunkt\nKrankenhaus", "Ausführen", "Abbrechen");
 				}
 			}
@@ -11779,7 +11813,7 @@ public OnPlayerDeath(playerid, killerid, reason)
                 else {
                     Spieler[playerid][pJailed] = 1;
                 }
-                Spieler[playerid][pJailTime] = 120*Spieler[playerid][pWanteds];
+                Spieler[playerid][pJailTime] = 45*Spieler[playerid][pWanteds];
                 Spieler[playerid][pWanteds] = 0;
                 Spieler[playerid][pWantedDeaths] ++;
                 GivePlayerCash(playerid, -pGehalt);
@@ -13947,6 +13981,7 @@ CMD:maxwaren(playerid, params[])
 
 CMD:spawnchange(playerid){
     cmd_einstellungen(playerid);
+    return 1;
 }
 
 CMD:configtanke(playerid)
@@ -16569,8 +16604,8 @@ CMD:suicidearrest(playerid, params[])
         else {
             SendClientMessageToAll(COLOR_DARKRED, string);
         }
-        SendClientMessage(pID, COLOR_GREEN, "* Da du dich gestellt hast, wirst du je Wanted 150 Sekunden anstatt 220 Sekunden je Wanted sitzen!");
-        new gehalt = 200*Spieler[pID][pWanteds];
+        SendClientMessage(pID, COLOR_GREEN, "* Da du dich gestellt hast, wirst du je Wanted 30 Sekunden anstatt 45 Sekunden je Wanted sitzen!");
+        new gehalt = 50*Spieler[pID][pWanteds];
         format(string, sizeof(string), "~w~Gesuchten ~g~eingesperrt~n~+$%s", AddDelimiters(gehalt));
         GameTextForPlayer(playerid, string, 3000, 6);
         Spieler[playerid][pPayCheck] += gehalt;
@@ -16643,7 +16678,7 @@ CMD:arrest(playerid, params[])
 	            else {
 					SendClientMessageToAll(COLOR_DARKRED, string);
 	            }
-				SendClientMessage(pID, COLOR_GREEN, "* Da du dich gestellt hast, wirst du je Wanted 150 Sekunden anstatt 220 Sekunden je Wanted sitzen!");
+				SendClientMessage(pID, COLOR_GREEN, "* Da du dich gestellt hast, wirst du je Wanted 30 Sekunden anstatt 220 Sekunden je Wanted sitzen!");
 				new gehalt = (200*Spieler[pID][pWanteds]);
 				new pStaatGehalt = (200*Spieler[pID][pWanteds]);
 				TreasuryDeposit(pStaatGehalt);
@@ -16659,7 +16694,7 @@ CMD:arrest(playerid, params[])
                     Spieler[pID][pJailed] = 1;
                 }
                 Spieler[pID][pTot] = 0;
-                Spieler[pID][pJailTime] = 90*Spieler[pID][pWanteds];
+                Spieler[pID][pJailTime] = 30*Spieler[pID][pWanteds];
                 Spieler[pID][pCrimes] ++;
                 Spieler[pID][pTotTime] = 0;
                 Spieler[pID][pTotX] = 0.0;
@@ -17441,7 +17476,7 @@ CMD:tanken(playerid)
 {
     new t = IsPlayerAtTanke(playerid);
     if (t == 999) return SendClientMessage(playerid, COLOR_RED, "Du befindest dich an keiner Tankstelle.");
-    if (!strcmp(Tanke[t][tBesitzer], "Niemand", true)) return SendClientMessage(playerid, COLOR_RED, "Die Tankstelle hat keinen Besitzer.");
+    //if (!strcmp(Tanke[t][tBesitzer], "Niemand", true)) return SendClientMessage(playerid, COLOR_RED, "Die Tankstelle hat keinen Besitzer.");
     new vehid = GetPlayerVehicleID(playerid), model = GetVehicleModel(vehid);
     if (!vehid) {
         UnfreezePlayer(playerid);
@@ -19746,63 +19781,63 @@ CMD:gangwaffen(playerid)
     if(IsPlayerInRangeOfPoint(playerid, 2.0, GSF_INTERIOR_SPAWN_POINT))//Grove
     {
         //if(Spieler[playerid][pGunLic] == 0)return SendClientMessage(playerid, COLOR_RED, "Du besitzt keinen Waffenschein.");
-        if(GetPlayerMoney(playerid) < 4000)return SendClientMessage(playerid, COLOR_RED, "Du benötigst $4000.");
+        if(GetPlayerMoney(playerid) < 2500)return SendClientMessage(playerid, COLOR_RED, "Du benötigst $2500.");
         if(!(Spieler[playerid][pFraktion] == 6))return SendClientMessage(playerid, COLOR_RED, "Du bist kein Grove Street Mitglied.");
         GiveGangWeapons(playerid);
     }
     else if(IsPlayerInRangeOfPoint(playerid, 2.0, 331.0788,1128.5469,1083.8828))//Ballas
     {
         //if(Spieler[playerid][pGunLic] == 0)return SendClientMessage(playerid, COLOR_RED, "Du besitzt keinen Waffenschein.");
-        if(GetPlayerMoney(playerid) < 4000)return SendClientMessage(playerid, COLOR_RED, "Du benötigst $4000.");
+        if(GetPlayerMoney(playerid) < 2500)return SendClientMessage(playerid, COLOR_RED, "Du benötigst $2500.");
         if(!(Spieler[playerid][pFraktion] == 7))return SendClientMessage(playerid, COLOR_RED, "Du bist kein Ballas Mitglied.");
         GiveGangWeapons(playerid);
     }
     else if(IsPlayerInRangeOfPoint(playerid, 2.0, YAKUZA_INTERIOR_SPAWN_POINT))//Yakuza
     {
         //if(Spieler[playerid][pGunLic] == 0)return SendClientMessage(playerid, COLOR_RED, "Du besitzt keinen Waffenschein.");
-        if(GetPlayerMoney(playerid) < 4000)return SendClientMessage(playerid, COLOR_RED, "Du benötigst $4000.");
+        if(GetPlayerMoney(playerid) < 2500)return SendClientMessage(playerid, COLOR_RED, "Du benötigst $2500.");
         if(!(Spieler[playerid][pFraktion] == 10))return SendClientMessage(playerid, COLOR_RED, "Du bist kein Yakuza Mitglied.");
         GiveGangWeapons(playerid);
     }
     else if(IsPlayerInRangeOfPoint(playerid, 2.0,2807.4153,-1165.1274,1025.5703))//Vagos
     {
         //if(Spieler[playerid][pGunLic] == 0)return SendClientMessage(playerid, COLOR_RED, "Du besitzt keinen Waffenschein.");
-        if(GetPlayerMoney(playerid) < 4000)return SendClientMessage(playerid, COLOR_RED, "Du benötigst $4000.");
+        if(GetPlayerMoney(playerid) < 2500)return SendClientMessage(playerid, COLOR_RED, "Du benötigst $2500.");
         if(!(Spieler[playerid][pFraktion] == 13))return SendClientMessage(playerid, COLOR_RED, "Du bist kein Vagos Mitglied.");
         GiveGangWeapons(playerid);
     }
     else if(IsPlayerInRangeOfPoint(playerid, 2.0,508.3369,-84.9195,998.9609))//Aztecas
     {
         //if(Spieler[playerid][pGunLic] == 0)return SendClientMessage(playerid, COLOR_RED, "Du besitzt keinen Waffenschein.");
-        if(GetPlayerMoney(playerid) < 4000)return SendClientMessage(playerid, COLOR_RED, "Du benötigst $4000.");
+        if(GetPlayerMoney(playerid) < 2500)return SendClientMessage(playerid, COLOR_RED, "Du benötigst $2500.");
         if(!(Spieler[playerid][pFraktion] == 11))return SendClientMessage(playerid, COLOR_RED, "Du bist kein Aztecas Mitglied.");
         GiveGangWeapons(playerid);
     }
     else if(IsPlayerInRangeOfPoint(playerid, 2.0, LCN_INTERIOR_SPAWN_POINT))//LCN
     {
         //if(Spieler[playerid][pGunLic] == 0)return SendClientMessage(playerid, COLOR_RED, "Du besitzt keinen Waffenschein.");
-        if(GetPlayerMoney(playerid) < 4000)return SendClientMessage(playerid, COLOR_RED, "Du benötigst $4000.");
+        if(GetPlayerMoney(playerid) < 2500)return SendClientMessage(playerid, COLOR_RED, "Du benötigst $2500.");
         if(!(Spieler[playerid][pFraktion] == 12))return SendClientMessage(playerid, COLOR_RED, "Du bist kein Cali Kartell Mitglied.");
         GiveGangWeapons(playerid);
     }
     else if(IsPlayerInRangeOfPoint(playerid, 2.0, WHEELMANBASE_SPAWN_POINT))//Wheelman
     {
         //if(Spieler[playerid][pGunLic] == 0)return SendClientMessage(playerid, COLOR_RED, "Du besitzt keinen Waffenschein.");
-        if(GetPlayerMoney(playerid) < 4000) return SendClientMessage(playerid, COLOR_RED, "Du benötigst $4000.");
+        if(GetPlayerMoney(playerid) < 2500) return SendClientMessage(playerid, COLOR_RED, "Du benötigst $2500.");
         if(!(Spieler[playerid][pFraktion] == 17)) return SendClientMessage(playerid, COLOR_RED, "Du bist kein Wheelman Mitglied.");
         GiveGangWeapons(playerid);
     }
     else if (GetPlayerVirtualWorld(playerid) == VW_TRIADSINTERIOR && IsPlayerInRangeOfPoint(playerid, 2.0, TRIADS_INTERIOR_SPAWN_POINT))//Triaden
     {
         //if(Spieler[playerid][pGunLic] == 0)return SendClientMessage(playerid, COLOR_RED, "Du besitzt keinen Waffenschein.");
-        if(GetPlayerMoney(playerid) < 4000)return SendClientMessage(playerid, COLOR_RED, "Du benötigst $4000.");
+        if(GetPlayerMoney(playerid) < 2500)return SendClientMessage(playerid, COLOR_RED, "Du benötigst $2500.");
         if(!(Spieler[playerid][pFraktion] == 21))return SendClientMessage(playerid, COLOR_RED, "Du bist kein Triaden Mitglied.");
         GiveGangWeapons(playerid);
     }
     else if(IsPlayerInRangeOfPoint(playerid, 2.0,-2170.3818,641.4621,1052.3817))//Outlawzs
     {
         //if(Spieler[playerid][pGunLic] == 0)return SendClientMessage(playerid, COLOR_RED, "Du besitzt keinen Waffenschein.");
-        if(GetPlayerMoney(playerid) < 4000)return SendClientMessage(playerid, COLOR_RED, "Du benötigst $4000.");
+        if(GetPlayerMoney(playerid) < 2500)return SendClientMessage(playerid, COLOR_RED, "Du benötigst $2500.");
         if(!(Spieler[playerid][pFraktion] == 20))return SendClientMessage(playerid, COLOR_RED, "Du bist kein OutlawZ Mitglied.");
         GiveGangWeapons(playerid);
     }
@@ -19814,8 +19849,8 @@ stock GiveGangWeapons(playerid)
     GivePlayerWeapon(playerid, 24, 100);
     GivePlayerWeapon(playerid, 29, 150);
     SendClientMessage(playerid, COLOR_GREEN, "Du hast dich ausgerüstet (Desert Eagle, MP5).");
-    GameTextForPlayer(playerid, "~r~-$4000", 2000, 1);
-    GivePlayerCash(playerid, -4000);
+    GameTextForPlayer(playerid, "~r~-$2500", 2000, 1);
+    GivePlayerCash(playerid, -2500);
     return 1;
 }
 
@@ -20738,7 +20773,7 @@ CMD:serverinfo(playerid)
     SendClientMessage(playerid, COLOR_BLUE, "* TEAMSPEAK IP *: {FFFFFF}TS.monkey-roleplay.de");
     SendClientMessage(playerid, COLOR_BLUE, "* FORUM ADRESSE *: {FFFFFF}www.monkey-roleplay.de");
     SendClientMessage(playerid, COLOR_BLUE, "* USER PANEL *: {FFFFFF}www.UCP.monkey-roleplay.de");
-    SendClientMessage(playerid, COLOR_BLUE, "* PROJEKTLEITER *: {FFFFFF}Kabby & Summer_Cem");
+    SendClientMessage(playerid, COLOR_BLUE, "* PROJEKTLEITER *: {FFFFFF}Kabby & Summer_Jam");
     SendClientMessage(playerid, COLOR_BLUE, "* ENTWICKLER *: {FFFFFF}Kabby");
     return 1;
 }
@@ -21576,6 +21611,15 @@ CMD:befreien(playerid, params[])
     return 1;
 }
 
+CMD:kaution(playerid){
+    if(Spieler[playerid][pJailTime] <= 0) return SendClientMessage(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du bist nicht im Knast!");
+    if(GetPlayerMoney(playerid) < Spieler[playerid][pJailTime]*15) return SCMFormatted(playerid, COLOR_RED, "[FEHLER] {FFFFFF}Du benötigst $%i um dich freizukaufen!", Spieler[playerid][pJailTime]*15);
+    GivePlayerCash(playerid, -Spieler[playerid][pJailTime]*15);
+    SCMFormatted(playerid, COLOR_GREEN, "* Du hast dich für $%i aus dem Gefängnis freigekauft!", Spieler[playerid][pJailTime]*15);
+    Spieler[playerid][pJailTime] = 1;
+    return 1;
+}
+
 forward GetCarOwnerSlot(playerid,veh);
 public GetCarOwnerSlot(playerid,veh)
 {
@@ -22270,7 +22314,7 @@ CMD:aufnehmen(playerid, params[])
  }
 
 
-/*
+
 CMD:wiederbeleben(playerid, params[])
 {
     new pID, string[128];
@@ -22308,7 +22352,7 @@ CMD:wiederbeleben(playerid, params[])
     }
     return 1;
 }
-*/
+
 
 CMD:awb(playerid, params[]) return cmd_awiederbeleben(playerid, params);
 
@@ -23583,10 +23627,10 @@ CMD:accept(playerid, params[])
 CMD:startflug(playerid)
 {
     if(!(Spieler[playerid][pJob] == 4))return SendClientMessage(playerid, COLOR_RED, "Du bist kein Pilot.");
-    if( Spieler[playerid][tickJobCheckpoint] > gettime() ) {
+    /*if( Spieler[playerid][tickJobCheckpoint] > gettime() ) {
         return SendClientMessage(playerid, COLOR_RED, "Du kannst nur alle 5 Minuten arbeiten, bitte warte einen Moment!");
         //return Spieler[playerid][tickJobCheckpoint] = gettime() + (5*60);
-    }
+    }*/
     for(new i=0;i<sizeof(vehicle_airportLs);i++)
     {
         new vID = GetPlayerVehicleID(playerid);
@@ -23647,10 +23691,10 @@ CMD:stopzug(playerid)
 CMD:startlinie(playerid)
 {
     if(!(Spieler[playerid][pJob] == 2))return SendClientMessage(playerid, COLOR_RED, "Du bist kein Busfahrer.");
-    if( Spieler[playerid][tickJobCheckpoint] > gettime() ) {
+    /*if( Spieler[playerid][tickJobCheckpoint] > gettime() ) {
         return SendClientMessage(playerid, COLOR_RED, "Du kannst nur alle 5 Minuten arbeiten, bitte warte einen Moment!");
         //return Spieler[playerid][tickJobCheckpoint] = gettime() + (5*60);
-    }
+    }*/
     if(!(GetPlayerState(playerid) == PLAYER_STATE_DRIVER))return SendClientMessage(playerid, COLOR_RED, "Du befindest dich in keinem Bus!");
     for(new i=0;i<sizeof(vehicle_busStation);i++)
     {
@@ -23694,10 +23738,10 @@ stock GetVehicleMaxPassengers(iModel)
 CMD:startgarten(playerid)
 {
     if(!(Spieler[playerid][pJob] == 9))return SendClientMessage(playerid, COLOR_RED, "Du bist kein Gärtner.");
-    if( Spieler[playerid][tickJobCheckpoint] > gettime() ) {
+    /*if( Spieler[playerid][tickJobCheckpoint] > gettime() ) {
         return SendClientMessage(playerid, COLOR_RED, "Du kannst nur alle 5 Minuten arbeiten, bitte warte einen Moment!");
         //return Spieler[playerid][tickJobCheckpoint] = gettime() + (5*60);
-    }
+    }*/
     new vID = GetPlayerVehicleID(playerid);
     new model = GetVehicleModel(vID);
     if(model == 572)
@@ -23713,10 +23757,10 @@ CMD:startgarten(playerid)
 CMD:startreinigung(playerid)
 {
     if(!(Spieler[playerid][pJob] == 7))return SendClientMessage(playerid, COLOR_RED, "Du bist kein Straßenreiniger.");
-    if( Spieler[playerid][tickJobCheckpoint] > gettime() ) {
+    /*if( Spieler[playerid][tickJobCheckpoint] > gettime() ) {
         return SendClientMessage(playerid, COLOR_RED, "Du kannst nur alle 5 Minuten arbeiten, bitte warte einen Moment!");
         //return Spieler[playerid][tickJobCheckpoint] = gettime() + (5*60);
-    }
+    }*/
     for(new i=0;i<sizeof(reinigung);i++)
     {
         new vID = GetPlayerVehicleID(playerid);
@@ -23734,10 +23778,10 @@ CMD:startreinigung(playerid)
 CMD:startmuell(playerid)
 {
     if(!(Spieler[playerid][pJob] == 8))return SendClientMessage(playerid, COLOR_RED, "Du bist kein Müllmann.");
-    if( Spieler[playerid][tickJobCheckpoint] > gettime() ) {
+    /*if( Spieler[playerid][tickJobCheckpoint] > gettime() ) {
         return SendClientMessage(playerid, COLOR_RED, "Du kannst nur alle 5 Minuten arbeiten, bitte warte einen Moment!");
         //return Spieler[playerid][tickJobCheckpoint] = gettime() + (5*60);
-    }
+    }*/
     new
         vehicleid = GetPlayerVehicleID(playerid);
     if( !(aiVehicles[ vehicleid ] & VEH_MUELL) ) {
@@ -23764,10 +23808,10 @@ CMD:startmuell(playerid)
 CMD:startbauarbeiter(playerid)
 {
     if(!(Spieler[playerid][pJob] == 10))return SendClientMessage(playerid, COLOR_RED, "Du bist kein Bauarbeiter.");
-    if( Spieler[playerid][tickJobCheckpoint] > gettime() ) {
+    /*if( Spieler[playerid][tickJobCheckpoint] > gettime() ) {
         return SendClientMessage(playerid, COLOR_RED, "Du kannst nur alle 5 Minuten arbeiten, bitte warte einen Moment!");
         //return Spieler[playerid][tickJobCheckpoint] = gettime() + (5*60);
-    }
+    }*/
     for(new i=0;i<sizeof(bauarb);i++)
     {
         new vID = GetPlayerVehicleID(playerid);
@@ -23785,10 +23829,10 @@ CMD:startbauarbeiter(playerid)
 CMD:startzug(playerid)
 {
     if(!(Spieler[playerid][pJob] == 23))return SendClientMessage(playerid, COLOR_RED, "Du bist kein Zugfahrer.");
-    if( Spieler[playerid][tickJobCheckpoint] > gettime() ) {
+    /*if( Spieler[playerid][tickJobCheckpoint] > gettime() ) {
         return SendClientMessage(playerid, COLOR_RED, "Du kannst nur alle 5 Minuten arbeiten, bitte warte einen Moment!");
         //return Spieler[playerid][tickJobCheckpoint] = gettime() + (5*60);
-    }
+    }*/
     for(new i=0;i<sizeof(zugb);i++)
     {
         new vID = GetPlayerVehicleID(playerid);
@@ -23810,10 +23854,10 @@ CMD:startzug(playerid)
 CMD:startschiff(playerid)
 {
     if(!(Spieler[playerid][pJob] == 11))return SendClientMessage(playerid, COLOR_RED, "Du bist kein Schiffs-Fahrer.");
-    if( Spieler[playerid][tickJobCheckpoint] > gettime() ) {
+    /*if( Spieler[playerid][tickJobCheckpoint] > gettime() ) {
         return SendClientMessage(playerid, COLOR_RED, "Du kannst nur alle 5 Minuten arbeiten, bitte warte einen Moment!");
         //return Spieler[playerid][tickJobCheckpoint] = gettime() + (5*60);
-    }
+    }*/
     for(new i=0;i<sizeof(vehicle_boatCargoJob);i++)
     {
         new vID = GetPlayerVehicleID(playerid);
@@ -23835,10 +23879,10 @@ CMD:starttransport(playerid)
         SendClientMessage(playerid, COLOR_RED, "Du bist bereits im Transport-Modus");
         return 1;
     }
-    if( Spieler[playerid][tickJobCheckpoint] > gettime() ) {
+    /*if( Spieler[playerid][tickJobCheckpoint] > gettime() ) {
         return SendClientMessage(playerid, COLOR_RED, "Du kannst nur alle 5 Minuten arbeiten, bitte warte einen Moment!");
         //return Spieler[playerid][tickJobCheckpoint] = gettime() + (5*60);
-    }
+    }*/
     new
         vehicleid = GetPlayerVehicleID(playerid);
     if( !(aiVehicles[ vehicleid ] & VEH_GELDT) ) {
@@ -31522,8 +31566,8 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
             listitem++;
             for(new index;index<MAX_GANGZONES;index++)
             {
-                if(IsPlayerInRangeOfPoint(playerid , 6.0 , g_GangZone[index][GZ_fIconX],g_GangZone[index][GZ_fIconY],g_GangZone[index][GZ_fIconZ])/* &&
-                Spieler[playerid][pFraktion]==g_GangZone[index][GZ_iOwner]&&Spieler[playerid][pRank] > 4*/)
+                if(IsPlayerInRangeOfPoint(playerid , 6.0 , g_GangZone[index][GZ_fIconX],g_GangZone[index][GZ_fIconY],g_GangZone[index][GZ_fIconZ])&&
+                Spieler[playerid][pFraktion]==g_GangZone[index][GZ_iOwner]&&Spieler[playerid][pRank] > 4)
                 {
                     if(g_GangZone[index][GZ_igupgrade]!=listitem)
                     {
@@ -32807,10 +32851,10 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
             if(response) {
                 if(listitem == 0 ) {
                     if(!(Spieler[playerid][pJob] == 1))return SendClientMessage(playerid, COLOR_RED, "Du bist kein Farmer.");
-                    if( Spieler[playerid][tickJobCheckpoint] > gettime() ) {
+                    /*if( Spieler[playerid][tickJobCheckpoint] > gettime() ) {
                         SendClientMessage(playerid, COLOR_RED, "Du kannst nur alle 5 Minuten arbeiten, bitte warte einen Moment.");
                         return 1;
-                    }
+                    }*/
                     new vID = GetPlayerVehicleID(playerid);
                     if(vID) {
                         for(new i=0;i<sizeof(combines);i++)
@@ -44467,7 +44511,27 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                 SpawnPlayerEx(playerid);
                 SaveAccount(playerid);
             }
-
+        }
+        case DIALOG_STARTPACK:
+        {
+            if(response){
+                if(listitem == 0){
+                    SendClientMessage(playerid, COLOR_GREEN, "[STARTERPACK] {FFFFFF}Du hast nun Waffendealer Skill 5 erhalten!");
+                    Spieler[playerid][pWaffenteilePoints] = 710;
+                }else if(listitem == 1){
+                    SendClientMessage(playerid, COLOR_GREEN, "[STARTERPACK] {FFFFFF}Du hast nun Anwalt Skill 6 erhalten!");
+                    Spieler[playerid][pLawyerPoints] = 15000;
+                }else if(listitem == 2){
+                    SendClientMessage(playerid, COLOR_GREEN, "[STARTERPACK] {FFFFFF}Du hast nun Detektiv Skill 5 erhalten!");
+                    Spieler[playerid][pDetektivPoints] = 540;
+                }else if(listitem == 3){
+                    SendClientMessage(playerid, COLOR_GREEN, "[STARTERPACK] {FFFFFF}Du hast nun Hure Skill 5 erhalten!");
+                    Spieler[playerid][pHurePoints] = 100;
+                }else if(listitem == 4){
+                    SendClientMessage(playerid, COLOR_GREEN, "[STARTERPACK] {FFFFFF}Du hast nun Pilot Skill 5 erhalten!");
+                    Spieler[playerid][pPilotPoints] = 300;
+                }
+            }
         }
         case DIALOG_HANDYAUFLADEN:
         {
@@ -44772,6 +44836,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 
         case DIALOG_REVIVE_SPAWN:
         {
+            PlayAudioStreamForPlayer(playerid, SOUND_HOSPITAL);
             if(response)
             {
                 if(listitem==0)
@@ -46005,7 +46070,7 @@ public PayDay()
                         //SendClientMessage(playerid, COLOR_ORANGE, string);
                         hausstrom = 5000;
                         Haus[Spieler[playerid][pPlayerHouse]][hKasse] -= 5000;
-                        Biz[StromBiz_Index][bKasse] += 2000;
+                        Biz[StromBiz_Index][bKasse] += 150;
                     }
                     else
                     {
@@ -46022,13 +46087,13 @@ public PayDay()
             {
                 bizstrom = 3000;
                 Biz[ Spieler[playerid][pPlayerBiz] ][bKasse] -= 3000;
-                Biz[ StromBiz_Index ][bKasse] += 3000;
+                Biz[ StromBiz_Index ][bKasse] += 150;
             }
             if(Spieler[playerid][pPlayerBizEx] != 999 && Spieler[playerid][pPremiumBizSlot] == 1)
             {
                 bizstrom += 3000;
                 Biz[ Spieler[playerid][pPlayerBizEx] ][bKasse] -= 3000;
-                Biz[ StromBiz_Index ][bKasse] += 3000;
+                Biz[ StromBiz_Index ][bKasse] += 150;
             }
             if(Spieler[playerid][pPlayerHotel] != 999)
             {
@@ -46046,7 +46111,7 @@ public PayDay()
             {
                 tankestrom = 9000;
                 Tanke[ Spieler[playerid][pPlayerTank] ][tKasse] -= 9000;
-                Biz[ StromBiz_Index ][bKasse] += 9000;
+                Biz[ StromBiz_Index ][bKasse] += 150;
             }
 
             if( Spieler[playerid][pSSteuer] > 0 ) {
@@ -56569,15 +56634,14 @@ COMMAND:startbonus(playerid,params[]) {
     return 1;
 }
 
-/*CMD:starterpack(playerid){
-    if(Spieler[playerid][pLevel] > 3) return SendClientMessage(playerid, COLOR_RED, "[STARTERPACK] {FFFFFF}Du bist leider nicht für den Starterpack qualifiziert!");
+CMD:starterpack(playerid){
+    if(Spieler[playerid][pLevel] > 3) return SendClientMessage(playerid, COLOR_RED, "[STARTERPACK] {FFFFFF}Du bist leider nicht für das Starterpack qualifiziert!");
     if(!IsPlayerInRangeOfPoint(playerid, 3.0, 808.8542,-1347.3077,13.5416)) return SendClientMessage(playerid, COLOR_RED, "[STARTERPACK] {FFFFFF}Du bist nicht am Starterpack Punkt!");
-    new jahr, monat, tag;
-    getdate(jahr, monat, tag);
-    if(jahr == 2019 && monat >= 11 && tag >= 15) return SendClientMessage(playerid, COLOR_RED, "[STARTERPACK] {FFFFFF}Die Aktion ist leider abgelaufen!");
-    Spieler[playerid][pLevel] = 8;
-    Spieler[playerid][pBank] = 2500000;
-    Spieler[playerid][pHours] = 70;
+    //new jahr, monat, tag;
+    //getdate(jahr, monat, tag);
+    //if(jahr == 2019 && monat >= 11 && tag >= 15) return SendClientMessage(playerid, COLOR_RED, "[STARTERPACK] {FFFFFF}Die Aktion ist leider abgelaufen!");
+    Spieler[playerid][pLevel] = 12;
+    Spieler[playerid][pBank] = 4500000;
     Spieler[playerid][pCarLic] = 1;
 	Spieler[playerid][pMotoLic] = 1;
 	Spieler[playerid][pFlyLic] = 1;
@@ -56585,9 +56649,12 @@ COMMAND:startbonus(playerid,params[]) {
 	Spieler[playerid][pGunLic] = 1;
 	Spieler[playerid][pGunLicB] = 1;
 	Spieler[playerid][pLKWLic] = 1;
-    SendClientMessage(playerid, COLOR_GREEN, "[STARTERPACK] {FFFFFF}Du hast folgende Dinge erhalten: Level 8, $2.500.000, 70 Spielstunden und alle Führerscheine.");
+    Spieler[playerid][pPerso] = 1;
+    SendClientMessage(playerid, COLOR_GREEN, "[STARTERPACK] {FFFFFF}Du hast folgende Dinge erhalten: Level 12, $4.500.000 und alle Führerscheine.");
+    SendClientMessage(playerid, COLOR_GREEN, "[STARTERPACK] {FFFFFF}Bitte wähle nun einen Wunschskill, welcher auf das maximale Level gesetzt werden soll.");
+    ShowPlayerDialog(playerid, DIALOG_STARTPACK, DIALOG_STYLE_LIST, "{FFFFFF}Wunschskill", "{FFFFFF}Waffendealer\nAnwalt\nDetektiv\nHure\nPilot", "Auswählen", "Abbrechen");
     return 1;
-}*/
+}
 
 
 COMMAND:waffenspind(playerid,params[]) {
@@ -60543,7 +60610,7 @@ public OnQueryFinish(query[], resultid, extraid, connectionHandle , threadowner 
 
             AddPlayerToPlantArrayDataGang(playerid);
             
-            ShowPlayerDialog(playerid, DIALOG_SPAWNMELDUNG, DIALOG_STYLE_MSGBOX, "Monkey - Roleplay", "Projektdaten:\n\nServer IP: server.monkey-roleplay.de\nTeamspeak IP: ts.monkey-roleplay.de\nForum Adresse: www.monkey-roleplay.de\n\nSchau täglich auf unserem Forum vorbei, um über Neuigkeiten informiert zu sein!", "OK", "");
+            //ShowPlayerDialog(playerid, DIALOG_SPAWNMELDUNG, DIALOG_STYLE_MSGBOX, "Monkey - Roleplay", "Projektdaten:\n\nServer IP: server.monkey-roleplay.de\nTeamspeak IP: ts.monkey-roleplay.de\nForum Adresse: www.monkey-roleplay.de\n\nSchau täglich auf unserem Forum vorbei, um über Neuigkeiten informiert zu sein!", "OK", "");
             /*
             if(Spieler[playerid][pLevel] < 99)
             {
@@ -69370,6 +69437,22 @@ public FlasherFunc() {
     return 1;
 }
 
+CMD:fahrradcop(playerid, params[]){
+    if(Spieler[playerid][pFraktion] != 1) return SendClientMessage(playerid, COLOR_RED, "Du bist kein Polizist!");
+    if(helmsir[playerid] == 0){
+        SetPlayerAttachedObject(playerid, 7, 18977, 2, 0.0499, 0.0049, 0.0000, 85.8000, 85.8000, 0.0000, 1.0000, 1.0000, 1.0000, 0xFFFFFFFF, 0xFFFFFFFF);
+        SetPlayerAttachedObject(playerid, 8, 19797, 1, 0.1720, 0.1239, -0.0009, 89.2998, 66.0000, 85.4001, 0.9849, 0.6259, 0.7750, 0xFFFFFFFF, 0xFFFFFFFF);
+        SetPlayerAttachedObject(playerid, 9, 19797, 17, -0.1419, -0.0799, 0.0000, 0.0000, -90.1999, 1.1000, 1.0000, 1.0000, 1.0000, 0xFFFFFFFF, 0xFFFFFFFF);
+        helmsir[playerid] = 1;
+    }else if(helmsir[playerid] == 1){
+        RemovePlayerAttachedObject(playerid, 7);
+        RemovePlayerAttachedObject(playerid, 8);
+        RemovePlayerAttachedObject(playerid, 9);
+        helmsir[playerid] = 0;
+    }
+    return 1;
+}
+
 CMD:hsirene(playerid, params[])
 {
     new vehicleid,panels,doors,lights,tires;
@@ -69408,6 +69491,22 @@ CMD:hsirene(playerid, params[])
                     return SendClientMessage(playerid, COLOR_RED, "Du kannst in einem Bullet nur als Cop oder SAMD-Mitglied die Sirene aktivieren.");
                 sireneobj[vehicleid][0] = CreateDynamicObject(18646, 10.0, 10.0, 10.0, 0, 0, 0);
                 AttachDynamicObjectToVehicle(sireneobj[vehicleid][0], vehicleid, 0.000000, 0.652832, 0.314574, 0.000000, 0.000000, 0.000000);
+                Flasher[vehicleid] = 1;
+            }
+            case 552:
+            {
+                if (Spieler[playerid][pFraktion] != 3 && Spieler[playerid][pFraktion] != 1 && Spieler[playerid][pFraktion] != 2)
+                    return SendClientMessage(playerid, COLOR_RED, "Du kannst in einem Bullet nur als Cop oder SAMD-Mitglied die Sirene aktivieren.");
+                sireneobj[vehicleid][0] = CreateDynamicObject(18646, 10.0, 10.0, 10.0, 0, 0, 0);
+                AttachDynamicObjectToVehicle(sireneobj[vehicleid][0], vehicleid, 0.6799, 0.7399, 1.3599, 0.0000, 0.0000, 0.0000);
+                Flasher[vehicleid] = 1;
+            }
+            case 586:
+            {
+                if (Spieler[playerid][pFraktion] != 3 && Spieler[playerid][pFraktion] != 1 && Spieler[playerid][pFraktion] != 2)
+                    return SendClientMessage(playerid, COLOR_RED, "Du kannst in einem Bullet nur als Cop oder SAMD-Mitglied die Sirene aktivieren.");
+                sireneobj[vehicleid][0] = CreateDynamicObject(18646, 10.0, 10.0, 10.0, 0, 0, 0);
+                AttachDynamicObjectToVehicle(sireneobj[vehicleid][0], vehicleid, 0.0000, -1.1399, 0.7000, 0.0000, 0.0000, 0.0000);
                 Flasher[vehicleid] = 1;
             }
             case 544:
@@ -72434,12 +72533,12 @@ COMMAND:zoll(playerid,params[]) {
         return SendClientMessage(playerid,COLOR_RED,"Zollwächter: Die Bearbeitung eines anderen Fahrer findet noch statt");
     }
     if( Spieler[playerid][pCash] < 500 && gettime() < Spieler[playerid][pZollValid] ) {
-        return SendClientMessage(playerid,COLOR_RED,"Zollwächter: Um die Grenze zu überqueren, müssen Sie die Zollgebühren in Höhe von $1.500 bezahlen!");
+        return SendClientMessage(playerid,COLOR_RED,"Zollwächter: Um die Grenze zu überqueren, müssen Sie die Zollgebühren in Höhe von $500 bezahlen!");
     }
     if( Spieler[playerid][pZollValid] < gettime() ) {
-        GivePlayerCash(playerid, -1500);
+        GivePlayerCash(playerid, -500);
         TreasuryDeposit(500);
-        SendClientMessage(playerid,COLOR_YELLOW,"Zollwächter: Vielen Dank! Sie dürfen den Zoll überqueren. Gute Weiterfahrt ( -1.500$ )!");
+        SendClientMessage(playerid,COLOR_YELLOW,"Zollwächter: Vielen Dank! Sie dürfen den Zoll überqueren. Gute Weiterfahrt ( - 500$ )!");
     }
     else {
         SendClientMessage(playerid,COLOR_YELLOW,"Zollwächter: Vielen Dank! Sie dürfen den Zoll überqueren. Gute Weiterfahrt!");
@@ -72615,10 +72714,10 @@ stock PlayerSkillUpgrade(playerid, SpielerDaten:attribute, skill, points ) {
 
 COMMAND:startbauer(playerid,params[]) {
     if(!(Spieler[playerid][pJob] == 1))return SendClientMessage(playerid, COLOR_RED, "Du bist kein Farmer.");
-    if( Spieler[playerid][tickJobCheckpoint] > gettime() ) {
+    /*if( Spieler[playerid][tickJobCheckpoint] > gettime() ) {
         SendClientMessage(playerid, COLOR_RED, "Du kannst nur alle 5 Minuten arbeiten, bitte warte einen Moment!");
         return 1;
-    }
+    }*/
     if( Spieler[playerid][pCowJob] != 0 ) {
         return SendClientMessage(playerid, COLOR_RED, "Du bist noch in einem Farmer Job aktiv.");
     }
@@ -74465,7 +74564,7 @@ COMMAND:tankshop(playerid,params[])
     #pragma unused params
     new t = IsPlayerAtTanke(playerid);
     if(t == 999)return SendClientMessage(playerid, COLOR_RED, "Du befindest dich an keiner Tanke!");
-    if(strcmp(Tanke[t][tBesitzer], "Niemand", true) == 0)return SendClientMessage(playerid, COLOR_RED, "Die Tankstelle hat keinen Besitzer.");
+    //if(strcmp(Tanke[t][tBesitzer], "Niemand", true) == 0)return SendClientMessage(playerid, COLOR_RED, "Die Tankstelle hat keinen Besitzer.");
     new
         sTitle[64],
         sDialog[256];
@@ -74499,7 +74598,7 @@ COMMAND:ergeben(playerid,params[]) {
 
     Spieler[playerid][pJailed] = 1;
     Spieler[playerid][pTot] = 0;
-    Spieler[playerid][pJailTime] = 150 * Spieler[playerid][pWanteds];
+    Spieler[playerid][pJailTime] = 30 * Spieler[playerid][pWanteds];
     Spieler[playerid][pTotTime] = 0;
     Spieler[playerid][pTotX] = 0.0;
     Spieler[playerid][pTotY] = 0.0;
@@ -76398,10 +76497,10 @@ public Load_FrakcarsEx() {
 	}
 }
 
-CMD:createdb(playerid){
+/*CMD:createdb(playerid){
     Create_DB();
     return SendClientMessage(playerid, COLOR_GREEN, "DONE");
-}
+}*/
 
 stock Create_DB() {
 	new query[2056];

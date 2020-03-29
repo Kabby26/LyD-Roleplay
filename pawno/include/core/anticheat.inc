@@ -3,7 +3,8 @@
 
 // Define factions that must use the AC
 static AC_factions[] = {
-    1, // LSPD
+    8
+    /*1, // LSPD
     2, // FBI
     6, // Grove Street
     7, // Ballas
@@ -13,7 +14,7 @@ static AC_factions[] = {
     13, // Vagos
     17, // Wheelman
     20, // OutlawZ
-    21 // Triaden
+    21 // Triaden*/
 };
 
 //forward OnGameModeInit();

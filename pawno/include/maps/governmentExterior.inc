@@ -5,8 +5,8 @@
 #define MAPS_GOVERNMENTINTERIOR_INTERIOR      3
 
 // Local drawdistance & streamdistance setting
-static Float:STREAMDISTANCE = 150.0;
-static Float:DRAWDISTANCE   = 140.0;
+/*static Float:STREAMDISTANCE = 150.0;
+static Float:DRAWDISTANCE   = 140.0;*/
 
 #define GOVERNMENT_INTERIOR_ENTER_COORDS        1555.0952, -1675.6327, 16.1953
 #define GOVERNMENT_INTERIOR_ENTER_FACING        90.0
@@ -29,13 +29,13 @@ static Float:DRAWDISTANCE   = 140.0;
 #define GOVERNMENT_STATEREPAIR_COORDS           1585.0372, -1677.7273, 5.8977
 
 // Map variables
-new object_governmentExterior[162];
+/*new object_governmentExterior[162];
 new object_government_barrier;
 new object_government_gate;
 new text3D_governmentExterior[1];
-new pickup_governmentExterior[4];
+new pickup_governmentExterior[4];*/
 
-CMD:rgate(playerid, params[]) {
+/*CMD:rgate(playerid, params[]) {
 	if (!(Spieler[playerid][pFraktion] == 1 || Spieler[playerid][pFraktion] == 2 || Spieler[playerid][pFraktion] == 3 || Spieler[playerid][pFraktion] == 5 || Spieler[playerid][pFraktion] == 9 || Spieler[playerid][pFraktion] == 18))
         return SendClientMessage(playerid, COLOR_RED, "Du bist kein Staatsbeamter.");
 
@@ -63,18 +63,18 @@ CMD:rgate(playerid, params[]) {
     }
     
     return SendClientMessage(playerid, COLOR_RED, "Du bist nicht in der Nähe des Tores.");
-}
+}*/
 
-hook OnPlayerConnect(playerid) {
+/*hook OnPlayerConnect(playerid) {
     RemoveBuildingForPlayer(playerid, 647, 1546.5999, -1693.3900, 14.4375, 0.10);
     RemoveBuildingForPlayer(playerid, 620, 1547.5699, -1689.9799, 13.0468, 0.10);
     RemoveBuildingForPlayer(playerid, 647, 1546.8699, -1687.0999, 14.4375, 0.10);
     RemoveBuildingForPlayer(playerid, 647, 1546.5999, -1664.6300, 14.4375, 0.10);
     RemoveBuildingForPlayer(playerid, 647, 1546.8699, -1658.3399, 14.4375, 0.10);
     RemoveBuildingForPlayer(playerid, 620, 1547.5699, -1661.0300, 13.0468, 0.10);
-}
+}*/
 
-hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys) {
+/*hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys) {
     if (newkeys & KEY_SECONDARY_ATTACK) {
         if (IsPlayerInRangeOfPoint(playerid, 2.0, GOVERNMENT_INTERIOR_ENTER_COORDS)) { // Enter
             SetPlayerPosEx(playerid, GOVERNMENT_INTERIOR_EXIT_COORDS, MAPS_GOVERNMENTINTERIOR_INTERIOR, VW_GOVERNMENTINTERIOR);
@@ -98,11 +98,11 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys) {
     }
 
     return 1;
-}
+}*/
 
 hook OnGameModeInit() {
     // Map Icon
-    CreateDynamicMapIcon(GOVERNMENT_INTERIOR_ENTER_COORDS, 34, 0, VW_MAIN, MAPS_GOVERNMENTEXTERIOR_INTERIOR); // R icon
+    /*CreateDynamicMapIcon(GOVERNMENT_INTERIOR_ENTER_COORDS, 34, 0, VW_MAIN, MAPS_GOVERNMENTEXTERIOR_INTERIOR); // R icon
 
     // Pickups
     pickup_governmentExterior[0] = CreateDynamicPickup(19197, 1, GOVERNMENT_INTERIOR_ENTER_COORDS, VW_MAIN, MAPS_GOVERNMENTEXTERIOR_INTERIOR);
@@ -114,23 +114,6 @@ hook OnGameModeInit() {
     text3D_governmentExterior[0] = _:CreateDynamic3DTextLabel("Staats-Reparatur\n" COLOR_HEX_WHITE "Tippe /Staatrepair", COLOR_YELLOW, GOVERNMENT_STATEREPAIR_COORDS, 10.0, .testlos = 1, .worldid = VW_MAIN, .interiorid = MAPS_GOVERNMENTEXTERIOR_INTERIOR); // Staterepair
 
     // Vehicles
-    /*vehicle_governmentExterior[0] = AddStaticVehicle(409, 1528.7433, -1683.8628, 5.6721, 269.4835, 1, 1); // gov
-    vehicle_governmentExterior[1] = AddStaticVehicle(409, 1528.9263, -1688.0830, 5.6606, 268.8083, 1, 1); // gov
-    vehicle_governmentExterior[2] = AddStaticVehicle(490, 1545.6693, -1672.2111, 6.0186, 90.8823, 1, 1); // gov
-    vehicle_governmentExterior[3] = AddStaticVehicle(490, 1545.7642, -1667.8514, 6.0373, 90.4662, 1, 1); // gov
-    vehicle_governmentExterior[4] = AddStaticVehicle(596, 1545.0056, -1663.1222, 5.6128, 90.6918, 1, 1); // gov
-    vehicle_governmentExterior[5] = AddStaticVehicle(596, 1544.9977, -1658.9619, 5.6130, 90.0701, 1, 1); // gov
-    vehicle_governmentExterior[6] = AddStaticVehicle(580, 1545.0693, -1655.1567, 5.6875, 89.8633, 1, 1); // gov
-    vehicle_governmentExterior[7] = AddStaticVehicle(580, 1545.0206, -1651.0193, 5.6874, 89.1158, 1, 1); // gov
-    vehicle_governmentExterior[8] = AddStaticVehicle(545, 1538.6676, -1643.8425, 5.7027, 180.0343, 1, 1); // gov
-    vehicle_governmentExterior[9] = AddStaticVehicle(545, 1534.7583, -1644.1050, 5.7024, 180.0741, 1, 1); // gov
-    vehicle_governmentExterior[10] = AddStaticVehicle(475, 1530.5110, -1643.8022, 5.6919, 180.0314, 1, 1); // gov
-    vehicle_governmentExterior[11] = AddStaticVehicle(475, 1526.4708, -1644.0272, 5.6941, 180.5679, 1, 1); // gov
-    vehicle_governmentExterior[12] = AddStaticVehicle(523, 1529.8032, -1671.8353, 5.7915, 269.9579, 1, 1); // gov
-    vehicle_governmentExterior[13] = AddStaticVehicle(523, 1529.7935, -1669.4871, 5.7856, 272.5232, 1, 1); // gov
-    vehicle_governmentExterior[14] = AddStaticVehicle(523, 1529.6549, -1667.1039, 5.7902, 271.1700, 1, 1); // gov
-    vehicle_governmentExterior[15] = AddStaticVehicle(523, 1529.4812, -1664.3744, 5.7885, 271.2509, 1, 1); // gov
-    vehicle_governmentExterior[16] = AddStaticVehicle(487, 1566.1991, -1703.9496, 28.5721, 89.6789, 1, 1); // gov*/
     
     // Objects
     object_governmentExterior[0] = CreateDynamicObject(2614, 1524.1695, -1677.9045, 9.3204, 0.0000, 0.0000, 89.9999, VW_MAIN, MAPS_GOVERNMENTEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //CJ_US_FLAG
@@ -405,5 +388,5 @@ hook OnGameModeInit() {
     object_governmentExterior[161] = CreateDynamicObject(971, 1588.9991, -1638.1402, 15.0256, 0.0000, 0.0000, 180.0000, VW_MAIN, MAPS_GOVERNMENTEXTERIOR_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE);
 
     object_government_barrier = object_governmentExterior[160];
-    object_government_gate = object_governmentExterior[161];
+    object_government_gate = object_governmentExterior[161];*/
 }
