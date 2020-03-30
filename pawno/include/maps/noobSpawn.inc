@@ -98,15 +98,14 @@ hook OnGameModeInit() {
     object_noobSpawn[30] = CreateDynamicObject(19786, 809.4688, -1344.5146, 17.6622, 5.0000, 0.0000, 90.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //LCDTVBig1
     object_noobSpawn[31] = CreateObject(19172, 809.6021, -1347.8487, 17.6746, 8.6000, 0.0000, 90.0000); //SAMPPicture1
     SetObjectMaterialText(object_noobSpawn[31], "Herzlich Willkommen!", 0, OBJECT_MATERIAL_SIZE_256x128, "Arial", 24, 1, 0xFFFFFFFF, 0x00000000, 1);
-    SetObjectMaterialText(object_noobSpawn[31], "", 1, OBJECT_MATERIAL_SIZE_256x128, "Arial", 24, 1, 0xFFFFFFFF, 0x00000000, 0);
+    SetObjectMaterial(object_noobSpawn[31], 1, 0, "INVALID", "INVALID", 0xFFFFFFFF);
     object_noobSpawn[32] = CreateDynamicObject(19786, 809.4688, -1347.8658, 17.6622, 5.0000, 0.0000, 90.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //LCDTVBig1
     object_noobSpawn[33] = CreateObject(19172, 809.6021, -1351.4200, 17.6746, 8.6000, 0.0000, 90.0000); //SAMPPicture1
     SetObjectMaterialText(object_noobSpawn[33], "monkey-roleplay.de", 0, OBJECT_MATERIAL_SIZE_256x128, "Arial", 24, 1, 0xFFFFFFFF, 0x00000000, 1);
-    SetObjectMaterialText(object_noobSpawn[33], "", 1, OBJECT_MATERIAL_SIZE_256x128, "Arial", 24, 1, 0xFFFFFFFF, 0x00000000, 0);
+    SetObjectMaterial(object_noobSpawn[33], 1, 0, "INVALID", "INVALID", 0xFFFFFFFF);
     object_noobSpawn[34] = CreateObject(19172, 837.4721, -1357.5288, 21.8057, 0.0000, 0.0000, -90.0000); //SAMPPicture1
     SetObjectMaterialText(object_noobSpawn[34], "Call Wasio: Tel.: +49 421 390 4 7777", 0, OBJECT_MATERIAL_SIZE_256x128, "Arial", 24, 0, 0xFFFFFFFF, 0x00000000, 1);
-    SetObjectMaterialText(object_noobSpawn[34], "", 1, OBJECT_MATERIAL_SIZE_256x128, "Arial", 10, 1, 0xFFFFFFFF, 0x00000000, 0);
-    SetObjectMaterialText(object_noobSpawn[34], "Example Text", 2, OBJECT_MATERIAL_SIZE_256x128, "Arial", 24, 1, 0xFFFFFFFF, 0x00000000, 0);
+    SetObjectMaterial(object_noobSpawn[34], 1, 0, "INVALID", "INVALID", 0xFFFFFFFF);
     object_noobSpawn[35] = CreateDynamicObject(640, 821.7105, -1356.4018, 13.0853, 0.0000, 0.0000, 90.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //kb_planter+bush2
     object_noobSpawn[36] = CreateDynamicObject(1280, 816.4568, -1356.5080, 12.9144, 0.0000, 0.0000, -90.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //parkbench1
     object_noobSpawn[37] = CreateDynamicObject(640, 827.0703, -1348.8016, 13.0853, 0.0000, 0.0000, 180.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //kb_planter+bush2
@@ -117,7 +116,7 @@ hook OnGameModeInit() {
     object_noobSpawn[42] = CreateDynamicObject(19126, 814.1812, -1337.8287, 13.0666, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //BollardLight6
     object_noobSpawn[43] = CreateObject(19173, 827.2185, -1354.4537, 12.3493, 0.0000, 0.0000, 90.0000); //SAMPPicture2
     SetObjectMaterialText(object_noobSpawn[43], "#WASIO", 0, OBJECT_MATERIAL_SIZE_256x128, "Segoe Print", 24, 1, 0xFFE6E6FA, 0x00000000, 0);
-    SetObjectMaterialText(object_noobSpawn[43], "Example Text", 1, OBJECT_MATERIAL_SIZE_256x128, "Arial", 24, 1, 0xFFFFFFFF, 0x00000000, 0);
+    SetObjectMaterial(object_noobSpawn[43], 1, 0, "INVALID", "INVALID", 0xFFFFFFFF);
     object_noobSpawn[44] = CreateDynamicObject(970, 808.0289, -1353.6430, 13.0836, 0.0000, 0.0000, 90.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //fencesmallb
     object_noobSpawn[45] = CreateDynamicObject(1280, 816.5169, -1346.7257, 12.9144, 0.0000, 0.0000, 0.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //parkbench1
     object_noobSpawn[46] = CreateDynamicObject(1360, 817.0540, -1348.7196, 12.8233, 0.0000, 0.0000, 90.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //CJ_BUSH_PROP3
@@ -129,5 +128,5 @@ hook OnGameModeInit() {
     object_noobSpawn[52] = CreateDynamicObject(970, 808.0289, -1341.1190, 13.0836, 0.0000, 0.0000, 90.0000, VW_MAIN, MAPS_NOOBSPAWN_INTERIOR, .streamdistance = STREAMDISTANCE, .drawdistance = DRAWDISTANCE); //fencesmallb
     object_noobSpawn[53] = CreateObject(19172, 809.6021, -1344.4960, 17.6746, 8.6000, 0.0000, 90.0000); //SAMPPicture1
     SetObjectMaterialText(object_noobSpawn[53], "ts.monkey-roleplay.de", 0, OBJECT_MATERIAL_SIZE_256x128, "Arial", 23, 1, 0xFFFFFFFF, 0x00000000, 1);
-    SetObjectMaterialText(object_noobSpawn[53], "", 1, OBJECT_MATERIAL_SIZE_256x128, "Arial", 24, 1, 0xFFFFFFFF, 0x00000000, 0);
+    SetObjectMaterial(object_noobSpawn[53], 1, 0, "INVALID", "INVALID", 0xFFFFFFFF);
 }

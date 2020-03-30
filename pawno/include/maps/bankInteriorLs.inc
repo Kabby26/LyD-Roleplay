@@ -43,7 +43,7 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys) {
 
             return 1;
         } else if (IsPlayerInRangeOfPoint(playerid, 2.0, BANKINTERIORLS_EXIT_COORDS)) {
-            if(g_iBankraubStatus == Bankraub_Aktiv) return SendClientMessage(playerid, COLOR_RED, "Du kannst die Bank nicht verlassen! Die Türen sind abgeschlossen!");
+            //if(g_iBankraubStatus == Bankraub_Aktiv) return SendClientMessage(playerid, COLOR_RED, "Du kannst die Bank nicht verlassen! Die Türen sind abgeschlossen!");
             Streamer_UpdateEx(playerid, BANKINTERIORLS_ENTER_COORDS, VW_MAIN, MAPS_BANKEXTERIORLS_INTERIOR, STREAMER_TYPE_OBJECT);            
             SetPlayerVirtualWorld(playerid, VW_MAIN);
             SetPlayerInterior(playerid, MAPS_BANKEXTERIORLS_INTERIOR);

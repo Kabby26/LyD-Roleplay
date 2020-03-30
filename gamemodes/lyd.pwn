@@ -3423,7 +3423,7 @@ enum {
     Bankraub_Aktiv
 }
 
-#define BANKRAUB_ZEIT (40*60)
+#define BANKRAUB_ZEIT (10*90)
 new g_tPulseBank, g_unixBankraub, g_tPulseBankPosition, g_iBankraubStatus= Bankraub_Bereit, g_aiVehicleSirene[MAX_VEHICLES][4];
 
 #define NINEDEMONSROB_ZEIT (180*60)
@@ -11445,7 +11445,7 @@ public OnPlayerJail(playerid)
 				NeedAWALT[playerid] = 0;
 			    SetPlayerFacingAngle(playerid, LSPD_INTERIOR_ENTER_FACING);
 			    SetCameraBehindPlayer(playerid);
-			    SetPlayerPosEx(playerid, 960.7043, -1580.0457, 13.5469, MAPS_LSPDEXTERIOR_INTERIOR, VW_MAIN);
+			    SetPlayerPosEx(playerid, 1543.8823,-1675.4792,13.5573, MAPS_LSPDEXTERIOR_INTERIOR, VW_MAIN);
 				paydaywait[playerid]=0;
 			}
 		}
@@ -32680,7 +32680,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                 if (listitem < 0) return SendClientMessage(playerid, COLOR_RED, "Keine gültige Auswahl.");
                 new t = IsPlayerAtTanke(playerid);
                 if(t == 999)return SendClientMessage(playerid, COLOR_RED, "Du befindest dich an keiner Tanke!");
-                if(strcmp(Tanke[t][tBesitzer], "Niemand", true) == 0)return SendClientMessage(playerid, COLOR_RED, "Die Tankstelle hat keinen Besitzer.");
+                //if(strcmp(Tanke[t][tBesitzer], "Niemand", true) == 0)return SendClientMessage(playerid, COLOR_RED, "Die Tankstelle hat keinen Besitzer.");
 
                 if (listitem >= sizeof(g_SnackShop)) {
                     if (Spieler[playerid][pKanister] >= MAX_CANISTER) return SendClientMessage(playerid, COLOR_RED, "Du hast bereits " #MAX_CANISTER " Kanister.");
@@ -43661,20 +43661,25 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
         {
             if(response)
             {
-                new
+                /*new
                     vehicleid = GetPlayerVehicleID(playerid);
                 if(vehicleid) {
                     new
                         busIndex = GetBusIndex(vehicleid);
-                    if( busIndex != -1 ) {
+                    if( busIndex != -1 ) {*/
+                    for(new i=0;i<sizeof(vehicle_busStation);i++)
+                    {
+                        new vID = GetPlayerVehicleID(playerid);
+                        if(vID == vehicle_busStation[i])
+                        {
                         new
                             String[256];
-                        DestroyDynamic3DTextLabel(t3dBus[busIndex]);
-                        t3dBus[busIndex] = Text3D:CreateDynamic3DTextLabel("Initialisierung...", 0x00FFFFFF, 0.0, 0.0, 0.0 , 14.0 , .attachedvehicle = vehicleid, .testlos = 1 , .streamdistance = 30.0 );
+                        DestroyDynamic3DTextLabel(t3dBus[i]);
+                        t3dBus[i] = Text3D:CreateDynamic3DTextLabel("Initialisierung...", 0x00FFFFFF, 0.0, 0.0, 0.0 , 14.0 , .attachedvehicle = vID, .testlos = 1 , .streamdistance = 30.0 );
 
-                        Streamer_SetFloatData( STREAMER_TYPE_3D_TEXT_LABEL , t3dBus[busIndex] , E_STREAMER_ATTACH_OFFSET_X , 0.0 );
-                        Streamer_SetFloatData( STREAMER_TYPE_3D_TEXT_LABEL , t3dBus[busIndex] , E_STREAMER_ATTACH_OFFSET_Y , 0.0 );
-                        Streamer_SetFloatData( STREAMER_TYPE_3D_TEXT_LABEL , t3dBus[busIndex] , E_STREAMER_ATTACH_OFFSET_Z , 1.5 );
+                        Streamer_SetFloatData( STREAMER_TYPE_3D_TEXT_LABEL , t3dBus[i] , E_STREAMER_ATTACH_OFFSET_X , 0.0 );
+                        Streamer_SetFloatData( STREAMER_TYPE_3D_TEXT_LABEL , t3dBus[i] , E_STREAMER_ATTACH_OFFSET_Y , 0.0 );
+                        Streamer_SetFloatData( STREAMER_TYPE_3D_TEXT_LABEL , t3dBus[i] , E_STREAMER_ATTACH_OFFSET_Z , 1.5 );
                         KillTimer(buswait[playerid]);
                         buswait[playerid] = INVALID_TIMER_ID;
                         UnfreezePlayer(playerid);
@@ -43708,7 +43713,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                             ShowPlayerDialog(playerid, DIALOG_SEV, DIALOG_STYLE_LIST,"Schienenersatzverkehr - Auswahl","San Fierro Bahnhof\nLas Venturas Bahnhof","Start","Abbrechen");
 						}
                         format(String,sizeof(String),"%s\n\n"#COL_YELLOW"Ticketpreis: %d$",String,BUS_TICKET_PRICE);
-                        UpdateDynamic3DTextLabelText(t3dBus[busIndex],COLOR_LIGHTBLUE, String );
+                        UpdateDynamic3DTextLabelText(t3dBus[i],COLOR_LIGHTBLUE, String );
                         Spieler[playerid][tickJobCheckpoint] = gettime() + (5*60);
                     }
                 }
@@ -52417,16 +52422,19 @@ forward Bank_Position(diebid);
 public Bank_Position(diebid) {
     new count = 0;
     for(new i = 0; i < MAX_PLAYERS; i++){
-        if(Spieler[i][pFraktion] == 1 || Spieler[i][pFraktion] == 2) return 1;
-        if(GetPlayerVirtualWorld(i) == VW_BANKINTERIORLS){
+        if(GetPlayerVirtualWorld(i) == 2014 && Spieler[i][pFraktion] != 1){
             count++;
         }
     }
     if(count == 0){
-        SendClientMessageToAll(COLOR_RED,"[ZENTRALBANK] Der Bankraub in Los Santos wurde durch die Polizei gestoppt!");
+        SendClientMessageToAll(COLOR_RED,"[ZENTRALBANK] Es befindet sich kein Bankräuber mehr in der Bank!");
         KillTimer(g_tPulseBankPosition);
         g_tPulseBankPosition = INVALID_TIMER_ID;
         Pulse_Bankraub();
+
+        for(new i = 0; i < MAX_PLAYERS; i++){
+            RemovePlayerAttachedObject(i,0);
+        }
 
         //RESET BANK VARS
         HP_Tresor[0] = 5000;
