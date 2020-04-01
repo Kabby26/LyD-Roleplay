@@ -3423,7 +3423,7 @@ enum {
     Bankraub_Aktiv
 }
 
-#define BANKRAUB_ZEIT (10*90)
+#define BANKRAUB_ZEIT (2400)
 new g_tPulseBank, g_unixBankraub, g_tPulseBankPosition, g_iBankraubStatus= Bankraub_Bereit, g_aiVehicleSirene[MAX_VEHICLES][4];
 
 #define NINEDEMONSROB_ZEIT (180*60)
@@ -52752,7 +52752,7 @@ COMMAND:bankhacken(playerid,params[]) {
     if (g_iBankraubStatus == Bankraub_Wartezeit) return SendClientMessage(playerid, COLOR_RED, "Die Bank kann zur Zeit nicht ausgeraubt werden.");
     if (g_iBankraubStatus == Bankraub_Aktiv) return SendClientMessage(playerid, COLOR_RED, "Ein Bankraub läuft gerade. ");
     if (!HasPlayerWeapon(playerid)) return SendClientMessage(playerid, COLOR_RED, "Du kannst die Bank nicht ohne eine Waffe ausrauben.");
-    if (GetOnlineExekutive(playerid) < 2) return SendClientMessage(playerid, COLOR_RED, "Es sind nicht genug Spieler der Exekutive online.");
+    if (GetOnlineExekutive(playerid) < 3) return SendClientMessage(playerid, COLOR_RED, "Es sind nicht genug Spieler der Exekutive online.");
     if(Spieler[playerid][pWantedCodes] < 50) return SendClientMessage(playerid, COLOR_RED, "Du benötigst mindestens 50 Hacker-Codes um den Bankraub zu starten!");
 
     Spieler[playerid][pWantedCodes] -= 50;
@@ -70590,9 +70590,9 @@ COMMAND:startwaren(playerid,params[]) {
     if( Waren[vehicleid] < 1 ) {
         return SendClientMessage(playerid,COLOR_RED,"Du hast keine Waren aufgeladen.");
     }
-    if( Spieler[playerid][pTruckerBlock] > gettime() ) {
+    /*if( Spieler[playerid][pTruckerBlock] > gettime() ) {
         return SendClientMessage(playerid,COLOR_RED,"Eine neue Route kann für dich aktuell nicht kalkuliert werden.");
-    }
+    }*/
     new
         r = random(2);
     if(r == 0 ) {
@@ -70624,9 +70624,9 @@ COMMAND:startbenzin(playerid,params[]) {
     if( Benzin[trailer] < 1 ) {
         return SendClientMessage(playerid,COLOR_RED,"Du hast kein Benzin beladen.");
     }
-    if( Spieler[playerid][pTruckerBlock] > gettime() ) {
+    /*if( Spieler[playerid][pTruckerBlock] > gettime() ) {
         return SendClientMessage(playerid,COLOR_RED,"Eine neue Route kann für dich aktuell nicht kalkuliert werden.");
-    }
+    }*/
     new
         r = random(2);
     if(r == 0 ) {
